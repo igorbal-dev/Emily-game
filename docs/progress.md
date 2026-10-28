@@ -17,6 +17,4 @@
 - Сделана автопроверка tools/autoplay.js: сама проходит уровни в браузере (ускоренное время, фальшивый микрофон). Уровни 0 и 1 прошлись до конца.
 - Ещё не сделано: проверка уровней 2–12, GitHub Pages, проверка микрофона на сайте.
 
-### ElevenLabs
-- Подключение начато (npx @elevenlabs/cli onboard init). Нужен ключ: его надо положить в настройки окружения (переменная ELEVENLABS_API_KEY), не в чат. Файл .env.local в репозиторий не попадает.
 - Чеклист листов для ChatGPT: https://claude.ai/artifact/YLb2FeKrgTHcXF5bgQZ618 (собирается из docs/chatgpt-prompts.md скриптом tools/build_checklist.py).

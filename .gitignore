@@ -1,2 +1,2 @@
-# Local secrets written by `elevenlabs onboard`
-/.env.local
+.env*
+node_modules/
