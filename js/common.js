@@ -1,7 +1,7 @@
 /* Общие улучшения для всех уровней. Подключается в конце каждой страницы уровня, после кода уровня.
    1. Мягкий микрофон: засчитывается любая попытка сказать вслух, даже если Эмили заговорила
       чуть раньше, чем появился значок микрофона. Пока значок светится, можно повторить ещё раз.
-   2. В конце уровня большая кнопка «дальше» посередине экрана ведёт на следующий уровень. */
+   2. В конце уровня большая кнопка «дальше» в правом нижнем углу ведёт на следующий уровень, наклейка-награда видна сверху. */
 (function(){
   /* ---------- микрофон: слушаем всё время, а не только когда горит значок ---------- */
   const V = {
@@ -130,13 +130,16 @@
     const n = +m[1], LAST = 12, href = n < LAST ? `l${n + 1}.html` : 'index.html';
     const css = document.createElement('style');
     css.textContent = `
-    #next{position:absolute;left:50%;top:68%;transform:translate(-50%,-50%);z-index:97;width:min(34vw,34vh,190px);height:min(34vw,34vh,190px);border-radius:50%;
+    #next{position:absolute;left:auto;top:auto;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:97;width:min(26vw,30vh,170px);height:min(26vw,30vh,170px);border-radius:50%;
       background:#32b67a;box-shadow:0 8px 0 #1f8a5a,0 0 0 0 rgba(50,182,122,.5);display:grid;place-items:center;animation:nextpulse 1.4s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
     #next svg{width:52%;height:52%;margin-left:6%}
     #next[hidden]{display:none}
-    @keyframes nextpulse{0%,100%{transform:translate(-50%,-50%) scale(1);box-shadow:0 8px 0 #1f8a5a,0 0 0 0 rgba(50,182,122,.45)}50%{transform:translate(-50%,-50%) scale(1.06);box-shadow:0 8px 0 #1f8a5a,0 0 0 22px rgba(50,182,122,0)}}
+    @keyframes nextpulse{0%,100%{transform:scale(1);box-shadow:0 8px 0 #1f8a5a,0 0 0 0 rgba(50,182,122,.45)}50%{transform:scale(1.06);box-shadow:0 8px 0 #1f8a5a,0 0 0 22px rgba(50,182,122,0)}}
     #again{left:calc(20px + env(safe-area-inset-left,0px)) !important;right:auto !important;top:auto !important;bottom:calc(20px + env(safe-area-inset-bottom,0px)) !important;transform:none !important;width:84px !important;height:84px !important;animation:none !important}
     #again svg{width:44px !important;height:44px !important}
+    /* наклейка-награда сверху по центру, кнопки «ещё раз» и «дальше» — в нижних углах, ничего не перекрывается */
+    #sticker{top:9% !important;width:min(26vw,40vh,230px) !important}
+    #sticker > svg,#sticker > img{position:absolute;left:14%;top:14%;width:72% !important;height:72% !important;object-fit:contain}
     @media (prefers-reduced-motion:reduce){#next{animation:none}}`;
     document.head.appendChild(css);
     const a = document.createElement('a'); a.id = 'next'; a.href = href; a.hidden = true;

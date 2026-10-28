@@ -63,7 +63,7 @@ async function dragTry(page){
   const browser = await chromium.launch({args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream','--autoplay-policy=no-user-gesture-required']});
   const results = [];
   for (const lv of levels){
-    const ctx = await browser.newContext({viewport:{width:1024, height:700}, hasTouch:false, permissions:['microphone']});
+    const ctx = await browser.newContext({viewport:{width:+(process.env.W || 1024), height:+(process.env.H || 700)}, hasTouch:false, deviceScaleFactor:+(process.env.DSF || 1), permissions:['microphone']});
     const page = await ctx.newPage();
     const errs = [];
     page.on('pageerror', e => errs.push(String(e.message)));
@@ -88,7 +88,7 @@ async function dragTry(page){
       if (t){ taps++; if (taps % 7 === 0) await dragTry(page); else await page.mouse.click(t.x, t.y); }
     }
     let jsErr = []; try { jsErr = (await withTimeout(page.evaluate(() => window.__errors), 3000)) || []; } catch(e){}
-    if (process.env.SHOT) await page.screenshot({path: `${process.env.SHOT}/l${lv}.png`, timeout: 5000}).catch(() => {});
+    if (process.env.SHOT){ await page.screenshot({path: `${process.env.SHOT}/l${lv}.png`, timeout: 5000}).catch(() => {}); await page.waitForTimeout(+(process.env.SHOT_MS || 300)); await page.screenshot({path: `${process.env.SHOT}/l${lv}_b.png`, timeout: 5000}).catch(() => {}); }
     const r = {level: lv, finished: ok, next: nextHref, seconds: Math.round((Date.now()-t0)/1000), taps, errors: [...new Set([...errs, ...jsErr])].slice(0, 8)};
     console.log(JSON.stringify(r));
     results.push(r);

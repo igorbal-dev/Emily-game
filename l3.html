@@ -1034,7 +1034,7 @@ layout();
   css.textContent = `#tomap{position:absolute;left:calc(14px + env(safe-area-inset-left,0px));top:calc(14px + env(safe-area-inset-top,0px));z-index:96;width:58px;height:58px;border-radius:50%;background:#fff;box-shadow:0 4px 0 #e2b98a;display:grid;place-items:center}
   #tomap svg{width:34px;height:34px}
   #sticker{position:absolute;left:50%;top:14%;transform:translateX(-50%);z-index:84;width:min(30vw,34vh);aspect-ratio:1;max-width:100%;border-radius:50%;background:#fff;border:8px solid #ffd84d;box-shadow:0 8px 0 #e2b98a;display:grid;place-items:center;padding:8%;box-sizing:border-box;animation:stickin .7s cubic-bezier(.3,1.6,.5,1)}
-  #sticker svg,#sticker img{max-width:100%;max-height:100%}
+  #sticker svg,#sticker img{width:100%;height:100%;object-fit:contain}
   @keyframes stickin{0%{transform:translateX(-50%) scale(.2) rotate(-30deg);opacity:0}100%{transform:translateX(-50%) scale(1) rotate(0);opacity:1}}`;
   document.head ? document.head.appendChild(css) : document.body.appendChild(css);
   const a = document.createElement('a'); a.id = 'tomap'; a.href = 'index.html'; a.setAttribute('aria-label', 'Карта уровней');
@@ -1049,7 +1049,7 @@ layout();
     d.friends = d.friends || {}; FRIENDS.forEach(f => d.friends[f] = true);
     save(d);
     const s = document.createElement('div'); s.id = 'sticker'; s.innerHTML = STICKER; stage.appendChild(s);
-    setTimeout(() => s.remove(), 4000);
+    again.addEventListener('click', () => s.remove(), {once: true});   /* наклейка остаётся до «ещё раз» */
   }
   new MutationObserver(() => { if (!again.hidden) done(); }).observe(again, {attributes:true, attributeFilter:['hidden']});
   again.addEventListener('click', () => { marked = false; });
