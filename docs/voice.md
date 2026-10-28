@@ -48,21 +48,23 @@
 - Проверка речи мягкая: сказала вслух достаточно громко = засчитано, слова не распознаются.
 - Текста на экране нет, Эмили не читает.
 
-## Ещё не записано (уровни 11 и 12)
+## Записано всё (октябрь 2026)
 
-**Эмили, Tilly, German:** Fang, Isabel! / Fang, Paul! / Ich spiele auch mit! / Komm, Mark! Spiel mit! / Alle drehen sich! / Alle klatschen! / Alle springen! / Alle winken! / Juhu, Sport!
+Все фразы уровней 0–12 записаны голосами ElevenLabs, синтезатор телефона нигде не звучит (`node tools/voice_check.js` → 0).
+53 новые фразы (уровни 1–12) записаны в проекте ElevenLabs «Emily game — missing lines», список ключей и файлов — `art/voice_new.json`.
 
-**Марк, Tilly +5, German:** Ich auch!
+Голоса (voice_id для ElevenLabs, модель eleven_v3):
 
-**Ведущая, Skittle Bee, German:** Drei minus eins ist zwei! / Zwei minus eins ist eins! / Gefangen! Toll! / Oh, Mark ist traurig. Er will auch spielen! / Mark will auch mitspielen. / Und jetzt rollt Mark den Ball zurück! / Oder Mark mitspielen lassen? / Ohne Mark weiterspielen? / Paul wirft den Ball zu Emily. Fang! / Mark ist noch klein. Wir rollen ihm den Ball. / Sieben Würfe! Super! / Oh! Theo will auch den Ball! / Vier Kinder: Emily, Isabel, Paul und Mark! / Wie viele Kinder spielen jetzt Ball? / Wirf den Ball zu Isabel! Tipp auf Isabel! / Wirf den Ball zu Paul! Tipp auf Paul! / Wir zählen, wie oft wir werfen. / Oder: Okay, du bist dran? / Nein, nur ich bin die Chefin? / Oh, Paul ist traurig. Jeder darf mal bestimmen! / Paul will auch mal bestimmen. / Tipp auf ein Bild!
+| Роль | Голос | voice_id |
+| --- | --- | --- |
+| Ведущая и русские подсказки | Skittle Bee | xLCJR8xcZX2YjImGFyGw |
+| Эмили; Марк (+5 полутонов после генерации) | Tilly | MkTSSXNgnBULS6ek4pon |
+| Изабель | Gungun – Kids Show Character | nfMYisZqs1GOjTFllho3 |
+| Пауль | Prayan – Playful Comedy Character | p7nMaiIUHqy2txuz7pTB |
+| Heike (воспитательница) | Rhea – Happy, Positive Character | m6hUIEYgmiiZhDVrbFQM |
+| Продавцы (кафе-мороженое, рынок) | записи пекаря с уровня 3 | — |
 
-**Ведущая, Skittle Bee, Russian:** Сколько детей играет в мяч? Нажми на число! / Нажми на ребёнка, которому бросаем мяч! / Выбери, что все будут делать, и нажми на картинку!
-
-**Изабель, Gungun:** Ich! Ich!
-
-**Пауль, Prayan:** Wer spielt mit mir Ball? / Ich will auch mal Chef sein! / Alle drehen sich! / Alle klatschen! / Alle springen!
-
-**Heike, Rhea:** Jetzt bist du die Chefin, Emily! Was machen wir? / Zum Schluss klatschen alle fünfmal! / Guten Morgen, Kinder! Heute machen wir Sport! / Alle springen! Dreimal! / Super gemacht, Kinder! Tschüss! / Alle winken! Dreimal!
+Как добавлять новые фразы: одна генерация на фразу (1 вариант), `python3 tools/voice_import.py <статус> <ключи>` скачивает, обрезает тишину, делает 24 кГц моно mp3 и пишет `art/voice_new.json`; потом ключ добавляется в `SND` уровня. Проверка текста: склеить новые фразы в один файл с паузами и расшифровать один раз (расшифровка стоит ~5,5 кредита за секунду — дороже самих фраз, поэтому одним файлом).
 
 ## Будущее: мама и папа
 
