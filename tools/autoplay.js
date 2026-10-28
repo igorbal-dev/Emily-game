@@ -22,7 +22,8 @@ const INIT = `(() => {
   const st = document.createElement('style');
   st.textContent = '*{animation-duration:.05s!important;transition-duration:.01s!important}';
   addEventListener('DOMContentLoaded', () => document.head.appendChild(st));
-  window.__errors = [];
+  window.__errors = []; window.__tts = {};
+  addEventListener('load', () => { const o = window.play; if (typeof o !== 'function') return; window.play = function(n){ try { if (!SND[n] && typeof TEXT !== 'undefined' && TEXT[n]) window.__tts[n] = TEXT[n][0]; } catch(e){} return o.apply(this, arguments); }; });
   addEventListener('error', e => window.__errors.push(String(e.message)));
   addEventListener('unhandledrejection', e => window.__errors.push('rej: ' + String(e.reason && (e.reason.stack || e.reason))));
 })();`;
@@ -89,7 +90,8 @@ async function dragTry(page){
     }
     let jsErr = []; try { jsErr = (await withTimeout(page.evaluate(() => window.__errors), 3000)) || []; } catch(e){}
     if (process.env.SHOT){ await page.screenshot({path: `${process.env.SHOT}/l${lv}.png`, timeout: 5000}).catch(() => {}); await page.waitForTimeout(+(process.env.SHOT_MS || 300)); await page.screenshot({path: `${process.env.SHOT}/l${lv}_b.png`, timeout: 5000}).catch(() => {}); }
-    const r = {level: lv, finished: ok, next: nextHref, seconds: Math.round((Date.now()-t0)/1000), taps, errors: [...new Set([...errs, ...jsErr])].slice(0, 8)};
+    let tts = {}; try { tts = (await withTimeout(page.evaluate(() => window.__tts), 3000)) || {}; } catch(e){}
+    const r = {level: lv, finished: ok, tts, next: nextHref, seconds: Math.round((Date.now()-t0)/1000), taps, errors: [...new Set([...errs, ...jsErr])].slice(0, 8)};
     console.log(JSON.stringify(r));
     results.push(r);
     await ctx.close().catch(() => {});
