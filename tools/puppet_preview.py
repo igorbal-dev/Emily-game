@@ -31,7 +31,7 @@ def assemble(pose, eyes='open', mouth='smile', size=(700, 1000), root=(350, 470)
             pos = (ppos[0] + dx*math.cos(a) - dy*math.sin(a), ppos[1] + dx*math.sin(a) + dy*math.cos(a)); rot += prot
         else: pos = root
         W[p] = (rot, pos); return W[p]
-    for p in sorted(P['parts'], key=lambda p: P['parts'][p]['z']):
+    for p in sorted([q for q in P['parts'] if not P['parts'][q].get('hidden')], key=lambda p: P['parts'][p]['z']):
         rot, (x, y) = place(p); im = images[p]; px, py = P['parts'][p]['joints']['pivot']
         S = 3*max(im.size); big = Image.new('RGBA', (S, S), (0, 0, 0, 0))
         big.alpha_composite(im, (round(S/2 - px), round(S/2 - py)))

@@ -73,3 +73,25 @@ for i, (kind, names) in enumerate(FACE.items()):
         puppet['face'][f'{kind}_{n}'] = {'src': f'{kind}_{n}.png', 'size': list(im.size)}
 json.dump(puppet, open(f'{out}/puppet.json', 'w'), indent=1)
 print('ok', len(puppet['parts']), 'частей,', len(puppet['face']), 'наклеек')
+
+# ---- наклейки лица: цвет кожи как на лице, мягкий край без «заплатки» ----
+from PIL import ImageFilter
+head = Image.open(f'{out}/head.png').convert('RGBA'); HW, HH = head.size
+ha = np.asarray(head).astype(float)
+reg = ha[int(HH*0.55):int(HH*0.7), int(HW*0.42):int(HW*0.58)]
+skin = reg[..., :3][reg[..., 3] > 200].mean(0)
+for k in puppet['face']:
+    im = Image.open(f'{out}/{k}.png').convert('RGBA'); x = np.asarray(im).astype(float); al = x[..., 3]
+    inner = np.asarray(Image.fromarray(al.astype(np.uint8)).filter(ImageFilter.MinFilter(25)))
+    edge = (al > 200) & (inner < 200)
+    x[..., :3] = np.clip(x[..., :3] + (skin - x[..., :3][edge].mean(0)), 0, 255)
+    m = Image.fromarray(al.astype(np.uint8)).filter(ImageFilter.MinFilter(21)).filter(ImageFilter.GaussianBlur(14))
+    x[..., 3] = np.minimum(al, np.asarray(m).astype(float))
+    Image.fromarray(x.astype(np.uint8)).save(f'{out}/{k}.png')
+
+# ---- настройки куклы, подобранные на глаз (tools/puppet_preview.py) ----
+TUNE = json.load(open(f'art/rigs/{name}_tune.json')) if os.path.exists(f'art/rigs/{name}_tune.json') else {}
+for pn, v in TUNE.get('parts', {}).items(): puppet['parts'][pn].update(v)
+if 'faceAnchor' in TUNE: puppet['faceAnchor'] = TUNE['faceAnchor']
+json.dump(puppet, open(f'{out}/puppet.json', 'w'), indent=1)
+print('наклейки и настройки готовы')

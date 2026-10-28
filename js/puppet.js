@@ -10,7 +10,7 @@
       const def = await (await fetch(base + 'puppet.json')).json();
       const p = new Puppet(def);
       await Promise.all([
-        ...Object.entries(def.parts).map(async ([k, v]) => { p.img[k] = await load(base + v.src); }),
+        ...Object.entries(def.parts).filter(([, v]) => !v.hidden).map(async ([k, v]) => { p.img[k] = await load(base + v.src); }),
         ...Object.entries(def.face).map(async ([k, v]) => { p.face[k] = await load(base + v.src); })
       ]);
       p.bounds = p.measure();
@@ -18,7 +18,7 @@
     }
     constructor(def){
       this.def = def; this.img = {}; this.face = {};
-      this.order = Object.keys(def.parts).sort((a, b) => def.parts[a].z - def.parts[b].z);
+      this.order = Object.keys(def.parts).filter(k => !def.parts[k].hidden).sort((a, b) => def.parts[a].z - def.parts[b].z);
     }
     /* мировые матрицы частей: [a,b,c,d,e,f] как у canvas; pose — {часть: градусы} */
     frames(pose){
@@ -31,7 +31,7 @@
           const par = place(info.parent), pi = P[info.parent];
           const [jx, jy] = typeof info.at === 'string' ? pi.joints[info.at] : info.at;
           const [ppx, ppy] = pi.joints.pivot, a = rad(par.rot), dx = jx - ppx, dy = jy - ppy;
-          x = par.x + dx*Math.cos(a) - dy*Math.sin(a); y = par.y + dx*Math.sin(a) + dy*Math.cos(a); rot += par.rot;
+          x = par.x + dx*Math.cos(a) - dy*Math.sin(a); y = par.y + dx*Math.sin(a) + dy*Math.cos(a) + (pose[k + 'Y'] || 0); rot += par.rot;
         } else { x = pose.x || 0; y = pose.y || 0; rot += pose.lean || 0; }
         return (out[k] = {x, y, rot, px, py, sy: k === 'torso' ? (pose.breath || 1) : 1});
       };
@@ -91,6 +91,7 @@
     set(s){ Object.assign(this.state, s); }
     pose(t){
       const s = this.state, T = (t - this.t0)/1000, pose = {};
+      if (s.jump) s.mood = s.mood;
       /* дыхание и лёгкое покачивание */
       pose.breath = 1 + Math.sin(T*2.4)*0.012;
       pose.head = Math.sin(T*1.1)*2.2 + (s.talk ? Math.sin(T*7)*1.6 : 0);
@@ -98,10 +99,19 @@
       pose.farmL = Math.sin(T*1.3 + 0.4)*3; pose.farmR = -Math.sin(T*1.3 + 1)*3;
       pose.tailL = Math.sin(T*2.1)*4; pose.tailR = Math.sin(T*2.1 + 0.8)*4;
       if (s.walk){
-        const w = Math.sin(T*7.5);
-        pose.thighL = w*18; pose.shinL = Math.max(0, -w)*-22; pose.thighR = -w*18; pose.shinR = Math.max(0, w)*-22;
-        pose.uarmL += -w*14; pose.uarmR += -w*14; pose.farmL += -10; pose.farmR += 10;
-        pose.y = -Math.abs(Math.cos(T*7.5))*10; pose.tailL += w*8; pose.tailR += w*8;
+        /* шаг спереди: нога поднимается и чуть сгибается, тело покачивается из стороны в сторону */
+        const ph = T*6.5, w = Math.sin(ph), up = v => Math.max(0, v);
+        pose.thighLY = -up(w)*26; pose.thighRY = -up(-w)*26;
+        pose.thighL = 3 + up(w)*6; pose.thighR = -3 - up(-w)*6;
+        pose.shinL = -up(w)*10; pose.shinR = up(-w)*10;
+        pose.lean = w*2.5; pose.y = -Math.abs(w)*8;
+        pose.uarmL += w*12; pose.uarmR += w*12; pose.farmL += -8; pose.farmR += 8;
+        pose.head += -w*1.5;
+      }
+      if (s.jump){
+        const j = Math.max(0, Math.sin(T*5));
+        pose.y = -j*70; pose.uarmL = 140*j + 10; pose.uarmR = -140*j - 10; pose.farmL = 20*j; pose.farmR = -20*j;
+        pose.thighL = -8*j; pose.thighR = 8*j; pose.shinL = 14*j; pose.shinR = -14*j; pose.breath = 1 - 0.03*j;
       }
       if (s.wave){
         pose.uarmR = -150 + Math.sin(T*9)*6; pose.farmR = -25 + Math.sin(T*9)*22; pose.head += -3;
