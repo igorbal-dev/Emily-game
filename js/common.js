@@ -116,6 +116,31 @@
   }
   window.__mic = V;   /* для автопроверки */
 
+  /* ---------- глубина: герои спереди стоят не в одну линию, а немного друг за другом ----------
+     Дальний герой чуть выше на полу и чуть меньше, ближний его перекрывает. Эмили и Тео — ближе всех.
+     Работает там, где уровень ставит героя «спереди» на линию пола; уровни 1 и 2 делают глубину сами. */
+  const LV = +((location.pathname.match(/l(\d+)\.html$/) || [])[1] ?? -1);
+  const FRONT_DEPTH = Object.assign({emily: 0, theo: 0.05, mark: 0.3, isabel: 0.45, paul: 0.6, sommer: 0.35, baker: 0}, window.FRONT_DEPTH || {});
+  if (!window.__noDepth && LV > 2 && typeof window.placeHero === 'function' && typeof L !== 'undefined'){
+    const origPlace = window.placeHero;
+    window.placeHero = function(h){
+      const r = origPlace.apply(this, arguments);
+      try {
+        const w = h.where || {};
+        if (w.kind === 'front' && w.t === undefined && h.box && L.backY && Math.abs(h.box.y + h.box.h - L.floorY) < 1){
+          const d = FRONT_DEPTH[h.name] || 0;
+          if (d > 0){
+            const lift = Math.min((L.floorY - L.backY)*0.35, L.hE*0.16)*d;
+            h.put(h.box.x + h.box.w/2, L.floorY - lift, 1 - 0.1*d);
+          }
+          const z = +h.el.style.zIndex || 50;
+          if (z >= 40 && z <= 60) h.el.style.zIndex = 50 - Math.round(d*8);
+        }
+      } catch(e){}
+      return r;
+    };
+  }
+
   /* ---------- то, что сейчас надо нажать: поверх героев и с широкой зоной касания ---------- */
   { const css = document.createElement('style');
     css.textContent = `

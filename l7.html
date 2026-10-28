@@ -593,7 +593,7 @@ async function onCoinTap(co){
   const r = co.el.getBoundingClientRect(), st = stage.getBoundingClientRect();
   co.el.animate([{transform:'none'}, {transform:`translate(${L.counter.x + L.counter.w*0.15 - (r.left - st.left)}px, ${L.counter.y - (r.top - st.top)}px) scale(.4)`, opacity:0}], {duration:600, fill:'forwards'});
   await play('e_' + coinGot);
-  if (coinGot >= coinWant){ const rr = coinR; coinR = null; rr(); }
+  if (coinGot >= coinWant && coinR){ const rr = coinR; coinR = null; rr(); }
 }
 function hints(isDone, els, hint, ruHint){
   (async () => { let k = 0; while (!isDone()){ await sleep(8000); if (isDone()) break; k++;
@@ -1040,5 +1040,7 @@ layout();
   again.addEventListener('click', () => { marked = false; });
 })();
 </script>
+<script>window.WORLD = {outdoor: false};</script>
+<script src="js/world.js"></script>
 <script src="js/common.js"></script>
 </body></html>
