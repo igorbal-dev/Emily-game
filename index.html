@@ -50,6 +50,7 @@ a.lvl.done .star{display:block}
 .hair.off{cursor:default}.hair.off img{filter:grayscale(1) opacity(.3)}
 .hair .lock{position:absolute;inset:auto 0 6px 0;text-align:center;font:800 13px/1 var(--body);color:var(--muted)}
 .note{color:var(--muted);font-size:14px;font-weight:700;max-width:65ch}
+#minis .pic{position:relative;overflow:hidden}#minis .pic img{position:absolute;height:92%;max-height:none;max-width:none;bottom:4%;left:50%;transform:translateX(-50%)}
 footer{color:#2f5a1e;font-size:14px;font-weight:700;max-width:65ch}
 </style>
 
@@ -59,6 +60,8 @@ footer{color:#2f5a1e;font-size:14px;font-weight:700;max-width:65ch}
     <div><h1>Spiel mit Emily!</h1><p>Немецкий, счёт и общение: выбирай уровень</p></div>
   </header>
   <div class="map" id="map"></div>
+  <h2>Mini-Spiele</h2>
+  <div class="map" id="minis"></div>
   <section class="album" aria-label="Альбом">
     <h2>Mein Album</h2>
     <div class="row" id="stickers"></div>
@@ -86,6 +89,15 @@ LEVELS.forEach((l, i) => {
 FRIENDS.forEach(f => {
   const d = document.createElement('div'); d.className = 'friend' + (met[f.id] ? '' : ' off');
   d.innerHTML = `<span class="f"><img src="${f.img}" alt=""></span><span></span>`; d.lastChild.textContent = f.name; fr.appendChild(d);
+});
+/* мини-игры: открываются за косточки; пока идут тесты — все открыты и бесплатны */
+const MINIS = [{href:'m1.html', de:'Fahrradrennen', ru:'Гонки на велосипедах: объезжай лужи, собирай косточки, зови Тео', pic:'<img src="assets/img/e3cc9c3ba853.webp" alt="">'}];
+const mini = prog.mini || {};
+MINIS.forEach((g, i) => {
+  const a = document.createElement('a'); a.className = 'lvl' + (mini.race ? ' done' : ''); a.href = g.href;
+  a.innerHTML = `<span class="num">${i + 1}</span><span class="star">${STAR}</span><span class="pic">${g.pic}</span><span class="de"></span><span class="ru"></span><span class="tags"><i class="s">тест: бесплатно</i></span>`;
+  a.querySelector('.de').textContent = g.de; a.querySelector('.ru').textContent = g.ru;
+  document.getElementById('minis').appendChild(a);
 });
 document.getElementById('bonepic').innerHTML = BONE;
 document.getElementById('bonecount').textContent = bones;
