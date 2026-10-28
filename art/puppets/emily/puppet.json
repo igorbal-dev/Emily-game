@@ -1,0 +1,321 @@
+{
+ "name": "emily",
+ "parts": {
+  "head": {
+   "src": "head.png",
+   "size": [
+    416,
+    319
+   ],
+   "z": 80,
+   "parent": "torso",
+   "at": "neck",
+   "rot": 0,
+   "joints": {
+    "pivot": [
+     207.5,
+     296.0
+    ]
+   }
+  },
+  "tailL": {
+   "src": "tailL.png",
+   "size": [
+    139,
+    217
+   ],
+   "z": 20,
+   "parent": "head",
+   "at": [
+    94.5,
+    112.0
+   ],
+   "rot": 16,
+   "joints": {
+    "pivot": [
+     69.0,
+     38.0
+    ]
+   }
+  },
+  "tailR": {
+   "src": "tailR.png",
+   "size": [
+    145,
+    217
+   ],
+   "z": 20,
+   "parent": "head",
+   "at": [
+    320.5,
+    112.0
+   ],
+   "rot": -16,
+   "joints": {
+    "pivot": [
+     72.0,
+     38.0
+    ]
+   }
+  },
+  "torso": {
+   "src": "torso.png",
+   "size": [
+    223,
+    243
+   ],
+   "z": 50,
+   "parent": null,
+   "at": null,
+   "rot": 0,
+   "joints": {
+    "pivot": [
+     111.0,
+     130.0
+    ],
+    "neck": [
+     111.0,
+     6.0
+    ],
+    "shoulderL": [
+     36.0,
+     46.0
+    ],
+    "shoulderR": [
+     186.0,
+     46.0
+    ],
+    "hipL": [
+     74.0,
+     206.0
+    ],
+    "hipR": [
+     148.0,
+     206.0
+    ]
+   }
+  },
+  "uarmL": {
+   "src": "uarmL.png",
+   "size": [
+    87,
+    153
+   ],
+   "z": 40,
+   "parent": "torso",
+   "at": "shoulderL",
+   "rot": -2,
+   "joints": {
+    "pivot": [
+     43.0,
+     31.0
+    ],
+    "elbow": [
+     43.0,
+     121.0
+    ]
+   }
+  },
+  "uarmR": {
+   "src": "uarmR.png",
+   "size": [
+    85,
+    153
+   ],
+   "z": 40,
+   "parent": "torso",
+   "at": "shoulderR",
+   "rot": 2,
+   "joints": {
+    "pivot": [
+     42.0,
+     31.0
+    ],
+    "elbow": [
+     42.0,
+     121.0
+    ]
+   }
+  },
+  "farmL": {
+   "src": "farmL.png",
+   "size": [
+    79,
+    171
+   ],
+   "z": 35,
+   "parent": "uarmL",
+   "at": "elbow",
+   "rot": 6,
+   "joints": {
+    "pivot": [
+     39.0,
+     26.0
+    ]
+   }
+  },
+  "farmR": {
+   "src": "farmR.png",
+   "size": [
+    74,
+    171
+   ],
+   "z": 35,
+   "parent": "uarmR",
+   "at": "elbow",
+   "rot": -6,
+   "joints": {
+    "pivot": [
+     36.5,
+     26.0
+    ]
+   }
+  },
+  "thighL": {
+   "src": "thighL.png",
+   "size": [
+    84,
+    193
+   ],
+   "z": 30,
+   "parent": "torso",
+   "at": "hipL",
+   "rot": 0,
+   "joints": {
+    "pivot": [
+     41.5,
+     40.0
+    ],
+    "knee": [
+     41.5,
+     152.0
+    ]
+   }
+  },
+  "thighR": {
+   "src": "thighR.png",
+   "size": [
+    86,
+    193
+   ],
+   "z": 30,
+   "parent": "torso",
+   "at": "hipR",
+   "rot": 0,
+   "joints": {
+    "pivot": [
+     42.5,
+     40.0
+    ],
+    "knee": [
+     42.5,
+     152.0
+    ]
+   }
+  },
+  "shinL": {
+   "src": "shinL.png",
+   "size": [
+    77,
+    231
+   ],
+   "z": 25,
+   "parent": "thighL",
+   "at": "knee",
+   "rot": 0,
+   "joints": {
+    "pivot": [
+     48.0,
+     34.0
+    ]
+   }
+  },
+  "shinR": {
+   "src": "shinR.png",
+   "size": [
+    78,
+    231
+   ],
+   "z": 25,
+   "parent": "thighR",
+   "at": "knee",
+   "rot": 0,
+   "joints": {
+    "pivot": [
+     28.5,
+     34.0
+    ]
+   }
+  }
+ },
+ "face": {
+  "eyes_open": {
+   "src": "eyes_open.png",
+   "size": [
+    361,
+    271
+   ]
+  },
+  "eyes_half": {
+   "src": "eyes_half.png",
+   "size": [
+    360,
+    267
+   ]
+  },
+  "eyes_closed": {
+   "src": "eyes_closed.png",
+   "size": [
+    360,
+    268
+   ]
+  },
+  "eyes_happy": {
+   "src": "eyes_happy.png",
+   "size": [
+    359,
+    263
+   ]
+  },
+  "mouth_smile": {
+   "src": "mouth_smile.png",
+   "size": [
+    315,
+    175
+   ]
+  },
+  "mouth_talk": {
+   "src": "mouth_talk.png",
+   "size": [
+    307,
+    177
+   ]
+  },
+  "mouth_laugh": {
+   "src": "mouth_laugh.png",
+   "size": [
+    314,
+    182
+   ]
+  },
+  "mouth_o": {
+   "src": "mouth_o.png",
+   "size": [
+    298,
+    186
+   ]
+  }
+ },
+ "faceAnchor": {
+  "eyes": [
+   0.5,
+   0.53,
+   0.42
+  ],
+  "mouth": [
+   0.5,
+   0.74,
+   0.26
+  ]
+ }
+}
