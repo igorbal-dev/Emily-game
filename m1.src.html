@@ -198,7 +198,7 @@ function resetRace(){
   S = {phase:'intro', t:0, v:0, slowUntil:0, hits:0, bones:0, bonesSpawned:0, items:[], drops:[], nextRow:0.9,
        place:0, order:null, theoAway:0, theoEvents:[15, 36], said:{}, last:{paul:0, isabel:0, hoppla:-9}, finishT:0};
   R.emily.lane = 1; R.isabel.lane = 0; R.paul.lane = 2;
-  for (const r of [R.emily, R.isabel, R.paul]){ r.d = 0; r.x = laneX(r.lane); r.off = 0; r.place = 0; }
+  for (const r of [R.emily, R.isabel, R.paul]){ r.d = 0; r.x = laneX(r.lane); r.off = 0; r.place = 0; r.fin = 0; r.placeN = 0; r.showPlace = false; r.jump = false; }
   R.emily.pose = 'stand'; R.mark.d = -0.1; R.mark.pose = 'wave'; R.theo.d = 0.02; R.theo.mode = 'sit'; R.theo.pose = 'look';
   $('#purseNum').textContent = '0';
 }
@@ -216,7 +216,7 @@ function spawnRow(atD){
 
 /* ---------- управление: нажатие слева или справа ---------- */
 function steer(dir){
-  if (S.phase !== 'race' && S.phase !== 'finish') return;
+  if (S.phase !== 'race' || R.emily.fin) return;
   const e = R.emily, to = clamp(e.lane + dir, 0, 2); if (to === e.lane) return;
   /* в той полосе рядом соперник — толкаемся, без аварии: чуть медленнее, остаёмся в своей полосе */
   const block = RIVALS.find(r => r.lane === to && Math.abs(r.d - e.d) < 0.07);
@@ -358,6 +358,15 @@ function drawRider(r){
   const flip = r === R.theo && r.flip;
   drawImg(r.name + '_' + r.pose, r.x, y + r.bob, h*(PIC[r.name + '_' + r.pose] ? PIC[r.name + '_' + r.pose].h/440 : 1), flip);
 }
+/* кружок с местом над головой: 1 — золото, 2 — серебро, 3 — бронза */
+function drawPlace(r){
+  if (!r.showPlace) return;
+  const rad = L.laneW*0.2, y = scrY(r.d) + rad*1.6, col = ['#ffd84d', '#d8dde3', '#e0a46a'][r.placeN - 1];
+  g.fillStyle = col; g.strokeStyle = '#fff'; g.lineWidth = Math.max(3, rad*0.18);
+  g.beginPath(); g.arc(r.x, y, rad, 0, 7); g.fill(); g.stroke();
+  g.fillStyle = '#7a4a22'; g.font = `800 ${Math.round(rad*1.25)}px "Trebuchet MS",system-ui,sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(String(r.placeN), r.x, y + rad*0.06);
+}
 function drawDrops(){
   for (const p of S.drops){ g.fillStyle = `rgba(110,180,240,${clamp(p.life*1.6, 0, 0.9)})`; g.beginPath(); g.arc(p.x, p.y, p.r, 0, 7); g.fill(); }
 }
@@ -368,6 +377,7 @@ function draw(){
   for (const it of S.items) if (it.type === 'bone') drawItem(it);
   const all = Object.values(R).filter(r => r.x).sort((a, b) => scrY(a.d) - scrY(b.d));
   for (const r of all) drawRider(r);
+  for (const r of [R.emily, R.isabel, R.paul]) drawPlace(r);
   drawDrops();
 }
 
@@ -384,13 +394,21 @@ function step(dt){
   const e = R.emily, racing = S.phase === 'race' || S.phase === 'finish';
   /* скорость */
   let target = 0;
-  if (S.phase === 'race') target = speedAt(S.t - S.raceT0)*(S.t < S.slowUntil ? 0.62 : 1);
-  if (S.phase === 'finish') target = Math.max(0, S.v - dt*0.12);
+  if (S.phase === 'race' && !e.fin){
+    target = speedAt(S.t - S.raceT0)*(S.t < S.slowUntil ? 0.62 : 1);
+    /* перед финишем тормозим так, чтобы остановиться колесом ровно на линии */
+    if (e.d > RACE_D - 0.4) target = Math.min(target, Math.max(0.04, 1.3*(RACE_D - e.d)));
+  }
   S.v += (target - S.v)*Math.min(1, dt*3);
-  e.d += S.v*dt;
+  e.d = Math.min(RACE_D, e.d + S.v*dt);
+  if (S.phase === 'race' && !e.fin && e.d >= RACE_D - 0.001){
+    e.fin = S.t; S.v = 0; e.pose = 'cheer'; sfx.fanfare(); hint(false); play('a_ziel');
+    /* каждый встаёт на финише в свою полосу */
+    const free = [0, 1, 2].filter(l => l !== e.lane); RIVALS.forEach((r, i) => r.lane = free[i]);
+  }
   /* Эмили едет к своей полосе, крутит педали, наклоняется при перестроении */
   e.x += (laneX(e.lane) - e.x)*Math.min(1, dt*9);
-  if (racing && S.v > 0.02){
+  if (racing && !e.fin && S.v > 0.02){
     const ped = Math.floor(S.t*6) % 2;
     e.pose = S.t < (e.splashUntil || 0) ? 'splash' : S.t < (e.leanUntil || 0) ? (e.leanDir < 0 ? 'leanL' : 'leanR') : S.v > 0.27 ? (ped ? 'fast' : 'ride2') : (ped ? 'ride1' : 'ride2');
     e.bob = Math.sin(S.t*12)*L.riderH*0.01;
@@ -405,11 +423,14 @@ function step(dt){
       off = place === 1 ? [-0.16, -0.28][i] : place === 2 ? [0.16, -0.18][i] : [0.14, 0.28][i];
     }
     r.off = off;
-    if (S.phase === 'done'){   /* после финиша встают в ряд, каждый в своей полосе */
-      r.d += (e.d + 0.02*i - r.d)*Math.min(1, dt*2.5);
-      const tx = laneX(r.lane); r.x += (tx - r.x)*Math.min(1, dt*4); r.bob = 0; return;
+    if (e.fin || S.phase === 'done'){   /* Эмили уже на финише: кто сзади — доезжает до линии и останавливается */
+      if (r.d < RACE_D) r.d = Math.min(RACE_D, r.d + dt*0.24);
+      if (!r.fin && r.d >= RACE_D - 0.001) r.fin = S.t;
+      const tx = laneX(r.lane); r.lean = clamp((tx - r.x)/L.laneW, -1, 1); r.x += (tx - r.x)*Math.min(1, dt*4);
+      r.bob = r.fin ? 0 : Math.sin(S.t*12 + i)*L.riderH*0.01; if (r.fin) r.jump = true; return;
     }
-    r.d += (S.v + 2.2*(e.d + off - r.d))*dt*(racing || S.phase === 'done' ? 1 : 0);
+    r.d = Math.min(RACE_D, r.d + (S.v + 2.2*(e.d + off - r.d))*dt*(racing ? 1 : 0));
+    if (!r.fin && r.d >= RACE_D - 0.001) r.fin = S.t;   /* кто впереди, тот раньше пересёк линию и ждёт на ней */
     /* объезжают лужи, конусы и косточки (косточки — для Эмили) */
     const danger = lane => S.items.some(it => !it.gone && it.lane === lane && it.d - r.d > -0.05 && it.d - r.d < 0.4);
     const busy = lane => [e, ...RIVALS].some(o => o !== r && o.lane === lane && Math.abs(o.d - r.d) < 0.16);
@@ -426,8 +447,8 @@ function step(dt){
   /* Марк на беговеле позади, по краю дороги слева */
   const m = R.mark;
   m.x = L.cx - L.roadW/2 + L.laneW*0.12;   /* Марк едет у левого края, сзади (выше, за краем экрана); подъезжает, когда зовёт «Wartet auf mich!» */
-  if (S.phase === 'done'){ m.d += (e.d + 0.2 - m.d)*Math.min(1, dt*1.5); m.bob = 0; }
-  if (racing){ m.d += (S.v*0.92 + 1.5*(e.d + (S.t < (S.markNear || 0) ? -0.06 : -0.3) - m.d))*dt; m.pose = Math.floor(S.t*3) % 4 === 3 ? 'glide' : (Math.floor(S.t*4) % 2 ? 'push1' : 'push2'); m.bob = Math.sin(S.t*8)*L.riderH*0.008; }
+  if (e.fin || S.phase === 'done'){ m.d += (RACE_D + 0.24 - m.d)*Math.min(1, dt*0.8); m.pose = 'laugh'; m.bob = 0; }
+  else if (racing){ m.d += (S.v*0.92 + 1.5*(e.d + (S.t < (S.markNear || 0) ? -0.06 : -0.3) - m.d))*dt; m.pose = Math.floor(S.t*3) % 4 === 3 ? 'glide' : (Math.floor(S.t*4) % 2 ? 'push1' : 'push2'); m.bob = Math.sin(S.t*8)*L.riderH*0.008; }
   /* Тео: справа по траве; отвлёкся — убегает к краю и отстаёт */
   const th = R.theo, nearX = L.cx + L.roadW/2 + (W - L.roadW)*0.12, farX = L.cx + L.roadW/2 + (W - L.roadW)/4;
   if (th.mode === 'sit'){ th.x = nearX; th.d = e.d + 0.03; th.pose = 'look'; }
@@ -448,7 +469,7 @@ function step(dt){
     if (!S.said.mark && S.t - S.raceT0 > 25 && !speaking){ S.said.mark = true; S.markNear = S.t + 5; play('k_warte'); }
   }
   /* наезды Эмили */
-  if (racing) for (const it of S.items){
+  if (racing && !e.fin) for (const it of S.items){
     if (it.gone || it.hit || Math.abs(it.d - e.d) > 0.035 || Math.abs(laneX(it.lane) - e.x) > L.laneW*0.45) continue;
     it.hit = true;
     if (it.type === 'bone'){ it.gone = true; S.bones++; sfx.ding(); const pn = $('#purseNum'); pn.textContent = S.bones; const pu = $('#purse'); pu.classList.remove('pop'); void pu.offsetWidth; pu.classList.add('pop');
@@ -464,7 +485,7 @@ function step(dt){
   for (const p of S.drops){ p.x += p.vx*dt; p.y += p.vy*dt; p.vy += L.riderH*9*dt; p.life -= dt; }
   S.drops = S.drops.filter(p => p.life > 0);
   /* финиш */
-  if (S.phase === 'race' && e.d >= RACE_D){ S.phase = 'finish'; S.finishT = S.t; onFinish(); }
+  if (S.phase === 'race' && e.fin && RIVALS.every(r => r.fin) && S.t - e.fin > 1.5){ S.phase = 'finish'; S.finishT = S.t; onFinish(); }
 }
 function splashAt(x, y){ for (let i = 0; i < 16; i++) S.drops.push({x, y: y - L.riderH*0.05, vx: (Math.random()*2 - 1)*L.laneW*1.4, vy: -L.riderH*(1.6 + Math.random()*1.6), r: L.riderH*(0.02 + Math.random()*0.03), life: 0.7}); }
 
@@ -490,19 +511,15 @@ async function race(){
   setTimeout(() => hint(false), 3000);
 }
 async function onFinish(){
-  hint(false); sfx.fanfare();
   const e = R.emily;
-  /* порядок на финише: кто дальше по дороге в момент, когда Эмили пересекла линию */
-  const order = [e, R.isabel, R.paul].sort((a, b) => b.d - a.d);
-  S.order = order; e.placeN = order.indexOf(e) + 1;
-  await play('a_ziel');
-  await sleep(1400);
+  /* места — по тому, кто раньше пересёк финишную линию; все уже стоят на линии */
+  const order = [e, R.isabel, R.paul].sort((a, b) => a.fin - b.fin);
+  S.order = order; order.forEach((r, i) => r.placeN = i + 1);
   S.phase = 'done'; S.v = 0;
-  { const free = [0, 1, 2].filter(l => l !== e.lane); RIVALS.forEach((r, i) => r.lane = free[i]); }
-  e.pose = 'cheer'; for (const r of RIVALS) r.jump = true;
-  R.mark.pose = 'laugh'; R.theo.mode = 'back'; R.theo.backT = S.t;
+  R.theo.mode = 'back'; R.theo.backT = S.t;
   play('k_laugh');
-  for (let i = 0; i < 3; i++) await play(`a_${order[i].name}_${i + 1}`);
+  /* «Erste! Zweite! Dritte!»: над каждым загорается его место */
+  for (let i = 0; i < 3; i++){ order[i].showPlace = true; sfx.pop(); await play(`a_${order[i].name}_${i + 1}`); }
   /* настоящая Эмили говорит своё место */
   await repeatAfter(['e_erste', 'e_zweite', 'e_dritte'][e.placeN - 1]);
   /* косточки: летят в общий кошелёк, Эмили считает */
