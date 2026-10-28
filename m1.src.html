@@ -27,7 +27,7 @@ body{font-family:"Trebuchet MS",system-ui,sans-serif;-webkit-user-select:none;us
 #sideL{left:0}#sideR{right:0}#sideR svg{animation-name:nudgeR}
 @keyframes nudge{50%{transform:translateX(-14px)}}@keyframes nudgeR{50%{transform:translateX(14px)}}
 /* счёт */
-#count{position:absolute;left:50%;top:18%;transform:translateX(-50%);z-index:75;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
+#count{position:absolute;left:50%;top:46%;transform:translateX(-50%);z-index:75;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
 #num{font:800 clamp(80px,26vh,200px)/1 "Trebuchet MS",system-ui,sans-serif;color:#fff;text-shadow:0 7px 0 #d65a3b,0 0 30px rgba(255,216,77,.9)}
 #num.pop{animation:numpop .45s cubic-bezier(.3,1.6,.5,1)}
 @keyframes numpop{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
@@ -169,14 +169,14 @@ let L = {};
 function layout(){
   W = stage.clientWidth; H = stage.clientHeight; DPR = Math.min(2, window.devicePixelRatio || 1);
   cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR); cv.style.width = W + 'px'; cv.style.height = H + 'px';
-  /* вертикальный экран: дорога почти во всю ширину, дети внизу, трасса уходит вверх */
+  /* вертикальный экран: дорога почти во всю ширину, дети вверху и едут на нас, трасса впереди — ниже них */
   const roadW = Math.min(W*0.8, H*0.62), laneW = roadW/3;
-  L = {cx: W/2, roadW, laneW, baseY: H*0.86, riderH: Math.min(H*0.2, laneW*1.55)};
+  L = {cx: W/2, roadW, laneW, baseY: H*0.31, riderH: Math.min(H*0.2, laneW*1.55)};
   $('#rotate').hidden = !(W > H && H < 600);   /* телефон боком — просим повернуть вертикально */
 }
 const laneX = i => L.cx + (i - 1)*L.laneW;
-/* расстояние по дороге меряется в высотах экрана: d больше — дальше по дороге, выше на экране */
-const scrY = d => L.baseY - (d - R.emily.d)*H;
+/* расстояние по дороге меряется в высотах экрана: d больше — дальше по дороге, ниже на экране */
+const scrY = d => L.baseY + (d - R.emily.d)*H;
 
 /* ---------- гонщики ---------- */
 const R = {
@@ -268,7 +268,7 @@ function drawWorld(){
   /* полоски травы движутся вместе с дорогой */
   const stripe = 0.25;
   for (let k = Math.floor((e.d - 0.3)/stripe); k*stripe < e.d + 1.1; k++){
-    if (k % 2) continue; const y1 = scrY((k + 1)*stripe), y2 = scrY(k*stripe);
+    if (k % 2) continue; const y1 = scrY(k*stripe), y2 = scrY((k + 1)*stripe);
     g.fillStyle = '#86c962'; g.fillRect(0, y1, W, y2 - y1);
   }
   /* дорога и бордюры */
@@ -279,7 +279,7 @@ function drawWorld(){
   g.fillStyle = '#ffffff';
   const dash = 0.16;
   for (let k = Math.floor((e.d - 0.3)/dash); k*dash < e.d + 1.1; k++){
-    if (k % 2) continue; const y = scrY((k + 1)*dash);
+    if (k % 2) continue; const y = scrY(k*dash);
     for (const lx of [left + L.laneW, left + 2*L.laneW]) rr(lx - 3, y, 6, dash*H*0.9, 3), g.fill();
   }
   /* старт и финиш: клетчатая полоса */
@@ -425,9 +425,9 @@ function step(dt){
   });
   /* Марк на беговеле позади, по краю дороги слева */
   const m = R.mark;
-  m.x = L.cx - L.roadW/2 + L.laneW*0.12;   /* Марк едет у левого края, сзади; подъезжает, когда зовёт «Wartet auf mich!» */
+  m.x = L.cx - L.roadW/2 + L.laneW*0.12;   /* Марк едет у левого края, сзади (выше, за краем экрана); подъезжает, когда зовёт «Wartet auf mich!» */
   if (S.phase === 'done'){ m.d += (e.d + 0.2 - m.d)*Math.min(1, dt*1.5); m.bob = 0; }
-  if (racing){ m.d += (S.v*0.92 + 1.5*(e.d + (S.t < (S.markNear || 0) ? -0.1 : -0.3) - m.d))*dt; m.pose = Math.floor(S.t*3) % 4 === 3 ? 'glide' : (Math.floor(S.t*4) % 2 ? 'push1' : 'push2'); m.bob = Math.sin(S.t*8)*L.riderH*0.008; }
+  if (racing){ m.d += (S.v*0.92 + 1.5*(e.d + (S.t < (S.markNear || 0) ? -0.06 : -0.3) - m.d))*dt; m.pose = Math.floor(S.t*3) % 4 === 3 ? 'glide' : (Math.floor(S.t*4) % 2 ? 'push1' : 'push2'); m.bob = Math.sin(S.t*8)*L.riderH*0.008; }
   /* Тео: справа по траве; отвлёкся — убегает к краю и отстаёт */
   const th = R.theo, nearX = L.cx + L.roadW/2 + (W - L.roadW)*0.12, farX = L.cx + L.roadW/2 + (W - L.roadW)/4;
   if (th.mode === 'sit'){ th.x = nearX; th.d = e.d + 0.03; th.pose = 'look'; }
