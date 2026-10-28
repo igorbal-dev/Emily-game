@@ -74,7 +74,7 @@ async function dragTry(page){
     await page.goto(BASE + 'l' + lv + '.html');
     await page.waitForTimeout(500);
     await page.click('#go', {force:true});
-    const t0 = Date.now(); let ok = false, taps = 0;
+    const t0 = Date.now(); let ok = false, taps = 0, lastSnap = 0, snapN = 0;
     while (Date.now() - t0 < LIMIT){
       await page.waitForTimeout(250);
       let done;
@@ -82,6 +82,7 @@ async function dragTry(page){
       catch(e){ errs.push('ЗАВИСЛА: ' + e.message + ' через ' + Math.round((Date.now()-t0)/1000) + ' с'); break; }
       if (done){ ok = true; break; }
       let t = null; try { t = await tapper(page); } catch(e){ errs.push('ЗАВИСЛА при поиске кнопок'); break; }
+      if (process.env.SNAPS && Date.now() - lastSnap > +(process.env.SNAP_MS || 2000)){ lastSnap = Date.now(); await page.screenshot({path: `${process.env.SNAPS}/l${lv}_${String(snapN++).padStart(3,'0')}.png`, timeout: 5000}).catch(() => {}); }
       if (process.env.STATE && taps % 25 === 0){ try { console.log(Math.round((Date.now()-t0)/1000) + 's', JSON.stringify(await withTimeout(page.evaluate(process.env.STATE), 3000)), t && t.tag); } catch(e){ console.log("state err", e.message); } }
       if (t){ taps++; if (taps % 7 === 0) await dragTry(page); else await page.mouse.click(t.x, t.y); }
     }

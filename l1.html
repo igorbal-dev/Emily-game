@@ -199,15 +199,19 @@ const heroes = {
   theo:  new Hero('theo',  ['idle','blink','bark','happy','curious','lie','sniff'], 0.56)
 };
 const FRONT_X = {mark:0.095, emily:0.21, theo:0.9};
+/* насколько герой стоит глубже переднего края (0 — у самого края) */
+const FRONT_D = {mark:0.0, emily:0.16, theo:0.3};
 
 /* ---------- Укрытия ---------- */
 /* Шкаф: внутри темно, двери открываются. Диван и коробка: прячутся сзади, выглядывает макушка.
    Стол: длинная скатерть, выглядывают сбоку. */
+/* d — глубина: 0 у стены, 1 у самого края сцены. Ближние укрытия крупнее и стоят ниже на экране, дальние меньше и выше.
+   Порядок важен: ближние создаются позже и рисуются поверх дальних. */
 const SPOT_DEF = {
-  schrank: {x:0.33, w:0.60, h:1.05, peek:'door', clip:0.96},
-  sofa:    {x:0.53, w:0.98, h:0.44, peek:'up', clip:0.88},
-  tisch:   {x:0.71, w:0.82, h:0.50, peek:'side', clip:0.84},
-  kiste:   {x:0.855,w:0.58, h:0.40, peek:'up', clip:0.98}
+  schrank: {x:0.27, d:0.00, w:0.60, h:1.05, peek:'door', clip:0.96},
+  sofa:    {x:0.55, d:0.00, w:0.98, h:0.44, peek:'up', clip:0.88},
+  tisch:   {x:0.79, d:0.42, w:0.82, h:0.50, peek:'side', clip:0.84},
+  kiste:   {x:0.41, d:0.62, w:0.58, h:0.40, peek:'up', clip:0.98}
 };
 const DEPTH = 0.8;
 const svgs = {
@@ -243,11 +247,14 @@ function doors(s, amount){ /* 0 закрыт, 1 открыт */
   s.doorL.style.transform = `perspective(400px) rotateY(${-amount*70}deg)`;
   s.doorR.style.transform = `perspective(400px) rotateY(${amount*(amount > .5 ? 70 : 0)}deg)`;
 }
+/* глубина в сцене: d=0 — у задней стены (backY), d=1 — у переднего края (floorY) */
+function depthAt(d){ return {y: L.backY + (L.floorY - L.backY)*d*0.8, sc: DEPTH + (1 - DEPTH)*d*0.8}; }
 function layoutSpots(){
-  const {W, hE, backY} = L, k = hE*DEPTH;
+  const {W, hE} = L;
   for (const s of Object.values(spots)){
-    const w = s.w*k, h = s.h*k;
-    s.box = {x: W*s.x - w/2, y: backY - h, w, h};
+    const at = depthAt(s.d); s.by = at.y; s.sc = at.sc;
+    const k = hE*s.sc, w = s.w*k, h = s.h*k;
+    s.box = {x: W*s.x - w/2, y: s.by - h, w, h};
     for (const el of [s.back, s.front]) Object.assign(el.style, {left:s.box.x+'px', top:s.box.y+'px', width:w+'px', height:h+'px'});
     Object.assign(s.holder.style, {width:L.W+'px', height:(s.box.y + s.box.h*s.clip)+'px'});
     if (s.doorL){
@@ -264,15 +271,17 @@ function placeHero(h){
   const w = h.where;
   if (w.kind === 'front'){
     if (h.el.parentNode !== stage){ stage.appendChild(h.el); }
-    h.el.classList.remove('inspot'); h.el.style.zIndex = 50;
-    h.put(L.W*w.x, L.floorY, 1);
+    h.el.classList.remove('inspot');
+    const fd = w.d ?? FRONT_D[h.name] ?? 0, at = {y: L.floorY - (L.floorY - L.backY)*fd, sc: 1 - (1 - DEPTH)*fd};
+    h.el.style.zIndex = 50 + Math.round((1 - fd)*4);   /* ближние рисуются поверх дальних */
+    h.put(L.W*w.x, at.y, at.sc);
     return;
   }
   const s = spots[w.spot];
   if (w.state === 'out'){
     if (h.el.parentNode !== stage) stage.appendChild(h.el);
     h.el.classList.remove('inspot'); h.el.style.zIndex = 48;
-    h.put(s.box.x + s.box.w/2, L.backY + L.hE*0.06, DEPTH);
+    h.put(s.box.x + s.box.w/2, s.by + L.hE*0.06, s.sc);
     return;
   }
   const sidePeek = s.peek === 'side' && w.state === 'peek';
@@ -281,20 +290,20 @@ function placeHero(h){
   h.el.style.zIndex = sidePeek ? (+s.front.style.zIndex - 1) : 1;
   h.el.classList.add('inspot');
   const pose = HIDE_POSE[h.name];
-  h.put(0, 0, DEPTH);                      /* сначала размер */
+  h.put(0, 0, s.sc);                       /* сначала размер */
   const ph = h.poseH(pose), pw = h.poseW(pose), cx = s.box.x + s.box.w/2;
   const fullH = h.box.h;                    /* высота рамки героя (по позе idle) */
-  let x = cx, base = L.backY;
+  let x = cx, base = s.by;
   if (s.peek === 'up'){
     const hiddenTop = s.box.y + s.box.h*0.22, peekTop = s.box.y - ph*0.28;
     base = (w.state === 'peek' ? peekTop : hiddenTop) + ph;
   } else if (s.peek === 'side'){
-    base = Math.max(L.backY, s.box.y + s.box.h*0.12 + ph);
+    base = Math.max(s.by, s.box.y + s.box.h*0.12 + ph);
     if (w.state === 'peek') x = s.box.x + pw*0.22;
   } else { /* шкаф */
     base = s.box.y + s.box.h*0.92; x = cx;
   }
-  h.put(x, base, DEPTH);
+  h.put(x, base, s.sc);
 }
 function setWhere(h, where){ h.where = where; placeHero(h); }
 
@@ -302,7 +311,7 @@ function setWhere(h, where){ h.where = where; placeHero(h); }
 function rr(g, x, y, w, h, r){ g.beginPath(); g.moveTo(x+r, y); g.arcTo(x+w, y, x+w, y+h, r); g.arcTo(x+w, y+h, x, y+h, r); g.arcTo(x, y+h, x, y, r); g.arcTo(x, y, x+w, y, r); g.closePath(); }
 function blob(g, x, y, r){ g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill(); }
 function drawRoom(){
-  const {W, H, floorY, hE, hz} = L;
+  const {W, H, floorY, hE, hz, backY} = L;
   const c = $('#bg'), dpr = Math.min(2, window.devicePixelRatio || 1);
   c.width = Math.round(W*dpr); c.height = Math.round(H*dpr); c.style.width = W+'px'; c.style.height = H+'px';
   const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -334,6 +343,19 @@ function drawRoom(){
   g.fillStyle = '#fff7ec'; g.fillRect(0, hz - sk, W, sk);
   g.strokeStyle = '#d7ad7e'; g.lineWidth = lw;
   g.beginPath(); g.moveTo(0, hz - sk); g.lineTo(W, hz - sk); g.moveTo(0, hz); g.lineTo(W, hz); g.stroke();
+  /* мягкие тени под мебелью: видно, что она стоит на полу на разной глубине */
+  for (const s of Object.values(spots)){
+    const b = s.box, sh = g.createRadialGradient(b.x + b.w/2, s.by, 0, b.x + b.w/2, s.by, b.w*0.62);
+    sh.addColorStop(0, 'rgba(90,45,10,.30)'); sh.addColorStop(1, 'rgba(90,45,10,0)');
+    g.save(); g.translate(0, s.by); g.scale(1, 0.16); g.translate(0, -s.by);
+    g.fillStyle = sh; g.beginPath(); g.arc(b.x + b.w/2, s.by, b.w*0.62, 0, Math.PI*2); g.fill(); g.restore();
+  }
+  /* игрушки на полу на средней глубине */
+  { const at = {y: backY + (floorY - backY)*0.3}, u = hE*0.07*(DEPTH + 0.06);
+    g.fillStyle = '#ff6b5e'; g.strokeStyle = '#d24c42'; g.lineWidth = lw*0.8; g.beginPath(); g.arc(W*0.64, at.y - u, u, 0, Math.PI*2); g.fill(); g.stroke();
+    g.strokeStyle = '#fff'; g.beginPath(); g.arc(W*0.64, at.y - u, u*0.6, -0.6, 1.2); g.stroke();
+    g.fillStyle = '#ffcf4a'; g.strokeStyle = '#d9a925'; rr(g, W*0.13, at.y + hE*0.02 - u*1.4, u*1.4, u*1.4, lw); g.fill(); g.stroke();
+    g.fillStyle = '#5aa8f0'; g.strokeStyle = '#3f86c9'; rr(g, W*0.13 + u*1.5, at.y + hE*0.02 - u*1.2, u*1.2, u*1.2, lw); g.fill(); g.stroke(); }
   /* коврик спереди */
   const rcx = W*0.5, rcy = floorY + hE*0.01, rx = W*0.46, ry = Math.max(hE*0.1, 20);
   g.fillStyle = '#8fd3c0'; g.strokeStyle = '#5fae99'; g.lineWidth = lw;
@@ -356,7 +378,7 @@ function drawRoom(){
   g.restore();
   g.fillStyle = '#fffaf2'; g.fillRect(wx + ww/2 - fr*0.45, wy, fr*0.9, wh); g.fillRect(wx, wy + wh/2 - fr*0.45, ww, fr*0.9);
   /* картина над столом */
-  const t = spots.tisch.box, pW = Math.min(t.w*0.5, hE*0.36), pH = pW*0.8, pX = t.x + t.w/2 - pW/2, pY = Math.max(fr*3, t.y - pH - hE*0.2);
+  const t = spots.tisch.box, pW = Math.min(t.w*0.5, hE*0.36), pH = pW*0.8, pX = t.x + t.w/2 - pW/2, pY = Math.max(fr*3, spots.schrank.box.y + hE*0.05);
   g.fillStyle = '#fff'; g.strokeStyle = '#d7ad7e'; g.lineWidth = lw; rr(g, pX, pY, pW, pH, lw); g.fill(); g.stroke();
   g.fillStyle = '#ffd84d'; blob(g, pX + pW*0.78, pY + pH*0.25, pW*0.1);
   g.fillStyle = '#ff8a6b'; g.beginPath(); g.moveTo(pX + pW*0.2, pY + pH*0.55); g.lineTo(pX + pW*0.38, pY + pH*0.32); g.lineTo(pX + pW*0.56, pY + pH*0.55); g.closePath(); g.fill();
@@ -575,42 +597,37 @@ function onSpotTap(s){
 function wobble(s){ s.front.classList.remove('shake'); void s.front.offsetWidth; s.front.classList.add('shake'); sfx.bonk(); }
 function nextSpot(){ return new Promise(r => { spotResolve = r; }); }
 
-/* ---------- Прятки ---------- */
+/* ---------- Прятки ----------
+   Как в жизни: один водит и считает, все остальные в это время разбегаются и прячутся (это видно),
+   каждый в своё место. Водящий ищет всех по очереди, найденный выходит и дальше ходит вместе с ним. */
 const QUESTION = {tisch:'e_q_tisch', schrank:'e_q_schrank', sofa:'e_q_sofa', kiste:'e_q_kiste'};
-let lastSpot = null;
-function randomSpot(){ const ids = Object.keys(spots).filter(id => id !== lastSpot); const id = pick(ids); lastSpot = id; return id; }
-
-/* Эмили ищет: тап по укрытию, подсказки по таймеру */
-async function search(hider, spotId){
+let lastSpots = [];
+/* n разных мест; по возможности не те, что в прошлом раунде */
+function pickSpots(n, exclude = []){
+  const ids = Object.keys(spots).filter(id => !exclude.includes(id));
+  const fresh = ids.filter(id => !lastSpots.includes(id));
+  return (fresh.length >= n ? fresh : ids).sort(() => Math.random() - .5).slice(0, n);
+}
+/* где встать, чтобы заглянуть в укрытие: рядом слева от него (или справа, если слева тесно) */
+function lookX(id){
+  const b = spots[id].box, left = (b.x - L.hE*0.1)/L.W;
+  return left > 0.06 ? left : (b.x + b.w + L.hE*0.1)/L.W;
+}
+/* водящий идёт к месту, найденные идут следом */
+async function moveTeam(seeker, x, team){
+  setWhere(seeker, {kind:'front', x});
+  team.forEach((f, i) => { let fx = x - 0.075*(i + 1); if (fx < 0.03) fx = x + 0.075*(i + 1); setWhere(f, {kind:'front', x:fx}); });
+  await Promise.all([seeker, ...team].map(walked));
+}
+/* прячется у всех на виду: идёт к месту и устраивается там */
+async function runHide(h, spotId){
   const s = spots[spotId];
-  const wo = hider.name === 'mark' ? 'a_wo_mark' : 'a_wo_theo';
-  const find = hider.name === 'mark' ? 'r_find_mark' : 'r_find_theo';
-  spotsActive = true;
-  let found = false, busy = false, lastTap = performance.now(), hintStep = 0;
-  await play(wo);
-  /* подсказки: 5 с — выглядывает, 10 с — «Schau mal hier!» и подсветка, 20 с — русская подсказка */
-  const hints = (async () => {
-    while (!found){
-      await sleep(500);
-      if (found || busy || speaking) continue;
-      const idle = performance.now() - lastTap;
-      if (idle > 5000 && hintStep === 0){ hintStep = 1; await peek(hider, s); }
-      else if (idle > 10000 && hintStep === 1){ hintStep = 2; s.front.classList.add('glow'); await play('a_schau'); }
-      else if (idle > 20000 && hintStep === 2){ hintStep = 3; await play(find); }
-      else if (idle > 30000 && hintStep === 3){ hintStep = 1; lastTap = performance.now() - 5000; await play(wo); }
-    }
-  })();
-  while (true){
-    const t = await nextSpot();
-    busy = true; lastTap = performance.now(); if (hintStep > 1) hintStep = 1;
-    await heroes.emily.talkWhile(play(QUESTION[t.id]), 'hold');
-    if (t === s) break;
-    wobble(t); await play('a_nein_er');
-    busy = false; lastTap = performance.now();
-  }
-  found = true; spotsActive = false; spotResolve = null;
-  s.front.classList.remove('glow');
-  await hints.catch(() => {});
+  h.setBase('idle');
+  if (s.id === 'schrank') doors(s, 1);
+  h.setBase(HIDE_POSE[h.name]);
+  setWhere(h, {kind:'spot', spot:spotId, state:'hidden'});
+  await walked(h);
+  if (s.id === 'schrank' && !Object.values(heroes).some(o => o !== h && o.where.spot === 'schrank' && o.where.state !== 'hidden')) doors(s, 0);
 }
 async function peek(h, s){
   if (s.id === 'schrank'){ doors(s, 0.35); }
@@ -619,14 +636,6 @@ async function peek(h, s){
   else { play('k_kuckuck'); }
   await sleep(1600);
   if (h.where.kind === 'spot' && h.where.state === 'peek'){ setWhere(h, {kind:'spot', spot:s.id, state:'hidden'}); if (s.id === 'schrank') doors(s, 0); }
-}
-async function hideHero(h, spotId){
-  /* Эмили прячется у всех на виду и идёт к укрытию; остальные прячутся тайно, пока Эмили считает */
-  if (h.name === 'emily'){ setWhere(h, {kind:'front', x:h.where.x ?? FRONT_X.emily}); h.setBase(HIDE_POSE[h.name]); setWhere(h, {kind:'spot', spot:spotId, state:'hidden'}); await walked(h); return; }
-  h.el.style.transition = 'opacity .5s'; h.el.style.opacity = 0; await sleep(500);
-  h.setBase(HIDE_POSE[h.name]);
-  setWhere(h, {kind:'spot', spot:spotId, state:'hidden'});
-  h.el.style.opacity = 1;
 }
 async function popOut(h, spotId, pose){
   const s = spots[spotId];
@@ -642,100 +651,144 @@ async function backToFront(h){
 }
 function dark(on){ $('#dark').classList.toggle('on', on); }
 
-/* Раунд: прячется Марк или Тео */
-async function roundHider(hider, n){
+/* Эмили ищет: ребёнок нажимает на укрытие, Эмили идёт туда и спрашивает. Подсказки по таймеру. */
+async function emilySearch(remaining, where, team){
   const emily = heroes.emily;
-  const spotId = randomSpot();
-  /* Эмили закрывает глаза, комната темнеет, герой прячется */
-  emily.setBase('counting'); dark(true);
-  hiding = hideHero(hider, spotId);
+  spotsActive = true;
+  let found = null, busy = false, lastTap = performance.now(), hintStep = 0;
+  const target = () => remaining.filter(h => h !== found)[0];
+  await play(`a_wo_${target().name}`);
+  /* подсказки: 5 с — кто-то выглядывает, 10 с — «Schau mal hier!» и подсветка, 20 с — русская подсказка */
+  const hints = (async () => {
+    while (!found){
+      await sleep(500);
+      if (found || busy || speaking) continue;
+      const idle = performance.now() - lastTap, h = target(), s = spots[where.get(h)];
+      if (idle > 5000 && hintStep === 0){ hintStep = 1; await peek(h, s); }
+      else if (idle > 10000 && hintStep === 1){ hintStep = 2; s.front.classList.add('glow'); await play('a_schau'); }
+      else if (idle > 20000 && hintStep === 2){ hintStep = 3; await play(`r_find_${h.name}`); }
+      else if (idle > 30000 && hintStep === 3){ hintStep = 1; lastTap = performance.now() - 5000; await play(`a_wo_${h.name}`); }
+    }
+  })();
+  while (true){
+    const t = await nextSpot();
+    busy = true; lastTap = performance.now(); if (hintStep > 1) hintStep = 1;
+    Object.values(spots).forEach(s => s.front.classList.remove('glow'));
+    await moveTeam(emily, lookX(t.id), team);
+    await emily.talkWhile(play(QUESTION[t.id]), 'hold');
+    found = remaining.find(h => where.get(h) === t.id) || null;
+    if (found) break;
+    wobble(t); await play('a_nein_er');
+    busy = false; lastTap = performance.now();
+  }
+  spotsActive = false; spotResolve = null;
+  Object.values(spots).forEach(s => s.front.classList.remove('glow'));
+  await hints.catch(() => {});
+  return found;
+}
+
+/* Раунд 1: водит Эмили, Марк и Тео прячутся одновременно */
+async function roundEmilySeeks(n){
+  const {emily, mark, theo} = heroes;
+  const hiders = [mark, theo], ids = pickSpots(2); lastSpots = ids.slice();
+  const where = new Map(hiders.map((h, i) => [h, ids[i]]));
+  /* Эмили закрывает глаза и считает, а Марк и Тео на глазах разбегаются по местам */
+  emily.setBase('counting');
   await play('a_zaehl_mit');
+  const hiding = Promise.all(hiders.map(async (h, i) => { await sleep(300 + i*900); await runHide(h, where.get(h)); }));
   await countTo(n, 'e_', null);
   await hiding;
   emily.setBase('idle');
   await repeatAfter('e_komme', emily);
-  dark(false); await sleep(500);
-  await search(hider, spotId);
-  /* нашли */
-  await popOut(hider, spotId, hider.name === 'mark' ? 'laugh' : 'happy');
-  if (hider.name === 'mark') play('k_laugh'); else play('t_barks');
-  await sleep(500);
-  await play('a_da_er');
-  /* мультяшная Эмили радуется сама, повторять нужно только фразу «… ist unter dem Tisch!» */
-  emily.setBase('jump'); emily.anim('hop'); await play('e_gefunden');
-  await sleep(300); emily.setBase('idle');
-  await repeatAfter(`e_${hider.name}_${spotId}`, emily);
-  await flyBone(hider); await praise();
-  await backToFront(hider);
+  const team = [], remaining = hiders.slice();
+  while (remaining.length){
+    const h = await emilySearch(remaining, where, team), id = where.get(h);
+    remaining.splice(remaining.indexOf(h), 1);
+    await popOut(h, id, h.name === 'mark' ? 'laugh' : 'happy');
+    if (h.name === 'mark') play('k_laugh'); else play('t_barks');
+    await sleep(500);
+    await play('a_da_er');
+    /* мультяшная Эмили радуется сама, повторять нужно только фразу «… ist unter dem Tisch!» */
+    emily.setBase('jump'); emily.anim('hop'); await play('e_gefunden');
+    await sleep(300); emily.setBase('idle');
+    await repeatAfter(`e_${h.name}_${id}`, emily);
+    await flyBone(h); await praise();
+    /* найденный выходит и дальше ходит вместе с Эмили */
+    h.setBase('idle'); team.push(h);
+    await moveTeam(emily, emily.where.x, team);
+  }
+  await Promise.all([emily, ...hiders].map(backToFront));
 }
-let hiding = null;
 
-/* Раунд: прячется Эмили, Марк считает и ищет */
-async function roundEmilyHides(n){
-  const {emily, mark} = heroes;
+/* Раунд 2: водит Марк, прячутся Эмили (сама выбирает место) и Тео */
+async function roundMarkSeeks(n){
+  const {emily, mark, theo} = heroes;
   await repeatAfter('e_verstecke_mich', emily);
   spotsActive = true;
   const choose = (async () => { let k = 0; while (spotsActive){ await sleep(6000); if (!spotsActive) break; k++; if (speaking) continue; await play(k % 3 === 2 ? 'r_choose' : 'a_wo_versteckst'); } })();
   await play('a_wo_versteckst');
   const s = await nextSpot(); spotsActive = false; spotResolve = null;
-  lastSpot = s.id; sfx.pop();
-  await hideHero(emily, s.id);
-  /* Марк закрывает глаза и считает, Эмили повторяет каждое число */
+  sfx.pop();
+  const theoSpot = pickSpots(1, [s.id])[0];
+  lastSpots = [s.id, theoSpot];
+  const where = new Map([[emily, s.id], [theo, theoSpot]]);
+  /* Марк закрывает глаза и считает, Эмили повторяет каждое число; Эмили и Тео прячутся у всех на виду */
   mark.setBase('hide');
   await play('a_zaehl_mit');
+  const hiding = Promise.all([runHide(emily, s.id), (async () => { await sleep(900); await runHide(theo, theoSpot); })()]);
   await countTo(n, 'km_', null);
+  await hiding;
   mark.setBase('idle');
   await mark.talkWhile(play('km_komme'), 'talk');
-  /* Марк ищет: 1–2 неверных места */
-  const wrong = Object.keys(spots).filter(id => id !== s.id).sort(() => Math.random() - .5).slice(0, 1 + Math.floor(Math.random()*2));
-  for (const id of [...wrong, s.id]){
-    await walkTo(mark, spots[id]);
-    if (id !== s.id){ wobble(spots[id]); mark.setBase('surprised'); await play(pick(['k_ohoh','k_wo_bist_du'])); mark.setBase('idle'); await sleep(300); }
+  /* Марк обходит укрытия; иногда ошибается, но не больше двух раз */
+  const team = [], remaining = [emily, theo];
+  let wrongLeft = 1 + Math.floor(Math.random()*2);
+  const empty = Object.keys(spots).filter(id => id !== s.id && id !== theoSpot).sort(() => Math.random() - .5);
+  const visits = [];
+  for (const id of [s.id, theoSpot].sort(() => Math.random() - .5)){
+    while (wrongLeft > 0 && empty.length && Math.random() < 0.7){ visits.push(empty.shift()); wrongLeft--; }
+    visits.push(id);
   }
-  await popOut(emily, s.id, 'jump');
-  mark.setBase('laugh');
-  await mark.talkWhile(play('km_gefunden'), 'laugh');
-  play('k_laugh'); await sleep(600);
-  emily.setBase('idle');
-  await repeatAfter(`e_ich_${s.id}`, emily);
+  for (const id of visits){
+    await moveTeam(mark, lookX(id), team);
+    const h = remaining.find(x => where.get(x) === id);
+    if (!h){ wobble(spots[id]); mark.setBase('surprised'); await play(pick(['k_ohoh','k_wo_bist_du'])); mark.setBase('idle'); await sleep(300); continue; }
+    remaining.splice(remaining.indexOf(h), 1);
+    if (h === emily){
+      await popOut(emily, id, 'jump');
+      mark.setBase('laugh'); await mark.talkWhile(play('km_gefunden'), 'laugh');
+      play('k_laugh'); await sleep(600); mark.setBase('idle');
+      emily.setBase('idle');
+      await repeatAfter(`e_ich_${id}`, emily);
+      await flyBone(emily); await praise();
+    } else {
+      await popOut(theo, id, 'happy'); play('t_barks');
+      mark.setBase('laugh'); await mark.talkWhile(play('km_gefunden'), 'laugh'); mark.setBase('idle');
+      await play('a_da_er');
+    }
+    h.setBase('idle'); team.push(h);
+    await moveTeam(mark, mark.where.x, team);
+  }
   await emily.talkWhile(play('e_du_bist_dran'), 'hold');
-  await flyBone(emily); await praise();
-  await backToFront(emily);
-  await walkTo(mark, null);
-  mark.setBase('idle');
-}
-/* Марк идёт к месту (спереди, под укрытием) */
-async function walkTo(h, s){
-  const fromX = h.where.x, toX = s ? (s.box.x + s.box.w/2)/L.W : FRONT_X[h.name];
-  h.setBase('walk');
-  const steps = 18;
-  for (let i = 1; i <= steps; i++){
-    const x = fromX + (toX - fromX)*i/steps;
-    h.where = {kind:'front', x}; placeHero(h);
-    h.body.style.transform = `translateY(${-Math.abs(Math.sin(i*0.9))*L.hE*0.03}px)`;
-    await sleep(45);
-  }
-  h.body.style.transform = '';
-  h.setBase('idle');
+  await Promise.all([mark, emily, theo].map(backToFront));
+  await choose.catch(() => {});
 }
 
 /* ---------- Ход уровня ---------- */
 let plays = 0;
 async function level(){
   const {emily, mark, theo} = heroes;
-  const counts = plays === 0 ? [3, 5, 10] : [10, 10, 10];
+  const counts = plays === 0 ? [5, 10] : [10, 10];
   /* 1. Эмили зовёт играть */
   emily.setBase('wave'); emily.anim('hop'); await sleep(500); emily.setBase('idle');
   await repeatAfter(plays === 0 ? 'e_wollt_ihr' : 'e_lass_uns', emily);
   mark.anim('hop'); await mark.talkWhile(play('k_ja'), 'talk');
   theo.anim('wiggle'); await theo.talkWhile(play('t_barks'), 'bark');
   await sleep(300);
-  /* 2. Раунд 1: прячется Марк */
-  await roundHider(mark, counts[0]);
-  /* 3. Раунд 2: прячется Тео */
-  await roundHider(theo, counts[1]);
-  /* 4. Раунд 3: прячется Эмили */
-  await roundEmilyHides(counts[2]);
+  /* 2. Раунд 1: водит Эмили, прячутся Марк и Тео */
+  await roundEmilySeeks(counts[0]);
+  /* 3. Раунд 2: водит Марк, прячутся Эмили и Тео */
+  await roundMarkSeeks(counts[1]);
   /* 5. Финал: считаем косточки */
   theo.setBase('curious');
   await play('a_wie_viele'); await sleep(300);

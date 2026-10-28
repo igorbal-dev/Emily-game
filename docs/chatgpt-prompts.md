@@ -428,3 +428,135 @@ Row 2:
 - Части разного размера: «All pieces must be at exactly the same scale as the reference figure. Do not enlarge small parts.»
 - Рисует лицо по-другому: начни заново с референсом в новом сообщении и вставь общее начало ещё раз.
 - Если лист совсем не выходит (например, хвостики или уши), пришли то, что получилось: я дорисую недостающее в коде или обойдусь без этой части.
+
+---
+
+## Вторая очередь (после проверки первых листов)
+
+Что пришло и принято: E1–E9, M1–M4, T1, T3 и бонусный лист Марка (8 голов и запасные части).
+Не хватает: **T2** (морда Тео). Переделать: **E10**.
+
+### Лист 18 — E10.png: новые позы Эмили (переделать)
+
+У обоих присланных вариантов волосы не как у Эмили: гладкие, светлые, хвостики низкие (во втором варианте вообще один хвост). Нужно как на референсе: густые золотисто-русые кудри, два пышных хвостика высоко по бокам головы, розовые резинки.
+
+```
+Grid: 4 columns x 2 rows.
+Character: Emily in her indoor clothes (pink t-shirt with heart, grey leggings, pink socks), full body, each pose complete.
+IMPORTANT about the hair: copy her hair exactly from the reference: thick, messy golden-blond CURLY hair, two big fluffy curly ponytails placed HIGH on both sides of the head, pink hair ties, loose curly strands around the face. Not straight, not smooth, not one ponytail, not low pigtails. Same face, same big brown eyes, same rosy cheeks as the reference.
+Row 1:
+1. Crouching down small to hide, hugging her knees, looking up with a sneaky smile.
+2. Peeking out from behind something: body leaning to the side, only head, one shoulder and one hand would be visible (draw the full figure leaning sideways).
+3. Standing with her back to us, both hands covering her eyes against a wall (counting in hide and seek), back view.
+4. Sitting on the floor cross-legged, hands on her knees.
+Row 2:
+5. Throwing a ball with both hands over her head, side-front view (no ball drawn).
+6. Arms stretched forward to catch a ball, excited face.
+7. Kneeling and digging in sand with both hands forward (no shovel drawn).
+8. Walking away from us, back view, mid-step.
+```
+
+### Лист 19 — T4.png: Тео без шлейки
+
+Шлейка станет отдельным слоем: Тео можно будет показывать со шлейкой (на улице) и без неё (дома).
+
+```
+Grid: 4 columns x 2 rows.
+Character: Theo, small apricot curly maltipoo dog, exactly as in the reference, but WITHOUT the blue harness: only his own fur, with the fur fully drawn where the harness used to be.
+Row 1:
+1. Body only, SIDE view facing to our right, no harness, no head, no legs, no tail, the same shape and size as the body piece from the parts sheet. Rounded fluffy joints where the head, legs and tail attach.
+2. The blue mesh harness ALONE, side view facing right, exactly fitting that body piece (same size and position), as a separate object.
+3. Full body standing, side view facing right, no harness.
+4. Full body sitting, front view (like the sitting reference), no harness.
+Row 2:
+5. The blue mesh harness ALONE, front view, exactly fitting the sitting front pose.
+6. Full body lying down, front-side view, no harness.
+7. Full body happy running, side view, no harness.
+8. Full body sniffing the ground, side view, no harness.
+```
+
+### T2: морда Тео (ещё не прислан)
+
+Промпт тот же, что в листе 16 выше.
+
+---
+
+## Новая одежда (по желанию)
+
+Части должны совпадать с теми, что уже есть, чтобы одежда двигалась вместе с руками и ногами. Для Эмили нужно 9 частей, поэтому сетка 5×2 (последняя клетка пустая).
+
+### Лист 21 — E11.png: Эмили в свитере и джинсах
+
+```
+Grid: 5 columns x 2 rows (the last cell stays empty).
+Character: Emily (same face, hair, body and scale as reference). New clothes in the same style: a cosy knitted mint-green sweater with a small white heart, blue jeans, white sneakers with pink laces.
+Draw clothing pieces that match her rest pose (front view, arms hanging down slightly away from the body), the same shapes and sizes as her body pieces sheet.
+Row 1:
+1. Torso in the knitted sweater, with the top of the jeans at the hips. No head, no arms, no legs. Rounded shoulder areas.
+2. Left upper arm in the sweater sleeve (shoulder to elbow).
+3. Right upper arm in the sweater sleeve.
+4. Left forearm in the sweater sleeve with open relaxed hand.
+5. Right forearm in the sweater sleeve with open relaxed hand.
+Row 2:
+6. Left thigh in jeans.
+7. Right thigh in jeans.
+8. Left lower leg in jeans with a white sneaker.
+9. Right lower leg in jeans with a white sneaker.
+10. (empty)
+```
+
+### Лист 22 — E12.png: Эмили в спортивном костюме (для спортзала)
+
+```
+Grid: 5 columns x 2 rows (the last cell stays empty).
+Character: Emily (same face, hair, body and scale as reference). New clothes in the same style: a lilac zip-up track jacket with white stripes on the sleeves, matching lilac track pants with white stripes, white sports shoes.
+Draw clothing pieces that match her rest pose (front view, arms hanging down slightly away from the body), the same shapes and sizes as her body pieces sheet.
+Row 1:
+1. Torso in the track jacket (zipped up), with the top of the track pants at the hips. No head, no arms, no legs.
+2. Left upper arm in the jacket sleeve.
+3. Right upper arm in the jacket sleeve.
+4. Left forearm in the jacket sleeve with open relaxed hand.
+5. Right forearm in the jacket sleeve with open relaxed hand.
+Row 2:
+6. Left thigh in track pants.
+7. Right thigh in track pants.
+8. Left lower leg in track pants with a white sports shoe.
+9. Right lower leg in track pants with a white sports shoe.
+10. (empty)
+```
+
+### Лист 23 — M6.png: Марк в нарядном костюмчике (для дня рождения)
+
+```
+Grid: 4 columns x 2 rows.
+Character: Mark, the toddler boy (same face, curls and scale as reference). New festive clothes in the same style: a white shirt with a small navy bow tie, a little grey knitted vest, grey trousers, brown shoes.
+Pieces must match his rest pose (front view, arms hanging down slightly away from the body), the same shapes and sizes as his body pieces sheet.
+Row 1:
+1. Torso in the white shirt, bow tie and grey vest, with the top of the trousers. No head, no arms, no legs.
+2. Left whole arm in the white shirt sleeve with open hand.
+3. Right whole arm in the white shirt sleeve with open hand.
+4. Left arm in the shirt sleeve raised up high.
+Row 2:
+5. Left whole leg in grey trousers with a brown shoe.
+6. Right whole leg in grey trousers with a brown shoe.
+7. Right arm in the shirt sleeve stretched forward.
+8. (empty)
+```
+
+### Лист 24 — M7.png: Марк в свитере
+
+```
+Grid: 4 columns x 2 rows.
+Character: Mark, the toddler boy (same face, curls and scale as reference). New clothes in the same style: a chunky knitted mustard-yellow sweater with a little bear on the chest, soft navy joggers, navy socks.
+Pieces must match his rest pose (front view, arms hanging down slightly away from the body), the same shapes and sizes as his body pieces sheet.
+Row 1:
+1. Torso in the knitted sweater, with the top of the joggers. No head, no arms, no legs.
+2. Left whole arm in the sweater sleeve with open hand.
+3. Right whole arm in the sweater sleeve with open hand.
+4. Left arm in the sweater sleeve raised up high.
+Row 2:
+5. Left whole leg in joggers with a navy sock foot.
+6. Right whole leg in joggers with a navy sock foot.
+7. Right arm in the sweater sleeve stretched forward.
+8. (empty)
+```
