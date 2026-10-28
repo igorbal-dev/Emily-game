@@ -4,10 +4,21 @@
    Скачивает каждую запись, обрезает тишину, делает 24 кГц моно mp3 48 кбит/с,
    кладёт в assets/snd/<хеш>.mp3 и дописывает в art/voice_new.json (ключ -> файл).
    Ключ k_* (Марк, 1,5 года) — голос Tilly поднимается на 5 полутонов."""
-import json, sys, subprocess, hashlib, os, tempfile, urllib.request
-st = json.load(open(sys.argv[1])); keys = sys.argv[2].split(',')
-gens = st['generations']
-assert len(gens) == len(keys), (len(gens), len(keys))
+import json, sys, subprocess, hashlib, os, tempfile, urllib.request, re
+if sys.argv[1] == '--map':
+    # python3 tools/voice_import.py --map ключ_сессия.txt статус1.json [статус2.json ...]  — сопоставление по сессии
+    sess = dict(l.split()[::-1] for l in open(sys.argv[2]) if l.strip())
+    pairs = []
+    for fn in sys.argv[3:]:
+        for g in json.load(open(fn))['generations']:
+            sid = re.search(r'content_generation/([^/]+)/', g['content_url']).group(1)
+            if sid in sess: pairs.append((sess[sid], g))
+    keys = [k for k, _ in pairs]; gens = [g for _, g in pairs]
+    print(len(pairs), 'из', len(sess), 'записей найдено')
+else:
+    st = json.load(open(sys.argv[1])); keys = sys.argv[2].split(',')
+    gens = st['generations']
+    assert len(gens) == len(keys), (len(gens), len(keys))
 out_path = 'art/voice_new.json'
 done = json.load(open(out_path)) if os.path.exists(out_path) else {}
 for key, g in zip(keys, gens):

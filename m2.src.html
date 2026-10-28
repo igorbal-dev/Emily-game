@@ -1,0 +1,239 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Theo fängt Knochen! Мини-игра 2</title>
+<link rel="stylesheet" href="js/mini.css">
+<style>
+/* Тео ловит косточки: внизу Тео с миской, Эмили водит пальцем влево-вправо, сверху падают косточки и чужие вещи. */
+.hand{position:absolute;z-index:70;width:min(16vmin,96px);pointer-events:none;bottom:12%;left:50%;animation:swipe 2s ease-in-out infinite}
+.hand svg{width:100%;height:auto;display:block;filter:drop-shadow(0 4px 0 rgba(0,0,0,.15))}
+@keyframes swipe{0%,100%{transform:translateX(-160%)}50%{transform:translateX(60%)}}
+</style></head><body>
+<div id="stage">
+  <canvas id="cv" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div class="hand" id="hand" hidden><svg viewBox="0 0 64 64"><path d="M26 30 V10 a5 5 0 0 1 10 0 V28 l2-1 a5 5 0 0 1 8 3 l1 -0.5 a5 5 0 0 1 7 4 V44 c0 10 -7 16 -16 16 h-4 c-6 0 -10 -3 -13 -8 L13 41 a5 5 0 0 1 8 -6 z" fill="#ffe1c4" stroke="#7a4a22" stroke-width="3" stroke-linejoin="round"/></svg></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+</div>
+<script>
+const IMG = __IMG__;  /*IMG: theo_happy theo_side theo_jump theo_sniff theo_look theo_run1 emily_idle_out emily_jump_out mark_idle_out mark_laugh_out*/
+const SND = __SND__;  /*SND: e_{1..20} a_ding_schuh a_ding_socke a_ding_stein a_ding_dose a_ding_schluessel a_ding_loeffel a_ding_muetze a_ding_buch a_ding_flasche a_ding_auto a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily*/
+</script>
+<script src="js/mini.js"></script>
+<script>
+const cv = $('#cv'), g = cv.getContext('2d');
+let W = 0, H = 0, DPR = 1, L = {};
+function layout(){
+  W = stage.clientWidth; H = stage.clientHeight; DPR = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR); cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  const u = Math.min(H, W*1.5);                     /* масштаб: в вертикальном и горизонтальном виде одинаково удобно */
+  L = {u, ground: H*0.93, theoH: u*0.22, bowlW: u*0.2, horizon: H*0.56, item: u*0.085};
+}
+
+/* ---------- вещи, которые падают ---------- */
+const THINGS = ['schuh', 'socke', 'stein', 'dose', 'schluessel', 'loeffel', 'muetze', 'buch', 'flasche', 'auto'];
+function drawThing(type, x, y, s, rot){
+  g.save(); g.translate(x, y); g.rotate(rot); const k = s/100; g.scale(k, k); g.lineJoin = 'round'; g.lineCap = 'round'; g.lineWidth = 5; g.strokeStyle = '#5a3a22';
+  const P = (fill, f) => { g.fillStyle = fill; g.beginPath(); f(); g.fill(); g.stroke(); };
+  switch (type){
+    case 'bone': g.restore(); return boneAt(g, x, y, s*1.1, rot);
+    case 'schuh': P('#ff5a5a', () => { g.moveTo(-45, 15); g.lineTo(-40, -15); g.quadraticCurveTo(-20, -20, -10, -5); g.lineTo(30, 0); g.quadraticCurveTo(48, 5, 45, 18); g.closePath(); });
+      g.fillStyle = '#fff'; g.fillRect(-46, 12, 92, 8); g.strokeRect(-46, 12, 92, 8); break;
+    case 'socke': P('#7ac8ff', () => { g.moveTo(-15, -45); g.lineTo(15, -45); g.lineTo(15, 10); g.quadraticCurveTo(15, 35, 40, 35); g.quadraticCurveTo(45, 50, 25, 50); g.lineTo(-5, 50); g.quadraticCurveTo(-15, 45, -15, 25); g.closePath(); });
+      g.strokeStyle = '#fff'; g.lineWidth = 7; g.beginPath(); g.moveTo(-13, -30); g.lineTo(13, -30); g.moveTo(-13, -15); g.lineTo(13, -15); g.stroke(); break;
+    case 'stein': P('#9aa0a8', () => { g.moveTo(-40, 20); g.quadraticCurveTo(-48, -10, -20, -28); g.quadraticCurveTo(15, -40, 38, -12); g.quadraticCurveTo(50, 15, 30, 28); g.quadraticCurveTo(0, 38, -40, 20); });
+      g.fillStyle = 'rgba(255,255,255,.5)'; g.beginPath(); g.ellipse(-12, -12, 10, 5, -0.4, 0, 7); g.fill(); break;
+    case 'dose': P('#e94b4b', () => { g.rect(-25, -38, 50, 76); }); g.fillStyle = '#ffd84d'; g.fillRect(-25, -12, 50, 24); g.strokeRect(-25, -12, 50, 24);
+      g.fillStyle = '#ccc'; g.beginPath(); g.ellipse(0, -38, 25, 7, 0, 0, 7); g.fill(); g.stroke(); break;
+    case 'schluessel': P('#f2c230', () => { g.arc(-22, 0, 20, 0, 7); }); g.fillStyle = '#fff'; g.beginPath(); g.arc(-22, 0, 8, 0, 7); g.fill(); g.stroke();
+      P('#f2c230', () => { g.rect(-4, -6, 50, 12); }); P('#f2c230', () => { g.rect(28, 6, 8, 12); g.rect(40, 6, 6, 9); }); break;
+    case 'loeffel': P('#d8dde3', () => { g.ellipse(-25, 0, 22, 15, 0, 0, 7); }); P('#d8dde3', () => { g.rect(-5, -5, 52, 10); }); break;
+    case 'muetze': P('#7d5cd6', () => { g.moveTo(-40, 20); g.quadraticCurveTo(-40, -35, 0, -35); g.quadraticCurveTo(40, -35, 40, 20); g.closePath(); });
+      P('#ffd84d', () => { g.rect(-44, 12, 88, 16); }); P('#fff', () => { g.arc(0, -40, 10, 0, 7); }); break;
+    case 'buch': P('#32b67a', () => { g.rect(-35, -42, 70, 84); }); g.fillStyle = '#fff'; g.fillRect(-20, -25, 40, 10); g.strokeRect(-20, -25, 40, 10);
+      g.fillStyle = '#1f8a5a'; g.fillRect(-35, -42, 10, 84); break;
+    case 'flasche': P('#6fd0c0', () => { g.moveTo(-10, -45); g.lineTo(10, -45); g.lineTo(10, -25); g.quadraticCurveTo(25, -15, 25, 0); g.lineTo(25, 40); g.lineTo(-25, 40); g.lineTo(-25, 0); g.quadraticCurveTo(-25, -15, -10, -25); g.closePath(); });
+      g.fillStyle = '#ff7a59'; g.fillRect(-12, -52, 24, 10); g.strokeRect(-12, -52, 24, 10); break;
+    case 'auto': P('#ff7a2e', () => { g.moveTo(-45, 15); g.lineTo(-45, -5); g.lineTo(-25, -8); g.lineTo(-12, -28); g.lineTo(20, -28); g.lineTo(32, -8); g.lineTo(45, -5); g.lineTo(45, 15); g.closePath(); });
+      g.fillStyle = '#bfe6ff'; g.fillRect(-8, -24, 24, 14); g.strokeRect(-8, -24, 24, 14);
+      for (const wx of [-25, 25]) P('#333', () => { g.arc(wx, 16, 11, 0, 7); }); break;
+  }
+  g.restore();
+}
+
+/* ---------- состояние ---------- */
+const MAX_BONES = 20;
+let S;
+function reset(){
+  S = {phase:'intro', t:0, items:[], caught:0, spawned:0, junk:0, nextSpawn:0, x:W/2, tx:W/2, face:1, jumpUntil:0, sniffUntil:0, shakeT:0, fly:[], told:{}, cheerUntil:0, t0:0};
+}
+/* палец: Тео бежит туда, где палец */
+function aim(e){ if (S && S.phase === 'play') S.tx = e.clientX; }
+stage.addEventListener('pointerdown', e => { if (!e.target.closest('button,a')) aim(e); });
+stage.addEventListener('pointermove', e => { if (e.buttons || e.pointerType === 'touch') aim(e); });
+addEventListener('keydown', e => { if (!S || S.phase !== 'play') return; if (e.key === 'ArrowLeft') S.tx -= W*0.15; if (e.key === 'ArrowRight') S.tx += W*0.15; });
+
+function spawn(){
+  const junkLeft = S.spawned >= MAX_BONES;
+  const isBone = !junkLeft && Math.random() < 0.7;
+  const m = L.item*1.2, x = m + Math.random()*(W - 2*m);
+  const speed = L.u*(0.3 + 0.16*clamp((S.t - S.t0)/50, 0, 1));
+  if (isBone) S.spawned++;
+  S.items.push({type: isBone ? 'bone' : pick(THINGS), x, y: -L.item, vy: speed, rot: Math.random()*6, vr: (Math.random() - 0.5)*3});
+}
+function bowlRect(){ const w = L.bowlW; return {x: S.x - w/2, y: L.ground - w*0.42, w, h: w*0.42}; }
+
+/* ---------- рисование ---------- */
+function drawBg(){
+  const sky = g.createLinearGradient(0, 0, 0, L.horizon); sky.addColorStop(0, '#7cc6ff'); sky.addColorStop(1, '#d6f0ff');
+  g.fillStyle = sky; g.fillRect(0, 0, W, L.horizon);
+  g.fillStyle = '#ffd84d'; g.beginPath(); g.arc(W*0.82, H*0.12, L.u*0.06, 0, 7); g.fill();
+  g.fillStyle = '#fff'; for (const [cx, cy, s] of [[0.2, 0.12, 1], [0.55, 0.2, 0.8]]){ const r = L.u*0.04*s; for (const [ox, oy] of [[0,0],[1.1,-0.4],[2.1,0]]){ g.beginPath(); g.arc(W*cx + ox*r, H*cy + oy*r, r, 0, 7); g.fill(); } }
+  const gr = g.createLinearGradient(0, L.horizon, 0, H); gr.addColorStop(0, '#9fdc6c'); gr.addColorStop(1, '#7cc552');
+  g.fillStyle = gr; g.fillRect(0, L.horizon, W, H - L.horizon);
+  /* забор */
+  const fh = L.u*0.09, fy = L.horizon - fh*0.6, pw = fh*0.32;
+  g.fillStyle = '#fffaf2'; g.strokeStyle = '#d9c8a8'; g.lineWidth = 2;
+  for (let x = -pw; x < W + pw; x += pw*1.6){ g.beginPath(); g.moveTo(x, fy + fh); g.lineTo(x, fy + pw*0.5); g.lineTo(x + pw/2, fy); g.lineTo(x + pw, fy + pw*0.5); g.lineTo(x + pw, fy + fh); g.closePath(); g.fill(); g.stroke(); }
+  g.fillRect(0, fy + fh*0.35, W, fh*0.14); g.fillRect(0, fy + fh*0.7, W, fh*0.14);
+}
+function drawBowl(){
+  const b = bowlRect();
+  /* косточки в миске горкой */
+  const n = Math.min(S.caught, 9);
+  for (let i = 0; i < n; i++){ const row = Math.floor(i/3), col = i % 3; boneAt(g, b.x + b.w*(0.25 + col*0.25), b.y + b.h*0.2 - row*b.h*0.32, b.w*0.34, (col - 1)*0.3); }
+  g.fillStyle = '#3d7be0'; g.beginPath(); g.moveTo(b.x, b.y); g.quadraticCurveTo(b.x + b.w/2, b.y + b.h*0.45, b.x + b.w, b.y); g.lineTo(b.x + b.w*0.88, b.y + b.h); g.quadraticCurveTo(b.x + b.w/2, b.y + b.h*1.15, b.x + b.w*0.12, b.y + b.h); g.closePath(); g.fill();
+  g.fillStyle = '#5b95f0'; g.beginPath(); g.ellipse(b.x + b.w/2, b.y, b.w*0.48, b.h*0.22, 0, 0, 7); g.fill();
+  g.fillStyle = '#fff'; for (const fx of [0.35, 0.5, 0.65]){ g.beginPath(); g.arc(b.x + b.w*fx, b.y + b.h*0.6, b.h*0.09, 0, 7); g.fill(); }
+}
+function draw(){
+  g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  drawBg();
+  /* Эмили и Марк смотрят у забора и радуются */
+  const kh = L.u*0.2, cheer = S.t < S.cheerUntil;
+  drawImg(g, cheer ? 'emily_jump_out' : 'emily_idle_out', W*0.14, L.horizon + kh*0.55, kh);
+  drawImg(g, cheer ? 'mark_laugh_out' : 'mark_idle_out', W*0.86, L.horizon + kh*0.5, kh*0.78);
+  /* Тео: бежит — сбоку, поймал — прыгает, чужая вещь — фыркает */
+  const moving = Math.abs(S.tx - S.x) > L.u*0.02 && S.phase === 'play';
+  let pose = 'theo_happy', th = L.theoH, flip = S.face > 0, bob = 0;
+  if (S.t < S.jumpUntil){ pose = 'theo_jump'; flip = false; bob = -Math.sin((S.jumpUntil - S.t)/0.35*Math.PI)*th*0.12; }
+  else if (S.t < S.sniffUntil){ pose = 'theo_sniff'; flip = S.face > 0; }
+  else if (moving){ pose = 'theo_side'; th *= 0.92; bob = -Math.abs(Math.sin(S.t*14))*th*0.05; }
+  else if (S.phase === 'ask' || S.phase === 'end'){ pose = 'theo_look'; flip = false; }
+  g.save(); if (S.t < S.sniffUntil){ g.translate(S.x, L.ground); g.rotate(Math.sin(S.t*30)*0.06); g.translate(-S.x, -L.ground); }
+  g.fillStyle = 'rgba(40,60,20,.22)'; g.beginPath(); g.ellipse(S.x, L.ground, L.bowlW*0.7, L.bowlW*0.12, 0, 0, 7); g.fill();
+  drawImg(g, pose, S.x + (pose === 'theo_side' ? S.face*th*0.15 : 0), L.ground - L.bowlW*0.1 + bob, th, flip);
+  g.restore();
+  drawBowl();
+  for (const it of S.items) drawThing(it.type, it.x, it.y, L.item, it.rot);
+  for (const f of S.fly) drawThing(f.type, f.x, f.y, L.item*(f.s || 1), f.rot);
+  if (S.phase === 'ask') drawRow();
+}
+/* в конце косточки раскладываются в ряды, чтобы их можно было посчитать */
+function drawRow(){
+  const n = S.caught, per = 10, w = Math.min(W*0.085, L.u*0.09), gap = w*1.12;
+  for (let i = 0; i < n; i++){
+    const row = Math.floor(i/per), col = i % per, inRow = Math.min(per, n - row*per);
+    const x = W/2 - (inRow - 1)*gap/2 + col*gap, y = H*0.2 + row*w*0.9;
+    if (S.hl === i) { g.fillStyle = 'rgba(255,243,107,.8)'; g.beginPath(); g.arc(x, y, w*0.55, 0, 7); g.fill(); }
+    boneAt(g, x, y, w, 0);
+  }
+}
+
+/* ---------- шаг ---------- */
+let lastT = 0;
+function frame(now){
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - (lastT || now))/1000); lastT = now;
+  if (!W) return; step(dt); draw();
+}
+function step(dt){
+  S.t += dt;
+  /* Тео догоняет палец */
+  const maxV = L.u*2.2*dt, dx = clamp(S.tx - S.x, -maxV, maxV);
+  if (Math.abs(dx) > 0.5) S.face = dx > 0 ? 1 : -1;
+  S.x = clamp(S.x + dx, L.bowlW/2, W - L.bowlW/2);
+  if (S.phase === 'play'){
+    if (S.t > S.nextSpawn && (S.spawned < MAX_BONES || S.items.some(i => i.type === 'bone'))){ spawn(); S.nextSpawn = S.t + 1.05 + Math.random()*0.5; }
+    if (S.spawned >= MAX_BONES && !S.items.some(i => i.type === 'bone')) finish();
+  }
+  const b = bowlRect();
+  for (const it of S.items){
+    it.y += it.vy*dt; it.rot += it.vr*dt;
+    if (!it.done && it.y > b.y - L.item*0.3 && it.y < b.y + b.h*0.6 && Math.abs(it.x - (b.x + b.w/2)) < b.w*0.55){ it.done = true; catchIt(it); }
+    if (!it.done && it.y > L.ground + L.item){ it.done = true; }
+  }
+  S.items = S.items.filter(it => !it.done);
+  for (const f of S.fly){ f.x += f.vx*dt; f.y += f.vy*dt; f.vy += L.u*2.6*dt; f.rot += 6*dt; }
+  S.fly = S.fly.filter(f => f.y < H + L.item*2);
+}
+async function catchIt(it){
+  if (it.type === 'bone'){
+    S.caught++; sfx.clink(); S.jumpUntil = S.t + 0.35; S.cheerUntil = S.t + 0.8; purse(S.caught);
+    if (S.caught % 5 === 0) play('t_bark');
+    play('e_' + Math.min(20, S.caught));          /* Эмили считает вслух: «Eins! Zwei! Drei!» */
+  } else {
+    /* чужая вещь: Тео фыркает и выбрасывает её, ведущая называет вещь */
+    sfx.snort(); S.sniffUntil = S.t + 0.9; S.junk++;
+    S.fly.push({type: it.type, x: it.x, y: it.y, vx: (S.x < W/2 ? 1 : -1)*L.u*0.9, vy: -L.u*1.1, rot: it.rot});
+    if (!speaking || !S.told[it.type]){ S.told[it.type] = true; await play('a_ding_' + it.type); if (S.junk <= 3 || Math.random() < 0.4) play('a_nicht_theo'); }
+  }
+}
+
+/* ---------- ход игры ---------- */
+async function game(){
+  reset(); hideNum(); $('#purse').hidden = true; S.x = S.tx = W/2;
+  await sleep(300);
+  await play('a_fang_knochen');
+  await play('a_nur_knochen');
+  $('#hand').hidden = false;
+  await play('r_fang');
+  setTimeout(() => $('#hand').hidden = true, 2500);
+  S.phase = 'play'; S.t0 = S.t; S.nextSpawn = S.t + 0.3; purse(0);
+}
+let finishing = false;
+async function finish(){
+  if (finishing) return; finishing = true;
+  S.phase = 'end'; sfx.fanfare();
+  await play('a_fertig_zeit');
+  const n = S.caught;
+  if (n === 0){ await play('a_runde'); $('#again').hidden = false; finishing = false; return; }
+  /* сколько косточек? косточки лежат в рядах, три карточки с числами */
+  S.phase = 'ask';
+  await play('a_wie_viele_theo');
+  const opts = new Set([n]); for (const d of [1, -1, 2, -2, 3]) if (opts.size < 3 && n + d >= 1 && n + d <= 20) opts.add(n + d);
+  const list = [...opts].sort(() => Math.random() - 0.5);
+  await numChoice(list, n, 'a_wie_viele_theo', 'r_wie_viele_theo', async () => {
+    /* ошиблась — «Zähl noch mal!» и считаем вместе */
+    await play('a_zaehl_noch');
+    for (let i = 0; i < n; i++){ S.hl = i; await play('e_' + (i + 1)); }
+    S.hl = -1;
+  });
+  S.hl = -1;
+  await play('a_theo_satt');
+  /* часть пойманных косточек — в кошелёк Эмили */
+  const gift = Math.ceil(n/2);
+  S.phase = 'end';
+  for (let i = 1; i <= gift; i++){ showNum(i); sfx.pop(); await sleep(260); }
+  saveMini('theo', gift); purse(gift);
+  await sleep(700); hideNum();
+  await praise();
+  $('#again').hidden = false; finishing = false;
+}
+
+addEventListener('resize', layout);
+addEventListener('orientationchange', () => setTimeout(layout, 200));
+layout(); reset();
+requestAnimationFrame(frame);
+miniStart(IMG.theo_happy[0], game);
+window.__mini = () => ({phase: S.phase, caught: S.caught, spawned: S.spawned, items: S.items.map(i => ({t: i.type, x: i.x, y: i.y})), x: S.x, W, H});
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
