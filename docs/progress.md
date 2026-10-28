@@ -19,3 +19,4 @@
 
 ### ElevenLabs
 - Подключение начато (npx @elevenlabs/cli onboard init). Нужен ключ: его надо положить в настройки окружения (переменная ELEVENLABS_API_KEY), не в чат. Файл .env.local в репозиторий не попадает.
+- Чеклист листов для ChatGPT: https://claude.ai/artifact/YLb2FeKrgTHcXF5bgQZ618 (собирается из docs/chatgpt-prompts.md скриптом tools/build_checklist.py).
