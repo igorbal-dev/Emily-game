@@ -1,4 +1,4 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Fahrradrennen! Мини-игра 1</title>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Fahrradrennen! Мини-игра 1</title>
 <style>
 /* Гонка на велосипедах. Камера едет впереди детей и смотрит на них: дети едут на нас,
    дорога из трёх полос, лужи, конусы и косточки выезжают снизу навстречу. */
@@ -552,5 +552,6 @@ R.theo.x = 1; R.mark.x = 1;
 requestAnimationFrame(frame);
 window.__race = () => ({phase: S.phase, d: R.emily.d, lane: R.emily.lane, hits: S.hits, bones: S.bones, theo: R.theo.mode, place: R.emily.placeN || 0});
 </script>
+<script src="js/screen.js"></script>
 <script src="js/common.js"></script>
 </body></html>
