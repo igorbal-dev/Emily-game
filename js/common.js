@@ -11,7 +11,7 @@
     uttStart: -1e9,        /* начало последней попытки сказать */
     voicedAt: -1e9,        /* последний момент, когда был голос */
     usedAt: -1e9,          /* попытка, которая уже засчитана, второй раз не считается */
-    level: 0, busyUntil: 0, last: 0, started: false, words: 1, lastClip: '', result: null
+    level: 0, busyUntil: 0, last: 0, started: false, words: 1, lastClip: '', result: null, chain: Promise.resolve()
   };
   const HEARD_MS = 160;      /* столько голоса подряд хватает, чтобы засчитать */
   const EARLY_MS = 1800;     /* голос за столько мс до появления значка тоже считается */
@@ -106,7 +106,11 @@
           V.words = t ? t.split(/\s+/).filter(Boolean).length : Math.max(1, Math.round(dur/0.45));
           V.lastClip = name;
         } catch(e){}
-        return origPlay.apply(this, arguments);
+        /* реплики по очереди: следующая начинается, только когда закончилась предыдущая */
+        const self = this, args = arguments, run = () => origPlay.apply(self, args);
+        const p = V.chain.then(run, run);
+        V.chain = p.catch(() => {});
+        return p;
       };
     }
   }

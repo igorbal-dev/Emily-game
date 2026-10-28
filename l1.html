@@ -267,8 +267,12 @@ function layoutSpots(){
 
 /* Где стоит герой: спереди или в укрытии (hidden / peek / out) */
 const HIDE_POSE = {mark:'hide', theo:'lie', emily:'counting'};
+/* выглядывая, герой смотрит обычным лицом; HEAD — какая доля картинки позы приходится на голову */
+const PEEK_POSE = {mark:'idle', theo:'curious', emily:'idle'};
+const HEAD = {mark:0.36, theo:0.5, emily:0.34};
 function placeHero(h){
   const w = h.where;
+  h.el.style.clipPath = ''; h.el.style.rotate = '';
   if (w.kind === 'front'){
     if (h.el.parentNode !== stage){ stage.appendChild(h.el); }
     h.el.classList.remove('inspot');
@@ -284,24 +288,29 @@ function placeHero(h){
     h.put(s.box.x + s.box.w/2, s.by + L.hE*0.06, s.sc);
     return;
   }
-  const sidePeek = s.peek === 'side' && w.state === 'peek';
+  const peeking = w.state === 'peek', sidePeek = s.peek === 'side' && peeking;
   const parent = sidePeek ? stage : s.holder;
   if (h.el.parentNode !== parent) parent.appendChild(h.el);
   h.el.style.zIndex = sidePeek ? (+s.front.style.zIndex - 1) : 1;
   h.el.classList.add('inspot');
-  const pose = HIDE_POSE[h.name];
+  h.el.style.clipPath = ''; h.el.style.rotate = '';
+  const pose = peeking ? PEEK_POSE[h.name] : HIDE_POSE[h.name];
   h.put(0, 0, s.sc);                       /* сначала размер */
-  const ph = h.poseH(pose), pw = h.poseW(pose), cx = s.box.x + s.box.w/2;
-  const fullH = h.box.h;                    /* высота рамки героя (по позе idle) */
+  const ph = h.poseH(pose), pw = h.poseW(pose), cx = s.box.x + s.box.w/2, head = ph*HEAD[h.name];
+  /* при выглядывании видна только голова: всё ниже подбородка обрезано */
+  const headOnly = () => { h.el.style.clipPath = `inset(0 -20% ${Math.round((1 - head*1.08/h.box.h)*100)}% -20%)`; };
   let x = cx, base = s.by;
   if (s.peek === 'up'){
-    const hiddenTop = s.box.y + s.box.h*0.22, peekTop = s.box.y - ph*0.28;
-    base = (w.state === 'peek' ? peekTop : hiddenTop) + ph;
+    /* голова поднимается над краем укрытия, тело остаётся за ним */
+    const hiddenTop = s.box.y + s.box.h*0.22;
+    base = peeking ? s.box.y + s.box.h*0.04 - head + ph : hiddenTop + ph;
   } else if (s.peek === 'side'){
     base = Math.max(s.by, s.box.y + s.box.h*0.12 + ph);
-    if (w.state === 'peek') x = s.box.x + pw*0.22;
-  } else { /* шкаф */
+    /* голова высовывается сбоку из-за края */
+    if (peeking){ base = s.by; x = s.box.x + pw*0.12; headOnly(); h.el.style.rotate = '-9deg'; }
+  } else { /* шкаф: голова в щели приоткрытой дверцы */
     base = s.box.y + s.box.h*0.92; x = cx;
+    if (peeking){ x = s.box.x + s.box.w*0.3; headOnly(); }
   }
   h.put(x, base, s.sc);
 }
@@ -592,10 +601,13 @@ function onHeroTap(h){
 }
 function onSpotTap(s){
   if (spotsActive && spotResolve){ const r = spotResolve; spotResolve = null; r(s); return; }
+  /* нажала, пока ещё звучит прошлая реплика: запоминаем и отвечаем сразу после неё */
+  if (spotsActive){ pendingSpot = s; s.front.classList.remove('shake'); void s.front.offsetWidth; s.front.classList.add('shake'); return; }
   wobble(s);
 }
 function wobble(s){ s.front.classList.remove('shake'); void s.front.offsetWidth; s.front.classList.add('shake'); sfx.bonk(); }
-function nextSpot(){ return new Promise(r => { spotResolve = r; }); }
+let pendingSpot = null;
+function nextSpot(){ return new Promise(r => { if (pendingSpot){ const s = pendingSpot; pendingSpot = null; r(s); } else spotResolve = r; }); }
 
 /* ---------- Прятки ----------
    Как в жизни: один водит и считает, все остальные в это время разбегаются и прячутся (это видно),
@@ -629,13 +641,30 @@ async function runHide(h, spotId){
   await walked(h);
   if (s.id === 'schrank' && !Object.values(heroes).some(o => o !== h && o.where.spot === 'schrank' && o.where.state !== 'hidden')) doors(s, 0);
 }
-async function peek(h, s){
+/* Подсказка: спрятавшийся ненадолго высовывает голову из укрытия и прячется обратно */
+const peekAway = (h, s) => s.peek === 'up' ? `translateY(${Math.round(h.box.h*0.45)}px)` : `translateX(${Math.round(h.box.w*0.45)}px)`;
+async function peekUp(h, s, sound = true){
+  if (h.where.kind !== 'spot' || h.where.state !== 'hidden') return false;
   if (s.id === 'schrank'){ doors(s, 0.35); }
-  setWhere(h, {kind:'spot', spot:s.id, state:'peek'});
-  if (h.name === 'theo'){ h.anim('wiggle'); play(pick(['t_bark','t_sniff'])); }
-  else { play('k_kuckuck'); }
-  await sleep(1600);
-  if (h.where.kind === 'spot' && h.where.state === 'peek'){ setWhere(h, {kind:'spot', spot:s.id, state:'hidden'}); if (s.id === 'schrank') doors(s, 0); }
+  h.lock++; h.show(PEEK_POSE[h.name]);
+  FX.walk = false; setWhere(h, {kind:'spot', spot:s.id, state:'peek'}); FX.walk = true;
+  await h.el.animate([{transform: peekAway(h, s)}, {transform: 'none'}], {duration: 380, easing: 'cubic-bezier(.2,.8,.3,1.15)'}).finished.catch(() => {});
+  if (sound){ if (h.name === 'theo') play(pick(['t_bark','t_sniff'])); else play('k_kuckuck'); }
+  return true;
+}
+async function peekDown(h, s){
+  if (h.where.kind === 'spot' && h.where.state === 'peek'){
+    await h.el.animate([{transform: 'none'}, {transform: peekAway(h, s)}], {duration: 300, easing: 'ease-in', fill: 'forwards'}).finished.catch(() => {});
+    FX.walk = false; setWhere(h, {kind:'spot', spot:s.id, state:'hidden'}); FX.walk = true;
+    h.el.getAnimations().forEach(a => a.cancel());
+    if (s.id === 'schrank') doors(s, 0);
+  }
+  h.lock = Math.max(0, h.lock - 1); if (!h.lock && !h.talking) h.show(h.base);
+}
+async function peek(h, s, hold = 1500){
+  if (!(await peekUp(h, s))) return;
+  await sleep(hold);
+  await peekDown(h, s);
 }
 async function popOut(h, spotId, pose){
   const s = spots[spotId];
@@ -654,7 +683,7 @@ function dark(on){ $('#dark').classList.toggle('on', on); }
 /* Эмили ищет: ребёнок нажимает на укрытие, Эмили идёт туда и спрашивает. Подсказки по таймеру. */
 async function emilySearch(remaining, where, team){
   const emily = heroes.emily;
-  spotsActive = true;
+  spotsActive = true; pendingSpot = null;
   let found = null, busy = false, lastTap = performance.now(), hintStep = 0;
   const target = () => remaining.filter(h => h !== found)[0];
   await play(`a_wo_${target().name}`);
@@ -664,10 +693,12 @@ async function emilySearch(remaining, where, team){
       await sleep(500);
       if (found || busy || speaking) continue;
       const idle = performance.now() - lastTap, h = target(), s = spots[where.get(h)];
+      /* 5 с — выглядывает; 10 с — выглядывает ещё раз, укрытие светится, «Schau mal hier!»;
+         17 с — выглядывает и русская подсказка; 24 с — снова «Wo ist …?» и всё по кругу */
       if (idle > 5000 && hintStep === 0){ hintStep = 1; await peek(h, s); }
-      else if (idle > 10000 && hintStep === 1){ hintStep = 2; s.front.classList.add('glow'); await play('a_schau'); }
-      else if (idle > 20000 && hintStep === 2){ hintStep = 3; await play(`r_find_${h.name}`); }
-      else if (idle > 30000 && hintStep === 3){ hintStep = 1; lastTap = performance.now() - 5000; await play(`a_wo_${h.name}`); }
+      else if (idle > 10000 && hintStep === 1){ hintStep = 2; await peek(h, s); s.front.classList.add('glow'); await play('a_schau'); }
+      else if (idle > 17000 && hintStep === 2){ hintStep = 3; await peek(h, s); await play(`r_find_${h.name}`); }
+      else if (idle > 24000 && hintStep === 3){ hintStep = 1; lastTap = performance.now() - 5000; await play(`a_wo_${h.name}`); }
     }
   })();
   while (true){
@@ -681,7 +712,7 @@ async function emilySearch(remaining, where, team){
     wobble(t); await play('a_nein_er');
     busy = false; lastTap = performance.now();
   }
-  spotsActive = false; spotResolve = null;
+  spotsActive = false; spotResolve = null; pendingSpot = null;
   Object.values(spots).forEach(s => s.front.classList.remove('glow'));
   await hints.catch(() => {});
   return found;
@@ -724,10 +755,10 @@ async function roundEmilySeeks(n){
 async function roundMarkSeeks(n){
   const {emily, mark, theo} = heroes;
   await repeatAfter('e_verstecke_mich', emily);
-  spotsActive = true;
+  spotsActive = true; pendingSpot = null;
   const choose = (async () => { let k = 0; while (spotsActive){ await sleep(6000); if (!spotsActive) break; k++; if (speaking) continue; await play(k % 3 === 2 ? 'r_choose' : 'a_wo_versteckst'); } })();
   await play('a_wo_versteckst');
-  const s = await nextSpot(); spotsActive = false; spotResolve = null;
+  const s = await nextSpot(); spotsActive = false; spotResolve = null; pendingSpot = null;
   sfx.pop();
   const theoSpot = pickSpots(1, [s.id])[0];
   lastSpots = [s.id, theoSpot];
@@ -755,11 +786,12 @@ async function roundMarkSeeks(n){
     if (!h){ wobble(spots[id]); mark.setBase('surprised'); await play(pick(['k_ohoh','k_wo_bist_du'])); mark.setBase('idle'); await sleep(300); continue; }
     remaining.splice(remaining.indexOf(h), 1);
     if (h === emily){
-      await popOut(emily, id, 'jump');
-      mark.setBase('laugh'); await mark.talkWhile(play('km_gefunden'), 'laugh');
-      play('k_laugh'); await sleep(600); mark.setBase('idle');
-      emily.setBase('idle');
+      /* Марк заглянул — Эмили высовывается и говорит, где она: «Ich bin …» звучит, пока она ещё в укрытии */
+      await peekUp(emily, spots[id], false);
       await repeatAfter(`e_ich_${id}`, emily);
+      mark.setBase('laugh'); await mark.talkWhile(play('km_gefunden'), 'laugh');
+      emily.lock = 0; await popOut(emily, id, 'jump');
+      play('k_laugh'); await sleep(600); mark.setBase('idle'); emily.setBase('idle');
       await flyBone(emily); await praise();
     } else {
       await popOut(theo, id, 'happy'); play('t_barks');

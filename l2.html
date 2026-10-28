@@ -108,7 +108,7 @@ button:focus-visible{outline:4px solid #fff;outline-offset:4px}
 <script>
 const IMG = {"emily_idle": "assets/img/c64929b2d467.webp", "emily_blink": "assets/img/bb16d273f7a0.webp", "emily_talk": "assets/img/d36ef0e49481.webp", "emily_mouth1": "assets/img/b6fea28bbe9b.webp", "emily_mouth2": "assets/img/159e6b3f3df4.webp", "emily_walk": "assets/img/8e591eafe46b.webp", "emily_laugh": "assets/img/919bf61cad53.webp", "emily_crouch": "assets/img/56b917379eef.webp", "emily_wave": "assets/img/1fdaea62d38d.webp", "emily_jump": "assets/img/7b1a90a6eb6d.webp", "emily_counting": "assets/img/e5e73e473c1a.webp", "emily_surprised": "assets/img/080d300a6733.webp", "mark_idle": "assets/img/13c388a98a6d.webp", "mark_blink": "assets/img/33d1a4b2bf81.webp", "mark_talk": "assets/img/1aaa73be62ad.webp", "mark_mouth": "assets/img/bfd0f2508288.webp", "mark_sad": "assets/img/2ecc9da5e9f2.webp", "mark_wave": "assets/img/a3ae5a7e74d6.webp", "mark_laugh": "assets/img/06e66d39bc29.webp", "mark_hide": "assets/img/81aabe033c01.webp", "mark_walk": "assets/img/a28d60306ee6.webp", "mark_surprised": "assets/img/009aba113652.webp", "theo_idle": "assets/img/8ce5fe0202bd.webp", "theo_blink": "assets/img/5bd18fc57314.webp", "theo_bark": "assets/img/9a746a81bb63.webp", "theo_happy": "assets/img/e2a2a3c50086.webp", "theo_curious": "assets/img/8f348661cf1a.webp", "theo_lie": "assets/img/9355ae5995a1.webp", "theo_sniff": "assets/img/52c0256c1352.webp", "isabel_idle": "assets/img/7961dcd89080.svg", "isabel_blink": "assets/img/c5a76f73e7d4.svg", "isabel_talk": "assets/img/baef4844e6b3.svg", "isabel_wave": "assets/img/288d5ba24e38.svg", "isabel_jump": "assets/img/0127eade7189.svg", "isabel_hide": "assets/img/6807aec355fb.svg", "paul_idle": "assets/img/2e2f9602a3ab.svg", "paul_blink": "assets/img/54cc2bc8b6a4.svg", "paul_talk": "assets/img/6c92ec4edba9.svg", "paul_wave": "assets/img/92efa9ef049b.svg", "paul_jump": "assets/img/5d83645ea6ea.svg", "paul_hide": "assets/img/6de4e7b4f471.svg", "emily_idle_out": "assets/img/75212f3d100c.webp", "emily_idle_shoes": "assets/img/f3c638bc729d.webp", "emily_blink_out": "assets/img/8f259a32dae9.webp", "emily_blink_shoes": "assets/img/0f33b1ccf809.webp", "emily_talk_shoes": "assets/img/d3e54ca225ed.webp", "emily_mouth1_out": "assets/img/9526ce345376.webp", "emily_mouth1_shoes": "assets/img/3b7a1bb44669.webp", "emily_mouth2_out": "assets/img/9526ce345376.webp", "emily_mouth2_shoes": "assets/img/349db2cdaea9.webp", "emily_walk_out": "assets/img/8e591eafe46b.webp", "emily_laugh_out": "assets/img/919bf61cad53.webp", "emily_crouch_out": "assets/img/56b917379eef.webp", "emily_wave_out": "assets/img/acf19e1e2d3e.webp", "emily_wave_shoes": "assets/img/2ab85334263f.webp", "emily_jump_out": "assets/img/afd822bd4c46.webp", "emily_jump_shoes": "assets/img/31f33a5548ba.webp", "emily_counting_out": "assets/img/1a71a37924b4.webp", "emily_counting_shoes": "assets/img/31b278ea235c.webp", "emily_surprised_out": "assets/img/723e0f67193a.webp", "emily_surprised_shoes": "assets/img/b65576956668.webp", "mark_idle_out": "assets/img/445af52614b6.webp", "mark_blink_out": "assets/img/0835c9f94d77.webp", "mark_talk_out": "assets/img/554d772231eb.webp", "mark_mouth_out": "assets/img/7dfb9c66035b.webp", "mark_sad_out": "assets/img/b6c55e91ef51.webp", "mark_wave_out": "assets/img/3f7d07abc7df.webp", "mark_laugh_out": "assets/img/82ef3421dc54.webp", "mark_hide_out": "assets/img/b6c55e91ef51.webp", "mark_walk_out": "assets/img/e5af64887295.webp", "mark_surprised_out": "assets/img/661c662aec28.webp"};
 const SIZE = {"emily_idle": [208, 407], "emily_blink": [208, 407], "emily_talk": [270, 413], "emily_mouth1": [208, 407], "emily_mouth2": [208, 407], "emily_walk": [225, 385], "emily_laugh": [232, 399], "emily_crouch": [227, 309], "emily_wave": [252, 394], "emily_jump": [279, 346], "emily_counting": [232, 390], "emily_surprised": [208, 407], "mark_idle": [186, 397], "mark_blink": [186, 397], "mark_talk": [186, 397], "mark_mouth": [186, 397], "mark_sad": [186, 397], "mark_wave": [247, 389], "mark_laugh": [232, 402], "mark_hide": [188, 306], "mark_walk": [254, 394], "mark_surprised": [186, 397], "theo_idle": [258, 346], "theo_blink": [259, 347], "theo_bark": [258, 347], "theo_happy": [322, 316], "theo_curious": [245, 329], "theo_lie": [325, 255], "theo_sniff": [309, 302], "isabel_idle": [240, 420], "isabel_blink": [240, 420], "isabel_talk": [240, 420], "isabel_wave": [240, 420], "isabel_jump": [240, 420], "isabel_hide": [240, 300], "paul_idle": [240, 420], "paul_blink": [240, 420], "paul_talk": [240, 420], "paul_wave": [240, 420], "paul_jump": [240, 420], "paul_hide": [240, 300], "emily_idle_out": [220, 407], "emily_idle_shoes": [208, 407], "emily_blink_out": [220, 407], "emily_blink_shoes": [208, 407], "emily_talk_shoes": [270, 413], "emily_mouth1_out": [220, 407], "emily_mouth1_shoes": [208, 407], "emily_mouth2_out": [220, 407], "emily_mouth2_shoes": [208, 407], "emily_walk_out": [225, 385], "emily_laugh_out": [232, 399], "emily_crouch_out": [227, 309], "emily_wave_out": [218, 410], "emily_wave_shoes": [252, 394], "emily_jump_out": [276, 377], "emily_jump_shoes": [279, 346], "emily_counting_out": [226, 406], "emily_counting_shoes": [232, 390], "emily_surprised_out": [227, 407], "emily_surprised_shoes": [208, 407], "mark_idle_out": [193, 397], "mark_blink_out": [193, 397], "mark_talk_out": [193, 397], "mark_mouth_out": [193, 397], "mark_sad_out": [193, 397], "mark_wave_out": [198, 397], "mark_laugh_out": [189, 386], "mark_hide_out": [193, 397], "mark_walk_out": [197, 379], "mark_surprised_out": [193, 397]};
-const SND = {"a_1": "assets/snd/25f3878771aa.mp3", "a_2": "assets/snd/f64adff707b5.mp3", "a_3": "assets/snd/02a1afecff01.mp3", "a_bones": "assets/snd/c2472dcc8d4b.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_start": "assets/snd/3affbfc5e1f5.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "e_hallo_emily": "assets/snd/3f52607f90ff.mp3", "k_hallo": "assets/snd/b7966bf60a63.mp3", "t_bark": "assets/snd/d5a7365a3230.mp3", "t_barks": "assets/snd/0b964a7cf853.mp3", "a_wo_mark": "assets/snd/8cdd0c47e23f.mp3", "a_wo_theo": "assets/snd/16e08c7a137a.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "e_du_suchst": "assets/snd/9f1e05365ef3.mp3", "e_gefunden": "assets/snd/55ed336f6cb3.mp3", "e_hallo": "assets/snd/34001f81eb2d.mp3", "e_hallo_theo": "assets/snd/a045d358afd5.mp3", "e_ja": "assets/snd/248166b5cadf.mp3", "e_komme": "assets/snd/b1be9a5f4bc7.mp3", "e_nein": "assets/snd/cfdd98e96c34.mp3", "e_q_baum": "assets/snd/3a197343df6c.mp3", "e_q_schrank": "assets/snd/e7ca5b38c976.mp3", "e_q_tisch": "assets/snd/c0add9ad5cb4.mp3", "e_verstecke_mich": "assets/snd/02e483695a6d.mp3", "e_verstecken": "assets/snd/6a5060d0d84c.mp3", "e_wo_bist_du": "assets/snd/5d20b40e79f9.mp3", "e_zaehle": "assets/snd/ce673490db9b.mp3", "r_find_mark": "assets/snd/70b164f8a0f2.mp3", "r_find_theo": "assets/snd/2c0730630757.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_repeat": "assets/snd/17dff5d39745.mp3", "a_da_er": "assets/snd/ddcbd33ab286.mp3", "a_da_sie": "assets/snd/8730b09af675.mp3", "a_gut": "assets/snd/8ecb94e91462.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_nein_er": "assets/snd/25a483118391.mp3", "a_nein_sie": "assets/snd/319f1eea5153.mp3", "a_runde": "assets/snd/04b85091b434.mp3", "a_schau": "assets/snd/dbef463c7416.mp3", "a_sehr_gut": "assets/snd/75b56b42c998.mp3", "a_wie_viele": "assets/snd/a88f0d3575f6.mp3", "a_wo_isabel": "assets/snd/bd55b4aae60f.mp3", "a_wo_mark2": "assets/snd/11e4b2f5db57.mp3", "a_wo_paul": "assets/snd/0b82b893984e.mp3", "a_wo_theo2": "assets/snd/0e3dc59052c8.mp3", "a_wo_versteckst": "assets/snd/3e8e9afcccae.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "a_zaehl_mit": "assets/snd/aea84083dc35.mp3", "e_bin_fuenf": "assets/snd/2f351fb015c5.mp3", "e_bruder": "assets/snd/1ecac8bb7edf.mp3", "e_darf_ich": "assets/snd/a092c4e4b50e.mp3", "e_du_bist_dran": "assets/snd/df1c34099193.mp3", "e_hallo_isabel": "assets/snd/1f64e66b0a1d.mp3", "e_hallo_paul": "assets/snd/d564de41c6f1.mp3", "e_hund": "assets/snd/347c00b27242.mp3", "e_ich_baum": "assets/snd/cf8350982e68.mp3", "e_ich_kiste": "assets/snd/c32bd0800fdf.mp3", "e_ich_rutsche": "assets/snd/3eb7f3972344.mp3", "e_ich_sandkasten": "assets/snd/ac14d23a5f3f.mp3", "e_ich_schaukel": "assets/snd/075be99eb1d6.mp3", "e_ich_schrank": "assets/snd/bf70324e0ed2.mp3", "e_ich_sofa": "assets/snd/860c125e62ec.mp3", "e_ich_tisch": "assets/snd/0a7109a2f666.mp3", "e_isabel_baum": "assets/snd/25b3f4d3c3a0.mp3", "e_isabel_rutsche": "assets/snd/ee450ad4d7bf.mp3", "e_isabel_sandkasten": "assets/snd/73e01a8d45f1.mp3", "e_isabel_schaukel": "assets/snd/6a64c4420d89.mp3", "e_lass_uns": "assets/snd/a8d7a36da59a.mp3", "e_mark_kiste": "assets/snd/3600fafbe584.mp3", "e_mark_schrank": "assets/snd/835e44140b64.mp3", "e_mark_sofa": "assets/snd/bcbde05d1c3d.mp3", "e_mark_tisch": "assets/snd/d7870cd30956.mp3", "e_paul_baum": "assets/snd/bd7c7cf04e2e.mp3", "e_paul_rutsche": "assets/snd/e327695b36a1.mp3", "e_paul_sandkasten": "assets/snd/83009ba1cebc.mp3", "e_paul_schaukel": "assets/snd/b286f5e8ce94.mp3", "e_q_kiste": "assets/snd/e6c7ec3dbe38.mp3", "e_q_rutsche": "assets/snd/3da43f8a80d0.mp3", "e_q_sandkasten": "assets/snd/04953d5c011e.mp3", "e_q_schaukel": "assets/snd/5dd8d121c0d7.mp3", "e_q_sofa": "assets/snd/90ea96d95f50.mp3", "e_theo_kiste": "assets/snd/59d8b4c30564.mp3", "e_theo_schrank": "assets/snd/bc7333ac77df.mp3", "e_theo_sofa": "assets/snd/0bacb5f7bf6b.mp3", "e_theo_tisch": "assets/snd/27ef8fe10adb.mp3", "e_wie_heisst": "assets/snd/3e0a07f3787e.mp3", "e_wollt_ihr": "assets/snd/a74f0a37484a.mp3", "r_choose": "assets/snd/d56d19c508af.mp3", "r_find_isabel": "assets/snd/c613ca757459.mp3", "r_find_paul": "assets/snd/f948a4436fc1.mp3", "i_auch_fuenf": "assets/snd/57ac7a4e74c2.mp3", "i_bis_morgen": "assets/snd/4d3339250dac.mp3", "i_findest_nicht": "assets/snd/873196bc5c76.mp3", "i_freundin": "assets/snd/ec08fb390ccc.mp3", "i_hallo": "assets/snd/1af4e5581e06.mp3", "i_verstecken": "assets/snd/ba8aa3f02898.mp3", "p_count10": "assets/snd/67a0a4f8ba88.mp3", "p_dran": "assets/snd/282ee503c1b3.mp3", "p_gefunden": "assets/snd/d7f462eea754.mp3", "p_hallo": "assets/snd/052a643795bc.mp3", "p_klar": "assets/snd/83fcfbbe568f.mp3", "p_streicheln": "assets/snd/7e830e90fe04.mp3", "p_tschuess": "assets/snd/1b3ae536affb.mp3", "a_freunde": "assets/snd/8528d66a63b0.mp3", "e_alles": "assets/snd/c6e34b40b747.mp3", "e_alles_gute": "assets/snd/ac39814b162a.mp3", "e_c_braun": "assets/snd/4e65a6f7c461.mp3", "e_c_gelb": "assets/snd/0e686050facb.mp3", "e_c_lila": "assets/snd/3e8de5c5a706.mp3", "e_c_orange": "assets/snd/a183c405558a.mp3", "e_c_rosa": "assets/snd/35d8499bb090.mp3", "e_c_rot": "assets/snd/f6eb6a82c21b.mp3", "e_danke": "assets/snd/46d2c9e33597.mp3", "e_danke_mark": "assets/snd/dcf2e65f41ca.mp3", "e_danke_party": "assets/snd/b5cc63602339.mp3", "e_danke_schoen": "assets/snd/acc27f7b887e.mp3", "e_drei_aepfel": "assets/snd/622c9d32a3d6.mp3", "e_durst": "assets/snd/6badd25ebff6.mp3", "e_eis_erdbeere": "assets/snd/011d8836b8d9.mp3", "e_eis_kirsche": "assets/snd/fb2025f555de.mp3", "e_eis_mark": "assets/snd/91861ec0b962.mp3", "e_fertig": "assets/snd/e773daec98e9.mp3", "e_freundin": "assets/snd/e1ffed78a8c1.mp3", "e_fuer_dich": "assets/snd/8573fe54c26f.mp3", "e_gib_bitte": "assets/snd/0db115f65955.mp3", "e_gruen_gehen": "assets/snd/4befbb7ae47f.mp3", "e_handtuch": "assets/snd/6990fc24ed9c.mp3", "e_helfen": "assets/snd/e748cee03ed0.mp3", "e_links_rechts": "assets/snd/6cbd19e24293.mp3", "e_morgen": "assets/snd/4afb301f3936.mp3", "e_name_apfel": "assets/snd/c1259d2268f6.mp3", "e_name_banane": "assets/snd/c4702a6ab193.mp3", "e_name_birne": "assets/snd/b72df08b053a.mp3", "e_name_orange": "assets/snd/9720a57c1002.mp3", "e_order_brezel": "assets/snd/c3fbe69bed60.mp3", "e_order_broetchen": "assets/snd/961414465850.mp3", "e_order_keks": "assets/snd/0f465ee57cc8.mp3", "e_rot_stehen": "assets/snd/ecbc85a9d20e.mp3", "e_sandburg": "assets/snd/bb09ce6dc744.mp3", "e_schaufel": "assets/snd/3daebc1355cb.mp3", "e_seife": "assets/snd/95ff459f6bfc.mp3", "e_spass": "assets/snd/69f875580c64.mp3", "e_teilen": "assets/snd/e4c832d657b2.mp3", "e_tschuess": "assets/snd/9f75bf7e4385.mp3", "e_wasser": "assets/snd/3a021150400e.mp3", "e_wie_alt": "assets/snd/6da72a37e6b4.mp3", "e_willst_kuchen": "assets/snd/8d0316596197.mp3", "e_zuerst": "assets/snd/f920bc71006e.mp3", "e_zwei_bananen": "assets/snd/3516a55bf93d.mp3", "i_hihi": "assets/snd/9c8910580b2c.mp3", "p_hier_nicht": "assets/snd/bf2632ebf449.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3"};
+const SND = {"e_ich_busch": "assets/snd/3f68af08594c.mp3", "e_isabel_busch": "assets/snd/26abb540a314.mp3", "e_mark_baum": "assets/snd/0efbe36b1b93.mp3", "e_mark_busch": "assets/snd/be692c3523f4.mp3", "e_mark_rutsche": "assets/snd/6d0360e52bbd.mp3", "e_mark_sandkasten": "assets/snd/0542334abccc.mp3", "e_mark_schaukel": "assets/snd/4cdddf6b33a4.mp3", "e_paul_busch": "assets/snd/c42612db708d.mp3", "e_q_busch": "assets/snd/b1b87e2f29a3.mp3", "e_theo_baum": "assets/snd/c5e35d689008.mp3", "e_theo_busch": "assets/snd/c28f39fa5e2b.mp3", "e_theo_rutsche": "assets/snd/4c3d10996fb9.mp3", "e_theo_sandkasten": "assets/snd/29cc7014f3ea.mp3", "e_theo_schaukel": "assets/snd/7a3604e2fdeb.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "k_kuckuck": "assets/snd/625520d2d23c.mp3", "t_sniff": "assets/snd/1f8f12a132c4.mp3", "a_1": "assets/snd/25f3878771aa.mp3", "a_2": "assets/snd/f64adff707b5.mp3", "a_3": "assets/snd/02a1afecff01.mp3", "a_bones": "assets/snd/c2472dcc8d4b.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_start": "assets/snd/3affbfc5e1f5.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "e_hallo_emily": "assets/snd/3f52607f90ff.mp3", "k_hallo": "assets/snd/b7966bf60a63.mp3", "t_bark": "assets/snd/d5a7365a3230.mp3", "t_barks": "assets/snd/0b964a7cf853.mp3", "a_wo_mark": "assets/snd/8cdd0c47e23f.mp3", "a_wo_theo": "assets/snd/16e08c7a137a.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "e_du_suchst": "assets/snd/9f1e05365ef3.mp3", "e_gefunden": "assets/snd/55ed336f6cb3.mp3", "e_hallo": "assets/snd/34001f81eb2d.mp3", "e_hallo_theo": "assets/snd/a045d358afd5.mp3", "e_ja": "assets/snd/248166b5cadf.mp3", "e_komme": "assets/snd/b1be9a5f4bc7.mp3", "e_nein": "assets/snd/cfdd98e96c34.mp3", "e_q_baum": "assets/snd/3a197343df6c.mp3", "e_q_schrank": "assets/snd/e7ca5b38c976.mp3", "e_q_tisch": "assets/snd/c0add9ad5cb4.mp3", "e_verstecke_mich": "assets/snd/02e483695a6d.mp3", "e_verstecken": "assets/snd/6a5060d0d84c.mp3", "e_wo_bist_du": "assets/snd/5d20b40e79f9.mp3", "e_zaehle": "assets/snd/ce673490db9b.mp3", "r_find_mark": "assets/snd/70b164f8a0f2.mp3", "r_find_theo": "assets/snd/2c0730630757.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_repeat": "assets/snd/17dff5d39745.mp3", "a_da_er": "assets/snd/ddcbd33ab286.mp3", "a_da_sie": "assets/snd/8730b09af675.mp3", "a_gut": "assets/snd/8ecb94e91462.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_nein_er": "assets/snd/25a483118391.mp3", "a_nein_sie": "assets/snd/319f1eea5153.mp3", "a_runde": "assets/snd/04b85091b434.mp3", "a_schau": "assets/snd/dbef463c7416.mp3", "a_sehr_gut": "assets/snd/75b56b42c998.mp3", "a_wie_viele": "assets/snd/a88f0d3575f6.mp3", "a_wo_isabel": "assets/snd/bd55b4aae60f.mp3", "a_wo_mark2": "assets/snd/11e4b2f5db57.mp3", "a_wo_paul": "assets/snd/0b82b893984e.mp3", "a_wo_theo2": "assets/snd/0e3dc59052c8.mp3", "a_wo_versteckst": "assets/snd/3e8e9afcccae.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "a_zaehl_mit": "assets/snd/aea84083dc35.mp3", "e_bin_fuenf": "assets/snd/2f351fb015c5.mp3", "e_bruder": "assets/snd/1ecac8bb7edf.mp3", "e_darf_ich": "assets/snd/a092c4e4b50e.mp3", "e_du_bist_dran": "assets/snd/df1c34099193.mp3", "e_hallo_isabel": "assets/snd/1f64e66b0a1d.mp3", "e_hallo_paul": "assets/snd/d564de41c6f1.mp3", "e_hund": "assets/snd/347c00b27242.mp3", "e_ich_baum": "assets/snd/cf8350982e68.mp3", "e_ich_kiste": "assets/snd/c32bd0800fdf.mp3", "e_ich_rutsche": "assets/snd/3eb7f3972344.mp3", "e_ich_sandkasten": "assets/snd/ac14d23a5f3f.mp3", "e_ich_schaukel": "assets/snd/075be99eb1d6.mp3", "e_ich_schrank": "assets/snd/bf70324e0ed2.mp3", "e_ich_sofa": "assets/snd/860c125e62ec.mp3", "e_ich_tisch": "assets/snd/0a7109a2f666.mp3", "e_isabel_baum": "assets/snd/25b3f4d3c3a0.mp3", "e_isabel_rutsche": "assets/snd/ee450ad4d7bf.mp3", "e_isabel_sandkasten": "assets/snd/73e01a8d45f1.mp3", "e_isabel_schaukel": "assets/snd/6a64c4420d89.mp3", "e_lass_uns": "assets/snd/a8d7a36da59a.mp3", "e_mark_kiste": "assets/snd/3600fafbe584.mp3", "e_mark_schrank": "assets/snd/835e44140b64.mp3", "e_mark_sofa": "assets/snd/bcbde05d1c3d.mp3", "e_mark_tisch": "assets/snd/d7870cd30956.mp3", "e_paul_baum": "assets/snd/bd7c7cf04e2e.mp3", "e_paul_rutsche": "assets/snd/e327695b36a1.mp3", "e_paul_sandkasten": "assets/snd/83009ba1cebc.mp3", "e_paul_schaukel": "assets/snd/b286f5e8ce94.mp3", "e_q_kiste": "assets/snd/e6c7ec3dbe38.mp3", "e_q_rutsche": "assets/snd/3da43f8a80d0.mp3", "e_q_sandkasten": "assets/snd/04953d5c011e.mp3", "e_q_schaukel": "assets/snd/5dd8d121c0d7.mp3", "e_q_sofa": "assets/snd/90ea96d95f50.mp3", "e_theo_kiste": "assets/snd/59d8b4c30564.mp3", "e_theo_schrank": "assets/snd/bc7333ac77df.mp3", "e_theo_sofa": "assets/snd/0bacb5f7bf6b.mp3", "e_theo_tisch": "assets/snd/27ef8fe10adb.mp3", "e_wie_heisst": "assets/snd/3e0a07f3787e.mp3", "e_wollt_ihr": "assets/snd/a74f0a37484a.mp3", "r_choose": "assets/snd/d56d19c508af.mp3", "r_find_isabel": "assets/snd/c613ca757459.mp3", "r_find_paul": "assets/snd/f948a4436fc1.mp3", "i_auch_fuenf": "assets/snd/57ac7a4e74c2.mp3", "i_bis_morgen": "assets/snd/4d3339250dac.mp3", "i_findest_nicht": "assets/snd/873196bc5c76.mp3", "i_freundin": "assets/snd/ec08fb390ccc.mp3", "i_hallo": "assets/snd/1af4e5581e06.mp3", "i_verstecken": "assets/snd/ba8aa3f02898.mp3", "p_count10": "assets/snd/67a0a4f8ba88.mp3", "p_dran": "assets/snd/282ee503c1b3.mp3", "p_gefunden": "assets/snd/d7f462eea754.mp3", "p_hallo": "assets/snd/052a643795bc.mp3", "p_klar": "assets/snd/83fcfbbe568f.mp3", "p_streicheln": "assets/snd/7e830e90fe04.mp3", "p_tschuess": "assets/snd/1b3ae536affb.mp3", "a_freunde": "assets/snd/8528d66a63b0.mp3", "e_alles": "assets/snd/c6e34b40b747.mp3", "e_alles_gute": "assets/snd/ac39814b162a.mp3", "e_c_braun": "assets/snd/4e65a6f7c461.mp3", "e_c_gelb": "assets/snd/0e686050facb.mp3", "e_c_lila": "assets/snd/3e8de5c5a706.mp3", "e_c_orange": "assets/snd/a183c405558a.mp3", "e_c_rosa": "assets/snd/35d8499bb090.mp3", "e_c_rot": "assets/snd/f6eb6a82c21b.mp3", "e_danke": "assets/snd/46d2c9e33597.mp3", "e_danke_mark": "assets/snd/dcf2e65f41ca.mp3", "e_danke_party": "assets/snd/b5cc63602339.mp3", "e_danke_schoen": "assets/snd/acc27f7b887e.mp3", "e_drei_aepfel": "assets/snd/622c9d32a3d6.mp3", "e_durst": "assets/snd/6badd25ebff6.mp3", "e_eis_erdbeere": "assets/snd/011d8836b8d9.mp3", "e_eis_kirsche": "assets/snd/fb2025f555de.mp3", "e_eis_mark": "assets/snd/91861ec0b962.mp3", "e_fertig": "assets/snd/e773daec98e9.mp3", "e_freundin": "assets/snd/e1ffed78a8c1.mp3", "e_fuer_dich": "assets/snd/8573fe54c26f.mp3", "e_gib_bitte": "assets/snd/0db115f65955.mp3", "e_gruen_gehen": "assets/snd/4befbb7ae47f.mp3", "e_handtuch": "assets/snd/6990fc24ed9c.mp3", "e_helfen": "assets/snd/e748cee03ed0.mp3", "e_links_rechts": "assets/snd/6cbd19e24293.mp3", "e_morgen": "assets/snd/4afb301f3936.mp3", "e_name_apfel": "assets/snd/c1259d2268f6.mp3", "e_name_banane": "assets/snd/c4702a6ab193.mp3", "e_name_birne": "assets/snd/b72df08b053a.mp3", "e_name_orange": "assets/snd/9720a57c1002.mp3", "e_order_brezel": "assets/snd/c3fbe69bed60.mp3", "e_order_broetchen": "assets/snd/961414465850.mp3", "e_order_keks": "assets/snd/0f465ee57cc8.mp3", "e_rot_stehen": "assets/snd/ecbc85a9d20e.mp3", "e_sandburg": "assets/snd/bb09ce6dc744.mp3", "e_schaufel": "assets/snd/3daebc1355cb.mp3", "e_seife": "assets/snd/95ff459f6bfc.mp3", "e_spass": "assets/snd/69f875580c64.mp3", "e_teilen": "assets/snd/e4c832d657b2.mp3", "e_tschuess": "assets/snd/9f75bf7e4385.mp3", "e_wasser": "assets/snd/3a021150400e.mp3", "e_wie_alt": "assets/snd/6da72a37e6b4.mp3", "e_willst_kuchen": "assets/snd/8d0316596197.mp3", "e_zuerst": "assets/snd/f920bc71006e.mp3", "e_zwei_bananen": "assets/snd/3516a55bf93d.mp3", "i_hihi": "assets/snd/9c8910580b2c.mp3", "p_hier_nicht": "assets/snd/bf2632ebf449.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3"};
 const OFF = {emily_talk:[-29,-2],theo_blink:[-1,0],theo_bark:[0,-1]};
 const BONE_SVG = '<svg viewBox="0 0 100 44" aria-hidden="true"><path d="M22 10a10 10 0 1 0-9 15a10 10 0 1 0 9 15h56a10 10 0 1 0 9-15a10 10 0 1 0-9-15z" fill="#fff7e6" stroke="#c9a77a" stroke-width="4" stroke-linejoin="round"/></svg>';
 
@@ -214,10 +214,11 @@ const FRONT_X = {mark:0.06, emily:0.145, theo:0.228, isabel:0.365, paul:0.45};
    Горка: под площадкой горки за дощатой стенкой, выглядывают сбоку.
    Качели: за кустами под качелями, выглядывает макушка. Песочница: за бортиком, выглядывает макушка. */
 const SPOT_DEF = {
-  baum:       {x:0.50,  w:0.80, h:1.50, peek:'up',   clip:0.98, cover:0.74, edge:0.70},
+  baum:       {x:0.50,  w:0.80, h:1.50, peek:'up',   clip:0.98, cover:0.74, edge:0.70, dx:-0.30},
   rutsche:    {x:0.635, w:1.10, h:0.82, peek:'side', clip:0.98, cover:0.40},
-  schaukel:   {x:0.775, w:0.95, h:0.95, peek:'up',   clip:0.97, cover:0.70, edge:0.64},
-  sandkasten: {x:0.905, w:0.90, h:0.42, peek:'up',   clip:0.97, cover:0.52, edge:0.46}
+  schaukel:   {x:0.775, w:0.95, h:0.95, peek:'up',   clip:0.97, cover:0.70, edge:0.55},
+  sandkasten: {x:0.905, w:0.90, h:0.42, peek:'up',   clip:0.97, cover:0.52, edge:0.30},
+  busch:      {x:0.33,  w:0.85, h:0.62, peek:'up',   clip:0.97, cover:0.55, edge:0.0}
 };
 const DEPTH = 0.7;
 const svgs = {
@@ -245,6 +246,11 @@ const svgs = {
     <rect x="33" y="51" width="18" height="4" rx="2" fill="#ffcf4a" stroke="#d9a925"/><rect x="51" y="43" width="18" height="4" rx="2" fill="#ff7a59" stroke="#d65a3b"/>
     <g fill="#5cae43" stroke="#3f8a2c" stroke-width="2"><ellipse cx="16" cy="78" rx="18" ry="18"/><ellipse cx="50" cy="78" rx="22" ry="18"/><ellipse cx="84" cy="78" rx="18" ry="18"/><ellipse cx="33" cy="82" rx="16" ry="14"/><ellipse cx="67" cy="82" rx="16" ry="14"/></g>
     <g fill="#ffffff" opacity=".9"><circle cx="30" cy="74" r="2.5"/><circle cx="58" cy="70" r="2.5"/><circle cx="78" cy="76" r="2.5"/><circle cx="44" cy="82" r="2.5"/></g>
+  </svg>`,
+  busch: `<svg viewBox="0 0 85 62" preserveAspectRatio="none">
+    <g fill="#5cae43" stroke="#3f8a2c" stroke-width="2"><ellipse cx="20" cy="40" rx="20" ry="20"/><ellipse cx="64" cy="40" rx="20" ry="20"/><ellipse cx="42" cy="28" rx="26" ry="26"/><ellipse cx="42" cy="48" rx="34" ry="14"/></g>
+    <g fill="#7ccf5c"><circle cx="34" cy="20" r="8"/><circle cx="60" cy="32" r="6"/><circle cx="18" cy="36" r="5"/></g>
+    <g fill="#ff8fc8"><circle cx="26" cy="30" r="3"/><circle cx="52" cy="18" r="3"/><circle cx="68" cy="44" r="3"/><circle cx="40" cy="46" r="3"/></g>
   </svg>`,
   sandkasten: `<svg viewBox="0 0 100 44" preserveAspectRatio="none">
     <path d="M6 10 L94 10 L100 22 L0 22 Z" fill="#f2d39b" stroke="#c9a46a" stroke-width="1.6"/>
@@ -280,8 +286,12 @@ function layoutSpots(){
 
 /* Где стоит герой: спереди или в укрытии (hidden / peek / out) */
 const HIDE_POSE = {mark:'hide', theo:'lie', emily:'crouch', isabel:'hide', paul:'hide'};
+/* выглядывая, герой смотрит обычным лицом; HEAD — какая доля картинки позы приходится на голову */
+const PEEK_POSE = {mark:'idle', theo:'curious', emily:'idle', isabel:'idle', paul:'idle'};
+const HEAD = {mark:0.36, theo:0.5, emily:0.34, isabel:0.3, paul:0.3};
 function placeHero(h){
   const w = h.where;
+  h.el.style.clipPath = ''; h.el.style.rotate = '';
   if (w.kind === 'front'){
     if (h.el.parentNode !== stage){ stage.appendChild(h.el); }
     h.el.classList.remove('inspot'); h.el.style.zIndex = 50;
@@ -295,24 +305,26 @@ function placeHero(h){
     h.put(s.box.x + s.box.w/2, L.backY + L.hE*0.06, DEPTH);
     return;
   }
-  const sidePeek = s.peek === 'side' && w.state === 'peek';
+  const peeking = w.state === 'peek', sidePeek = s.peek === 'side' && peeking;
   const parent = sidePeek ? stage : s.holder;
   if (h.el.parentNode !== parent) parent.appendChild(h.el);
   h.el.style.zIndex = sidePeek ? (+s.front.style.zIndex - 1) : 1;
   h.el.classList.add('inspot');
-  const pose = HIDE_POSE[h.name];
+  const pose = peeking ? PEEK_POSE[h.name] : HIDE_POSE[h.name];
   h.put(0, 0, DEPTH);                      /* сначала размер */
-  const ph = h.poseH(pose), pw = h.poseW(pose), cx = s.box.x + s.box.w/2;
-  const fullH = h.box.h;                    /* высота рамки героя (по позе idle) */
+  const ph = h.poseH(pose), pw = h.poseW(pose), cx = s.box.x + s.box.w/2, head = ph*HEAD[h.name];
   let x = cx, base = L.backY;
   if (s.peek === 'up'){
-    const hiddenTop = s.box.y + s.box.h*(s.cover ?? 0.22), peekTop = s.box.y + s.box.h*(s.edge ?? 0) - ph*0.28;
-    base = (w.state === 'peek' ? peekTop : hiddenTop) + ph;
-  } else if (s.peek === 'side'){
+    /* голова поднимается над краем укрытия (ствол с кустами, кусты под качелями, бортик), тело остаётся за ним */
+    const hiddenTop = s.box.y + s.box.h*(s.cover ?? 0.22);
+    base = peeking ? s.box.y + s.box.h*(s.edge ?? 0) + head*0.1 - head + ph : hiddenTop + ph;
+    /* из-за дерева выглядывают сбоку от ствола, над кустиком, а не за стволом */
+    if (peeking && s.dx){ x = cx + s.box.w*s.dx; h.el.style.rotate = '-8deg'; }
+  } else {
     base = Math.max(L.backY, s.box.y + s.box.h*(s.cover ?? 0.12) + ph);
-    if (w.state === 'peek') x = s.box.x + pw*0.22;
-  } else { /* шкаф */
-    base = s.box.y + s.box.h*0.92; x = cx;
+    /* из-под горки голова высовывается сбоку, всё ниже подбородка обрезано */
+    if (peeking){ x = s.box.x - pw*0.02;
+      h.el.style.clipPath = `inset(0 -20% ${Math.round((1 - head*1.08/h.box.h)*100)}% -20%)`; h.el.style.rotate = '-9deg'; }
   }
   h.put(x, base, DEPTH);
 }
@@ -567,61 +579,69 @@ function onHeroTap(h){
 }
 function onSpotTap(s){
   if (spotsActive && spotResolve){ const r = spotResolve; spotResolve = null; r(s); return; }
+  /* нажала, пока ещё звучит прошлая реплика: запоминаем и отвечаем сразу после неё */
+  if (spotsActive){ pendingSpot = s; s.front.classList.remove('shake'); void s.front.offsetWidth; s.front.classList.add('shake'); return; }
   wobble(s);
 }
 function wobble(s){ s.front.classList.remove('shake'); void s.front.offsetWidth; s.front.classList.add('shake'); sfx.bonk(); }
-function nextSpot(){ return new Promise(r => { spotResolve = r; }); }
+let pendingSpot = null;
+function nextSpot(){ return new Promise(r => { if (pendingSpot){ const s = pendingSpot; pendingSpot = null; r(s); } else spotResolve = r; }); }
 
-/* ---------- Прятки на площадке ---------- */
-const QUESTION = {baum:'e_q_baum', rutsche:'e_q_rutsche', schaukel:'e_q_schaukel', sandkasten:'e_q_sandkasten'};
+/* ---------- Прятки на площадке ----------
+   Как в жизни: один водит и считает, все остальные одновременно разбегаются и прячутся (это видно),
+   каждый в своё место. Водящий ищет всех по очереди; найденный выходит и дальше ходит вместе с ним.
+   Укрытий пять, прячутся четверо: одно место всегда пустое. */
+const QUESTION = {baum:'e_q_baum', rutsche:'e_q_rutsche', schaukel:'e_q_schaukel', sandkasten:'e_q_sandkasten', busch:'e_q_busch'};
 const SHE = {isabel:true};
-let lastSpot = null;
-function randomSpot(){ const ids = Object.keys(spots).filter(id => id !== lastSpot); const id = pick(ids); lastSpot = id; return id; }
-
-async function search(hider, spotId){
-  const s = spots[spotId];
-  const wo = 'a_wo_' + hider.name, find = 'r_find_' + hider.name;
-  spotsActive = true;
-  let found = false, busy = false, lastTap = performance.now(), hintStep = 0;
-  await play(wo);
-  const hints = (async () => {
-    while (!found){
-      await sleep(500);
-      if (found || busy || speaking) continue;
-      const idle = performance.now() - lastTap;
-      if (idle > 5000 && hintStep === 0){ hintStep = 1; await peek(hider, s); }
-      else if (idle > 10000 && hintStep === 1){ hintStep = 2; s.front.classList.add('glow'); await play('a_schau'); }
-      else if (idle > 20000 && hintStep === 2){ hintStep = 3; await play(find); }
-      else if (idle > 30000 && hintStep === 3){ hintStep = 1; lastTap = performance.now() - 5000; await play(wo); }
-    }
-  })();
-  while (true){
-    const t = await nextSpot();
-    busy = true; lastTap = performance.now(); if (hintStep > 1) hintStep = 1;
-    await heroes.emily.talkWhile(play(QUESTION[t.id]), 'hold');
-    if (t === s) break;
-    wobble(t); await play(SHE[hider.name] ? 'a_nein_sie' : 'a_nein_er');
-    busy = false; lastTap = performance.now();
-  }
-  found = true; spotsActive = false; spotResolve = null;
-  s.front.classList.remove('glow');
-  await hints.catch(() => {});
+let lastSpots = [];
+function pickSpots(n, exclude = []){
+  const ids = Object.keys(spots).filter(id => !exclude.includes(id));
+  const fresh = ids.filter(id => !lastSpots.includes(id));
+  const pool = fresh.length >= n ? fresh : ids;
+  return pool.sort(() => Math.random() - .5).slice(0, n);
 }
-async function peek(h, s){
-  setWhere(h, {kind:'spot', spot:s.id, state:'peek'});
-  if (h.name === 'isabel') play('i_findest_nicht'); else sfx.boing();
-  await sleep(1600);
-  if (h.where.kind === 'spot' && h.where.state === 'peek') setWhere(h, {kind:'spot', spot:s.id, state:'hidden'});
+/* где встать, чтобы заглянуть в укрытие: рядом слева (или справа, если слева тесно) */
+function lookX(id){
+  const b = spots[id].box, left = (b.x - L.hE*0.1)/L.W;
+  return left > 0.06 ? left : (b.x + b.w + L.hE*0.1)/L.W;
 }
-async function hideHero(h, spotId){
-  /* Эмили прячется у всех на виду и идёт к укрытию; остальные прячутся тайно, пока Эмили считает */
-  if (h.name === 'emily'){ setWhere(h, {kind:'front', x:h.where.x ?? FRONT_X.emily}); h.setBase(HIDE_POSE[h.name]); setWhere(h, {kind:'spot', spot:spotId, state:'hidden'}); await walked(h); return; }
-  h.el.style.transition = 'opacity .5s'; h.el.style.opacity = 0; await sleep(500);
+/* водящий идёт к месту, найденные идут следом */
+async function moveTeam(seeker, x, team){
+  setWhere(seeker, {kind:'front', x});
+  team.forEach((f, i) => { let fx = x - 0.07*(i + 1); if (fx < 0.03) fx = x + 0.07*(i + 1); setWhere(f, {kind:'front', x:Math.min(0.97, fx)}); });
+  await Promise.all([seeker, ...team].map(walked));
+}
+/* прячется у всех на виду: идёт к месту и устраивается там */
+async function runHide(h, spotId){
   h.setBase(HIDE_POSE[h.name]);
   setWhere(h, {kind:'spot', spot:spotId, state:'hidden'});
-  h.el.style.opacity = 1;
+  await walked(h);
+}
+/* подсказка: спрятавшийся ненадолго высовывает голову из укрытия и прячется обратно */
+const peekAway = (h, s) => s.peek === 'up' ? `translateY(${Math.round(h.box.h*0.45)}px)` : `translateX(${Math.round(h.box.w*0.45)}px)`;
+async function peekUp(h, s, sound = true){
+  if (h.where.kind !== 'spot' || h.where.state !== 'hidden') return false;
+  h.lock++; h.show(PEEK_POSE[h.name]);
+  FX.walk = false; setWhere(h, {kind:'spot', spot:s.id, state:'peek'}); FX.walk = true;
+  await h.el.animate([{transform: peekAway(h, s)}, {transform: 'none'}], {duration: 380, easing: 'cubic-bezier(.2,.8,.3,1.15)'}).finished.catch(() => {});
+  if (sound){ if (h.name === 'theo') play(pick(['t_bark','t_sniff'])); else if (h.name === 'isabel') play('i_hihi'); else if (h.name === 'paul') play('p_hihi'); else play('k_kuckuck'); }
+  return true;
+}
+async function peekDown(h, s){
+  if (h.where.kind === 'spot' && h.where.state === 'peek'){
+    await h.el.animate([{transform: 'none'}, {transform: peekAway(h, s)}], {duration: 300, easing: 'ease-in', fill: 'forwards'}).finished.catch(() => {});
+    FX.walk = false; setWhere(h, {kind:'spot', spot:s.id, state:'hidden'}); FX.walk = true;
+    h.el.getAnimations().forEach(a => a.cancel());
+  }
+  h.lock = Math.max(0, h.lock - 1); if (!h.lock && !h.talking) h.show(h.base);
+}
+async function peek(h, s, hold = 1500){
+  if (!(await peekUp(h, s))) return;
+  await sleep(hold);
+  await peekDown(h, s);
 }
 async function popOut(h, spotId, pose){
+  h.lock = 0;
   await sleep(150);
   setWhere(h, {kind:'spot', spot:spotId, state:'out'});
   h.setBase(pose); h.anim('hop'); sfx.boing();
@@ -631,59 +651,132 @@ async function backToFront(h){
   h.el.style.opacity = 1;
 }
 function dark(on){ $('#dark').classList.toggle('on', on); }
+/* как радуется найденный */
+async function foundCheer(h){
+  if (h.name === 'isabel') await h.talkWhile(play('i_hihi'), 'talk');
+  else if (h.name === 'paul') await h.talkWhile(play('p_hihi'), 'talk');
+  else if (h.name === 'theo') await h.talkWhile(play('t_barks'), 'bark');
+  else await play('k_laugh');
+}
+const FOUND_POSE = {mark:'laugh', theo:'happy', isabel:'jump', paul:'jump', emily:'jump'};
 
-/* Раунд: прячется Изабель или Пауль, Эмили считает и ищет */
-async function roundFriendHides(friend, n){
+/* Эмили ищет: ребёнок нажимает на укрытие, Эмили идёт туда и спрашивает. Главная подсказка — выглядывание. */
+async function emilySearch(remaining, where, team){
   const emily = heroes.emily;
-  const spotId = randomSpot();
-  emily.setBase('counting'); dark(true);
-  const hiding = hideHero(friend, spotId);
+  spotsActive = true; pendingSpot = null;
+  let found = null, busy = false, lastTap = performance.now(), hintStep = 0;
+  const target = () => remaining[0];
+  await play('a_wo_' + target().name);
+  const hints = (async () => {
+    while (!found){
+      await sleep(500);
+      if (found || busy || speaking) continue;
+      const idle = performance.now() - lastTap, h = target(), s = spots[where.get(h)];
+      /* 5 с — выглядывает; 10 с — выглядывает ещё раз, укрытие светится, «Schau mal hier!»;
+         17 с — выглядывает и русская подсказка; 24 с — снова «Wo ist …?» и всё по кругу */
+      if (idle > 5000 && hintStep === 0){ hintStep = 1; await peek(h, s); }
+      else if (idle > 10000 && hintStep === 1){ hintStep = 2; await peek(h, s); s.front.classList.add('glow'); await play('a_schau'); }
+      else if (idle > 17000 && hintStep === 2){ hintStep = 3; await peek(h, s); await play('r_find_' + h.name); }
+      else if (idle > 24000 && hintStep === 3){ hintStep = 1; lastTap = performance.now() - 5000; await play('a_wo_' + h.name); }
+    }
+  })();
+  while (true){
+    const t = await nextSpot();
+    busy = true; lastTap = performance.now(); if (hintStep > 1) hintStep = 1;
+    Object.values(spots).forEach(s => s.front.classList.remove('glow'));
+    await moveTeam(emily, lookX(t.id), team);
+    await emily.talkWhile(play(QUESTION[t.id]), 'hold');
+    found = remaining.find(h => where.get(h) === t.id) || null;
+    if (found) break;
+    wobble(t); await play(SHE[target().name] ? 'a_nein_sie' : 'a_nein_er');
+    busy = false; lastTap = performance.now();
+  }
+  spotsActive = false; spotResolve = null; pendingSpot = null;
+  Object.values(spots).forEach(s => s.front.classList.remove('glow'));
+  await hints.catch(() => {});
+  return found;
+}
+
+/* Раунд 1: водит Эмили, прячутся Марк, Тео, Изабель и Пауль */
+async function roundEmilySeeks(n){
+  const {emily, mark, theo, isabel, paul} = heroes;
+  const hiders = [isabel, paul, mark, theo], ids = pickSpots(hiders.length); lastSpots = ids.slice();
+  const where = new Map(hiders.map((h, i) => [h, ids[i]]));
+  /* Эмили закрывает глаза и считает, остальные на глазах разбегаются по укрытиям */
+  emily.setBase('counting');
   await play('a_zaehl_mit');
+  const hiding = Promise.all(hiders.map(async (h, i) => { await sleep(250 + i*650); await runHide(h, where.get(h)); }));
   await countTo(n, 'e_', null);
   await hiding;
   emily.setBase('idle');
   await repeatAfter('e_komme', emily);
-  dark(false); await sleep(500);
-  await search(friend, spotId);
-  await popOut(friend, spotId, 'jump');
-  await friend.talkWhile(play(friend.name === 'isabel' ? 'i_hihi' : 'p_hihi'), 'talk');
-  await play(SHE[friend.name] ? 'a_da_sie' : 'a_da_er');
-  emily.setBase('jump'); emily.anim('hop'); await play('e_gefunden');
-  await sleep(300); emily.setBase('idle');
-  await repeatAfter(`e_${friend.name}_${spotId}`, emily);
-  await flyBone(friend); await praise();
-  await backToFront(friend);
+  const team = [], remaining = hiders.slice();
+  while (remaining.length){
+    const h = await emilySearch(remaining, where, team), id = where.get(h);
+    remaining.splice(remaining.indexOf(h), 1);
+    /* нашли: выходит из укрытия; «Gefunden!» и «… ist hinter dem Baum!» — пока он стоит у этого укрытия */
+    await popOut(h, id, FOUND_POSE[h.name]);
+    await foundCheer(h);
+    await play(SHE[h.name] ? 'a_da_sie' : 'a_da_er');
+    emily.setBase('jump'); emily.anim('hop'); await play('e_gefunden');
+    await sleep(300); emily.setBase('idle');
+    await repeatAfter(`e_${h.name}_${id}`, emily);
+    if (remaining.length % 2 === 0){ await flyBone(h); await praise(); }
+    /* найденный дальше ходит вместе с Эмили */
+    h.setBase('idle'); team.push(h);
+    await moveTeam(emily, emily.where.x, team);
+  }
+  await Promise.all([emily, ...hiders].map(backToFront));
 }
 
-/* Раунд: Эмили прячется, Пауль считает и ищет */
+/* Раунд 2: водит Пауль, прячутся Эмили (сама выбирает место), Марк, Тео и Изабель */
 async function roundPaulSeeks(){
-  const {emily, paul} = heroes;
+  const {emily, paul, mark, theo, isabel} = heroes;
   await repeatAfter('e_verstecke_mich', emily);
-  spotsActive = true;
+  spotsActive = true; pendingSpot = null;
   const choose = (async () => { let k = 0; while (spotsActive){ await sleep(6000); if (!spotsActive) break; k++; if (speaking) continue; await play(k % 3 === 2 ? 'r_choose' : 'a_wo_versteckst'); } })();
   await play('a_wo_versteckst');
-  const s = await nextSpot(); spotsActive = false; spotResolve = null;
-  lastSpot = s.id; sfx.pop();
-  await hideHero(emily, s.id);
-  /* Пауль закрывает глаза и считает до десяти, на экране загораются числа */
+  const s = await nextSpot(); spotsActive = false; spotResolve = null; pendingSpot = null;
+  sfx.pop();
+  const others = [isabel, mark, theo], otherIds = pickSpots(others.length, [s.id]);
+  const where = new Map([[emily, s.id], ...others.map((h, i) => [h, otherIds[i]])]);
+  lastSpots = [...where.values()];
+  /* Пауль закрывает глаза и считает до десяти, а все разбегаются по укрытиям */
   paul.setBase('hide');
+  const hiding = Promise.all([runHide(emily, s.id), ...others.map(async (h, i) => { await sleep(500 + i*700); await runHide(h, where.get(h)); })]);
   await countAlong('p_count10', 10, paul);
+  await hiding;
   paul.setBase('idle');
-  const wrong = Object.keys(spots).filter(id => id !== s.id).sort(() => Math.random() - .5).slice(0, 1 + Math.floor(Math.random()*2));
-  for (const id of [...wrong, s.id]){
-    await walkTo(paul, spots[id]);
-    if (id !== s.id){ wobble(spots[id]); await paul.talkWhile(play('p_hier_nicht'), 'talk'); await sleep(200); }
+  /* Пауль обходит укрытия; пустое место (одно) он тоже может проверить */
+  const remaining = [...where.keys()], team = [];
+  const empty = Object.keys(spots).filter(id => ![...where.values()].includes(id));
+  const order = [...where.values()].sort(() => Math.random() - .5);
+  if (empty.length && Math.random() < 0.8) order.splice(1 + Math.floor(Math.random()*(order.length - 1)), 0, empty[0]);
+  for (const id of order){
+    await moveTeam(paul, lookX(id), team);
+    const h = remaining.find(x => where.get(x) === id);
+    if (!h){ wobble(spots[id]); await paul.talkWhile(play('p_hier_nicht'), 'talk'); await sleep(200); continue; }
+    remaining.splice(remaining.indexOf(h), 1);
+    if (h === emily){
+      /* Пауль заглянул — Эмили высовывается и говорит, где она: «Ich bin …» звучит, пока она ещё в укрытии */
+      await peekUp(emily, spots[id], false);
+      await repeatAfter(`e_ich_${id}`, emily);
+      paul.setBase('jump'); paul.anim('hop'); await paul.talkWhile(play('p_gefunden'), 'talk');
+      await popOut(emily, id, 'jump');
+      await sleep(300); emily.setBase('idle'); paul.setBase('idle');
+      await flyBone(emily); await praise();
+    } else {
+      await popOut(h, id, FOUND_POSE[h.name]);
+      paul.setBase('jump'); paul.anim('hop'); await paul.talkWhile(play('p_gefunden'), 'talk'); paul.setBase('idle');
+      await foundCheer(h);
+      await play(SHE[h.name] ? 'a_da_sie' : 'a_da_er');
+    }
+    h.setBase('idle'); team.push(h);
+    await moveTeam(paul, paul.where.x, team);
   }
-  await popOut(emily, s.id, 'jump');
-  paul.setBase('jump'); paul.anim('hop');
-  await paul.talkWhile(play('p_gefunden'), 'talk');
-  await sleep(300);
-  emily.setBase('idle'); paul.setBase('idle');
-  await repeatAfter(`e_ich_${s.id}`, emily);
   await paul.talkWhile(play('p_dran'), 'talk');
-  await flyBone(emily); await praise();
-  await backToFront(emily);
-  await walkTo(paul, null);
+  await Promise.all([paul, emily, ...others].map(backToFront));
+  await choose.catch(() => {});
 }
 /* Счёт одной записью: числа загораются по ходу записи, Эмили считает вместе */
 async function countAlong(clip, n, speaker){
@@ -756,9 +849,8 @@ async function level(){
   await repeatAfter('e_darf_ich', emily);
   paul.anim('hop'); await paul.talkWhile(play('p_klar'), 'talk');
   await isabel.talkWhile(play('i_verstecken'), 'talk');
-  /* 3. Прятки: Изабель, Пауль, потом прячется Эмили */
-  await roundFriendHides(isabel, plays === 0 ? 5 : 10);
-  await roundFriendHides(paul, 10);
+  /* 3. Прятки: сначала водит Эмили (прячутся все), потом водит Пауль */
+  await roundEmilySeeks(plays === 0 ? 5 : 10);
   await roundPaulSeeks();
   /* 4. Финал: косточки, дружба, прощание */
   theo.setBase('curious');
