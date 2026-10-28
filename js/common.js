@@ -152,7 +152,7 @@
   const again = document.getElementById('again'), stage = document.getElementById('stage');
   const m = location.pathname.match(/l(\d+)\.html$/);
   if (again && stage && m){
-    const n = +m[1], LAST = 12, href = n < LAST ? `l${n + 1}.html` : 'index.html';
+    const n = +m[1], LAST = 16, href = n < LAST ? `l${n + 1}.html` : 'index.html';
     const css = document.createElement('style');
     css.textContent = `
     #next{position:absolute;left:auto;top:auto;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:97;width:min(26vw,30vh,170px);height:min(26vw,30vh,170px);border-radius:50%;

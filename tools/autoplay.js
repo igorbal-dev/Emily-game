@@ -36,7 +36,7 @@ async function tapper(page){
       return true; };
     const all = [...document.querySelectorAll('#stage *')].filter(el => !el.closest('svg') || el.tagName === 'svg');
     const cands = all.filter(el => {
-      if (el.id === 'tomap' || el.closest('#tomap') || el.id === 'again' || el.closest('#rotate')) return false;
+      if (el.id === 'tomap' || el.closest('#tomap') || el.closest('#home') || el.id === 'again' || el.closest('#rotate')) return false;
       if (el.tagName === 'IMG' || el.tagName === 'svg' || el.tagName === 'CANVAS' || el.tagName === 'I' || el.tagName === 'SPAN') return false;
       const cs = getComputedStyle(el); const cls = typeof el.className === 'string' ? el.className : ''; return (cs.cursor === 'pointer' || el.tagName === 'BUTTON' || /tapme|glow/.test(cls)) && cs.pointerEvents !== 'none' && vis(el);
     });
