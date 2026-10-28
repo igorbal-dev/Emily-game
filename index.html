@@ -91,10 +91,12 @@ FRIENDS.forEach(f => {
   d.innerHTML = `<span class="f"><img src="${f.img}" alt=""></span><span></span>`; d.lastChild.textContent = f.name; fr.appendChild(d);
 });
 /* мини-игры: открываются за косточки; пока идут тесты — все открыты и бесплатны */
-const MINIS = [{href:'m1.html', de:'Fahrradrennen', ru:'Гонки на велосипедах: объезжай лужи, собирай косточки, зови Тео', pic:'<img src="assets/img/e3cc9c3ba853.webp" alt="">'}];
+const MINIS = [{href:'m1.html', key:'race', de:'Fahrradrennen', ru:'Гонки на велосипедах: объезжай лужи, собирай косточки, зови Тео', pic:'<img src="assets/img/e3cc9c3ba853.webp" alt="">'},
+  {href:'m2.html', key:'theo', de:'Theo fängt Knochen', ru:'Тео ловит косточки миской, а чужие вещи — нет', pic:'<img src="assets/img/282bb288f557.webp" alt="">'},
+  {href:'m3.html', key:'fangen', de:'Fangen', ru:'Догонялки на площадке: «Hab dich!», домик — укрытие', pic:'<img src="assets/img/5d83645ea6ea.svg" alt="">'}];
 const mini = prog.mini || {};
 MINIS.forEach((g, i) => {
-  const a = document.createElement('a'); a.className = 'lvl' + (mini.race ? ' done' : ''); a.href = g.href;
+  const a = document.createElement('a'); a.className = 'lvl' + (mini[g.key] ? ' done' : ''); a.href = g.href;
   a.innerHTML = `<span class="num">${i + 1}</span><span class="star">${STAR}</span><span class="pic">${g.pic}</span><span class="de"></span><span class="ru"></span><span class="tags"><i class="s">тест: бесплатно</i></span>`;
   a.querySelector('.de').textContent = g.de; a.querySelector('.ru').textContent = g.ru;
   document.getElementById('minis').appendChild(a);
