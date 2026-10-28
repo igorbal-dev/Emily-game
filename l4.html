@@ -77,6 +77,9 @@ body{font-family:"Trebuchet MS",system-ui,sans-serif;-webkit-user-select:none;us
 .prop svg,.candle svg,.plate svg,.piece svg{width:100%;height:100%;display:block;overflow:visible}
 #cake{cursor:pointer}#gift{cursor:pointer}
 .candle{z-index:57;cursor:pointer}.candle.lit{z-index:36;cursor:default}
+/* свечки тонкие: зона касания шире самой свечки, чтобы детский палец попадал */
+.candle:not(.lit)::before{content:"";position:absolute;inset:-25% -70% -10%}
+#cbox{pointer-events:none}
 .plate{z-index:32}.piece{z-index:35}
 [data-name=isabel] .shadow{display:none}
 button:focus-visible{outline:4px solid #fff;outline-offset:4px}

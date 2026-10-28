@@ -28,7 +28,7 @@ const INIT = `(() => {
 })();`;
 
 async function tapper(page){
-  return page.evaluate(() => {
+  return withTimeout(page.evaluate(() => {
     const vis = el => { const r = el.getBoundingClientRect(); if (r.width < 4 || r.height < 4) return false;
       const cs = getComputedStyle(el); if (cs.visibility === 'hidden' || +cs.opacity === 0) return false;
       const x = r.left + r.width/2, y = r.top + r.height/2; if (x < 0 || y < 0 || x > innerWidth || y > innerHeight) return false;
@@ -37,16 +37,18 @@ async function tapper(page){
     const cands = all.filter(el => {
       if (el.id === 'tomap' || el.closest('#tomap') || el.id === 'again' || el.closest('#rotate')) return false;
       if (el.tagName === 'IMG' || el.tagName === 'svg' || el.tagName === 'CANVAS' || el.tagName === 'I' || el.tagName === 'SPAN') return false;
-      const cs = getComputedStyle(el); return (cs.cursor === 'pointer' || el.tagName === 'BUTTON') && cs.pointerEvents !== 'none' && vis(el);
+      const cs = getComputedStyle(el); const cls = typeof el.className === 'string' ? el.className : ''; return (cs.cursor === 'pointer' || el.tagName === 'BUTTON' || /tapme|glow/.test(cls)) && cs.pointerEvents !== 'none' && vis(el);
     });
-    const hot = cands.filter(el => /glow|hint|pulse|blink|hl|light|wiggle/.test(el.className && el.className.baseVal === undefined ? el.className : ''));
-    const list = hot.length && Math.random() < 0.6 ? hot : cands;
+    const hot = cands.filter(el => /tapme|glow|hint|pulse|lit/.test(el.className && el.className.baseVal === undefined ? el.className : ''));
+    const list = hot.length && Math.random() < 0.85 ? hot : cands;
     if (!list.length) return null;
     const el = list[Math.floor(Math.random()*list.length)];
     const r = el.getBoundingClientRect();
     return {x: r.left + r.width/2, y: r.top + r.height/2, tag: el.tagName + '#' + el.id + '.' + el.className};
-  });
+  }), 5000);
 }
+
+function withTimeout(p, ms){ return Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('страница зависла')), ms))]); }
 
 async function dragTry(page){
   /* перетаскивание: от случайного нажимаемого к случайной точке */
@@ -75,17 +77,20 @@ async function dragTry(page){
     const t0 = Date.now(); let ok = false, taps = 0;
     while (Date.now() - t0 < LIMIT){
       await page.waitForTimeout(250);
-      const done = await page.evaluate(() => { const a = document.getElementById('again'); return a && !a.hidden; });
+      let done;
+      try { done = await withTimeout(page.evaluate(() => { const a = document.getElementById('again'); return a && !a.hidden; }), 5000); }
+      catch(e){ errs.push('ЗАВИСЛА: ' + e.message + ' через ' + Math.round((Date.now()-t0)/1000) + ' с'); break; }
       if (done){ ok = true; break; }
-      const t = await tapper(page);
+      let t = null; try { t = await tapper(page); } catch(e){ errs.push('ЗАВИСЛА при поиске кнопок'); break; }
+      if (process.env.STATE && taps % 25 === 0){ try { console.log(Math.round((Date.now()-t0)/1000) + 's', JSON.stringify(await withTimeout(page.evaluate(process.env.STATE), 3000)), t && t.tag); } catch(e){ console.log("state err", e.message); } }
       if (t){ taps++; if (taps % 7 === 0) await dragTry(page); else await page.mouse.click(t.x, t.y); }
     }
-    const jsErr = (await page.evaluate(() => window.__errors)) || ['(нет __errors) url=' + page.url()];
-    if (process.env.SHOT) await page.screenshot({path: `${process.env.SHOT}/l${lv}.png`});
+    let jsErr = []; try { jsErr = (await withTimeout(page.evaluate(() => window.__errors), 3000)) || []; } catch(e){}
+    if (process.env.SHOT) await page.screenshot({path: `${process.env.SHOT}/l${lv}.png`, timeout: 5000}).catch(() => {});
     const r = {level: lv, finished: ok, seconds: Math.round((Date.now()-t0)/1000), taps, errors: [...new Set([...errs, ...jsErr])].slice(0, 8)};
     console.log(JSON.stringify(r));
     results.push(r);
-    await ctx.close();
+    await ctx.close().catch(() => {});
   }
   await browser.close();
 })();
