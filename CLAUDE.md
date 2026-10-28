@@ -4,5 +4,5 @@
 - После записи: `tools/voice_import.py` (обрезка тишины, 24 кГц моно mp3 в `assets/snd/`), ключ — в `SND` уровня; текст проверить расшифровкой одним склеенным файлом (`docs/voice.md`); `node tools/voice_check.js` должен показать 0 фраз без записи.
 - Ключи API не сохранять в репозиторий.
 - Немецкий сначала, потом русская подсказка. Текста на экране нет.
-- Проверять в браузере: телефон горизонтально (844×390) и iPad (1180×820), `tools/autoplay.js`.
+- Проверять в браузере: телефон горизонтально (844×390) и iPad (1180×820), `tools/autoplay.js`. Мини-игра «гонки» (m1) вертикальная: телефон 390×844, iPad 820×1180; после правки m1.src.html — `python3 tools/build_minigames.py`.
 - Выкладка: `git push origin claude/emily-game-port` и `git push origin claude/emily-game-port:gh-pages`.

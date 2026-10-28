@@ -17,7 +17,7 @@ body{font-family:"Trebuchet MS",system-ui,sans-serif;-webkit-user-select:none;us
 #home{position:absolute;left:calc(14px + env(safe-area-inset-left,0px));top:calc(14px + env(safe-area-inset-top,0px));z-index:96;width:58px;height:58px;border-radius:50%;background:#fff;box-shadow:0 4px 0 #e2b98a;display:grid;place-items:center}
 #home svg{width:34px;height:34px}
 /* позвать Тео */
-#theoBtn{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:70;width:min(24vh,22vw,140px);height:min(24vh,22vw,140px);
+#theoBtn{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:70;width:min(14vh,26vw,130px);height:min(14vh,26vw,130px);
   border-radius:50%;border:6px solid #fff;background:#ffe9c7 center 30%/120% auto no-repeat;box-shadow:0 6px 0 #e2b98a;cursor:pointer;padding:0;animation:call 1s ease-in-out infinite}
 @keyframes call{0%,100%{transform:scale(1);box-shadow:0 6px 0 #e2b98a,0 0 0 0 rgba(255,216,77,.7)}50%{transform:scale(1.08);box-shadow:0 6px 0 #e2b98a,0 0 0 20px rgba(255,216,77,0)}}
 /* подсказка: нажимай слева и справа */
@@ -52,7 +52,7 @@ body{font-family:"Trebuchet MS",system-ui,sans-serif;-webkit-user-select:none;us
 #again svg{width:50px;height:50px}
 #rotate{position:absolute;inset:0;z-index:95;background:#cdeeff;display:grid;place-items:center}
 #rotate svg{width:min(50vw,220px);height:auto;animation:turn 2s ease-in-out infinite}
-@keyframes turn{0%,20%{transform:rotate(0)}50%,80%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+@keyframes turn{0%,20%{transform:rotate(-90deg)}50%,80%{transform:rotate(0)}100%{transform:rotate(-90deg)}}
 .tapme{z-index:60}
 button:focus-visible{outline:4px solid #fff;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){#go,#theoBtn,.side svg{animation:none}}
@@ -169,21 +169,22 @@ let L = {};
 function layout(){
   W = stage.clientWidth; H = stage.clientHeight; DPR = Math.min(2, window.devicePixelRatio || 1);
   cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR); cv.style.width = W + 'px'; cv.style.height = H + 'px';
-  const roadW = Math.min(W*0.58, H*1.3);
-  L = {cx: W/2, roadW, laneW: roadW/3, baseY: H*0.52, riderH: H*0.47};
-  $('#rotate').hidden = W >= H;
+  /* вертикальный экран: дорога почти во всю ширину, дети внизу, трасса уходит вверх */
+  const roadW = Math.min(W*0.8, H*0.62), laneW = roadW/3;
+  L = {cx: W/2, roadW, laneW, baseY: H*0.86, riderH: Math.min(H*0.2, laneW*1.55)};
+  $('#rotate').hidden = !(W > H && H < 600);   /* телефон боком — просим повернуть вертикально */
 }
 const laneX = i => L.cx + (i - 1)*L.laneW;
-/* расстояние по дороге меряется в высотах экрана: d больше — дальше по дороге, ближе к камере, ниже на экране */
-const scrY = d => L.baseY + (d - R.emily.d)*H;
+/* расстояние по дороге меряется в высотах экрана: d больше — дальше по дороге, выше на экране */
+const scrY = d => L.baseY - (d - R.emily.d)*H;
 
 /* ---------- гонщики ---------- */
 const R = {
   emily:  {name:'emily',  lane:1, x:0, d:0, pose:'ride1', h:1.00},
   isabel: {name:'isabel', lane:0, x:0, d:0, h:0.96, bike:'#ffb02e'},
   paul:   {name:'paul',   lane:2, x:0, d:0, h:1.00, bike:'#4a90e2'},
-  mark:   {name:'mark',   lane:-1, x:0, d:-0.2, pose:'push1', h:0.74},
-  theo:   {name:'theo',   x:0, d:0.02, pose:'run1', h:0.5, mode:'run'}
+  mark:   {name:'mark',   lane:-1, x:0, d:-0.1, pose:'push1', h:0.74},
+  theo:   {name:'theo',   x:0, d:0.02, pose:'run1', h:0.42, mode:'run'}
 };
 const RIVALS = [R.isabel, R.paul];
 for (const r of Object.values(R)){ r.talking = false; r.talkP = null; r.flash = 0; r.bob = 0; }
@@ -198,7 +199,7 @@ function resetRace(){
        place:0, order:null, theoAway:0, theoEvents:[15, 36], said:{}, last:{paul:0, isabel:0, hoppla:-9}, finishT:0};
   R.emily.lane = 1; R.isabel.lane = 0; R.paul.lane = 2;
   for (const r of [R.emily, R.isabel, R.paul]){ r.d = 0; r.x = laneX(r.lane); r.off = 0; r.place = 0; }
-  R.emily.pose = 'stand'; R.mark.d = -0.2; R.mark.pose = 'wave'; R.theo.d = 0.02; R.theo.mode = 'sit'; R.theo.pose = 'look';
+  R.emily.pose = 'stand'; R.mark.d = -0.1; R.mark.pose = 'wave'; R.theo.d = 0.02; R.theo.mode = 'sit'; R.theo.pose = 'look';
   $('#purseNum').textContent = '0';
 }
 
@@ -266,8 +267,8 @@ function drawWorld(){
   const left = cx - roadW/2, right = cx + roadW/2;
   /* полоски травы движутся вместе с дорогой */
   const stripe = 0.25;
-  for (let k = Math.floor((e.d - 0.6)/stripe); k*stripe < e.d + 0.6; k++){
-    if (k % 2) continue; const y1 = scrY(k*stripe), y2 = scrY((k + 1)*stripe);
+  for (let k = Math.floor((e.d - 0.3)/stripe); k*stripe < e.d + 1.1; k++){
+    if (k % 2) continue; const y1 = scrY((k + 1)*stripe), y2 = scrY(k*stripe);
     g.fillStyle = '#86c962'; g.fillRect(0, y1, W, y2 - y1);
   }
   /* дорога и бордюры */
@@ -277,34 +278,34 @@ function drawWorld(){
   /* штриховая разметка */
   g.fillStyle = '#ffffff';
   const dash = 0.16;
-  for (let k = Math.floor((e.d - 0.6)/dash); k*dash < e.d + 0.6; k++){
-    if (k % 2) continue; const y = scrY(k*dash);
+  for (let k = Math.floor((e.d - 0.3)/dash); k*dash < e.d + 1.1; k++){
+    if (k % 2) continue; const y = scrY((k + 1)*dash);
     for (const lx of [left + L.laneW, left + 2*L.laneW]) rr(lx - 3, y, 6, dash*H*0.9, 3), g.fill();
   }
   /* старт и финиш: клетчатая полоса */
   for (const [dd, big] of [[0, false], [RACE_D, true]]){
-    const y = scrY(dd); if (y < -H*0.4 || y > H*1.1) continue;
-    const n = 12, cw = roadW/n, ch = H*0.03;
+    const y = scrY(dd); if (y < -H*0.1 || y > H*1.7) continue;
+    const n = 12, cw = roadW/n, ch = L.laneW*0.09;
     for (let r = 0; r < 2; r++) for (let i = 0; i < n; i++){ g.fillStyle = (i + r) % 2 ? '#222' : '#fff'; g.fillRect(left + i*cw, y + r*ch - ch, cw, ch); }
     if (big){   /* арка финиша: два столба и флажки */
-      g.fillStyle = '#d65a3b'; g.fillRect(left - roadW*0.06, y - H*0.62, roadW*0.025, H*0.62); g.fillRect(right + roadW*0.035, y - H*0.62, roadW*0.025, H*0.62);
-      const fy = y - H*0.6; g.strokeStyle = '#7a4a22'; g.lineWidth = 2; g.beginPath(); g.moveTo(left - roadW*0.05, fy); g.quadraticCurveTo(cx, fy + H*0.06, right + roadW*0.05, fy); g.stroke();
+      g.fillStyle = '#d65a3b'; const ph = L.riderH*1.5; g.fillRect(left - roadW*0.04, y - ph, roadW*0.025, ph); g.fillRect(right + roadW*0.015, y - ph, roadW*0.025, ph);
+      const fy = y - ph*0.97; g.strokeStyle = '#7a4a22'; g.lineWidth = 2; g.beginPath(); g.moveTo(left - roadW*0.05, fy); g.quadraticCurveTo(cx, fy + L.laneW*0.5, right + roadW*0.05, fy); g.stroke();
       const cols = ['#ff7a59','#ffd84d','#5aa8f0','#32b67a','#ff8fb8'];
-      for (let i = 0; i < 14; i++){ const t = (i + 0.5)/14, fx = left - roadW*0.05 + t*(roadW*1.1), yy = fy + H*0.06*4*t*(1 - t);
-        g.fillStyle = cols[i % 5]; g.beginPath(); g.moveTo(fx - roadW*0.025, yy); g.lineTo(fx + roadW*0.025, yy); g.lineTo(fx, yy + H*0.05); g.fill(); }
+      for (let i = 0; i < 14; i++){ const t = (i + 0.5)/14, fx = left - roadW*0.05 + t*(roadW*1.1), yy = fy + L.laneW*0.25*4*t*(1 - t);
+        g.fillStyle = cols[i % 5]; g.beginPath(); g.moveTo(fx - roadW*0.025, yy); g.lineTo(fx + roadW*0.025, yy); g.lineTo(fx, yy + L.laneW*0.18); g.fill(); }
     }
   }
   /* кусты, деревья и цветы по краям */
   const step = 0.3;
-  for (let k = Math.floor((e.d - 0.7)/step); k*step < e.d + 0.7; k++){
+  for (let k = Math.floor((e.d - 0.4)/step); k*step < e.d + 1.2; k++){
     for (const side of [-1, 1]){
       const r1 = hash(k*2 + (side > 0 ? 1 : 0)), y = scrY(k*step + r1*0.2);
-      const room = (W - roadW)/2 - roadW*0.05; if (room < 20) continue;
+      const room = (W - roadW)/2 - roadW*0.05; if (room < 12) continue;
       const x = side < 0 ? left - roadW*0.06 - room*(0.2 + 0.7*hash(k + 9.1)) : right + roadW*0.06 + room*(0.2 + 0.7*hash(k + 3.7));
       const kind = Math.floor(hash(k*5.3 + side)*4);
-      if (kind === 0){ const s = H*0.07; g.fillStyle = '#5cae43'; for (const [ox, oy] of [[-.6,0],[.6,0],[0,-.5]]){ g.beginPath(); g.arc(x + ox*s, y + oy*s, s*0.75, 0, 7); g.fill(); } }
-      else if (kind === 1){ const s = H*0.02; for (let f = 0; f < 3; f++){ g.fillStyle = ['#ff6b8a','#ffd84d','#fff'][f]; g.beginPath(); g.arc(x + (f - 1)*s*2.2, y + (f % 2)*s, s, 0, 7); g.fill(); } }
-      else if (kind === 2){ const s = H*0.1; g.fillStyle = '#a8703f'; g.fillRect(x - s*0.1, y - s*0.6, s*0.2, s*0.6); g.fillStyle = '#6fbf4f'; g.beginPath(); g.arc(x, y - s*0.8, s*0.5, 0, 7); g.fill(); }
+      if (kind === 0){ const s = Math.min(L.laneW*0.22, room*0.45); g.fillStyle = '#5cae43'; for (const [ox, oy] of [[-.6,0],[.6,0],[0,-.5]]){ g.beginPath(); g.arc(x + ox*s, y + oy*s, s*0.75, 0, 7); g.fill(); } }
+      else if (kind === 1){ const s = L.laneW*0.05; for (let f = 0; f < 3; f++){ g.fillStyle = ['#ff6b8a','#ffd84d','#fff'][f]; g.beginPath(); g.arc(x + (f - 1)*s*2.2, y + (f % 2)*s, s, 0, 7); g.fill(); } }
+      else if (kind === 2){ const s = Math.min(L.laneW*0.35, room*0.9); g.fillStyle = '#a8703f'; g.fillRect(x - s*0.1, y - s*0.6, s*0.2, s*0.6); g.fillStyle = '#6fbf4f'; g.beginPath(); g.arc(x, y - s*0.8, s*0.5, 0, 7); g.fill(); }
     }
   }
 }
@@ -312,16 +313,16 @@ function drawItem(it){
   const y = scrY(it.d), x = laneX(it.lane), s = L.laneW;
   if (y < -H*0.2 || y > H*1.2 || it.gone) return;
   if (it.type === 'puddle'){
-    g.fillStyle = '#5aa8f0'; g.beginPath(); g.ellipse(x, y, s*0.36, H*0.045, 0, 0, 7); g.fill();
-    g.fillStyle = '#9fd0ff'; g.beginPath(); g.ellipse(x - s*0.08, y - H*0.012, s*0.14, H*0.014, 0, 0, 7); g.fill();
+    g.fillStyle = '#5aa8f0'; g.beginPath(); g.ellipse(x, y, s*0.38, s*0.16, 0, 0, 7); g.fill();
+    g.fillStyle = '#9fd0ff'; g.beginPath(); g.ellipse(x - s*0.08, y - s*0.04, s*0.14, s*0.05, 0, 0, 7); g.fill();
   } else if (it.type === 'cone'){
-    const h = H*0.1, w = s*0.22;
+    const h = s*0.42, w = s*0.26;
     g.fillStyle = 'rgba(0,0,0,.15)'; g.beginPath(); g.ellipse(x, y, w*0.9, h*0.12, 0, 0, 7); g.fill();
     g.fillStyle = '#ff7a2e'; g.beginPath(); g.moveTo(x - w*0.5, y); g.lineTo(x - w*0.12, y - h); g.lineTo(x + w*0.12, y - h); g.lineTo(x + w*0.5, y); g.fill();
     g.fillStyle = '#fff'; g.fillRect(x - w*0.33, y - h*0.55, w*0.66, h*0.14);
   } else if (it.type === 'bone'){
-    const w = s*0.34, bob = Math.sin(S.t*5 + it.d*9)*H*0.008;
-    g.save(); g.translate(x - w/2, y - H*0.07 + bob); g.scale(w/100, w/100);
+    const w = s*0.4, bob = Math.sin(S.t*5 + it.d*9)*s*0.03;
+    g.save(); g.translate(x - w/2, y - s*0.22 + bob); g.scale(w/100, w/100);
     g.shadowColor = '#fff36b'; g.shadowBlur = 14; g.fillStyle = '#fff7e6'; g.fill(BONE_PATH); g.shadowBlur = 0;
     g.lineWidth = 4; g.strokeStyle = '#c9a77a'; g.stroke(BONE_PATH); g.restore();
   }
@@ -392,7 +393,7 @@ function step(dt){
   if (racing && S.v > 0.02){
     const ped = Math.floor(S.t*6) % 2;
     e.pose = S.t < (e.splashUntil || 0) ? 'splash' : S.t < (e.leanUntil || 0) ? (e.leanDir < 0 ? 'leanL' : 'leanR') : S.v > 0.27 ? (ped ? 'fast' : 'ride2') : (ped ? 'ride1' : 'ride2');
-    e.bob = Math.sin(S.t*12)*H*0.004;
+    e.bob = Math.sin(S.t*12)*L.riderH*0.01;
   } else if (S.phase === 'done') e.bob = 0;
   /* соперники: держатся рядом, обгоняют и отстают; в конце место зависит от того, сколько луж задела Эмили */
   RIVALS.forEach((r, i) => {
@@ -415,33 +416,36 @@ function step(dt){
     if (racing && danger(r.lane) && S.t > (r.moveT || 0)){
       const opts = [r.lane - 1, r.lane + 1].filter(l => l >= 0 && l <= 2 && !danger(l) && !busy(l));
       if (opts.length){ r.lane = pick(opts); r.moveT = S.t + 0.5; }
+    } else if (racing && r.lane === e.lane && S.t > (r.moveT || 0)){   /* не висим на хвосте у Эмили: уходим в свободную полосу */
+      const opts = [0, 1, 2].filter(l => l !== r.lane && !danger(l) && !busy(l));
+      if (opts.length){ r.lane = opts.sort((a, b) => Math.abs(a - r.lane) - Math.abs(b - r.lane))[0]; r.moveT = S.t + 1.2; }
     }
     const tx = laneX(r.lane); r.lean = clamp((tx - r.x)/L.laneW, -1, 1); r.x += (tx - r.x)*Math.min(1, dt*6);
-    r.bob = racing && S.v > 0.02 ? Math.sin(S.t*12 + i)*H*0.004 : 0;
+    r.bob = racing && S.v > 0.02 ? Math.sin(S.t*12 + i)*L.riderH*0.01 : 0;
   });
   /* Марк на беговеле позади, по краю дороги слева */
   const m = R.mark;
-  m.x = L.cx - L.roadW/2 - Math.min(L.laneW*0.45, (W - L.roadW)/4);   /* Марк едет по дорожке на траве слева */
-  if (S.phase === 'done'){ m.d += (e.d - 0.12 - m.d)*Math.min(1, dt*1.5); m.bob = 0; }
-  if (racing){ m.d += (S.v*0.92 + 1.5*(e.d - 0.2 + 0.04*Math.sin(S.t*0.5) - m.d))*dt; m.pose = Math.floor(S.t*3) % 4 === 3 ? 'glide' : (Math.floor(S.t*4) % 2 ? 'push1' : 'push2'); m.bob = Math.sin(S.t*8)*H*0.003; }
+  m.x = L.cx - L.roadW/2 + L.laneW*0.12;   /* Марк едет у левого края, сзади; подъезжает, когда зовёт «Wartet auf mich!» */
+  if (S.phase === 'done'){ m.d += (e.d + 0.2 - m.d)*Math.min(1, dt*1.5); m.bob = 0; }
+  if (racing){ m.d += (S.v*0.92 + 1.5*(e.d + (S.t < (S.markNear || 0) ? -0.1 : -0.3) - m.d))*dt; m.pose = Math.floor(S.t*3) % 4 === 3 ? 'glide' : (Math.floor(S.t*4) % 2 ? 'push1' : 'push2'); m.bob = Math.sin(S.t*8)*L.riderH*0.008; }
   /* Тео: справа по траве; отвлёкся — убегает к краю и отстаёт */
-  const th = R.theo, nearX = L.cx + L.roadW/2 + L.roadW*0.12, farX = W - Math.max(40, (W - L.cx - L.roadW/2)*0.25);
+  const th = R.theo, nearX = L.cx + L.roadW/2 + (W - L.roadW)*0.12, farX = L.cx + L.roadW/2 + (W - L.roadW)/4;
   if (th.mode === 'sit'){ th.x = nearX; th.d = e.d + 0.03; th.pose = 'look'; }
-  else if (th.mode === 'run'){ th.x += (nearX - th.x)*Math.min(1, dt*4); th.d += ((e.d + 0.04 + 0.04*Math.sin(S.t*0.8)) - th.d)*Math.min(1, dt*3); th.pose = 'run' + (1 + Math.floor(S.t*9) % 3); th.flip = false; th.bob = -Math.abs(Math.sin(S.t*9))*H*0.01; }
-  else if (th.mode === 'away'){ th.x += (farX - th.x)*Math.min(1, dt*2.5); th.d += ((e.d - 0.28) - th.d)*Math.min(1, dt*2);
+  else if (th.mode === 'run'){ th.x += (nearX - th.x)*Math.min(1, dt*4); th.d += ((e.d + 0.04 + 0.04*Math.sin(S.t*0.8)) - th.d)*Math.min(1, dt*3); th.pose = 'run' + (1 + Math.floor(S.t*9) % 3); th.flip = false; th.bob = -Math.abs(Math.sin(S.t*9))*L.riderH*0.04; }
+  else if (th.mode === 'away'){ th.x += (farX - th.x)*Math.min(1, dt*2.5); th.d += ((e.d + 0.45) - th.d)*Math.min(1, dt*2);
     const k = S.t - th.awayT; th.pose = k < 1.2 ? 'side' : (Math.floor(k/2.5) % 2 ? 'bow' : 'sniff'); th.flip = k < 1.2; th.bob = 0; }
   else if (th.mode === 'back'){ th.x += (nearX - th.x)*Math.min(1, dt*3); th.d += ((e.d + 0.04) - th.d)*Math.min(1, dt*3); th.pose = 'jump'; th.flip = false;
-    th.bob = -Math.abs(Math.sin(S.t*8))*H*0.03; if (S.t - th.backT > 1.4) th.mode = S.phase === 'done' ? 'sit' : 'run'; }
+    th.bob = -Math.abs(Math.sin(S.t*8))*L.riderH*0.12; if (S.t - th.backT > 1.4) th.mode = S.phase === 'done' ? 'sit' : 'run'; }
   /* ряды помех впереди, до финиша; последние метры пустые */
   if (S.phase === 'race'){
-    while (S.nextRow < e.d + 0.7 && S.nextRow < RACE_D - 1.2){ spawnRow(S.nextRow); S.nextRow += 0.5 + Math.random()*0.25; }
+    while (S.nextRow < e.d + 1.05 && S.nextRow < RACE_D - 1.2){ spawnRow(S.nextRow); S.nextRow += 0.5 + Math.random()*0.25; }
     /* Тео убегает */
     if (S.theoEvents.length && S.t - S.raceT0 > S.theoEvents[0] && R.theo.mode === 'run'){ S.theoEvents.shift(); theoRunsOff(!S.said.theo); S.said.theo = true; }
     /* реплики соперников, редко */
     const pl = R.paul;
     if (pl.d - e.d > 0.08 && S.t - S.last.paul > 14 && !speaking){ S.last.paul = S.t; talk(pl, play('p_schneller')); }
     if (R.isabel.d - e.d < -0.08 && S.t - S.last.isabel > 16 && !speaking){ S.last.isabel = S.t; talk(R.isabel, play('i_warte')); }
-    if (!S.said.mark && S.t - S.raceT0 > 25 && !speaking){ S.said.mark = true; play('k_warte'); }
+    if (!S.said.mark && S.t - S.raceT0 > 25 && !speaking){ S.said.mark = true; S.markNear = S.t + 5; play('k_warte'); }
   }
   /* наезды Эмили */
   if (racing) for (const it of S.items){
@@ -457,12 +461,12 @@ function step(dt){
     }
   }
   S.items = S.items.filter(it => it.d > e.d - 0.7);
-  for (const p of S.drops){ p.x += p.vx*dt; p.y += p.vy*dt; p.vy += H*2.2*dt; p.life -= dt; }
+  for (const p of S.drops){ p.x += p.vx*dt; p.y += p.vy*dt; p.vy += L.riderH*9*dt; p.life -= dt; }
   S.drops = S.drops.filter(p => p.life > 0);
   /* финиш */
   if (S.phase === 'race' && e.d >= RACE_D){ S.phase = 'finish'; S.finishT = S.t; onFinish(); }
 }
-function splashAt(x, y){ for (let i = 0; i < 16; i++) S.drops.push({x, y: y - H*0.02, vx: (Math.random()*2 - 1)*L.laneW*1.4, vy: -H*(0.5 + Math.random()*0.7), r: H*(0.006 + Math.random()*0.01), life: 0.7}); }
+function splashAt(x, y){ for (let i = 0; i < 16; i++) S.drops.push({x, y: y - L.riderH*0.05, vx: (Math.random()*2 - 1)*L.laneW*1.4, vy: -L.riderH*(1.6 + Math.random()*1.6), r: L.riderH*(0.02 + Math.random()*0.03), life: 0.7}); }
 
 /* ---------- ход игры ---------- */
 async function race(){
