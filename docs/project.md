@@ -46,6 +46,20 @@
 8. Kita-Weg — дорога в садик, светофор, счёт машин. 9–10. Уборка игрушек, рынок (точные названия см. в коде меню).
 9. Ballspiel — мяч друзьям по имени, принять Марка.
 10. Turnen — спортзал с Heike, команды, побыть ведущей.
+13. Wer ist dran? — площадка: очередь на качелях, уступить горку, извиниться. ТЗ: docs/tz/level-13.md
+14. Zu Besuch bei Paul — в гостях у Пауля и Frau Becker. ТЗ: docs/tz/level-14.md
+15. Im Supermarkt — магазин с Марком, вопрос продавцу, оплата. ТЗ: docs/tz/level-15.md
+16. Kita: Ich brauche Hilfe — просить помощи, пожалеть друга. ТЗ: docs/tz/level-16.md
+
+Уровни 13–16 собираются из `lN.src.html` (`python3 tools/build_minigames.py`) и работают на общем движке разговорных уровней `js/talk.js`.
+
+## Мини-игры
+
+1. Fahrradrennen (m1) — ТЗ: docs/tz/mini-1-race.md
+2. Theo fängt Knochen (m2) — ТЗ: docs/tz/mini-2-theo.md
+3. Fangen (m3) — ТЗ: docs/tz/mini-3-fangen.md
+
+Пока идут тесты, все мини-игры открыты и бесплатны.
 
 За каждые 5 косточек открывается новая причёска Эмили на главной.
 
