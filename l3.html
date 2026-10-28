@@ -419,7 +419,7 @@ function listen(ms=6000){
    Игра ждёт: образец, ещё раз образец, «Sag es nach!» + образец, русская подсказка + образец, и снова по кругу. */
 async function repeatAfter(model, speaker){
   const say = () => speaker ? speaker.talkWhile(play(model), speaker.name === 'emily' ? 'hold' : 'talk') : play(model);
-  for (let i = 0; i < 12; i++){
+  for (let i = 0; i < 4; i++){
     const c = i % 4;
     /* 1-й и 2-й раз просто фраза, 3-й раз «Sag es nach!» + фраза, 4-й раз русская подсказка + фраза */
     if (c === 2) await play('a_nach');
@@ -437,7 +437,7 @@ async function countTo(n, voice, speaker){
   for (let i = 1; i <= n; i++){
     num.textContent = i; num.classList.remove('pop'); void num.offsetWidth; num.classList.add('pop');
     const d = document.createElement('i'); dots.appendChild(d); sfx.pop();
-    for (let a = 0; a < 12; a++){
+    for (let a = 0; a < 4; a++){
       const c = a % 4;
       if (c === 2) await play('a_nach');
       if (c === 3) await play('r_repeat');

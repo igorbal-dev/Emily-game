@@ -11,7 +11,7 @@
     uttStart: -1e9,        /* начало последней попытки сказать */
     voicedAt: -1e9,        /* последний момент, когда был голос */
     usedAt: -1e9,          /* попытка, которая уже засчитана, второй раз не считается */
-    level: 0, busyUntil: 0, last: 0, started: false
+    level: 0, busyUntil: 0, last: 0, started: false, words: 1, lastClip: '', result: null
   };
   const HEARD_MS = 160;      /* столько голоса подряд хватает, чтобы засчитать */
   const EARLY_MS = 1800;     /* голос за столько мс до появления значка тоже считается */
@@ -59,36 +59,58 @@
     };
   }
   if (typeof window.listen === 'function' && typeof micBtn !== 'undefined'){
-    window.listen = function(ms = 6000){
+    /* Ответ засчитывается, когда Эмили договорила: голос был, а потом ~1,1 с тишины.
+       Ждём не меньше, чем нужно на фразу-образец (0,7 с на слово, минимум 1,5 с).
+       Если голоса нет совсем — через 8 с попытка не засчитана; общий предел 11 с.
+       Синяя кнопка засчитывает сразу. После ответа пауза 0,5 с, потом говорит следующий. */
+    const SILENCE_MS = 1100, PER_WORD_MS = 700, MIN_WAIT_MS = 1500, NO_VOICE_MS = 8000, CAP_MS = 11000, AFTER_MS = 500;
+    window.listen = function(){
       return new Promise(resolve => {
-        const t0 = performance.now();
+        const t0 = performance.now(), minWait = Math.max(MIN_WAIT_MS, V.words*PER_WORD_MS);
         micBtn.hidden = false; micBtn.classList.remove('heard'); micBtn.classList.add('on');
         let finished = false;
-        const end = ok => {
+        const end = (ok, tapped) => {
           if (finished) return; finished = true; micTapResolve = null; micBtn.classList.remove('on');
           levelRing.style.opacity = 0;
+          V.result = {ok, tapped: !!tapped, ms: Math.round(performance.now() - t0), minWait};
           if (ok){ V.usedAt = performance.now(); micBtn.classList.add('heard'); try { sfx.ding(); } catch(e){}
             setTimeout(() => { if (!micTapResolve) micBtn.hidden = true; micBtn.classList.remove('heard'); }, 600); }
           else micBtn.hidden = true;
-          resolve(ok);
+          if (ok && !tapped) setTimeout(() => resolve(true), AFTER_MS); else resolve(ok);
         };
-        micTapResolve = end;
-        if (typeof mic === 'undefined' || !mic){ setTimeout(() => end(false), ms + 2000); return; }
+        micTapResolve = ok => end(ok, true);
+        if (typeof mic === 'undefined' || !mic){ setTimeout(() => end(false), NO_VOICE_MS + 1000); return; }
         try { if (actx.state !== 'running') actx.resume(); } catch(e){}
         const tick = () => {
           if (finished) return;
           const now = performance.now();
           levelRing.style.opacity = Math.min(1, V.level*0.8);
           levelRing.style.transform = `scale(${0.95 + Math.min(0.5, V.level*0.12)})`;
-          /* засчитано: новая попытка, которая была сейчас или чуть раньше значка */
-          if (V.uttStart > V.usedAt && V.voicedAt > t0 - EARLY_MS) return end(true);
-          if (now - t0 > ms) return end(false);
+          /* новая попытка: началась сейчас или чуть раньше значка */
+          const spoke = V.uttStart > V.usedAt && V.voicedAt > t0 - EARLY_MS;
+          if (spoke && now - t0 >= minWait && now - V.voicedAt >= SILENCE_MS && V.run === 0) return end(true);
+          if (spoke && now - t0 > CAP_MS) return end(true);         /* говорит без пауз — тоже попытка */
+          if (!spoke && now - t0 > NO_VOICE_MS) return end(false);
           requestAnimationFrame(tick);
         };
         requestAnimationFrame(tick);
       });
     };
+    /* сколько слов было в последней фразе-образце: по тексту, если он есть, иначе по длине записи */
+    if (typeof window.play === 'function'){
+      const origPlay = window.play;
+      window.play = function(name){
+        try {
+          const t = (typeof TEXT !== 'undefined' && TEXT[name]) ? TEXT[name][0] : null;
+          const dur = (typeof BUF !== 'undefined' && BUF[name]) ? BUF[name].duration : 0;
+          V.words = t ? t.split(/\s+/).filter(Boolean).length : Math.max(1, Math.round(dur/0.45));
+          V.lastClip = name;
+        } catch(e){}
+        return origPlay.apply(this, arguments);
+      };
+    }
   }
+  window.__mic = V;   /* для автопроверки */
 
   /* ---------- то, что сейчас надо нажать: поверх героев и с широкой зоной касания ---------- */
   { const css = document.createElement('style');
