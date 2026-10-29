@@ -1,0 +1,153 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Neue Nachbarin. Уровень 17</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 17 «Neue Nachbarin» — во дворе новая соседка София: знакомимся, отвечаем на вопросы, спрашиваем сами. ТЗ: docs/tz/level-17.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_out": ["assets/img/75212f3d100c.webp", 220, 407], "emily_blink_out": ["assets/img/8f259a32dae9.webp", 220, 407], "emily_mouth1_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_mouth2_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_wave_out": ["assets/img/acf19e1e2d3e.webp", 218, 410], "emily_jump_out": ["assets/img/afd822bd4c46.webp", 276, 377], "emily_surprised_out": ["assets/img/723e0f67193a.webp", 227, 407], "emily_crouch_out": ["assets/img/56b917379eef.webp", 227, 309], "emily_laugh_out": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk_out": ["assets/img/8e591eafe46b.webp", 225, 385], "mark_idle_out": ["assets/img/445af52614b6.webp", 193, 397], "mark_blink_out": ["assets/img/0835c9f94d77.webp", 193, 397], "mark_laugh_out": ["assets/img/82ef3421dc54.webp", 189, 386], "mark_wave_out": ["assets/img/3f7d07abc7df.webp", 198, 397], "mark_talk_out": ["assets/img/554d772231eb.webp", 193, 397], "mark_walk_out": ["assets/img/e5af64887295.webp", 197, 379], "theo_idle": ["assets/img/8ce5fe0202bd.webp", 258, 346], "theo_blink": ["assets/img/5bd18fc57314.webp", 259, 347], "theo_happy": ["assets/img/e2a2a3c50086.webp", 322, 316], "theo_lie": ["assets/img/9355ae5995a1.webp", 325, 255], "theo_sniff": ["assets/img/d5c733713dff.webp", 378, 387], "theo_bark": ["assets/img/9a746a81bb63.webp", 258, 347], "sofia_idle": ["assets/img/12bd730bdbbf.svg", 240, 420], "sofia_blink": ["assets/img/35b340b9865f.svg", 240, 420], "sofia_talk": ["assets/img/59c6ad9d3a72.svg", 240, 420], "sofia_wave": ["assets/img/51ecfa8a9c15.svg", 240, 420], "sofia_jump": ["assets/img/4ce9149adfd7.svg", 240, 420], "sofia_laugh": ["assets/img/1d119741c322.svg", 240, 420], "sofia_sad": ["assets/img/573304ff8304.svg", 240, 420], "sofia_dance": ["assets/img/914d9271b4f9.svg", 240, 420]};  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,crouch,laugh,walk}_out mark_{idle,blink,laugh,wave,talk,walk}_out theo_{idle,blink,happy,lie,sniff,bark} sofia_{idle,blink,talk,wave,jump,laugh,sad,dance}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "k_hallo": "assets/snd/b7966bf60a63.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3", "t_bark": "assets/snd/d5a7365a3230.mp3"};  /*SND: a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht k_hallo k_laugh t_bark*/
+/* фразы без записи — пока голос браузера (js/mini.js), тексты для озвучки — voice-next.md */
+const SAY = {
+  n17_intro: 'Emily, Mark und Theo sind im Hof. Da ist ein neues Mädchen mit vielen Kartons!',
+  f17_hund: 'Hallo! Ist das dein Hund?',
+  e17_theo: 'Ja! Das ist Theo.',
+  f17_name: 'Der ist süß! Ich heiße Sofia. Und du?',
+  e17_emily: 'Ich heiße Emily.',
+  f17_streicheln: 'Darf ich Theo streicheln?',
+  e17_lieb: 'Ja, er ist lieb.',
+  f17_kitzelt: 'Hihi! Das kitzelt!',
+  f17_alt: 'Wie alt bist du?',
+  e17_fuenf: 'Ich bin fünf. Und du?',
+  f17_auch_fuenf: 'Ich bin auch fünf!',
+  f17_wohnst: 'Wohnst du hier?',
+  e17_wohne: 'Ja, ich wohne hier.',
+  f17_neu: 'Wir sind neu hier.',
+  f17_geschwister: 'Hast du Geschwister?',
+  e17_bruder: 'Ja. Das ist mein Bruder Mark.',
+  e17_haustier: 'Hast du auch ein Haustier?',
+  f17_katze: 'Ja, eine Katze! Sie heißt Mimi.',
+  f17_angst: 'Mimi hat Angst vor Hunden!',
+  n17_armer: 'Armer Theo! Er wollte doch nur Hallo sagen.',
+  f17_kita: 'Gehst du in die Kita?',
+  e17_kita: 'Ja! Und du?',
+  f17_bald: 'Ich komme bald in deine Kita!',
+  e17_bis_morgen: 'Bis morgen, Sofia!',
+  f17_tschuess: 'Tschüss, Emily! Tschüss, Theo!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/yard.js"></script>
+<script>
+/* Уровень 17: во дворе новая соседка София с коробками. Отвечаем на её вопросы («Ja! Das ist Theo.», «Ich heiße Emily.», «Ich bin fünf. Und du?»…),
+   сами спрашиваем «Hast du auch ein Haustier?» — кошка Мими в окне пугается Тео, все смеются. В конце «Bis morgen, Sofia!». */
+const LEVEL = 17, FRIENDS = ['sofia'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M14 52 L50 20 L86 52 V90 H14 Z" fill="#f4c9a8" stroke="#c98f55" stroke-width="5" stroke-linejoin="round"/><path d="M6 56 L50 16 L94 56" fill="none" stroke="#5aa8f0" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><rect x="40" y="62" width="20" height="28" rx="3" fill="#7a4a22"/><rect x="22" y="56" width="14" height="14" fill="#9fd0ff"/><rect x="64" y="56" width="14" height="14" fill="#9fd0ff"/><path d="M50 50 C40 42 42 32 48 34 C50 35 50 37 50 38 C50 37 50 35 52 34 C58 32 60 42 50 50 Z" fill="#ff6b8a"/></svg>';
+function drawScene(g, W, H, L){ drawYard(g, W, H, L, {boxes: true}); }
+
+/* кошка Мими в окне Софии: пугается Тео — шерсть дыбом, прячется */
+const CAT = '<svg viewBox="0 0 100 80"><path d="M22 34 L18 8 L38 24 Z M78 34 L82 8 L62 24 Z" fill="#9aa3ad" stroke="#5f6670" stroke-width="3" stroke-linejoin="round"/><ellipse cx="50" cy="46" rx="32" ry="28" fill="#9aa3ad" stroke="#5f6670" stroke-width="3"/><ellipse cx="50" cy="58" rx="16" ry="12" fill="#fff"/><circle cx="38" cy="42" r="6" fill="#ffd34d"/><circle cx="62" cy="42" r="6" fill="#ffd34d"/><ellipse cx="38" cy="42" rx="2" ry="5" fill="#222"/><ellipse cx="62" cy="42" rx="2" ry="5" fill="#222"/><path d="M46 52 l4 4 l4 -4 z" fill="#ff8fb8"/><path d="M14 52 h18 M14 58 h18 M68 52 h18 M68 58 h18" stroke="#5f6670" stroke-width="2"/></svg>';
+const CAT_SCARED = CAT.replace('<ellipse cx="50" cy="46" rx="32" ry="28"', '<path d="M50 14 l6 8 l8 -6 l2 10 l10 -2 l-2 10 l10 4 l-8 6 l8 8 l-10 2 l4 10 l-12 -2 l-4 10 l-8 -8 l-8 8 l-4 -10 l-12 2 l4 -10 l-10 -2 l8 -8 l-8 -6 l10 -4 l-2 -10 l10 2 l2 -10 l8 6 z" fill="#9aa3ad" stroke="#5f6670" stroke-width="3" stroke-linejoin="round"/><ellipse cx="50" cy="46" rx="30" ry="26"').replace(/r="6" fill="#ffd34d"/g, 'r="9" fill="#ffd34d"');
+
+let emily, mark, theo, sofia, cat;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'jump', 'surprised', 'crouch', 'laugh', 'walk'];
+const SP = ['idle', 'blink', 'talk', 'wave', 'jump', 'laugh', 'sad', 'dance'];
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  cat = T.prop(CAT, {px: () => L.W*WIN_X, py: () => yardWinY(L) + L.hE*0.36, w: 0.3, ratio: 0.8, z: 4}); cat.el.style.opacity = 0;
+  sofia = T.hero('sofia', {x: 0.66, h: 0.95, poses: SP});
+  theo = T.hero('theo', {x: -0.1, h: 0.48, poses: ['idle', 'blink', 'happy', 'lie', 'sniff', 'bark']});
+  mark = T.hero('mark', {x: -0.2, h: 0.62, outfit: 'out', poses: ['idle', 'blink', 'laugh', 'wave', 'talk', 'walk']});
+  emily = T.hero('emily', {x: -0.15, outfit: 'out', poses: EP});
+}
+
+async function story(){
+  /* Эмили гуляет с Марком и Тео, во дворе девочка с коробками */
+  theo.walkTo(0.44, 1500); mark.walkTo(0.12, 1500); await emily.walkTo(0.3, 1500);
+  await play('n17_intro');
+  sofia.set('wave'); await sofia.say('f17_hund'); sofia.set('idle');
+  await T.repeat('e17_theo');
+  theo.set('happy'); theo.hop(); play('t_bark'); await sleep(700); theo.set('idle');
+
+  await sofia.say('f17_name');
+  await T.repeat('e17_emily');
+  sofia.set('jump'); await sleep(500); sofia.set('idle');
+  await T.bone(emily);
+
+  /* погладить Тео: Тео лижет Софии руку */
+  await sofia.say('f17_streicheln');
+  await T.repeat('e17_lieb');
+  await theo.walkTo(0.58, 900); theo.set('happy'); theo.face(false);
+  sofia.set('laugh'); T.hearts(theo); sfx.tone(900, 600, 140, 'sine', .12); await sleep(250); sfx.tone(900, 600, 140, 'sine', .12);
+  await sofia.say('f17_kitzelt'); sofia.set('idle');
+  await T.bone(sofia);
+
+  /* сколько лет */
+  await sofia.say('f17_alt');
+  await T.repeat('e17_fuenf');
+  showNum(5); sofia.set('jump'); await sofia.say('f17_auch_fuenf');
+  emily.set('jump'); sofia.set('jump'); sfx.ding(); await sleep(700); hideNum(); emily.set('idle'); sofia.set('idle');
+
+  /* где живёт */
+  await sofia.say('f17_wohnst');
+  await T.repeat('e17_wohne');
+  await sofia.say('f17_neu');
+  await T.bone(emily);
+
+  /* брат */
+  await sofia.say('f17_geschwister');
+  await T.repeat('e17_bruder');
+  await mark.walkTo(0.2, 600); mark.set('wave'); await mark.say('k_hallo'); mark.set('idle');
+  sofia.set('wave'); await sleep(500); sofia.set('idle');
+
+  /* Эмили спрашивает сама: кошка Мими боится собак — все смеются, Тео виновато ложится */
+  await T.repeat('e17_haustier');
+  await sofia.say('f17_katze');
+  cat.el.animate([{opacity: 0, transform: 'translateY(30%)'}, {opacity: 1, transform: 'none'}], {duration: 500, fill: 'forwards'});
+  await sleep(600);
+  theo.set('bark'); play('t_bark'); await sleep(400);
+  cat.el.innerHTML = CAT_SCARED; sfx.noise(500, 3000, .35); cat.el.animate([{transform: 'scale(1)'}, {transform: 'scale(1.3) translateY(-8%)'}, {transform: 'scale(1.2)'}], {duration: 400, fill: 'forwards'});
+  await sofia.say('f17_angst');
+  await cat.el.animate([{opacity: 1}, {opacity: 0, transform: 'translateY(40%)'}], {duration: 400, fill: 'forwards'}).finished.catch(() => {});
+  cat.el.innerHTML = CAT;
+  emily.set('laugh'); sofia.set('laugh'); mark.set('laugh');
+  await Promise.all([play('k_laugh'), sleep(1500)]);
+  theo.set('lie'); await play('n17_armer');
+  emily.set('idle'); sofia.set('idle'); mark.set('idle');
+  await T.bone(theo);
+  theo.set('idle');
+
+  /* садик */
+  await sofia.say('f17_kita');
+  await T.repeat('e17_kita');
+  sofia.set('jump'); await sofia.say('f17_bald'); sofia.set('idle');
+  emily.set('jump'); T.hearts(emily); T.hearts(sofia); await sleep(900); emily.set('idle');
+  await T.bone(emily);
+
+  /* до завтра */
+  await T.repeat('e17_bis_morgen');
+  sofia.set('wave'); emily.set('wave'); mark.set('wave'); await sofia.say('f17_tschuess');
+  theo.set('happy'); play('t_bark'); await sleep(600);
+  emily.set('idle'); mark.set('idle'); sofia.set('idle');
+}
+T.start(IMG.sofia_wave[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

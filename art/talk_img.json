@@ -38,5 +38,110 @@
   "assets/img/6f586ca4f738.svg",
   300,
   520
+ ],
+ "sofia_idle": [
+  "assets/img/12bd730bdbbf.svg",
+  240,
+  420
+ ],
+ "sofia_blink": [
+  "assets/img/35b340b9865f.svg",
+  240,
+  420
+ ],
+ "sofia_talk": [
+  "assets/img/59c6ad9d3a72.svg",
+  240,
+  420
+ ],
+ "sofia_wave": [
+  "assets/img/51ecfa8a9c15.svg",
+  240,
+  420
+ ],
+ "sofia_jump": [
+  "assets/img/4ce9149adfd7.svg",
+  240,
+  420
+ ],
+ "sofia_laugh": [
+  "assets/img/1d119741c322.svg",
+  240,
+  420
+ ],
+ "sofia_sad": [
+  "assets/img/573304ff8304.svg",
+  240,
+  420
+ ],
+ "sofia_dance": [
+  "assets/img/914d9271b4f9.svg",
+  240,
+  420
+ ],
+ "leon_idle": [
+  "assets/img/75329a72130b.svg",
+  240,
+  420
+ ],
+ "leon_blink": [
+  "assets/img/386a5ba75ea2.svg",
+  240,
+  420
+ ],
+ "leon_talk": [
+  "assets/img/d51b0cec0ae9.svg",
+  240,
+  420
+ ],
+ "leon_wave": [
+  "assets/img/980311427a0d.svg",
+  240,
+  420
+ ],
+ "leon_jump": [
+  "assets/img/602968ec6bcc.svg",
+  240,
+  420
+ ],
+ "leon_laugh": [
+  "assets/img/1f1ae3e9f023.svg",
+  240,
+  420
+ ],
+ "leon_sad": [
+  "assets/img/dd2a1be522f6.svg",
+  240,
+  420
+ ],
+ "leon_throw": [
+  "assets/img/ee723d20fbe8.svg",
+  240,
+  420
+ ],
+ "leon_mud": [
+  "assets/img/7f97235c10a8.svg",
+  240,
+  420
+ ],
+ "leon_sly": [
+  "assets/img/965125ec4a3d.svg",
+  240,
+  420
+ ],
+ "leon_shy": [
+  "assets/img/a198b3b57489.svg",
+  240,
+  420
+ ],
+ "leon_oh": [
+  "assets/img/e68921ca1ecf.svg",
+  240,
+  420
+ ],
+ "leon_mudsad": [
+  "assets/img/70fd438f000a.svg",
+  240,
+  420
  ]
 }
