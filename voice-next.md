@@ -6,6 +6,14 @@
 
 ## Ведущая — Skittle Bee (German)
 
+Добавлено 29.10 (подсчёт косточек в конце игры): a_knochen_zaehlen, a_schatzkiste
+
+[cheerfully] Wie viele Knochen hast du bekommen? Zählen wir zusammen!
+
+[excited] Toll! Alle Knochen kommen in die Schatzkiste.
+
+Мини-игры и уровни 13–16:
+
 Фраз: 55. Ключи по порядку: a_fang_knochen, a_nur_knochen, a_ding_schuh, a_ding_socke, a_ding_stein, a_ding_dose, a_ding_schluessel, a_ding_loeffel, a_ding_muetze, a_ding_buch, a_ding_flasche, a_ding_auto, a_nicht_theo, a_fertig_zeit, a_wie_viele_theo, a_theo_satt, a_lauf_weg, a_du_faengst, a_raus_haus, a_fangen_toll, n13_intro, n13_rutsche, n13_opt1, n13_opt2, n13_oops, n13_tipp_eimer, n13_ende, n14_intro, n14_tipp_schuhe, n14_bausteine, n14_autos, n14_tipp_bau, n14_tipp_auto, n14_klo, n15_intro, n15_liste, n15_tipp_brot, n15_tipp_bananen, n15_nicht, n15_milch_weg, n15_tipp_milch, n15_opt1, n15_opt2, n15_tipp_geld, n15_theo, n16_jacke, n16_malen, n16_tipp_malen, n16_paul, n16_opt1, n16_opt2, n16_klo, a_was_besser, a_nicht_nett, a_nicht_gut
 
 [excited] Fang die Knochen!

@@ -123,11 +123,12 @@ function numChoice(opts, right, askDe, askRu, onWrong){
   });
 }
 
-/* ---------- кошелёк косточек ---------- */
-function saveMini(key, bones){
+/* ---------- косточки ---------- */
+/* конец мини-игры: Эмили считает косточки, они летят в общий сундучок (countBones в js/common.js), игра отмечается на карте */
+async function saveMini(key, bones, o){
+  if (bones && window.countBones) await countBones(bones, Object.assign({from: [$('#purse')], hide: [$('#purse')]}, o));
   try {
     const d = JSON.parse(localStorage.getItem('emily-game') || '{}') || {};
-    d.bones = (d.bones || 0) + bones;            /* общий кошелёк: за косточки откроются мини-игры и причёски */
     d.mini = d.mini || {}; d.mini[key] = (d.mini[key] || 0) + 1;
     localStorage.setItem('emily-game', JSON.stringify(d));
   } catch(e){}

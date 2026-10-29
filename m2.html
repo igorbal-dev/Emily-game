@@ -217,12 +217,9 @@ async function finish(){
   });
   S.hl = -1;
   await play('a_theo_satt');
-  /* часть пойманных косточек — в кошелёк Эмили */
-  const gift = Math.ceil(n/2);
+  /* все пойманные косточки: Эмили пересчитывает их и кладёт в общий сундучок */
   S.phase = 'end';
-  for (let i = 1; i <= gift; i++){ showNum(i); sfx.pop(); await sleep(260); }
-  saveMini('theo', gift); purse(gift);
-  await sleep(700); hideNum();
+  await saveMini('theo', n, {intro: false});
   await praise();
   $('#again').hidden = false; finishing = false;
 }

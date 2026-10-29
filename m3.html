@@ -228,7 +228,7 @@ async function end(){
   S.phase = 'end'; sfx.fanfare(); K.mark.cheer = S.t + 9;
   await play('a_fangen_toll');
   await play('e_spass');
-  saveMini('fangen', 3); purse(3);
+  purse(3); await saveMini('fangen', 3);
   await praise();
   $('#again').hidden = false;
 }

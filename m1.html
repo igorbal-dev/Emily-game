@@ -522,25 +522,16 @@ async function onFinish(){
   for (let i = 0; i < 3; i++){ order[i].showPlace = true; sfx.pop(); await play(`a_${order[i].name}_${i + 1}`); }
   /* настоящая Эмили говорит своё место */
   await repeatAfter(['e_erste', 'e_zweite', 'e_dritte'][e.placeN - 1]);
-  /* косточки: летят в общий кошелёк, Эмили считает */
-  if (S.bones){
-    const box = $('#count'), num = $('#num'), dots = $('#dots'); box.hidden = false; dots.innerHTML = '';
-    for (let i = 1; i <= S.bones; i++){
-      num.textContent = i; num.classList.remove('pop'); void num.offsetWidth; num.classList.add('pop');
-      dots.insertAdjacentHTML('beforeend', BONE_SVG); sfx.pop();
-      await talk(e, play('e_' + Math.min(10, i)));
-    }
-    await sleep(500); box.hidden = true;
-    saveBones(S.bones);
-  }
+  /* косточки: мультяшная Эмили считает их цифра за цифрой, они летят в общий сундучок (countBones в js/common.js) */
+  if (S.bones && window.countBones) await countBones(S.bones, {from: [$('#purse')], hide: [$('#purse')]});
+  saveBones();
   e.pose = 'stand';
   await praise();
   $('#again').hidden = false;
 }
-function saveBones(n){
+function saveBones(){                                /* сами косточки уже в сундучке, тут только отметка «гонка сыграна» */
   try {
     const d = JSON.parse(localStorage.getItem('emily-game') || '{}') || {};
-    d.bones = (d.bones || 0) + n;                     /* общий кошелёк косточек: за них открываются мини-игры и причёски */
     d.mini = d.mini || {}; d.mini.race = (d.mini.race || 0) + 1;
     localStorage.setItem('emily-game', JSON.stringify(d));
   } catch(e){}

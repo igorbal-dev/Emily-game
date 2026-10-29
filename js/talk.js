@@ -225,10 +225,12 @@ function confetti(){
 }
 T.finish = async () => {
   confetti(); sfx.fanfare(); await play('a_final');
+  /* Эмили считает косточки за уровень, они летят в общий сундучок (js/common.js) */
+  if (window.countBones) await countBones(Math.max(1, T.bones), {from: [$('#purse')], hide: [$('#purse')]});
   try {
     const d = JSON.parse(localStorage.getItem('emily-game') || '{}') || {};
     d.done = d.done || {}; d.done[LEVEL] = (d.done[LEVEL] || 0) + 1;
-    if (typeof FRIENDS !== 'undefined'){ d.friends = d.friends || {}; FRIENDS.forEach(f => d.friends[f] = true); }   /* новые знакомые — в альбом */ d.bones = (d.bones || 0) + Math.max(1, T.bones);
+    if (typeof FRIENDS !== 'undefined'){ d.friends = d.friends || {}; FRIENDS.forEach(f => d.friends[f] = true); }   /* новые знакомые — в альбом */
     localStorage.setItem('emily-game', JSON.stringify(d));
   } catch(e){}
   const s = document.createElement('div'); s.id = 'sticker'; s.innerHTML = STICKER; stage.appendChild(s);

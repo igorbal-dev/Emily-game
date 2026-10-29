@@ -724,6 +724,7 @@ async function level(){
   for (const h of actors()) h.anim('hop');
   confetti(); await play('a_final');
   plays++;
+  if (window.countBones) await countBones();   /* Эмили считает косточки, они летят в общий сундучок */
   $('#again').hidden = false;
 }
 
@@ -957,8 +958,7 @@ layout();
   function done(){
     if (marked) return; marked = true;
     const d = load(); d.done = d.done || {}; d.done[LEVEL] = (d.done[LEVEL] || 0) + 1;
-    const nb = document.querySelectorAll('.bone').length;
-    d.bones = (d.bones || 0) + Math.max(1, nb);
+    /* косточки уже посчитаны и положены в сундучок (countBones в js/common.js) */
     d.friends = d.friends || {}; FRIENDS.forEach(f => d.friends[f] = true);
     save(d);
     const s = document.createElement('div'); s.id = 'sticker'; s.innerHTML = STICKER; stage.appendChild(s);

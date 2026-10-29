@@ -180,3 +180,104 @@
     sync();
   }
 })();
+
+/* ---------- общий кошелёк косточек (сундучок) и подсчёт косточек в конце игры ----------
+   Баланс один на всю игру: localStorage 'emily-game'.bones — сколько косточек можно потратить (мини-игры станут платными),
+   .earned — сколько заработано за всё время (по нему открываются причёски, траты их не закрывают).
+   countBones(n, {from, hide, intro, voice}) — в конце уровня или мини-игры: косточки выстраиваются в ряд, мультяшная Эмили считает
+   их вслух цифра за цифрой (настоящая Эмили считает вместе с ней), потом косточки по одной летят в сундучок. */
+(function(){
+  const KEY = 'emily-game';
+  const CB_SND = {"e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_11": "assets/snd/b3092361945a.mp3", "e_12": "assets/snd/ff5ef4e6c6ad.mp3", "e_13": "assets/snd/2342f25d6853.mp3", "e_14": "assets/snd/ab206047d729.mp3", "e_15": "assets/snd/5782cc7126d4.mp3", "e_16": "assets/snd/bda8543a0fa5.mp3", "e_17": "assets/snd/e92e903d2a89.mp3", "e_18": "assets/snd/d96da37b4c68.mp3", "e_19": "assets/snd/bf49ac088cdc.mp3", "e_20": "assets/snd/6eb46e3201f0.mp3", "a_knochen_zaehlen": "assets/snd/d6bd5c9baa28.mp3", "a_schatzkiste": "assets/snd/69752bae3814.mp3"};
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e){ return {}; } };
+  const save = d => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){} };
+  const Wallet = window.Wallet = {
+    balance: () => load().bones || 0,
+    earned: () => { const d = load(); return d.earned ?? d.bones ?? 0; },
+    add(n){ const d = load(); d.earned = (d.earned ?? d.bones ?? 0) + n; d.bones = (d.bones || 0) + n; save(d); },
+    spend(n){ const d = load(); if ((d.bones || 0) < n) return false; d.earned = d.earned ?? d.bones; d.bones -= n; save(d); return true; }
+  };
+  const BONE = '<svg viewBox="0 0 100 44" aria-hidden="true"><path d="M22 10a10 10 0 1 0-9 15a10 10 0 1 0 9 15h56a10 10 0 1 0 9-15a10 10 0 1 0-9-15z" fill="#fff7e6" stroke="#c9a77a" stroke-width="4" stroke-linejoin="round"/></svg>';
+  const CHEST = '<svg viewBox="0 0 64 56" aria-hidden="true"><path d="M8 24 Q8 6 32 6 Q56 6 56 24 Z" fill="#c9843e" stroke="#7a4a1e" stroke-width="3" stroke-linejoin="round"/><g transform="translate(14 8) rotate(-18) scale(.36)"><path d="M22 10a10 10 0 1 0-9 15a10 10 0 1 0 9 15h56a10 10 0 1 0 9-15a10 10 0 1 0-9-15z" fill="#fff7e6" stroke="#c9a77a" stroke-width="6"/></g><rect x="6" y="22" width="52" height="30" rx="4" fill="#a8622a" stroke="#7a4a1e" stroke-width="3"/><path d="M6 30 h52" stroke="#ffd34d" stroke-width="4"/><rect x="27" y="26" width="10" height="12" rx="2" fill="#ffd34d" stroke="#c99a1e" stroke-width="2"/></svg>';
+  const stage = document.getElementById('stage');
+  if (!stage) return;
+  const css = document.createElement('style');
+  css.textContent = `
+  #wallet{position:absolute;left:calc(14px + env(safe-area-inset-left,0px));top:calc(82px + env(safe-area-inset-top,0px));z-index:96;display:flex;align-items:center;gap:6px;
+    background:#fff;border-radius:99px;padding:4px 14px 4px 6px;box-shadow:0 4px 0 #e2b98a;font:800 26px/1 "Trebuchet MS",system-ui,sans-serif;color:#8a5a1e;pointer-events:none;font-variant-numeric:tabular-nums}
+  #wallet svg{width:44px;height:38px}
+  #wallet.pop{animation:wpop .3s ease-out}
+  @keyframes wpop{50%{transform:scale(1.22)}}
+  #cbones{position:absolute;inset:0;z-index:89;pointer-events:none}
+  #cbones .n{position:absolute;left:50%;top:14%;transform:translateX(-50%);font:800 clamp(64px,20vmin,170px)/1 "Trebuchet MS",system-ui,sans-serif;color:#fff;text-shadow:0 7px 0 #d65a3b,0 0 30px rgba(255,216,77,.9)}
+  #cbones .n.pop{animation:cbn .4s cubic-bezier(.3,1.6,.5,1)}
+  @keyframes cbn{0%{transform:translateX(-50%) scale(.3);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
+  #cbones .b{position:absolute;filter:drop-shadow(0 4px 0 rgba(120,80,30,.25));transition:transform .2s}
+  #cbones .b svg{width:100%;height:100%;display:block}
+  #cbones .b.on{transform:scale(1.3) rotate(-8deg);filter:drop-shadow(0 0 8px #fff36b) drop-shadow(0 0 16px #ffd84d)}`;
+  document.head.appendChild(css);
+  const w = document.createElement('div'); w.id = 'wallet'; w.setAttribute('aria-label', 'Косточки');
+  w.innerHTML = CHEST + '<b>0</b>'; stage.appendChild(w);
+  const num = w.querySelector('b'); const show = v => { num.textContent = v; };
+  show(Wallet.balance());
+  addEventListener('storage', () => show(Wallet.balance()));
+
+  /* записи для счёта подгружаются в общий звук страницы, как только он включится */
+  let loaded = false;
+  async function ensure(){
+    if (loaded || typeof actx === 'undefined' || !actx || typeof BUF === 'undefined') return;
+    loaded = true;
+    await Promise.all(Object.entries(CB_SND).map(async ([k, uri]) => { if (BUF[k]) return;
+      try { const ab = await (await fetch(uri)).arrayBuffer(); BUF[k] = await new Promise((res, rej) => { const p = actx.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); }); } catch(e){} }));
+  }
+  const iv = setInterval(() => { if (typeof actx !== 'undefined' && actx){ clearInterval(iv); ensure(); } }, 700);
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const say = k => (typeof play === 'function' && CB_SND[k]) ? play(k) : wait(600);
+  const ding = (f1, f2) => { try { if (typeof sfx !== 'undefined' && sfx.tone) sfx.tone(f1, f2, 160, 'sine', .14); } catch(e){} };
+
+  window.countBones = async function(n, o = {}){
+    const from = o.from || [...document.querySelectorAll('.bone')];        /* уровни 0–12: косточки Тео уже лежат на экране */
+    if (n === undefined) n = Math.max(1, from.length);
+    if (!n) return;
+    await ensure();
+    const st = stage.getBoundingClientRect(), W = st.width, H = st.height;
+    const box = document.createElement('div'); box.id = 'cbones'; box.innerHTML = '<div class="n" hidden></div>'; stage.appendChild(box);
+    const big = box.querySelector('.n');
+    const per = Math.min(n, 10), rows = Math.ceil(n/10), bw = Math.min(W/(per + 1.5), H*0.16, 96), bh = bw*0.44, gap = bw*0.12;
+    const items = [];
+    for (let i = 0; i < n; i++){
+      const r = Math.floor(i/10), c = i % 10, inRow = Math.min(10, n - r*10);
+      const x = W/2 + (c - (inRow - 1)/2)*(bw + gap) - bw/2, y = H*0.46 + r*(bh*2.2) - (rows - 1)*bh*1.1;
+      const b = document.createElement('div'); b.className = 'b'; b.innerHTML = BONE;
+      Object.assign(b.style, {left: x + 'px', top: y + 'px', width: bw + 'px', height: bh + 'px'}); box.appendChild(b); items.push(b);
+      const s = from[i] || from[0];
+      if (s && s.getBoundingClientRect){ const sr = s.getBoundingClientRect();
+        b.animate([{transform: `translate(${sr.left - st.left + sr.width/2 - x - bw/2}px,${sr.top - st.top + sr.height/2 - y - bh/2}px) scale(.6)`}, {transform: 'none'}], {duration: 600, delay: i*60, easing: 'cubic-bezier(.3,.7,.4,1)', fill: 'backwards'}); }
+      else b.animate([{transform: 'scale(0)'}, {transform: 'none'}], {duration: 350, delay: i*60, easing: 'cubic-bezier(.3,1.6,.5,1)', fill: 'backwards'});
+    }
+    if (o.hide) o.hide.forEach(e => e && (e.hidden = true));
+    await wait(700 + n*60);
+    if (o.voice !== false){
+      if (o.intro !== false) await say('a_knochen_zaehlen');
+      for (let i = 1; i <= n; i++){
+        items.forEach(b => b.classList.remove('on')); items[i - 1].classList.add('on');
+        big.hidden = false; big.textContent = i; big.classList.remove('pop'); void big.offsetWidth; big.classList.add('pop');
+        ding(700 + i*30, 900 + i*30);
+        await say('e_' + i); await wait(i <= 20 ? 350 : 650);            /* пауза: настоящая Эмили успевает сказать число вместе */
+      }
+      items.forEach(b => b.classList.remove('on')); await wait(300);
+    }
+    /* в сундучок: по одной, баланс растёт */
+    let bal = Wallet.balance(); const wr = w.getBoundingClientRect();
+    const talk = say('a_schatzkiste');
+    for (const b of items){
+      const r = b.getBoundingClientRect();
+      b.animate([{transform: 'none', opacity: 1}, {transform: `translate(${wr.left - r.left + 6}px,${wr.top - r.top}px) scale(.4)`, opacity: .8}], {duration: 520, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards'})
+        .finished.then(() => { b.remove(); show(++bal); w.classList.remove('pop'); void w.offsetWidth; w.classList.add('pop'); ding(1900, 1700); }).catch(() => {});
+      await wait(Math.max(90, 700/n));
+    }
+    await wait(600); await talk;
+    Wallet.add(n); show(Wallet.balance());
+    box.remove();
+  };
+})();
