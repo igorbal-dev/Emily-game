@@ -226,7 +226,10 @@ function confetti(){
 T.finish = async () => {
   confetti(); sfx.fanfare(); await play('a_final');
   /* Эмили считает косточки за уровень, они летят в общий сундучок (js/common.js) */
-  if (window.countBones) await countBones(Math.max(1, T.bones), {from: [$('#purse')], hide: [$('#purse')]});
+  /* в кошельке уровня должно быть столько, сколько считаем: недостающие до награды (Game.LEVEL_BONES) — за весь уровень, сейчас */
+  const want = Math.min(10, (window.Game && Game.LEVEL_BONES[LEVEL]) || 1);
+  while (T.bones < want) await T.bone(T.heroes.emily);
+  if (window.countBones) await countBones(Math.min(10, T.bones), {from: [$('#purse')], hide: [$('#purse')]});
   try {
     const d = JSON.parse(localStorage.getItem('emily-game') || '{}') || {};
     d.done = d.done || {}; d.done[LEVEL] = (d.done[LEVEL] || 0) + 1;

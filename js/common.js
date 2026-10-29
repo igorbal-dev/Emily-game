@@ -112,9 +112,12 @@ window.Game = (function(){
        Если голоса нет совсем — через 8 с попытка не засчитана; общий предел 11 с.
        Синяя кнопка засчитывает сразу. После ответа пауза 0,5 с, потом говорит следующий. */
     const SILENCE_MS = 1100, PER_WORD_MS = 700, MIN_WAIT_MS = 1500, NO_VOICE_MS = 8000, CAP_MS = 11000, AFTER_MS = 500;
+    /* кусочек фразы (js/repeat.js ставит V.quick = число слов кусочка): ждём меньше — 0,6 с тишины, минимум 0,8 с, пауза после 0,15 с */
     window.listen = function(){
+      const quick = V.quick; V.quick = 0;
+      const silenceMs = quick ? 600 : SILENCE_MS, afterMs = quick ? 150 : AFTER_MS;
       return new Promise(resolve => {
-        const t0 = performance.now(), minWait = Math.max(MIN_WAIT_MS, V.words*PER_WORD_MS);
+        const t0 = performance.now(), minWait = quick ? Math.max(800, quick*400) : Math.max(MIN_WAIT_MS, V.words*PER_WORD_MS);
         micBtn.hidden = false; micBtn.classList.remove('heard'); micBtn.classList.add('on');
         let finished = false;
         const end = (ok, tapped) => {
@@ -124,7 +127,7 @@ window.Game = (function(){
           if (ok){ V.usedAt = performance.now(); micBtn.classList.add('heard'); try { sfx.ding(); } catch(e){}
             setTimeout(() => { if (!micTapResolve) micBtn.hidden = true; micBtn.classList.remove('heard'); }, 600); }
           else micBtn.hidden = true;
-          if (ok && !tapped) setTimeout(() => resolve(true), AFTER_MS); else resolve(ok);
+          if (ok && !tapped) setTimeout(() => resolve(true), afterMs); else resolve(ok);
         };
         micTapResolve = ok => end(ok, true);
         if (typeof mic === 'undefined' || !mic){ setTimeout(() => end(false), NO_VOICE_MS + 1000); return; }
@@ -136,7 +139,7 @@ window.Game = (function(){
           levelRing.style.transform = `scale(${0.95 + Math.min(0.5, V.level*0.12)})`;
           /* новая попытка: началась сейчас или чуть раньше значка */
           const spoke = V.uttStart > V.usedAt && V.voicedAt > t0 - EARLY_MS;
-          if (spoke && now - t0 >= minWait && now - V.voicedAt >= SILENCE_MS && V.run === 0) return end(true);
+          if (spoke && now - t0 >= minWait && now - V.voicedAt >= silenceMs && V.run === 0) return end(true);
           if (spoke && now - t0 > CAP_MS) return end(true);         /* говорит без пауз — тоже попытка */
           if (!spoke && now - t0 > NO_VOICE_MS) return end(false);
           requestAnimationFrame(tick);
@@ -279,9 +282,20 @@ window.Game = (function(){
   const say = k => (typeof play === 'function' && CB_SND[k]) ? play(k) : wait(600);
   const ding = (f1, f2) => { try { if (typeof sfx !== 'undefined' && sfx.tone) sfx.tone(f1, f2, 160, 'sine', .14); } catch(e){} };
 
+  /* миска рассчитана на 3 косточки: следующие ложатся горкой сверху (boneSlot уровней 0–12) */
+  if (typeof boneSlot === 'function' && typeof boneSize === 'function'){
+    const slot3 = boneSlot;
+    boneSlot = function(i){ const p = slot3(i % 3), s = boneSize(), row = Math.floor(i/3); p.y -= row*s*0.32; p.x += (row % 2)*s*0.14; return p; };
+  }
   window.countBones = async function(n, o = {}){
-    const from = o.from || [...document.querySelectorAll('.bone')];        /* уровни 0–12: косточки Тео уже лежат на экране */
-    if (Game.level >= 0) n = Game.LEVEL_BONES[Game.level] || 5;             /* за уровень — по таблице (Game.LEVEL_BONES) */
+    /* Считаем ровно столько, сколько Эмили заработала: на уровнях 0–12 — косточки в миске (.bone), в 13–16 и мини-играх — число n
+       из кошелька игры. Награда уровня — Game.LEVEL_BONES: недостающие до неё косточки (награда за весь уровень) сначала летят в миску. */
+    if (n === undefined && Game.level >= 0 && typeof flyBone === 'function' && typeof heroes !== 'undefined'){
+      const want = Math.min(10, Game.LEVEL_BONES[Game.level] || 5), src = heroes.emily || heroes.theo;
+      while (document.querySelectorAll('.bone').length < want){ await flyBone(src); await wait(120); }
+    }
+    const from = o.from || [...document.querySelectorAll('.bone')];
+    if (n === undefined) n = from.length;
     n = Math.min(10, n || 0);
     if (!n) return;
     await ensure();

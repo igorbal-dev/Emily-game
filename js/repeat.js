@@ -86,7 +86,7 @@ if ('speechSynthesis' in window) try { speechSynthesis.getVoices(); } catch(e){}
       let ok; try { ok = await tts(text, voice); } finally { speaking--; }
       if (!ok){ ttsBroken = true; return false; }
     }
-    await sleep(350);                                     /* короткая пауза после кусочка */
+    await sleep(150);                                     /* короткая пауза после кусочка */
     return true;
   }
 
@@ -104,6 +104,7 @@ if ('speechSynthesis' in window) try { speechSynthesis.getVoices(); } catch(e){}
           if (i === 2) await play('a_nach');
           if (i === 3) await play('r_like_emily');
           if (!await sayChunk(parts[p], voice)){ c.remove(); return medium(model, speaker); }
+          if (window.__mic) __mic.quick = parts[p].split(/\s+/).filter(w => /\w/.test(w)).length || 1;   /* короткое ожидание ответа на кусочек */
           if (await listen()) break;
         }
         dots[p].classList.remove('now'); dots[p].classList.add('on');
