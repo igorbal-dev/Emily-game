@@ -8,7 +8,7 @@
    Как делим: по смысловым группам, где в живой речи пауза; в кусочке 2–4 слога, кусочков не больше 3;
    не рвём артикль + слово, предлог + его группу, обращение + имя; длинное или трудное слово — отдельным кусочком;
    ничего не выкидываем. Кусочек в середине фразы пишется с «…» (интонация продолжения), последний — с концом фразы (! или ?).
-   Запись кусочка: CHUNK_SND[текст] = путь к mp3 (голос-«логопед»). Пока записи нет — голос браузера de-DE, темп 0.85.
+   Запись кусочка: CHUNK_SND[текст] = путь к mp3 (голос-«логопед» Barbara Brave – TV Narrator). Пока записи нет — голос браузера de-DE, темп 0.85.
 
    Уровень 2 «Spielplatz». Тексты пяти фраз знакомства (e_hallo_emily, e_bin_fuenf, e_bruder, e_hund, e_darf_ich)
    восстановлены по смыслу сцены — сверить на слух с записями Эмили. */
@@ -30,27 +30,27 @@ const CHUNKS = (() => {
 })();
 /* записи кусочков голосом-«логопедом»: текст кусочка → assets/snd/….mp3 (заполняется после записи) */
 const CHUNK_SND = {
- "Hallo!": "assets/snd/455caffb9ea8.mp3",
- "Ich heiße Emily.": "assets/snd/d2ea11b37cab.mp3",
- "Ich bin fünf …": "assets/snd/69d07eb33d38.mp3",
- "Jahre alt.": "assets/snd/29bf676f90f6.mp3",
- "Das ist mein …": "assets/snd/eb2ae70ab744.mp3",
- "Bruder Mark.": "assets/snd/a7f6f9ca7807.mp3",
- "Hund Theo.": "assets/snd/a2ff29bc2421.mp3",
- "Darf ich …": "assets/snd/a03afebde258.mp3",
- "mitspielen?": "assets/snd/ca76c7b22be3.mp3",
- "Willst du …": "assets/snd/e6326bd5a39e.mp3",
- "meine Freundin …": "assets/snd/a53ddcd10f44.mp3",
- "sein?": "assets/snd/924ae7c52c33.mp3",
- "Mark ist …": "assets/snd/ef85a7f59ec1.mp3",
- "hinter dem Baum!": "assets/snd/e944aa1d2ffd.mp3",
- "hinter dem Busch!": "assets/snd/0e249ecfd452.mp3",
- "unter der Rutsche!": "assets/snd/db0e04199eea.mp3",
- "hinter der Schaukel!": "assets/snd/5d407c94ce08.mp3",
- "hinter dem …": "assets/snd/80278f6d1010.mp3",
- "Sandkasten!": "assets/snd/beb5944a92da.mp3",
- "Theo ist …": "assets/snd/6b2adc6d5d47.mp3",
- "Isabel ist …": "assets/snd/fb6a5fb0b2d9.mp3",
- "Paul ist …": "assets/snd/2243dae96302.mp3",
- "Ich bin …": "assets/snd/82e636b2c086.mp3"
+ "Hallo!": "assets/snd/4fb2d302b82c.mp3",
+ "Ich heiße Emily.": "assets/snd/eb26e5024d79.mp3",
+ "Ich bin fünf …": "assets/snd/a59d28d00c00.mp3",
+ "Jahre alt.": "assets/snd/b54c4490a8a6.mp3",
+ "Das ist mein …": "assets/snd/043e9ef8e6f6.mp3",
+ "Bruder Mark.": "assets/snd/ea933b71768a.mp3",
+ "Hund Theo.": "assets/snd/771cfc923211.mp3",
+ "Darf ich …": "assets/snd/99174e94c380.mp3",
+ "mitspielen?": "assets/snd/004c62d674c8.mp3",
+ "Willst du …": "assets/snd/0cf31c470579.mp3",
+ "meine Freundin …": "assets/snd/9a5d097fdc38.mp3",
+ "sein?": "assets/snd/9891a90e10eb.mp3",
+ "Mark ist …": "assets/snd/b9c86d78163d.mp3",
+ "hinter dem Baum!": "assets/snd/f13056d6d224.mp3",
+ "hinter dem Busch!": "assets/snd/ff2d2a0ab034.mp3",
+ "unter der Rutsche!": "assets/snd/3ce1bb1e1f1a.mp3",
+ "hinter der Schaukel!": "assets/snd/b1f995a13578.mp3",
+ "hinter dem …": "assets/snd/68f2b9a4082f.mp3",
+ "Sandkasten!": "assets/snd/522a2f6c4dcb.mp3",
+ "Theo ist …": "assets/snd/a61fa4ee4802.mp3",
+ "Isabel ist …": "assets/snd/20c664f8e346.mp3",
+ "Paul ist …": "assets/snd/770efe65a1d8.mp3",
+ "Ich bin …": "assets/snd/131b02a3e6ab.mp3"
 };
