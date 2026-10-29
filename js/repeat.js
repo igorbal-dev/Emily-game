@@ -1,12 +1,27 @@
 /* Повторение фраз за мультяшной Эмили — три уровня сложности (настройка на карте, localStorage 'emily-repeat'):
-   easy   — сложные фразы (js/chunks.js) собираем кусочками: над Эмили облачко с точками, кусочек говорит голос-«логопед»,
+   easy   — сложные фразы (js/chunks.js) собираем кусочками: над Эмили облачко с точками, кусочек звучит,
             любой звук или синяя кнопка — точка загорается; когда все горят, Эмили говорит фразу целиком сама;
    medium — Эмили говорит всю фразу своей записью, но медленнее (0.8, высота голоса та же);
    normal — как было.
-   Подключается после кода уровня и заменяет его repeatAfter(model, speaker). Нужны глобальные play, listen, sleep, BUF, actx, SND. */
+   Кусочки: если у всех кусочков фразы есть запись (CHUNK_SND, уровень 2 — Barbara) — записи; иначе голос браузера,
+   только немецкий (deVoice). Немецкого голоса на устройстве нет — кусочков нет, фраза идёт как на среднем.
+   Подключается после кода уровня: заменяет repeatAfter(model, speaker) уровней 1–12 или T.repeat(model, hero) из js/talk.js (13–16).
+   Нужны глобальные play, listen, sleep, BUF, actx, SND, speaking. На карте (index.html) нужен только deVoice. */
+
+/* немецкий голос браузера: Anna (iOS), Google Deutsch (Android), иначе любой de-DE / de; голос по умолчанию без проверки языка не берём */
+function deVoice(){
+  let vs = [];
+  try { vs = ('speechSynthesis' in window && speechSynthesis.getVoices()) || []; } catch(e){}
+  vs = vs.filter(v => /^de([-_]|$)/i.test(v.lang || ''));
+  return vs.find(v => /^anna\b/i.test(v.name)) || vs.find(v => /google deutsch/i.test(v.name))
+    || vs.find(v => /^de[-_]DE$/i.test(v.lang)) || vs[0] || null;
+}
+if ('speechSynthesis' in window) try { speechSynthesis.getVoices(); } catch(e){}   /* Android подгружает голоса не сразу — пусть начнёт */
+
 (function(){
-  if (typeof repeatAfter !== 'function') return;
-  const original = repeatAfter;
+  const talk = typeof T !== 'undefined' && T && typeof T.repeat === 'function';
+  if (!talk && typeof repeatAfter !== 'function') return;
+  const original = talk ? T.repeat : repeatAfter;
   const mode = () => { try { return localStorage.getItem('emily-repeat') || 'easy'; } catch(e){ return 'easy'; } };
   const stage = document.getElementById('stage');
 
@@ -20,6 +35,13 @@
   #rcloud i.on{background:#32b67a}`;
   document.head.appendChild(css);
 
+  /* говорящий открывает рот, пока звучит p: герой уровней 1–12 (talkWhile) или герой js/talk.js (say) */
+  function voiced(speaker, model, p){
+    if (speaker && speaker.talkWhile) return speaker.talkWhile(p, speaker.name === 'emily' ? 'hold' : 'talk');
+    if (speaker && speaker.say) return speaker.say(model, p);
+    return p;
+  }
+
   /* облачко над головой говорящего: маленькое, только над ним самим */
   function cloud(speaker, n){
     const c = document.createElement('div'); c.id = 'rcloud';
@@ -31,33 +53,34 @@
     return c;
   }
 
-  /* кусочек: запись голоса-«логопеда», а пока её нет — голос браузера de-DE, темп 0.85 */
-  const chunkKey = t => 'ch_' + t;
-  let voices = [];
-  const loadV = () => { try { voices = speechSynthesis.getVoices() || []; } catch(e){} };
-  if ('speechSynthesis' in window){ loadV(); speechSynthesis.addEventListener && speechSynthesis.addEventListener('voiceschanged', loadV); }
-  function tts(text){
+  /* кусочек голосом браузера: de-DE, немецкий голос, темп 0.85 */
+  function tts(text, voice){
     return new Promise(res => {
-      if (!('speechSynthesis' in window)){ setTimeout(res, 600 + text.length*70); return; }
-      const u = new SpeechSynthesisUtterance(text.replace(/…/g, '').trim()); u.lang = 'de-DE'; u.rate = 0.85; u.pitch = 1;
-      const v = voices.find(v => /^de[-_]DE/i.test(v.lang || '')) || voices.find(v => /^de/i.test(v.lang || '')); if (v) u.voice = v;
+      const u = new SpeechSynthesisUtterance(text.replace(/…/g, '').trim());
+      u.lang = 'de-DE'; u.voice = voice; u.rate = 0.85; u.pitch = 1;
       let done = false; const fin = () => { if (!done){ done = true; res(); } };
-      u.onend = fin; u.onerror = fin; setTimeout(fin, 2500 + text.length*150); speechSynthesis.speak(u);
+      u.onend = fin; u.onerror = fin; setTimeout(fin, 2500 + text.length*150);
+      try { speechSynthesis.cancel(); } catch(e){}
+      speechSynthesis.speak(u);
     });
   }
-  async function sayChunk(text){
-    const k = chunkKey(text), uri = typeof CHUNK_SND !== 'undefined' && CHUNK_SND[text];
-    if (uri && typeof actx !== 'undefined' && actx && !BUF[k]){
-      try { const ab = await (await fetch(uri)).arrayBuffer(); BUF[k] = await new Promise((ok, no) => { const p = actx.decodeAudioData(ab, ok, no); if (p && p.then) p.then(ok, no); }); } catch(e){}
-    }
-    if (BUF[k]) await play(k);
-    else { speaking++; try { await tts(text); } finally { speaking--; } }
+  async function sayChunk(text, voice){
+    const k = 'ch_' + text, uri = typeof CHUNK_SND !== 'undefined' && CHUNK_SND[text];
+    if (!voice){
+      if (typeof actx !== 'undefined' && actx && !BUF[k]){
+        try { const ab = await (await fetch(uri)).arrayBuffer(); BUF[k] = await new Promise((ok, no) => { const p = actx.decodeAudioData(ab, ok, no); if (p && p.then) p.then(ok, no); }); } catch(e){}
+      }
+      await play(k);
+    } else { speaking++; try { await tts(text, voice); } finally { speaking--; } }
     await sleep(350);                                     /* короткая пауза после кусочка */
   }
 
   async function easy(model, speaker){
     const parts = typeof CHUNKS !== 'undefined' && CHUNKS[model];
     if (!parts) return original(model, speaker);           /* простая фраза — как обычно */
+    const recorded = typeof CHUNK_SND !== 'undefined' && parts.every(t => CHUNK_SND[t]);
+    const voice = recorded ? null : deVoice();
+    if (!recorded && !voice) return medium(model, speaker);   /* нет немецкого голоса — фраза целиком, медленнее */
     const c = cloud(speaker, parts.length), dots = [...c.children];
     try {
       for (let p = 0; p < parts.length; p++){
@@ -65,7 +88,7 @@
         for (let i = 0; i < 4; i++){
           if (i === 2) await play('a_nach');
           if (i === 3) await play('r_like_emily');
-          await sayChunk(parts[p]);
+          await sayChunk(parts[p], voice);
           if (await listen()) break;
         }
         dots[p].classList.remove('now'); dots[p].classList.add('on');
@@ -73,7 +96,7 @@
       await sleep(250);
     } finally { c.remove(); }
     /* все точки горят — Эмили говорит фразу целиком сама, повторять не нужно */
-    if (speaker) await speaker.talkWhile(play(model), speaker.name === 'emily' ? 'hold' : 'talk'); else await play(model);
+    await voiced(speaker, model, play(model));
     return true;
   }
 
@@ -99,20 +122,27 @@
     });
   }
   async function medium(model, speaker){
-    const say = () => speaker ? speaker.talkWhile(playSlow(model), speaker.name === 'emily' ? 'hold' : 'talk') : playSlow(model);
     for (let i = 0; i < 4; i++){
       if (i === 2) await play('a_nach');
       if (i === 3) await play('r_like_emily');
-      await say(); await sleep(150);
+      await voiced(speaker, model, playSlow(model)); await sleep(150);
       if (await listen()) return true;
     }
     return false;
   }
 
-  repeatAfter = function(model, speaker){
+  function pick(model, speaker){
     const m = mode();
     if (m === 'easy') return easy(model, speaker);
     if (m === 'medium') return medium(model, speaker);
     return original(model, speaker);
+  }
+  /* js/talk.js: T.repeat сам считает звёздочки за повтор; если фраза прошла мимо него (кусочки, медленно) — считаем тут */
+  if (talk) T.repeat = async (model, hero) => {
+    hero = hero || T.heroes.emily;
+    const before = T.stars, ok = await pick(model, hero);
+    if (ok && T.stars === before) T.stars++;
+    return ok;
   };
+  else repeatAfter = pick;
 })();

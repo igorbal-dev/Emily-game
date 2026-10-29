@@ -57,6 +57,7 @@ a.lvl.done .star{display:block}
 .mode button{font:800 16px/1 var(--body);padding:10px 16px;border-radius:99px;border:3px solid #fff;background:var(--card);color:var(--ink);box-shadow:0 4px 0 var(--shadow);cursor:pointer}
 .mode button.on{background:#32b67a;color:#fff}
 .mode .note{flex-basis:100%}
+.mode .nodevoice{font-size:22px;line-height:1;cursor:help}
 color:#2f5a1e;font-size:14px;font-weight:700;max-width:65ch}
 </style>
 
@@ -69,6 +70,7 @@ color:#2f5a1e;font-size:14px;font-weight:700;max-width:65ch}
   <div class="mode" id="mode" role="group" aria-label="Повторение фраз">
     <b>Повторение фраз:</b>
     <button type="button" data-m="easy">Лёгкий</button><button type="button" data-m="medium">Средний</button><button type="button" data-m="normal">Обычный</button>
+    <span class="nodevoice" id="nodevoice" hidden title="На этом устройстве нет немецкого голоса браузера: кусочки не звучат, сложные фразы идут целиком медленнее" aria-label="Нет немецкого голоса">⚠️</span>
     <span class="note" id="modenote"></span>
   </div>
   <div class="map" id="map"></div>
@@ -136,13 +138,21 @@ function drawHairs(){
   });
 }
 drawHairs();
-/* повторение фраз: лёгкий — сложные фразы кусочками, средний — медленнее, обычный — как есть (пока только уровень 2) */
-const MODE_NOTE = {easy: 'Сложные фразы Эмили повторяет кусочками, потом говорит целиком. Пока только уровень 2.', medium: 'Мультяшная Эмили говорит фразы медленнее. Пока только уровень 2.', normal: 'Фразы целиком в обычном темпе.'};
+/* повторение фраз на всех уровнях: лёгкий — сложные фразы кусочками, средний — медленнее, обычный — как есть */
+const MODE_NOTE = {easy: 'Сложные фразы Эмили повторяет кусочками, потом говорит целиком.', medium: 'Мультяшная Эмили говорит фразы медленнее.', normal: 'Фразы целиком в обычном темпе.'};
 function drawMode(){ let m = 'easy'; try { m = localStorage.getItem('emily-repeat') || 'easy'; } catch(e){}
   document.querySelectorAll('#mode button').forEach(b => b.classList.toggle('on', b.dataset.m === m)); document.getElementById('modenote').textContent = MODE_NOTE[m]; }
 document.querySelectorAll('#mode button').forEach(b => b.addEventListener('click', () => { try { localStorage.setItem('emily-repeat', b.dataset.m); } catch(e){} drawMode(); }));
 drawMode();
 </script>
 
+<script src="js/repeat.js"></script>
+<script>
+/* кусочки (кроме уровня 2) говорит немецкий голос браузера (deVoice в js/repeat.js); нет его — значок для папы */
+function checkDeVoice(){ const n = document.getElementById('nodevoice'), bad = !deVoice();
+  n.hidden = !bad; if (bad) n.onclick = () => document.getElementById('modenote').textContent = n.title; }
+if ('speechSynthesis' in window && speechSynthesis.addEventListener) speechSynthesis.addEventListener('voiceschanged', checkDeVoice);
+setTimeout(checkDeVoice, 1500);
+</script>
 <script src="js/screen.js"></script>
 </body></html>

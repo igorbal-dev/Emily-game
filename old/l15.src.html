@@ -1,0 +1,199 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Im Supermarkt. Уровень 15</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 15 «Im Supermarkt» — магазин: оставить Тео ждать, найти по списку хлеб и бананы, спросить продавца, где молоко, объяснить Марку, что сначала платим, заплатить и вежливо попрощаться. ТЗ: docs/tz/level-15.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = __IMG__;  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,crouch,laugh,walk}_out mark_{idle,blink,mouth,talk,wave,laugh,sad,surprised,walk}_out theo_{idle,blink,happy,lie,bark,jump} seller_{idle,blink,talk,wave} emily_idle*/
+const SND = __SND__;  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht r_choose_kind t_bark t_barks*/
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script>
+/* Уровень 15: Эмили и Марк в магазине у дома. «Theo, bleib hier!», список: молоко, хлеб, бананы,
+   «Entschuldigung, wo ist die Milch?», Марк хватает конфету — «Wir müssen zuerst bezahlen!», три монетки, «Ja, bitte!», «Danke, Ihnen auch!». */
+const LEVEL = 15;
+const FRIENDS = ['seller'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M14 30 H86 L78 74 H22 Z" fill="#ffd34d" stroke="#c99a1e" stroke-width="5" stroke-linejoin="round"/><path d="M30 30 L42 10 M70 30 L58 10" stroke="#8a5a1e" stroke-width="6" stroke-linecap="round"/><path d="M26 44 h48 M30 58 h40" stroke="#c99a1e" stroke-width="4"/><circle cx="34" cy="86" r="7" fill="#8a5a1e"/><circle cx="68" cy="86" r="7" fill="#8a5a1e"/><path d="M60 26 q8 -16 22 -8 q-6 12 -22 8z" fill="#32b67a"/></svg>';
+
+/* ---------- фоны: магазин с улицы и внутри ---------- */
+function drawScene(g, W, H, L){
+  const fy = L.floorY, hE = L.hE; g.lineCap = 'round'; g.lineJoin = 'round';
+  if (T.place === 'shop'){
+    g.fillStyle = '#f4f7ee'; g.fillRect(0, 0, W, fy);
+    g.fillStyle = '#e1ead5'; for (let x = 0; x < W; x += hE*0.5) g.fillRect(x, 0, 2, fy);
+    g.fillStyle = '#d9d2c4'; g.fillRect(0, fy - hE*0.05, W, H - fy + hE*0.05);
+    g.fillStyle = 'rgba(255,255,255,.6)'; for (let x = 0; x < W; x += hE*0.45) for (let y = fy; y < H; y += hE*0.2) g.fillRect(x + ((y/hE*5)|0)%2*hE*0.22, y, hE*0.2, 2);
+    /* полка с хлебом и сыром */
+    const sx = W*0.02, sw = hE*0.75;
+    g.fillStyle = '#c98f55'; g.fillRect(sx, fy - hE*1.5, sw, hE*1.48); g.fillStyle = '#f3e2c6';
+    for (const y of [1.42, 0.98, 0.54]) g.fillRect(sx + hE*0.05, fy - hE*y, sw - hE*0.1, hE*0.38);
+    /* ящики с фруктами */
+    const cx = W*0.42;
+    g.fillStyle = '#b07b3c'; g.fillRect(cx - hE*0.45, fy - hE*0.42, hE*0.9, hE*0.4); g.strokeStyle = '#8a5a1e'; g.lineWidth = hE*0.02;
+    g.strokeRect(cx - hE*0.45, fy - hE*0.42, hE*0.45, hE*0.4); g.strokeRect(cx, fy - hE*0.42, hE*0.45, hE*0.4);
+    /* холодильник */
+    const fx = W*0.66, fw = hE*0.6;
+    g.fillStyle = '#e5f4ff'; g.fillRect(fx - fw/2, fy - hE*1.6, fw, hE*1.58); g.strokeStyle = '#8fb6d6'; g.lineWidth = hE*0.035; g.strokeRect(fx - fw/2, fy - hE*1.6, fw, hE*1.58);
+    g.fillStyle = 'rgba(140,200,255,.35)'; g.fillRect(fx - fw/2 + hE*0.04, fy - hE*1.55, fw - hE*0.08, hE*1.0);
+    g.strokeStyle = '#b8d4ea'; g.lineWidth = hE*0.02; for (const y of [1.2, 0.85]){ g.beginPath(); g.moveTo(fx - fw/2 + hE*0.04, fy - hE*y); g.lineTo(fx + fw/2 - hE*0.04, fy - hE*y); g.stroke(); }
+    /* касса: стойка с лентой (сама стойка — предмет перед продавцом) */
+    g.fillStyle = '#ffe9a8'; g.fillRect(W*0.79, fy - hE*1.7, hE*0.6, hE*0.2); g.fillStyle = '#ff7a59'; g.beginPath(); g.arc(W*0.79 + hE*0.3, fy - hE*1.6, hE*0.06, 0, 7); g.fill();
+    return;
+  }
+  /* улица: витрина, дверь, вывеска-корзинка */
+  let gr = g.createLinearGradient(0, 0, 0, fy); gr.addColorStop(0, '#d8ecff'); gr.addColorStop(1, '#eef7ff'); g.fillStyle = gr; g.fillRect(0, 0, W, fy);
+  g.fillStyle = '#e3d6c4'; g.fillRect(0, fy - hE*2.1, W, hE*2.1);
+  g.fillStyle = '#32b67a'; g.fillRect(0, fy - hE*2.05, W, hE*0.32);
+  for (let x = 0; x < W; x += hE*0.3){ g.fillStyle = (x/hE/0.3|0) % 2 ? '#fff' : '#32b67a'; g.beginPath(); g.moveTo(x, fy - hE*1.73); g.lineTo(x + hE*0.3, fy - hE*1.73); g.lineTo(x + hE*0.15, fy - hE*1.6); g.closePath(); g.fill(); }
+  const bx = W*0.42; g.fillStyle = '#fff'; g.beginPath(); g.arc(bx, fy - hE*1.89, hE*0.13, 0, 7); g.fill();
+  g.strokeStyle = '#ff7a59'; g.lineWidth = hE*0.025; g.beginPath(); g.moveTo(bx - hE*0.08, fy - hE*1.92); g.lineTo(bx + hE*0.08, fy - hE*1.92); g.lineTo(bx + hE*0.05, fy - hE*1.83); g.lineTo(bx - hE*0.05, fy - hE*1.83); g.closePath(); g.stroke();
+  g.fillStyle = '#bfe3f7'; g.fillRect(W*0.04, fy - hE*1.45, W*0.5, hE*1.1); g.strokeStyle = '#7a8a99'; g.lineWidth = hE*0.04; g.strokeRect(W*0.04, fy - hE*1.45, W*0.5, hE*1.1);
+  for (let i = 0; i < 7; i++){ g.fillStyle = ['#ff5a5a', '#ffd34d', '#ff9a3c', '#7cc35a'][i % 4]; g.beginPath(); g.arc(W*0.08 + i*W*0.065, fy - hE*0.45, hE*0.07, 0, 7); g.fill(); }
+  g.fillStyle = '#9fd4f2'; g.fillRect(W*0.62, fy - hE*1.5, hE*0.8, hE*1.48); g.strokeStyle = '#7a8a99'; g.strokeRect(W*0.62, fy - hE*1.5, hE*0.8, hE*1.48);
+  g.strokeStyle = '#7a8a99'; g.lineWidth = hE*0.03; g.beginPath(); g.moveTo(W*0.62 + hE*0.12, fy - hE*0.8); g.lineTo(W*0.62 + hE*0.12, fy - hE*0.6); g.stroke();
+  g.fillStyle = '#b7b7b7'; g.fillRect(0, fy - hE*0.03, W, H - fy + hE*0.03);
+  g.strokeStyle = '#666'; g.lineWidth = hE*0.03; g.beginPath(); g.moveTo(W*0.9, fy); g.lineTo(W*0.9, fy - hE*0.5); g.stroke();
+}
+
+/* ---------- предметы ---------- */
+const BREAD = '<svg viewBox="0 0 100 60"><path d="M6 46 Q4 14 50 10 Q96 14 94 46 Q94 56 82 56 H18 Q6 56 6 46 Z" fill="#d9954a" stroke="#9a5f22" stroke-width="4"/><path d="M30 20 l-6 14 M50 16 l-6 16 M70 20 l-6 14" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/></svg>';
+const CHEESE = '<svg viewBox="0 0 100 60"><path d="M6 54 V26 L80 8 L94 26 V54 Z" fill="#ffd34d" stroke="#c99a1e" stroke-width="4" stroke-linejoin="round"/><circle cx="30" cy="40" r="6" fill="#e8b92a"/><circle cx="60" cy="34" r="5" fill="#e8b92a"/><circle cx="74" cy="46" r="4" fill="#e8b92a"/></svg>';
+const BANANAS = '<svg viewBox="0 0 100 70"><path d="M14 20 Q20 62 84 52 Q50 50 26 18 Z" fill="#ffe14d" stroke="#c9a21e" stroke-width="4" stroke-linejoin="round"/><path d="M20 16 Q34 56 90 40 Q56 40 32 14 Z" fill="#ffd21e" stroke="#c9a21e" stroke-width="4" stroke-linejoin="round"/><path d="M16 22 l8 -12" stroke="#6b4a1e" stroke-width="6" stroke-linecap="round"/></svg>';
+const APPLES = '<svg viewBox="0 0 100 70"><circle cx="30" cy="42" r="22" fill="#ff4d4d" stroke="#b82e2e" stroke-width="4"/><circle cx="68" cy="42" r="22" fill="#7cc35a" stroke="#4f8a32" stroke-width="4"/><path d="M30 20 v-10 M68 20 v-10" stroke="#6b4a1e" stroke-width="4" stroke-linecap="round"/></svg>';
+const CARROTS = '<svg viewBox="0 0 100 70"><path d="M20 20 L44 66 L52 22 Z" fill="#ff8a2e" stroke="#c4601a" stroke-width="4" stroke-linejoin="round"/><path d="M50 20 L72 64 L82 20 Z" fill="#ff8a2e" stroke="#c4601a" stroke-width="4" stroke-linejoin="round"/><path d="M36 20 l-6 -14 M36 20 l6 -14 M66 20 l-6 -14 M66 20 l6 -14" stroke="#32b67a" stroke-width="5" stroke-linecap="round"/></svg>';
+const MILK = '<svg viewBox="0 0 50 80"><path d="M8 24 L14 10 H36 L42 24 V76 H8 Z" fill="#fff" stroke="#2f80ed" stroke-width="4" stroke-linejoin="round"/><rect x="14" y="2" width="22" height="9" fill="#2f80ed"/><path d="M8 44 Q18 36 25 44 Q32 52 42 44 V62 H8 Z" fill="#9fd0ff"/></svg>';
+const YOGURT = '<svg viewBox="0 0 50 60"><path d="M6 10 H44 L38 56 H12 Z" fill="#ffc2dd" stroke="#d6578f" stroke-width="4" stroke-linejoin="round"/><rect x="4" y="4" width="42" height="8" rx="3" fill="#fff" stroke="#d6578f" stroke-width="3"/></svg>';
+const BASKET = '<svg viewBox="0 0 100 70"><path d="M8 24 H92 L82 66 H18 Z" fill="#ff7a59" stroke="#c4553a" stroke-width="4" stroke-linejoin="round"/><path d="M22 34 h56 M26 46 h48 M30 58 h40" stroke="#ffb39e" stroke-width="4"/><path d="M26 24 Q50 -10 74 24" fill="none" stroke="#c4553a" stroke-width="6"/></svg>';
+const BAG = '<svg viewBox="0 0 100 100"><path d="M14 30 H86 L80 96 H20 Z" fill="#c9a77a" stroke="#8a5a1e" stroke-width="4" stroke-linejoin="round"/><path d="M34 30 Q34 10 50 10 Q66 10 66 30" fill="none" stroke="#8a5a1e" stroke-width="5"/><path d="M30 30 Q30 4 50 6" stroke="#d9954a" stroke-width="10" fill="none"/><path d="M58 30 q4 -18 16 -14" stroke="#ffd21e" stroke-width="9" fill="none" stroke-linecap="round"/><rect x="40" y="14" width="14" height="18" fill="#fff" stroke="#2f80ed" stroke-width="3"/></svg>';
+const CANDY = '<svg viewBox="0 0 100 50"><path d="M30 25 L8 8 V42 Z M70 25 L92 8 V42 Z" fill="#ff8fc8" stroke="#c9578f" stroke-width="4" stroke-linejoin="round"/><ellipse cx="50" cy="25" rx="24" ry="18" fill="#ff5a9a" stroke="#c9578f" stroke-width="4"/><path d="M38 16 q12 6 0 18 M52 12 q12 8 0 26" stroke="#fff" stroke-width="4" fill="none"/></svg>';
+const COIN = '<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="#ffd34d" stroke="#c99a1e" stroke-width="5"/><circle cx="30" cy="30" r="17" fill="none" stroke="#e8b92a" stroke-width="4"/><path d="M38 21 Q28 14 22 24 Q18 34 26 40 Q32 44 38 38 M18 28 h14 M18 34 h14" fill="none" stroke="#c99a1e" stroke-width="3.5" stroke-linecap="round"/></svg>';
+const COUNTER = '<svg viewBox="0 0 100 60" preserveAspectRatio="none"><rect x="2" y="8" width="96" height="50" fill="#5aa0d6" stroke="#2f6f9e" stroke-width="3"/><rect x="0" y="2" width="100" height="10" fill="#333"/><rect x="60" y="-14" width="26" height="16" rx="2" fill="#ddd" stroke="#888" stroke-width="2"/></svg>';
+
+let emily, mark, theo, seller, basket, counter;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'jump', 'surprised', 'crouch', 'laugh', 'walk'];
+const MP = ['idle', 'blink', 'mouth', 'talk', 'wave', 'laugh', 'sad', 'surprised', 'walk'];
+const TP = ['idle', 'blink', 'happy', 'lie', 'bark', 'jump'];
+function clear(){ stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; }
+function street(){ clear(); T.place = 'street';
+  theo = T.hero('theo', {x: 0.86, h: 0.5, poses: TP});
+  emily = T.hero('emily', {x: 0.3, outfit: 'out', poses: EP}); mark = T.hero('mark', {x: 0.45, h: 0.88, outfit: 'out', poses: MP}); }
+function setup(){ street(); }
+const onFloor = k => () => L.floorY - L.hE*k;
+/* выбрать нужное среди других вещей: неверно — «Das brauchen wir nicht.» */
+async function pickItem(right, others, hint){
+  await play(hint);
+  while (true){
+    const el = await T.tap([right, ...others], hint, 'r_tipp_licht');
+    if (el === right.el) break;
+    el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); sfx.bonk(); await play('n15_nicht');
+  }
+  await T.move(right, basket.o.x, 0, 800); right.o.py = onFloor(-0.02); right.o.w *= 0.8; right.place(); right.el.style.zIndex = 54;
+  sfx.ding(); await praise();
+}
+
+async function story(){
+  /* улица: Тео ждёт */
+  theo.set('happy'); await play('n15_intro');
+  await T.repeat('e15_bleib');
+  theo.set('lie'); await sleep(500); await play('t_bark');
+  await T.bone(theo);
+  emily.walkTo(0.68); await mark.walkTo(0.76);
+
+  /* магазин: список */
+  let bread, cheese, bananas, apples, carrots, milk, yogurt, candy;
+  await T.go('shop', () => { clear();
+    counter = T.prop(COUNTER, {x: 0.88, py: onFloor(-0.02), w: 0.8, ratio: 0.7, z: 56});
+    seller = T.hero('seller', {x: 0.88, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+    const at = (fx, dx) => () => L.W*fx + L.hE*dx;      /* место от края полки, ящика, холодильника */
+    bread = T.prop(BREAD, {px: at(0.02, 0.2), py: onFloor(1.06), w: 0.3, ratio: 0.6});
+    cheese = T.prop(CHEESE, {px: at(0.02, 0.56), py: onFloor(1.06), w: 0.28, ratio: 0.6});
+    bananas = T.prop(BANANAS, {px: at(0.42, -0.3), py: onFloor(0.38), w: 0.28, ratio: 0.7});
+    apples = T.prop(APPLES, {px: at(0.42, 0), py: onFloor(0.38), w: 0.26, ratio: 0.7});
+    carrots = T.prop(CARROTS, {px: at(0.42, 0.3), py: onFloor(0.38), w: 0.26, ratio: 0.7});
+    milk = T.prop(MILK, {px: at(0.66, -0.13), py: onFloor(0.88), w: 0.15, ratio: 1.6});
+    yogurt = T.prop(YOGURT, {px: at(0.66, 0.13), py: onFloor(0.88), w: 0.15, ratio: 1.2});
+    candy = T.prop(CANDY, {px: at(0.88, -0.5), py: onFloor(0.62), w: 0.2, ratio: 0.5, z: 58});
+    basket = T.prop(BASKET, {x: 0.25, py: onFloor(-0.06), w: 0.4, ratio: 0.7, z: 52});
+    [bread, cheese, bananas, apples, carrots, milk, yogurt].forEach(p => p.el.classList.add('tight'));
+    emily = T.hero('emily', {x: 0.3, outfit: 'out', poses: EP}); mark = T.hero('mark', {x: 0.13, h: 0.88, outfit: 'out', poses: MP}); });
+  await play('n15_liste');
+  await pickItem(bread, [cheese], 'n15_tipp_brot');
+  await emily.walkTo(0.22);
+  await pickItem(bananas, [apples, carrots], 'n15_tipp_bananen');
+  await T.bone(basket);
+
+  /* спросить продавца, где молоко */
+  await play('n15_milch_weg');
+  seller.set('wave'); await sleep(400); seller.set('idle');
+  await T.repeat('e15_wo_milch');
+  await seller.say('v15_milch');
+  await emily.walkTo(0.5);
+  await play('n15_tipp_milch');
+  while (true){ const el = await T.tap([milk, yogurt], 'n15_tipp_milch', 'r_tipp_licht'); if (el === milk.el) break; sfx.bonk(); await play('n15_nicht'); }
+  await T.move(milk, basket.o.x + 0.02, 0, 800); milk.o.py = onFloor(-0.02); milk.o.w *= 0.8; milk.place(); milk.el.style.zIndex = 54; sfx.ding();
+  await T.bone(milk);
+
+  /* Марк и конфета */
+  await mark.walkTo(0.7); mark.set('laugh');
+  await mark.say('k_15bonbon');
+  await T.move(candy, 0.7, 0, 500); candy.o.py = onFloor(0.45); candy.place();
+  await T.choose([
+    {parts: [{img: 'emily_laugh_out', x: 40, h: 74}, {svg: CANDY, x: 46, y: 26, w: 16, hh: 9}, {fx: 'zap', x: 60, y: 30}], clip: 'n15_opt1', ok: false},
+    {parts: [{img: 'emily_wave_out', x: 34, h: 74}, {img: 'mark_idle_out', x: 60, h: 62}, {svg: COIN, x: 80, y: 40, w: 14, hh: 18}, {fx: 'hearts', x: 46, y: 10}], clip: 'n15_opt2'}
+  ], 'a_was_besser', 'r_choose_kind', 'a_nicht_gut');
+  await emily.walkTo(0.6);
+  await T.repeat('e15_bezahlen');
+  mark.set('sad'); await sleep(700); mark.set('idle');
+  await T.move(candy, basket.o.x - 0.02, 0, 800); candy.o.py = onFloor(-0.03); candy.o.w = 0.16; candy.place(); candy.el.style.zIndex = 54; sfx.pop();
+  mark.set('laugh'); await praise(); mark.set('idle');
+  await T.bone(candy);
+
+  /* касса: заплатить */
+  const goods = [bread, bananas, milk, candy, basket];
+  emily.walkTo(0.64); mark.walkTo(0.52);
+  await Promise.all(goods.map(p => T.move(p, p.o.x + 0.42, 0, 1200)));
+  await seller.say('v15_hallo');
+  const coins = [0.4, 0.49, 0.58].map(x => T.prop(COIN, {x, py: onFloor(-0.08), w: 0.22, ratio: 1, z: 62})); sfx.pop();
+  await play('n15_tipp_geld');
+  const left = [...coins];
+  for (let i = 1; i <= 3; i++){
+    const el = await T.tap(left, 'n15_tipp_geld', 'r_tipp_licht'); const c = left.find(p => p.el === el); left.splice(left.indexOf(c), 1);
+    showNum(i); T.move(c, 0.8 + i*0.02, 0, 600).then(() => { c.o.py = onFloor(1.0); c.place(); }); await play('e_' + i); sfx.clink();
+  }
+  await sleep(500); hideNum(); coins.forEach(c => c.el.remove());
+  await T.repeat('e15_hier');
+  await seller.say('v15_tuete');
+  await T.repeat('e15_ja_bitte');
+  goods.forEach(p => p.el.hidden = true);
+  const bag = T.prop(BAG, {x: 0.72, py: onFloor(-0.05), w: 0.4, ratio: 1, z: 58}); sfx.whoosh();
+  seller.set('wave'); await seller.say('v15_tag'); seller.set('idle');
+  await T.repeat('e15_ihnen_auch');
+  await T.bone(bag);
+
+  /* снова на улице: Тео рад */
+  await T.go('street', () => { street(); emily.x = 0.62; mark.x = 0.5; T.prop(BAG, {x: 0.7, py: onFloor(-0.05), w: 0.36, ratio: 1, z: 58}); });
+  theo.set('jump'); theo.hop(); await play('t_barks');
+  theo.set('happy'); emily.set('laugh'); mark.set('laugh');
+  await play('n15_theo');
+  emily.set('idle'); mark.set('idle');
+}
+T.start(IMG.emily_wave_out[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

@@ -95,9 +95,9 @@ class THero {
   set(p){ this.base = p; if (!this.talking) this.show(p); }
   face(left){ this.el.classList.toggle('flip', !!left); }
   async blink(){ while (true){ await sleep(2400 + Math.random()*3000); if (this.pose === 'idle' && !this.talking && this.imgs.blink){ this.show('blink'); await sleep(140); if (this.pose === 'blink') this.show('idle'); } } }
-  /* говорит запись: рот открывается и закрывается, пока она звучит */
-  async say(clip){
-    const p = play(clip); this.talking = true; let done = false; p.finally(() => done = true);
+  /* говорит запись: рот открывается и закрывается, пока она звучит (p — уже начатое воспроизведение, например медленное из js/repeat.js) */
+  async say(clip, p = play(clip)){
+    this.talking = true; let done = false; p.finally(() => done = true);
     const seq = this.imgs.mouth1 ? ['mouth1', 'mouth2', 'mouth1', 'idle'] : this.imgs.mouth ? ['mouth', 'talk', 'mouth', 'idle'] : ['talk', 'idle'];
     let i = 0; while (!done){ this.show(seq[i++ % seq.length]); await sleep(this.imgs.mouth1 || this.imgs.mouth ? 120 : 160); }
     this.talking = false; this.show(this.base); return p;

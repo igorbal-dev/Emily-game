@@ -1,0 +1,42 @@
+{
+ "becker_idle": [
+  "assets/img/2a1924faa1a3.svg",
+  300,
+  600
+ ],
+ "becker_blink": [
+  "assets/img/1e21fe805660.svg",
+  300,
+  600
+ ],
+ "becker_talk": [
+  "assets/img/d1c1a3a699c8.svg",
+  300,
+  600
+ ],
+ "becker_wave": [
+  "assets/img/1dccc7924a99.svg",
+  300,
+  600
+ ],
+ "seller_idle": [
+  "assets/img/38810fb4b912.svg",
+  300,
+  520
+ ],
+ "seller_blink": [
+  "assets/img/e5876e869076.svg",
+  300,
+  520
+ ],
+ "seller_talk": [
+  "assets/img/af01c48ff228.svg",
+  300,
+  520
+ ],
+ "seller_wave": [
+  "assets/img/6f586ca4f738.svg",
+  300,
+  520
+ ]
+}
