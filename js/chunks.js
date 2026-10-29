@@ -8,7 +8,8 @@
    Как делим: по смысловым группам, где в живой речи пауза; в кусочке 2–4 слога, кусочков не больше 3;
    не рвём артикль + слово, предлог + его группу, обращение + имя; длинное или трудное слово — отдельным кусочком;
    ничего не выкидываем. Кусочек в середине фразы пишется с «…» (интонация продолжения), последний — с концом фразы (! или ?).
-   Запись кусочка: CHUNK_SND[текст] = путь к mp3 (голос-«логопед» Barbara Brave – TV Narrator). Пока записи нет — голос браузера de-DE, темп 0.85.
+   Записи кусочков (CHUNK_SND, Barbara Brave – TV Narrator) есть только у уровня 2. На остальных уровнях кусочки говорит
+   немецкий голос браузера (js/repeat.js), новые записи кусочков в ElevenLabs не делаем.
 
    Уровень 2 «Spielplatz». Тексты пяти фраз знакомства (e_hallo_emily, e_bin_fuenf, e_bruder, e_hund, e_darf_ich)
    восстановлены по смыслу сцены — сверить на слух с записями Эмили. */
@@ -26,6 +27,64 @@ const CHUNKS = (() => {
   const WHERE = {baum: ['hinter dem Baum!'], busch: ['hinter dem Busch!'], rutsche: ['unter der Rutsche!'],
     schaukel: ['hinter der Schaukel!'], sandkasten: ['hinter dem …', 'Sandkasten!']};
   for (const [w, first] of Object.entries(WHO)) for (const [s, rest] of Object.entries(WHERE)) C[`e_${w}_${s}`] = [first, ...rest];
+
+  /* Уровень 1 «Verstecken» (прятки дома): «Mark ist unter dem Tisch!», «Ich bin im Schrank!» */
+  const HOME = {tisch: ['unter dem Tisch!'], schrank: ['im Schrank!'], sofa: ['hinter dem …', 'Sofa!'], kiste: ['in der Kiste!']};
+  for (const w of ['mark', 'theo', 'ich']) for (const [s, rest] of Object.entries(HOME)) C[`e_${w}_${s}`] = [WHO[w], ...rest];
+  Object.assign(C, {
+    e_wollt_ihr: ['Hallo! Wollt ihr …', 'mit mir …', 'Verstecken spielen?'],
+    e_lass_uns: ['Lass uns …', 'Verstecken …', 'spielen!'],
+    /* 3 «Bäckerei» */
+    e_alles: ['Nein, danke.', 'Das ist alles.'],
+    e_order_brezel: ['Zwei Brezeln …', 'bitte.'],
+    e_order_broetchen: ['Ein Brötchen …', 'bitte.'],
+    e_order_keks: ['Drei Kekse …', 'bitte.'],
+    /* 4 «Geburtstag» */
+    e_alles_gute: ['Alles Gute …', 'zum Geburtstag!'],
+    e_danke_party: ['Danke …', 'für die Party!'],
+    /* 5 «Sandkasten» */
+    e_sandburg: ['Wir bauen …', 'zusammen …', 'eine Sandburg!'],
+    e_schaufel: ['Kann ich …', 'die Schaufel …', 'haben?'],
+    e_spass: ['Das hat Spaß …', 'gemacht!'],
+    /* 6 «Kita-Morgen» */
+    e_morgen: ['Guten Morgen …', 'Heike!'],
+    /* 7 «Eisdiele» */
+    e_zuerst: ['Ich war zuerst da.', 'Bitte stell dich …', 'hinten an.'],
+    /* 8 «Kita-Weg» */
+    e_rot_stehen: ['Rot heißt …', 'stehen!'],
+    /* 9 «Aufräumen» */
+    e_fertig: ['Fertig!', 'Alles …', 'aufgeräumt!'],
+    e_gib_bitte: ['Mark, gib mir …', 'bitte …', 'das Auto!'],
+    /* 11 «Ballspiel» */
+    e_ich_auch: ['Ich spiele …', 'auch mit!'],
+    e_komm_mark: ['Komm, Mark!', 'Spiel mit!'],
+    /* 12 «Turnen» */
+    e_cmd_springen: ['Alle …', 'springen!'],
+    e_juhu: ['Juhu …', 'Sport!'],
+    /* 13 «Wer ist dran?» */
+    e13_darf: ['Darf ich …', 'auch mal …', 'schaukeln?'],
+    e13_du_zuerst: ['Du zuerst …', 'dann ich!'],
+    e13_zusammen: ['Komm, wir spielen …', 'zusammen!'],
+    e13_entschuldigung: ['Ent …', 'schuldigung!'],
+    /* 14 «Zu Besuch bei Paul» */
+    e14_guten_tag: ['Guten Tag …', 'Frau Becker!'],
+    e14_was: ['Hallo Paul!', 'Was spielen wir?'],
+    e14_bau: ['Mit Bausteinen …', 'bitte!'],
+    e14_wasser: ['Ja, bitte.', 'Ein Glas Wasser.'],
+    e14_toilette: ['Wo ist …', 'die Toilette …', 'bitte?'],
+    e14_einladung: ['Danke für …', 'die Einladung!', 'Tschüss!'],
+    /* 15 «Im Supermarkt» */
+    e15_bleib: ['Theo, bleib hier!', 'Wir kommen …', 'gleich wieder.'],
+    e15_wo_milch: ['Entschuldigung …', 'wo ist …', 'die Milch?'],
+    e15_bezahlen: ['Wir müssen …', 'zuerst …', 'bezahlen!'],
+    e15_ihnen_auch: ['Danke …', 'Ihnen auch!', 'Tschüss!'],
+    /* 16 «Kita: Ich brauche Hilfe» */
+    e16_gut: ['Mir geht es gut …', 'danke!'],
+    e16_stift: ['Isabel …', 'gibst du mir bitte …', 'den roten Stift?'],
+    e16_heike: ['Komm …', 'wir sagen es …', 'Heike!'],
+    e16_helfen: ['Heike …', 'kannst du mir bitte …', 'helfen?'],
+    e16_bis_morgen: ['Tschüss, Heike!', 'Bis morgen!']
+  });
   return C;
 })();
 /* записи кусочков голосом-«логопедом»: текст кусочка → assets/snd/….mp3 (заполняется после записи) */
