@@ -11,8 +11,8 @@
 - Прогресс на устройстве: localStorage `emily-game` {done, bones (баланс), earned (всего, для причёсок), friends, mini}; `emily-repeat` — easy/medium/normal.
 
 ## Публикация и ссылки
-- Игра публикуется через GitHub Pages (не Artifact): после commit — `sh tools/publish.sh` (push рабочей ветки и gh-pages; в gh-pages сохраняется папка `old/` — прошлая версия). Перед крупным изменением: `sh tools/publish.sh origin/gh-pages` — нынешняя версия станет `old/`.
-- Прошлая версия для отката без программирования: https://igorbal-dev.github.io/Emily-game/old/ (сейчас — до трёх уровней повторения на всех уровнях). Полная копия — ветка `backup-2026-10-29`.
+- Игра публикуется через GitHub Pages (не Artifact): после commit — `sh tools/publish.sh "что нового (по-русски, коротко)"`. Скрипт пушит рабочую ветку и gh-pages.
+- Прошлые версии НЕ удалять (до финальной игры): корень сайта — всегда актуальная версия, каждая прошлая — папка `vN/` (`…/Emily-game/v1/`, `v2/`…), список с датами и описаниями — https://igorbal-dev.github.io/Emily-game/versions.html. `old/` ведёт на `v1/`. Ветка `backup-2026-10-29` = v1. Один экземпляр сайта ~80 МБ, у GitHub Pages предел ~1 ГБ — примерно после 10 версий предупредить Игоря.
 - Игра: https://igorbal-dev.github.io/Emily-game/ (с большой E), уровни `…/l0.html`–`…/l16.html`, мини-игры `…/m1.html`–`…/m3.html`.
 - Документы-артефакты: мини-игры https://claude.ai/artifact/PdCvJkVHETNrJGTTPoyQku · ТЗ уровня 1 https://claude.ai/artifact/HuwbdGpa4ChYkohnPWqQJ8 · позы героев https://claude.ai/artifact/4S9QqPLhejcH1cHSmYoBSF · анимации https://claude.ai/artifact/KP9H1An5ZKgQhwxjdDLSK1 · озвучка https://claude.ai/artifact/Nc8XXCGsjJmxcvG9PJ7yZf
 
