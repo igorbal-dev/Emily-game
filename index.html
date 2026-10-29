@@ -53,7 +53,11 @@ a.lvl.done .star{display:block}
 #minis .pic{position:relative;overflow:hidden}#minis .pic img{position:absolute;height:92%;max-height:none;max-width:none;bottom:4%;left:50%;transform:translateX(-50%)}
 #chest{margin-left:auto;display:flex;align-items:center;gap:8px;background:#fff;border-radius:99px;padding:6px 18px 6px 10px;box-shadow:0 5px 0 var(--shadow);font:800 34px/1 var(--display);color:#8a5a1e;font-variant-numeric:tabular-nums}
 #chest svg{width:56px;height:48px}
-footer{color:#2f5a1e;font-size:14px;font-weight:700;max-width:65ch}
+.mode{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:4px 0 18px}
+.mode button{font:800 16px/1 var(--body);padding:10px 16px;border-radius:99px;border:3px solid #fff;background:var(--card);color:var(--ink);box-shadow:0 4px 0 var(--shadow);cursor:pointer}
+.mode button.on{background:#32b67a;color:#fff}
+.mode .note{flex-basis:100%}
+color:#2f5a1e;font-size:14px;font-weight:700;max-width:65ch}
 </style>
 
 <div class="wrap">
@@ -62,6 +66,11 @@ footer{color:#2f5a1e;font-size:14px;font-weight:700;max-width:65ch}
     <div><h1>Spiel mit Emily!</h1><p>Немецкий, счёт и общение: выбирай уровень</p></div>
     <div id="chest" aria-label="Косточки в сундучке"><svg viewBox="0 0 64 56" aria-hidden="true"><path d="M8 24 Q8 6 32 6 Q56 6 56 24 Z" fill="#c9843e" stroke="#7a4a1e" stroke-width="3" stroke-linejoin="round"/><g transform="translate(14 8) rotate(-18) scale(.36)"><path d="M22 10a10 10 0 1 0-9 15a10 10 0 1 0 9 15h56a10 10 0 1 0 9-15a10 10 0 1 0-9-15z" fill="#fff7e6" stroke="#c9a77a" stroke-width="6"/></g><rect x="6" y="22" width="52" height="30" rx="4" fill="#a8622a" stroke="#7a4a1e" stroke-width="3"/><path d="M6 30 h52" stroke="#ffd34d" stroke-width="4"/><rect x="27" y="26" width="10" height="12" rx="2" fill="#ffd34d" stroke="#c99a1e" stroke-width="2"/></svg><b id="chestNum">0</b></div>
   </header>
+  <div class="mode" id="mode" role="group" aria-label="Повторение фраз">
+    <b>Повторение фраз:</b>
+    <button type="button" data-m="easy">Лёгкий</button><button type="button" data-m="medium">Средний</button><button type="button" data-m="normal">Обычный</button>
+    <span class="note" id="modenote"></span>
+  </div>
   <div class="map" id="map"></div>
   <h2>Mini-Spiele</h2>
   <div class="map" id="minis"></div>
@@ -127,6 +136,12 @@ function drawHairs(){
   });
 }
 drawHairs();
+/* повторение фраз: лёгкий — сложные фразы кусочками, средний — медленнее, обычный — как есть (пока только уровень 2) */
+const MODE_NOTE = {easy: 'Сложные фразы Эмили повторяет кусочками, потом говорит целиком. Пока только уровень 2.', medium: 'Мультяшная Эмили говорит фразы медленнее. Пока только уровень 2.', normal: 'Фразы целиком в обычном темпе.'};
+function drawMode(){ let m = 'easy'; try { m = localStorage.getItem('emily-repeat') || 'easy'; } catch(e){}
+  document.querySelectorAll('#mode button').forEach(b => b.classList.toggle('on', b.dataset.m === m)); document.getElementById('modenote').textContent = MODE_NOTE[m]; }
+document.querySelectorAll('#mode button').forEach(b => b.addEventListener('click', () => { try { localStorage.setItem('emily-repeat', b.dataset.m); } catch(e){} drawMode(); }));
+drawMode();
 </script>
 
 <script src="js/screen.js"></script>
