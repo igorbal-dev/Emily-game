@@ -185,7 +185,8 @@
    Баланс один на всю игру: localStorage 'emily-game'.bones — сколько косточек можно потратить (мини-игры станут платными),
    .earned — сколько заработано за всё время (по нему открываются причёски, траты их не закрывают).
    countBones(n, {from, hide, intro, voice}) — в конце уровня или мини-игры: косточки выстраиваются в ряд, мультяшная Эмили считает
-   их вслух цифра за цифрой (настоящая Эмили считает вместе с ней), потом косточки по одной летят в сундучок. */
+   их вслух цифра за цифрой (настоящая Эмили считает вместе с ней), потом косточки по одной падают в сундучок.
+   Сам баланс показывается только на карте; в играх сундучок появляется лишь на время подсчёта. */
 (function(){
   const KEY = 'emily-game';
   const CB_SND = {"e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_11": "assets/snd/b3092361945a.mp3", "e_12": "assets/snd/ff5ef4e6c6ad.mp3", "e_13": "assets/snd/2342f25d6853.mp3", "e_14": "assets/snd/ab206047d729.mp3", "e_15": "assets/snd/5782cc7126d4.mp3", "e_16": "assets/snd/bda8543a0fa5.mp3", "e_17": "assets/snd/e92e903d2a89.mp3", "e_18": "assets/snd/d96da37b4c68.mp3", "e_19": "assets/snd/bf49ac088cdc.mp3", "e_20": "assets/snd/6eb46e3201f0.mp3", "a_knochen_zaehlen": "assets/snd/d6bd5c9baa28.mp3", "a_schatzkiste": "assets/snd/69752bae3814.mp3"};
@@ -203,11 +204,10 @@
   if (!stage) return;
   const css = document.createElement('style');
   css.textContent = `
-  #wallet{position:absolute;left:calc(14px + env(safe-area-inset-left,0px));top:calc(82px + env(safe-area-inset-top,0px));z-index:96;display:flex;align-items:center;gap:6px;
-    background:#fff;border-radius:99px;padding:4px 14px 4px 6px;box-shadow:0 4px 0 #e2b98a;font:800 26px/1 "Trebuchet MS",system-ui,sans-serif;color:#8a5a1e;pointer-events:none;font-variant-numeric:tabular-nums}
-  #wallet svg{width:44px;height:38px}
-  #wallet.pop{animation:wpop .3s ease-out}
-  @keyframes wpop{50%{transform:scale(1.22)}}
+  #cbones .chest{position:absolute;transform-origin:50% 100%}
+  #cbones .chest svg{width:100%;height:100%;display:block;filter:drop-shadow(0 6px 0 rgba(120,80,30,.25))}
+  #cbones .chest.pop{animation:wpop .3s ease-out}
+  @keyframes wpop{50%{transform:scale(1.15)}}
   #cbones{position:absolute;inset:0;z-index:89;pointer-events:none}
   #cbones .n{position:absolute;left:50%;top:14%;transform:translateX(-50%);font:800 clamp(64px,20vmin,170px)/1 "Trebuchet MS",system-ui,sans-serif;color:#fff;text-shadow:0 7px 0 #d65a3b,0 0 30px rgba(255,216,77,.9)}
   #cbones .n.pop{animation:cbn .4s cubic-bezier(.3,1.6,.5,1)}
@@ -216,11 +216,7 @@
   #cbones .b svg{width:100%;height:100%;display:block}
   #cbones .b.on{transform:scale(1.3) rotate(-8deg);filter:drop-shadow(0 0 8px #fff36b) drop-shadow(0 0 16px #ffd84d)}`;
   document.head.appendChild(css);
-  const w = document.createElement('div'); w.id = 'wallet'; w.setAttribute('aria-label', 'Косточки');
-  w.innerHTML = CHEST + '<b>0</b>'; stage.appendChild(w);
-  const num = w.querySelector('b'); const show = v => { num.textContent = v; };
-  show(Wallet.balance());
-  addEventListener('storage', () => show(Wallet.balance()));
+  /* сундучок с балансом виден только на карте (index.html); в игре он появляется лишь на время, когда в него летят косточки */
 
   /* записи для счёта подгружаются в общий звук страницы, как только он включится */
   let loaded = false;
@@ -267,17 +263,23 @@
       }
       items.forEach(b => b.classList.remove('on')); await wait(300);
     }
-    /* в сундучок: по одной, баланс растёт */
-    let bal = Wallet.balance(); const wr = w.getBoundingClientRect();
+    /* в сундучок: он появляется под косточками, косточки падают в него по одной */
+    const cw = Math.min(W*0.22, H*0.26, 170), chest = document.createElement('div'); chest.className = 'chest'; chest.innerHTML = CHEST;
+    const cx = W/2 - cw/2, cy = Math.min(H*0.92 - cw*0.875, H*0.46 + rows*bh*1.2 + bh);
+    Object.assign(chest.style, {left: cx + 'px', top: cy + 'px', width: cw + 'px', height: cw*0.875 + 'px'}); box.appendChild(chest);
+    big.hidden = true;
+    await chest.animate([{transform: 'scale(0)'}, {transform: 'none'}], {duration: 380, easing: 'cubic-bezier(.3,1.6,.5,1)'}).finished.catch(() => {});
     const talk = say('a_schatzkiste');
+    const tx = cx + cw/2, ty = cy + cw*0.3;
     for (const b of items){
-      const r = b.getBoundingClientRect();
-      b.animate([{transform: 'none', opacity: 1}, {transform: `translate(${wr.left - r.left + 6}px,${wr.top - r.top}px) scale(.4)`, opacity: .8}], {duration: 520, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards'})
-        .finished.then(() => { b.remove(); show(++bal); w.classList.remove('pop'); void w.offsetWidth; w.classList.add('pop'); ding(1900, 1700); }).catch(() => {});
+      const r = b.getBoundingClientRect(), bx = r.left - st.left + r.width/2, by = r.top - st.top + r.height/2;
+      b.animate([{transform: 'none', opacity: 1}, {transform: `translate(${tx - bx}px,${ty - by}px) scale(.45)`, opacity: .9}], {duration: 520, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards'})
+        .finished.then(() => { b.remove(); chest.classList.remove('pop'); void chest.offsetWidth; chest.classList.add('pop'); ding(1900, 1700); }).catch(() => {});
       await wait(Math.max(90, 700/n));
     }
     await wait(600); await talk;
-    Wallet.add(n); show(Wallet.balance());
+    Wallet.add(n);
+    await chest.animate([{transform: 'none', opacity: 1}, {transform: 'scale(.3)', opacity: 0}], {duration: 350, fill: 'forwards'}).finished.catch(() => {});
     box.remove();
   };
 })();
