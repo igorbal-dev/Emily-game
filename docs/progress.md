@@ -91,4 +91,4 @@
 - Средний: вся фраза записью Эмили, медленнее (0.8, высота голоса сохраняется).
 - Код: `js/repeat.js` (подключён только в l2.html, заменяет repeatAfter уровня).
 - Пять фраз знакомства (Hallo! Ich heiße Emily. / Ich bin fünf Jahre alt. / Das ist mein Bruder Mark. / Das ist mein Hund Theo. / Darf ich mitspielen?) — тексты восстановлены по сцене, сверить на слух с записями.
-- Ждут записи: 23 кусочка голосом Eleonore.
+- 23 кусочка записаны голосом Eleonore (eleven_multilingual_v2, без тегов), пути — CHUNK_SND в `js/chunks.js`.
