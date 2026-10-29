@@ -53,17 +53,27 @@ if ('speechSynthesis' in window) try { speechSynthesis.getVoices(); } catch(e){}
     return c;
   }
 
-  /* кусочек голосом браузера: de-DE, немецкий голос, темп 0.85 */
+  /* кусочек голосом браузера: de-DE, немецкий голос, темп 0.85.
+     Возвращает false, если голос так и не заговорил (iPhone/Android иногда молча глотают речь) — тогда фраза идёт целиком. */
+  let lastU = null, ttsBroken = false;                      /* lastU держит фразу, чтобы браузер не потерял её посреди чтения */
   function tts(text, voice){
     return new Promise(res => {
-      const u = new SpeechSynthesisUtterance(text.replace(/…/g, '').trim());
-      u.lang = 'de-DE'; u.voice = voice; u.rate = 0.85; u.pitch = 1;
-      let done = false; const fin = () => { if (!done){ done = true; res(); } };
-      u.onend = fin; u.onerror = fin; setTimeout(fin, 2500 + text.length*150);
-      try { speechSynthesis.cancel(); } catch(e){}
+      const u = lastU = new SpeechSynthesisUtterance(text.replace(/…/g, '').trim());
+      u.lang = 'de-DE'; u.voice = voice; u.rate = 0.85; u.pitch = 1; u.volume = 1;
+      let done = false, started = false; const fin = ok => { if (!done){ done = true; res(ok); } };
+      u.onstart = () => { started = true; };
+      u.onend = () => fin(true); u.onerror = () => fin(started);
+      setTimeout(() => { if (!started){ try { speechSynthesis.cancel(); } catch(e){} fin(false); } }, 2000);
+      setTimeout(() => fin(true), 2500 + text.length*150);
+      try { speechSynthesis.resume(); } catch(e){}            /* после звонка или паузы речь может «зависнуть» на паузе */
       speechSynthesis.speak(u);
     });
   }
+  /* iPhone пускает речь только после нажатия: при нажатии «играть» произносим пустую фразу */
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#go') || !('speechSynthesis' in window)) return;
+    try { const u = new SpeechSynthesisUtterance(' '); u.lang = 'de-DE'; u.volume = 0; const v = deVoice(); if (v) u.voice = v; lastU = u; speechSynthesis.speak(u); } catch(e){}
+  }, true);
   async function sayChunk(text, voice){
     const k = 'ch_' + text, uri = typeof CHUNK_SND !== 'undefined' && CHUNK_SND[text];
     if (!voice){
@@ -71,8 +81,13 @@ if ('speechSynthesis' in window) try { speechSynthesis.getVoices(); } catch(e){}
         try { const ab = await (await fetch(uri)).arrayBuffer(); BUF[k] = await new Promise((ok, no) => { const p = actx.decodeAudioData(ab, ok, no); if (p && p.then) p.then(ok, no); }); } catch(e){}
       }
       await play(k);
-    } else { speaking++; try { await tts(text, voice); } finally { speaking--; } }
+    } else {
+      speaking++;
+      let ok; try { ok = await tts(text, voice); } finally { speaking--; }
+      if (!ok){ ttsBroken = true; return false; }
+    }
     await sleep(350);                                     /* короткая пауза после кусочка */
+    return true;
   }
 
   async function easy(model, speaker){
@@ -80,7 +95,7 @@ if ('speechSynthesis' in window) try { speechSynthesis.getVoices(); } catch(e){}
     if (!parts) return original(model, speaker);           /* простая фраза — как обычно */
     const recorded = typeof CHUNK_SND !== 'undefined' && parts.every(t => CHUNK_SND[t]);
     const voice = recorded ? null : deVoice();
-    if (!recorded && !voice) return medium(model, speaker);   /* нет немецкого голоса — фраза целиком, медленнее */
+    if (!recorded && (!voice || ttsBroken)) return medium(model, speaker);   /* нет немецкого голоса или он молчит — фраза целиком, медленнее */
     const c = cloud(speaker, parts.length), dots = [...c.children];
     try {
       for (let p = 0; p < parts.length; p++){
@@ -88,7 +103,7 @@ if ('speechSynthesis' in window) try { speechSynthesis.getVoices(); } catch(e){}
         for (let i = 0; i < 4; i++){
           if (i === 2) await play('a_nach');
           if (i === 3) await play('r_like_emily');
-          await sayChunk(parts[p], voice);
+          if (!await sayChunk(parts[p], voice)){ c.remove(); return medium(model, speaker); }
           if (await listen()) break;
         }
         dots[p].classList.remove('now'); dots[p].classList.add('on');
