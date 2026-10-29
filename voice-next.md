@@ -318,9 +318,9 @@
 
 [warmly] Bitte schön! Schönen Tag noch!
 
-## НОВОЕ 29.10: мини-игры 4–5 и уровни 17–20 — ещё НЕ записано
+## Мини-игры 4–5 и уровни 17–20 — записано 30.10
 
-Пока эти фразы говорит голос браузера (тексты — в `SAY` страниц m4, m5, l17–l20). Озвучить после выбора голосов Софии и Леона.
+Записано: 174 генерации (одинаковые фразы одного голоса — одна запись), ключи — в `art/voice_new.json`. Тексты — также в `SAY` страниц m4, m5, l17–l20. У Софии в тег добавлено «like a little girl», у Леона — «like a cheeky little boy».
 Модель eleven_v3, одна генерация на блок; ключи по порядку — как в списке. Кусочки фраз Эмили (js/chunks.js) не озвучиваем.
 
 ### Ведущая — Skittle Bee (German)
@@ -619,7 +619,7 @@
 
 [warmly] Alle dürfen mitspielen.
 
-### София — НОВЫЙ голос, выбрать из проб (German)
+### София — Emmy (German)
 
 Фраз: 27. Ключи по порядку: f17_hund, f17_name, f17_streicheln, f17_kitzelt, f17_alt, f17_auch_fuenf, f17_wohnst, f17_neu, f17_geschwister, f17_katze, f17_angst, f17_kita, f17_bald, f17_tschuess, f18_hallo, f18_puppe, f18_lotta, f18_farbe, f18_blau, f18_auch_blau, f18_essen, f18_lecker, f18_hoeren, f18_lieder, f18_zeig, f18_mama, f18_bis_bald
 
@@ -677,7 +677,7 @@
 
 [cheerfully] Tschüss, Emily! Bis bald!
 
-### Леон — НОВЫЙ голос, выбрать из проб (German)
+### Леон — Manni (German)
 
 Фраз: 14. Ключи по порядку: l19_okay, l19_schubse, l19_igitt, l19_meins, l19_hier, l19_haha, l19_meine_burg, l19_ok_entschuldigung, l19_entschuldigung, l19_mach_nicht, l20_bloed, l20_fluester, l20_okay, l20_spielst
 

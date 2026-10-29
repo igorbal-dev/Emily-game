@@ -123,6 +123,12 @@ async function loud(model){
   leon.set('oh'); sfx.whoosh(); await T.glide(leon, Math.min(0.92, leon.x + 0.05 + Math.min(0.14, max*0.05)), 0, 450, 'ease-out');
   emily.set('idle');
 }
+/* герой отходит вглубь сцены (d: 0 — спереди, 1 — далеко) или возвращается: выше на полу и меньше */
+async function depth(h, d, ms = 400){
+  const r0 = h.el.getBoundingClientRect(); h.d = d; h.place(); const r1 = h.el.getBoundingClientRect();
+  h.el.style.zIndex = 40 + Math.round((1 - d)*10);
+  await h.el.animate([{transformOrigin: '0 0', transform: `translate(${r0.left - r1.left}px,${r0.top - r1.top}px) scale(${r0.width/r1.width})`}, {transformOrigin: '0 0', transform: 'none'}], {duration: ms, easing: 'ease-out'}).finished.catch(() => {});
+}
 async function laughAll(){
   emily.set('laugh'); isabel.set('jump'); paul.set('jump'); mark.set('laugh');
   await Promise.all([play('k_laugh'), play('i_hihi'), play('p_hihi')]);
@@ -154,36 +160,43 @@ async function story(){
   leon.set('shy'); await leon.say('l19_okay'); leon.set('idle');
   await T.bone(emily);
 
-  /* 2. лужа: Леон разбегается — сцена замирает, три карточки */
-  await emily.walkTo(PDX - 0.17);
-  leon.x = 0.94; leon.place();
+  /* 2. лужа сзади Эмили: Леон бежит слева толкнуть её — сцена замирает, три карточки.
+     Порядок слева направо: Леон → Эмили → лужа. Отошла — Леон пролетает мимо прямо в лужу. */
+  const EX = PDX - 0.17;
+  await T.go('puddle', () => { emily.x = EX; leon.x = 0.12; leon.set('sly'); });
+  emily.set('idle');
   while (true){
     leon.set('sly'); await leon.say('l19_schubse');
-    leon.el.classList.add('walking'); await T.glide(leon, PDX + 0.18, 0, 500, 'ease-in'); leon.el.classList.remove('walking');
+    leon.el.classList.add('walking'); await T.glide(leon, EX - 0.2, 0, 500, 'ease-in'); leon.el.classList.remove('walking');
     const i = await T.choose(cardsPuddle(), 'n19_was', 'r19_was');
     if (i === 0){
-      /* отойти: Леон проносится мимо и плюхается в грязь — все хохочут */
-      emily.set('jump'); await T.glide(emily, PDX - 0.32, 0.25, 280, 'ease-out'); T.glide(emily, PDX - 0.32, 0, 250, 'ease-in');
-      leon.el.classList.add('walking'); await T.glide(leon, PDX, 0, 500, 'ease-in'); leon.el.classList.remove('walking');
-      sfx.noise(500, 400, .6); T.burst([L.W*PDX, L.floorY], null, '#7a5230', 22); leon.set('mudsad'); emily.set('idle');
+      /* отойти в сторону: Эмили отпрыгивает назад, Леон проносится мимо и плюхается в лужу — все хохочут */
+      emily.set('jump'); await depth(emily, 0.7, 350); emily.set('surprised');
+      leon.el.classList.add('walking'); await T.glide(leon, PDX - 0.02, 0, 650, 'ease-in'); leon.el.classList.remove('walking');
+      await leon.el.animate([{transform: 'rotate(0)'}, {transform: 'rotate(18deg) translateY(4%)'}], {duration: 250, fill: 'forwards'}).finished.catch(() => {});
+      sfx.noise(500, 400, .6); T.burst([L.W*PDX, L.floorY], null, '#7a5230', 24); leon.set('mudsad');
+      leon.el.getAnimations().forEach(x => x.cancel());
       await play('n19_platsch');
       await laughAll();
       await sleep(700); leon.set('mud'); await leon.say('l19_igitt');
+      await depth(emily, 0, 350); emily.set('idle');
       break;
     }
     if (i === 1){
-      /* толкнуть в ответ: оба плюхаются в лужу */
-      T.glide(emily, PDX - 0.05, 0, 400, 'ease-in'); await T.glide(leon, PDX + 0.05, 0, 400, 'ease-in');
-      sfx.noise(600, 400, .7); T.burst([L.W*PDX, L.floorY], null, '#7a5230', 26); T.mud(emily, true); leon.set('mudsad'); emily.set('surprised');
+      /* толкнуть в ответ: Леон врезается, оба летят назад в лужу */
+      await T.glide(leon, EX - 0.07, 0, 250, 'ease-in'); sfx.bonk(); emily.set('surprised');
+      T.glide(emily, PDX + 0.04, 0, 450, 'ease-in'); await T.glide(leon, PDX - 0.05, 0, 450, 'ease-in');
+      sfx.noise(600, 400, .7); T.burst([L.W*PDX, L.floorY], null, '#7a5230', 28); T.mud(emily, true); leon.set('mudsad');
       await sleep(500); await play('n19_beide');
       leon.set('mud'); await laughAll();
       break;
     }
-    /* зажмуриться: Леон толкает — «Nicht schubsen!» и всё сначала */
-    emily.set('blink'); await T.glide(leon, PDX - 0.06, 0, 300, 'ease-in'); sfx.bonk();
-    emily.set('surprised'); await emily.el.animate([{transform: 'rotate(0)'}, {transform: 'rotate(-14deg)'}, {transform: 'rotate(0)'}], {duration: 600}).finished.catch(() => {});
+    /* зажмуриться: Леон толкает — Эмили качается на краю лужи, «Nicht schubsen!» и всё сначала */
+    emily.set('blink'); await T.glide(leon, EX - 0.07, 0, 300, 'ease-in'); sfx.bonk();
+    emily.set('surprised'); await T.glide(emily, EX + 0.06, 0, 300, 'ease-out');
+    await emily.el.animate([{transform: 'rotate(0)'}, {transform: 'rotate(12deg)'}, {transform: 'rotate(-6deg)'}, {transform: 'rotate(0)'}], {duration: 700}).finished.catch(() => {});
     await T.repeat('e19_nicht_schubsen');
-    leon.set('idle'); await T.glide(leon, 0.94, 0, 600); emily.set('idle');
+    leon.set('idle'); await T.glide(leon, 0.12, 0, 600); await T.glide(emily, EX, 0, 300); emily.set('idle');
     await play('n19_noch_mal');
   }
   await T.bone(emily);

@@ -26,7 +26,7 @@ for key, g in zip(keys, gens):
     tmp = tempfile.mktemp(suffix='.mp3'); res = tempfile.mktemp(suffix='.mp3')
     urllib.request.urlretrieve(g['content_url'], tmp)
     af = 'silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.08,areverse'
-    if key.startswith('k_'): af = 'rubberband=pitch=1.3348,' + af
+    if re.match(r'k\d*_', key): af = 'rubberband=pitch=1.3348,' + af
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', tmp, '-af', af, '-ar', '24000', '-ac', '1', '-b:a', '48k', res], check=True)
     h = hashlib.sha1(open(res, 'rb').read()).hexdigest()[:12]
     dst = f'assets/snd/{h}.mp3'; os.replace(res, dst); os.remove(tmp)

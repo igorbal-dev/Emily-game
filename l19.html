@@ -18,7 +18,7 @@
 </div>
 <script>
 const IMG = {"emily_idle_out": ["assets/img/75212f3d100c.webp", 220, 407], "emily_blink_out": ["assets/img/8f259a32dae9.webp", 220, 407], "emily_mouth1_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_mouth2_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_wave_out": ["assets/img/acf19e1e2d3e.webp", 218, 410], "emily_jump_out": ["assets/img/afd822bd4c46.webp", 276, 377], "emily_surprised_out": ["assets/img/723e0f67193a.webp", 227, 407], "emily_crouch_out": ["assets/img/56b917379eef.webp", 227, 309], "emily_laugh_out": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk_out": ["assets/img/8e591eafe46b.webp", 225, 385], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "mark_idle_out": ["assets/img/445af52614b6.webp", 193, 397], "mark_blink_out": ["assets/img/0835c9f94d77.webp", 193, 397], "mark_laugh_out": ["assets/img/82ef3421dc54.webp", 189, 386], "mark_wave_out": ["assets/img/3f7d07abc7df.webp", 198, 397], "mark_talk_out": ["assets/img/554d772231eb.webp", 193, 397], "mark_sad_out": ["assets/img/b6c55e91ef51.webp", 193, 397], "mark_walk_out": ["assets/img/e5af64887295.webp", 197, 379], "theo_idle": ["assets/img/8ce5fe0202bd.webp", 258, 346], "theo_blink": ["assets/img/5bd18fc57314.webp", 259, 347], "theo_happy": ["assets/img/e2a2a3c50086.webp", 322, 316], "theo_bark": ["assets/img/9a746a81bb63.webp", 258, 347], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600], "leon_idle": ["assets/img/75329a72130b.svg", 240, 420], "leon_blink": ["assets/img/386a5ba75ea2.svg", 240, 420], "leon_talk": ["assets/img/d51b0cec0ae9.svg", 240, 420], "leon_wave": ["assets/img/980311427a0d.svg", 240, 420], "leon_jump": ["assets/img/602968ec6bcc.svg", 240, 420], "leon_laugh": ["assets/img/1f1ae3e9f023.svg", 240, 420], "leon_sad": ["assets/img/dd2a1be522f6.svg", 240, 420], "leon_throw": ["assets/img/ee723d20fbe8.svg", 240, 420], "leon_mud": ["assets/img/7f97235c10a8.svg", 240, 420], "leon_mudsad": ["assets/img/70fd438f000a.svg", 240, 420], "leon_sly": ["assets/img/965125ec4a3d.svg", 240, 420], "leon_shy": ["assets/img/a198b3b57489.svg", 240, 420], "leon_oh": ["assets/img/e68921ca1ecf.svg", 240, 420]};  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,crouch,laugh,walk}_out isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} mark_{idle,blink,laugh,wave,talk,sad,walk}_out theo_{idle,blink,happy,bark} sommer_{idle,blink,talk,wave} leon_{idle,blink,talk,wave,jump,laugh,sad,throw,mud,mudsad,sly,shy,oh}*/
-const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "i_hihi": "assets/snd/9c8910580b2c.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3", "t_bark": "assets/snd/d5a7365a3230.mp3"};  /*SND: a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht k_laugh i_hihi p_hihi t_bark*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e19_bruder": "assets/snd/481744be53c4.mp3", "e19_heike": "assets/snd/6c282104c421.mp3", "e19_hoer_auf": "assets/snd/6ab30beacf79.mp3", "e19_nicht_mehr": "assets/snd/be896f1a4536.mp3", "e19_nicht_schubsen": "assets/snd/7ef7eb3809c7.mp3", "e19_siehst": "assets/snd/a7d0a47d46a4.mp3", "e19_stopp": "assets/snd/797232f702b3.mp3", "i_hihi": "assets/snd/9c8910580b2c.mp3", "k19_ball": "assets/snd/089460f9a31b.mp3", "k19_hihi": "assets/snd/43566723f3f3.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "l19_entschuldigung": "assets/snd/67623b6f6268.mp3", "l19_haha": "assets/snd/c31e4c340de1.mp3", "l19_hier": "assets/snd/3b7584756eb6.mp3", "l19_igitt": "assets/snd/1651c7fc1cbd.mp3", "l19_mach_nicht": "assets/snd/34fa759c93e7.mp3", "l19_meine_burg": "assets/snd/7145e5652f42.mp3", "l19_meins": "assets/snd/f1ce2cdea263.mp3", "l19_ok_entschuldigung": "assets/snd/26b3838b74a5.mp3", "l19_okay": "assets/snd/f4d50c888a9c.mp3", "l19_schubse": "assets/snd/4c09c38f003b.mp3", "n19_beide": "assets/snd/aac1fc731eff.mp3", "n19_ende": "assets/snd/e9ef5cf60e70.mp3", "n19_intro": "assets/snd/2a7ee19ddc4f.mp3", "n19_mark": "assets/snd/2f136de45231.mp3", "n19_noch_mal": "assets/snd/a4da4df70ecc.mp3", "n19_opt_augen": "assets/snd/5973e0a34b5d.mp3", "n19_opt_heike": "assets/snd/2a47e7c8f775.mp3", "n19_opt_kaputt": "assets/snd/cb19bffdbdf9.mp3", "n19_opt_weg": "assets/snd/fc53d042dea8.mp3", "n19_opt_weinen": "assets/snd/594433baf087.mp3", "n19_opt_zurueck": "assets/snd/ce9f86d3ca47.mp3", "n19_platsch": "assets/snd/5c7d4709d7f4.mp3", "n19_sand": "assets/snd/661daeff4943.mp3", "n19_stopp_tipp": "assets/snd/75611822af7f.mp3", "n19_was": "assets/snd/a410e8e1a1bc.mp3", "n19_weinen": "assets/snd/f0c226e8a9f1.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3", "r19_stopp": "assets/snd/3738e72e9003.mp3", "r19_was": "assets/snd/b08bdfeafaf6.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3", "s19_sag": "assets/snd/a0f950f26328.mp3", "t_bark": "assets/snd/d5a7365a3230.mp3"};  /*SND: a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht k_laugh i_hihi p_hihi t_bark*/
 /* фразы без записи — пока голос браузера (js/mini.js), тексты для озвучки — voice-next.md */
 const SAY = {
   n19_intro: 'Emily baut eine Sandburg. Da kommt ein neuer Junge. Das ist Leon.',
@@ -123,6 +123,12 @@ async function loud(model){
   leon.set('oh'); sfx.whoosh(); await T.glide(leon, Math.min(0.92, leon.x + 0.05 + Math.min(0.14, max*0.05)), 0, 450, 'ease-out');
   emily.set('idle');
 }
+/* герой отходит вглубь сцены (d: 0 — спереди, 1 — далеко) или возвращается: выше на полу и меньше */
+async function depth(h, d, ms = 400){
+  const r0 = h.el.getBoundingClientRect(); h.d = d; h.place(); const r1 = h.el.getBoundingClientRect();
+  h.el.style.zIndex = 40 + Math.round((1 - d)*10);
+  await h.el.animate([{transformOrigin: '0 0', transform: `translate(${r0.left - r1.left}px,${r0.top - r1.top}px) scale(${r0.width/r1.width})`}, {transformOrigin: '0 0', transform: 'none'}], {duration: ms, easing: 'ease-out'}).finished.catch(() => {});
+}
 async function laughAll(){
   emily.set('laugh'); isabel.set('jump'); paul.set('jump'); mark.set('laugh');
   await Promise.all([play('k_laugh'), play('i_hihi'), play('p_hihi')]);
@@ -154,36 +160,43 @@ async function story(){
   leon.set('shy'); await leon.say('l19_okay'); leon.set('idle');
   await T.bone(emily);
 
-  /* 2. лужа: Леон разбегается — сцена замирает, три карточки */
-  await emily.walkTo(PDX - 0.17);
-  leon.x = 0.94; leon.place();
+  /* 2. лужа сзади Эмили: Леон бежит слева толкнуть её — сцена замирает, три карточки.
+     Порядок слева направо: Леон → Эмили → лужа. Отошла — Леон пролетает мимо прямо в лужу. */
+  const EX = PDX - 0.17;
+  await T.go('puddle', () => { emily.x = EX; leon.x = 0.12; leon.set('sly'); });
+  emily.set('idle');
   while (true){
     leon.set('sly'); await leon.say('l19_schubse');
-    leon.el.classList.add('walking'); await T.glide(leon, PDX + 0.18, 0, 500, 'ease-in'); leon.el.classList.remove('walking');
+    leon.el.classList.add('walking'); await T.glide(leon, EX - 0.2, 0, 500, 'ease-in'); leon.el.classList.remove('walking');
     const i = await T.choose(cardsPuddle(), 'n19_was', 'r19_was');
     if (i === 0){
-      /* отойти: Леон проносится мимо и плюхается в грязь — все хохочут */
-      emily.set('jump'); await T.glide(emily, PDX - 0.32, 0.25, 280, 'ease-out'); T.glide(emily, PDX - 0.32, 0, 250, 'ease-in');
-      leon.el.classList.add('walking'); await T.glide(leon, PDX, 0, 500, 'ease-in'); leon.el.classList.remove('walking');
-      sfx.noise(500, 400, .6); T.burst([L.W*PDX, L.floorY], null, '#7a5230', 22); leon.set('mudsad'); emily.set('idle');
+      /* отойти в сторону: Эмили отпрыгивает назад, Леон проносится мимо и плюхается в лужу — все хохочут */
+      emily.set('jump'); await depth(emily, 0.7, 350); emily.set('surprised');
+      leon.el.classList.add('walking'); await T.glide(leon, PDX - 0.02, 0, 650, 'ease-in'); leon.el.classList.remove('walking');
+      await leon.el.animate([{transform: 'rotate(0)'}, {transform: 'rotate(18deg) translateY(4%)'}], {duration: 250, fill: 'forwards'}).finished.catch(() => {});
+      sfx.noise(500, 400, .6); T.burst([L.W*PDX, L.floorY], null, '#7a5230', 24); leon.set('mudsad');
+      leon.el.getAnimations().forEach(x => x.cancel());
       await play('n19_platsch');
       await laughAll();
       await sleep(700); leon.set('mud'); await leon.say('l19_igitt');
+      await depth(emily, 0, 350); emily.set('idle');
       break;
     }
     if (i === 1){
-      /* толкнуть в ответ: оба плюхаются в лужу */
-      T.glide(emily, PDX - 0.05, 0, 400, 'ease-in'); await T.glide(leon, PDX + 0.05, 0, 400, 'ease-in');
-      sfx.noise(600, 400, .7); T.burst([L.W*PDX, L.floorY], null, '#7a5230', 26); T.mud(emily, true); leon.set('mudsad'); emily.set('surprised');
+      /* толкнуть в ответ: Леон врезается, оба летят назад в лужу */
+      await T.glide(leon, EX - 0.07, 0, 250, 'ease-in'); sfx.bonk(); emily.set('surprised');
+      T.glide(emily, PDX + 0.04, 0, 450, 'ease-in'); await T.glide(leon, PDX - 0.05, 0, 450, 'ease-in');
+      sfx.noise(600, 400, .7); T.burst([L.W*PDX, L.floorY], null, '#7a5230', 28); T.mud(emily, true); leon.set('mudsad');
       await sleep(500); await play('n19_beide');
       leon.set('mud'); await laughAll();
       break;
     }
-    /* зажмуриться: Леон толкает — «Nicht schubsen!» и всё сначала */
-    emily.set('blink'); await T.glide(leon, PDX - 0.06, 0, 300, 'ease-in'); sfx.bonk();
-    emily.set('surprised'); await emily.el.animate([{transform: 'rotate(0)'}, {transform: 'rotate(-14deg)'}, {transform: 'rotate(0)'}], {duration: 600}).finished.catch(() => {});
+    /* зажмуриться: Леон толкает — Эмили качается на краю лужи, «Nicht schubsen!» и всё сначала */
+    emily.set('blink'); await T.glide(leon, EX - 0.07, 0, 300, 'ease-in'); sfx.bonk();
+    emily.set('surprised'); await T.glide(emily, EX + 0.06, 0, 300, 'ease-out');
+    await emily.el.animate([{transform: 'rotate(0)'}, {transform: 'rotate(12deg)'}, {transform: 'rotate(-6deg)'}, {transform: 'rotate(0)'}], {duration: 700}).finished.catch(() => {});
     await T.repeat('e19_nicht_schubsen');
-    leon.set('idle'); await T.glide(leon, 0.94, 0, 600); emily.set('idle');
+    leon.set('idle'); await T.glide(leon, 0.12, 0, 600); await T.glide(emily, EX, 0, 300); emily.set('idle');
     await play('n19_noch_mal');
   }
   await T.bone(emily);

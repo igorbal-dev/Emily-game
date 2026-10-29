@@ -5,7 +5,7 @@
    или трудное сочетание согласных (zw, pf, schl, schm, str, spr, sp/st в начале основы, z в начале слова и т. п.).
    Простые (Hallo!, Danke!, Ja!, Tschüss!, Ich heiße Emily.) не дробим никогда.
 
-   Как делим: по смысловым группам, где в живой речи пауза; в кусочке 2–4 слога, кусочков не больше 3;
+   Как делим: по смысловым группам, где в живой речи пауза; в кусочке 2–4 слога и не больше 3 слов, кусочков не больше 4; одно слово никогда не делим (Entschuldigung — целиком, фраза не дробится);
    не рвём артикль + слово, предлог + его группу, обращение + имя; длинное или трудное слово — отдельным кусочком;
    ничего не выкидываем. Кусочек в середине фразы пишется с «…» (интонация продолжения), последний — с концом фразы (! или ?).
    Записи кусочков (CHUNK_SND, Barbara Brave – TV Narrator) есть только у уровня 2. На остальных уровнях кусочки говорит
@@ -49,7 +49,7 @@ const CHUNKS = (() => {
     /* 6 «Kita-Morgen» */
     e_morgen: ['Guten Morgen …', 'Heike!'],
     /* 7 «Eisdiele» */
-    e_zuerst: ['Ich war zuerst da.', 'Bitte stell dich …', 'hinten an.'],
+    e_zuerst: ['Ich war …', 'zuerst da.', 'Bitte stell dich …', 'hinten an.'],
     /* 8 «Kita-Weg» */
     e_rot_stehen: ['Rot heißt …', 'stehen!'],
     /* 9 «Aufräumen» */
@@ -65,7 +65,6 @@ const CHUNKS = (() => {
     e13_darf: ['Darf ich …', 'auch mal …', 'schaukeln?'],
     e13_du_zuerst: ['Du zuerst …', 'dann ich!'],
     e13_zusammen: ['Komm, wir spielen …', 'zusammen!'],
-    e13_entschuldigung: ['Ent …', 'schuldigung!'],
     /* 14 «Zu Besuch bei Paul» */
     e14_guten_tag: ['Guten Tag …', 'Frau Becker!'],
     e14_was: ['Hallo Paul!', 'Was spielen wir?'],
@@ -79,10 +78,10 @@ const CHUNKS = (() => {
     e15_bezahlen: ['Wir müssen …', 'zuerst …', 'bezahlen!'],
     e15_ihnen_auch: ['Danke …', 'Ihnen auch!', 'Tschüss!'],
     /* 16 «Kita: Ich brauche Hilfe» */
-    e16_gut: ['Mir geht es gut …', 'danke!'],
-    e16_stift: ['Isabel …', 'gibst du mir bitte …', 'den roten Stift?'],
+    e16_gut: ['Mir geht es …', 'gut, danke!'],
+    e16_stift: ['Isabel, gibst du …', 'mir bitte …', 'den roten Stift?'],
     e16_heike: ['Komm …', 'wir sagen es …', 'Heike!'],
-    e16_helfen: ['Heike …', 'kannst du mir bitte …', 'helfen?'],
+    e16_helfen: ['Heike, kannst du …', 'mir bitte …', 'helfen?'],
     e16_bis_morgen: ['Tschüss, Heike!', 'Bis morgen!'],
     /* 17 «Neue Nachbarin» */
     e17_fuenf: ['Ich bin fünf.', 'Und du?'],
@@ -98,21 +97,20 @@ const CHUNKS = (() => {
     e18_ballett: ['Ich tanze gern!', 'Ich gehe …', 'zum Ballett.'],
     e18_kommen: ['Willst du mal …', 'zu mir kommen?'],
     /* 19 «Stopp!» */
-    e19_stopp: ['Stopp!', 'Das mag ich nicht!'],
+    e19_stopp: ['Stopp!', 'Das mag ich …', 'nicht!'],
     e19_nicht_schubsen: ['Nicht …', 'schubsen!'],
-    e19_bruder: ['Lass meinen Bruder …', 'in Ruhe!', 'Gib den Ball zurück!'],
-    e19_siehst: ['Siehst du?', 'Das ist nicht schön!'],
+    e19_bruder: ['Lass meinen Bruder …', 'in Ruhe!', 'Gib den Ball …', 'zurück!'],
+    e19_siehst: ['Siehst du?', 'Das ist …', 'nicht schön!'],
     e19_heike: ['Heike!', 'Leon macht …', 'meine Burg kaputt!'],
     e19_nicht_mehr: ['Okay.', 'Aber mach das …', 'nicht mehr!'],
     /* 20 «Wir spielen alle zusammen» */
-    e20_nicht_bloed: ['Nein!', 'Ich bin nicht blöd.', 'Das ist nicht nett!'],
+    e20_nicht_bloed: ['Nein! Ich bin …', 'nicht blöd.', 'Das ist …', 'nicht nett!'],
     e20_aua: ['Aua!', 'Nicht hauen!'],
     e20_heike: ['Heike …', 'Leon hat mich …', 'gehauen.'],
-    e20_entschuldigung: ['Ent …', 'schuldigung.'],
     e20_traurig: ['Ich bin …', 'traurig.'],
     e20_wuetend: ['Ich bin …', 'wütend.'],
     e20_spielt_ihr: ['Isabel, Paul …', 'spielt ihr …', 'mit mir?'],
-    e20_alle: ['Leon, du kannst …', 'auch mitspielen.', 'Wir spielen alle zusammen!'],
+    e20_alle: ['Leon, du kannst …', 'auch mitspielen.', 'Wir spielen …', 'alle zusammen!'],
     e20_nein: ['Nein …', 'jetzt nicht.']
   });
   return C;
