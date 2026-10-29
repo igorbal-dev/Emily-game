@@ -1,0 +1,154 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Kita: Ich brauche Hilfe. Уровень 16</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 16 «Kita: Ich brauche Hilfe» — день в садике: ответить «Wie geht es dir?», попросить карандаш, помочь упавшему другу и позвать воспитательницу, отпроситься в туалет, попросить помочь с курткой, попрощаться. ТЗ: docs/tz/level-16.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_out": ["assets/img/75212f3d100c.webp", 220, 407], "emily_blink_out": ["assets/img/8f259a32dae9.webp", 220, 407], "emily_mouth1_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_mouth2_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_wave_out": ["assets/img/acf19e1e2d3e.webp", 218, 410], "emily_jump_out": ["assets/img/afd822bd4c46.webp", 276, 377], "emily_surprised_out": ["assets/img/723e0f67193a.webp", 227, 407], "emily_crouch_out": ["assets/img/56b917379eef.webp", 227, 309], "emily_laugh_out": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk_out": ["assets/img/8e591eafe46b.webp", 225, 385], "emily_idle_shoes": ["assets/img/f3c638bc729d.webp", 208, 407], "emily_blink_shoes": ["assets/img/0f33b1ccf809.webp", 208, 407], "emily_mouth1_shoes": ["assets/img/3b7a1bb44669.webp", 208, 407], "emily_mouth2_shoes": ["assets/img/349db2cdaea9.webp", 208, 407], "emily_talk_shoes": ["assets/img/d3e54ca225ed.webp", 270, 413], "emily_wave_shoes": ["assets/img/2ab85334263f.webp", 252, 394], "emily_jump_shoes": ["assets/img/31f33a5548ba.webp", 279, 346], "emily_surprised_shoes": ["assets/img/b65576956668.webp", 208, 407], "emily_counting_shoes": ["assets/img/31b278ea235c.webp", 232, 390], "emily_jacketoff": ["assets/img/e7b55c6b04ed.webp", 225, 387], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "emily_crouch": ["assets/img/56b917379eef.webp", 227, 309], "emily_walk": ["assets/img/8e591eafe46b.webp", 225, 385], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "paul_hide": ["assets/img/6de4e7b4f471.svg", 240, 300], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600]};  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,crouch,laugh,walk}_out emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised,counting}_shoes emily_{jacketoff,laugh,crouch,walk} isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump,hide} sommer_{idle,blink,talk,wave}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_nicht_nett": "assets/snd/da7914e21170.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_was_besser": "assets/snd/8f0d27058ba8.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e16_bis_morgen": "assets/snd/27804a95681a.mp3", "e16_gut": "assets/snd/a0c9990e0692.mp3", "e16_heike": "assets/snd/6b8979795cd4.mp3", "e16_helfen": "assets/snd/9f879087275a.mp3", "e16_klo": "assets/snd/e5bd4b35b6b1.mp3", "e16_los": "assets/snd/554fd303c2f6.mp3", "e16_stift": "assets/snd/820e6bcb0b34.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_danke": "assets/snd/46d2c9e33597.mp3", "i16_hier": "assets/snd/d719dba56a72.mp3", "n16_jacke": "assets/snd/302053488d82.mp3", "n16_klo": "assets/snd/9c2a3505afe1.mp3", "n16_malen": "assets/snd/6a07b6a3aa0a.mp3", "n16_opt1": "assets/snd/196cd3c96dc5.mp3", "n16_opt2": "assets/snd/c75d6cbdacc1.mp3", "n16_paul": "assets/snd/d0f4907bf0af.mp3", "n16_tipp_malen": "assets/snd/d53762daf716.mp3", "p16_danke": "assets/snd/aea20480d078.mp3", "p16_knie": "assets/snd/e5736ff8c693.mp3", "r_choose_kind": "assets/snd/405a697ddf70.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3", "s16_abholen": "assets/snd/3ed9e65b6605.mp3", "s16_geh": "assets/snd/87e0dcca236e.mp3", "s16_klar": "assets/snd/ef0f58d56adf.mp3", "s16_morgen": "assets/snd/481e8b9a3aac.mp3", "s16_pflaster": "assets/snd/bee09d17c45c.mp3"};  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht r_choose_kind e_danke*/
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script>
+/* Уровень 16: день в садике у Heike. «Mir geht es gut, danke!», «Isabel, gibst du mir bitte den roten Stift?»,
+   Пауль упал — «Was ist los, Paul?», «Komm, wir sagen es Heike!», «Ich muss mal aufs Klo.», «Heike, kannst du mir bitte helfen?», «Tschüss, Heike! Bis morgen!». */
+const LEVEL = 16;
+const STICKER = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#ffe9a8" stroke="#ffd34d" stroke-width="5"/><path d="M28 62 Q50 80 72 62" fill="none" stroke="#ff7a59" stroke-width="6" stroke-linecap="round"/><circle cx="36" cy="42" r="5" fill="#3b2a1f"/><circle cx="64" cy="42" r="5" fill="#3b2a1f"/><rect x="58" y="10" width="34" height="14" rx="7" fill="#ffd0a6" stroke="#e29a5a" stroke-width="3" transform="rotate(30 75 17)"/><path d="M14 20 l6 -10 M20 26 l12 -4" stroke="#ff5a5a" stroke-width="5" stroke-linecap="round"/></svg>';
+
+/* ---------- фон: группа в садике — окно, рисунки, крючки у двери, стол ---------- */
+const TBX = 0.6;
+function drawScene(g, W, H, L){
+  const fy = L.floorY, hE = L.hE; g.lineCap = 'round'; g.lineJoin = 'round';
+  g.fillStyle = '#fff1c9'; g.fillRect(0, 0, W, fy);
+  g.fillStyle = '#ffe2a0'; g.fillRect(0, fy - hE*0.55, W, hE*0.5);
+  g.fillStyle = '#c98f55'; g.fillRect(0, fy - hE*0.06, W, H - fy + hE*0.06);
+  g.fillStyle = 'rgba(255,255,255,.25)'; for (let x = 0; x < W; x += hE*0.35) g.fillRect(x, fy - hE*0.06, 3, H);
+  /* дверь и крючки */
+  g.fillStyle = '#9fd0ff'; g.fillRect(W*0.02, fy - hE*1.6, hE*0.6, hE*1.55); g.strokeStyle = '#2f80ed'; g.lineWidth = hE*0.04; g.strokeRect(W*0.02, fy - hE*1.6, hE*0.6, hE*1.55);
+  g.fillStyle = '#ffd34d'; g.beginPath(); g.arc(W*0.02 + hE*0.5, fy - hE*0.8, hE*0.035, 0, 7); g.fill();
+  const hx = W*0.02 + hE*0.75;
+  g.fillStyle = '#8a5a1e'; g.fillRect(hx, fy - hE*1.25, hE*0.9, hE*0.05);
+  [['#ff7a59', 0.15], ['#32b67a', 0.45], ['#9b6bff', 0.75]].forEach(([c, dx]) => { g.fillStyle = c; g.beginPath(); g.arc(hx + hE*dx, fy - hE*1.12, hE*0.08, 0, 7); g.fill(); });
+  /* окно и рисунки детей */
+  const wx = W*0.42, wy = fy - hE*1.62;
+  g.fillStyle = '#8fd3ff'; g.fillRect(wx, wy, hE*0.9, hE*0.5); g.strokeStyle = '#fff'; g.lineWidth = hE*0.04; g.strokeRect(wx, wy, hE*0.9, hE*0.5);
+  g.beginPath(); g.moveTo(wx + hE*0.45, wy); g.lineTo(wx + hE*0.45, wy + hE*0.5); g.stroke();
+  const pics = [['#ff7a59', 0.76], ['#2f80ed', 0.86], ['#32b67a', 0.95]];
+  pics.forEach(([c, x], i) => { const px = W*x, py = fy - hE*(1.7 - (i % 2)*0.15);
+    g.fillStyle = '#fff'; g.fillRect(px - hE*0.13, py, hE*0.26, hE*0.2); g.strokeStyle = c; g.lineWidth = hE*0.02; g.beginPath();
+    if (i === 0){ g.arc(px, py + hE*0.1, hE*0.05, 0, 7); } else if (i === 1){ g.moveTo(px - hE*0.08, py + hE*0.16); g.lineTo(px, py + hE*0.04); g.lineTo(px + hE*0.08, py + hE*0.16); g.closePath(); } else { g.moveTo(px - hE*0.09, py + hE*0.14); g.quadraticCurveTo(px, py, px + hE*0.09, py + hE*0.14); }
+    g.stroke(); });
+  /* стол */
+  const tx = W*TBX;
+  g.fillStyle = '#ffb36b'; g.fillRect(tx - hE*0.6, fy - hE*0.5, hE*1.2, hE*0.07);
+  g.fillStyle = '#e8904a'; g.fillRect(tx - hE*0.55, fy - hE*0.44, hE*0.06, hE*0.42); g.fillRect(tx + hE*0.49, fy - hE*0.44, hE*0.06, hE*0.42);
+}
+
+/* ---------- предметы ---------- */
+const PAPER = '<svg viewBox="0 0 100 50"><path d="M4 46 L14 4 H96 L86 46 Z" fill="#fff" stroke="#c9b28a" stroke-width="3" stroke-linejoin="round"/></svg>';
+const DRAWING = '<svg viewBox="0 0 100 50"><path d="M4 46 L14 4 H96 L86 46 Z" fill="#fff" stroke="#c9b28a" stroke-width="3" stroke-linejoin="round"/><circle cx="36" cy="22" r="9" fill="none" stroke="#ff3b3b" stroke-width="4"/><path d="M36 7 v-3 M36 37 v3 M21 22 h-3 M51 22 h3" stroke="#ff3b3b" stroke-width="3.5" stroke-linecap="round"/><path d="M66 38 C54 30 56 18 63 20 C65 21 66 23 66 24 C66 23 67 21 69 20 C76 18 78 30 66 38 Z" fill="#ff3b3b"/></svg>';
+const PENCIL = '<svg viewBox="0 0 100 24"><rect x="14" y="4" width="70" height="16" rx="3" fill="#ff3b3b" stroke="#b82020" stroke-width="3"/><path d="M84 4 L98 12 L84 20 Z" fill="#ffd9a6" stroke="#b82020" stroke-width="3" stroke-linejoin="round"/><path d="M93 9 L98 12 L93 15 Z" fill="#b82020"/><rect x="4" y="4" width="12" height="16" rx="3" fill="#ff9db0" stroke="#b82020" stroke-width="3"/></svg>';
+const PLASTER = '<svg viewBox="0 0 100 40"><rect x="4" y="6" width="92" height="28" rx="14" fill="#ffd0a6" stroke="#e29a5a" stroke-width="4"/><rect x="36" y="10" width="28" height="20" rx="4" fill="#fff1e0"/><g fill="#e29a5a"><circle cx="16" cy="16" r="2"/><circle cx="24" cy="24" r="2"/><circle cx="76" cy="16" r="2"/><circle cx="84" cy="24" r="2"/></g></svg>';
+
+let emily, heike, isabel, paul, paper, pencil;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised', 'crouch', 'laugh', 'walk', 'counting', 'jacketoff'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump', 'hide'];
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  paper = T.prop(PAPER, {px: () => L.W*TBX - L.hE*0.18, py: () => L.floorY - L.hE*0.48, w: 0.42, ratio: 0.5, z: 46});
+  pencil = T.prop(PENCIL, {px: () => L.W*TBX + L.hE*0.32, py: () => L.floorY - L.hE*0.5, w: 0.3, ratio: 0.24, z: 46});
+  isabel = T.hero('isabel', {x: TBX + 0.15, h: 0.95, poses: KP});
+  heike = T.hero('sommer', {x: 0.36, h: 1.5, poses: ['idle', 'blink', 'talk', 'wave']});
+  emily = T.hero('emily', {x: 0.1, outfit: 'out', poses: EP});
+}
+/* слёзы у Пауля, пока ему больно */
+function tears(h, on){
+  h.el.querySelectorAll('.tear').forEach(t => t.remove()); if (!on) return;
+  for (const [x, d] of [[38, 0], [58, .6]]){ const t = document.createElement('i'); t.className = 'tear'; Object.assign(t.style, {left: x + '%', top: '36%', animationDelay: d + 's'}); h.body.appendChild(t); }
+}
+
+async function story(){
+  /* утро: как дела? */
+  await emily.walkTo(0.22);
+  heike.set('wave'); await heike.say('s16_morgen'); heike.set('idle');
+  await T.repeat('e16_gut');
+  emily.set('jacketoff'); await sleep(700); emily.dress('shoes'); emily.set('idle'); sfx.pop();
+  await T.bone(emily);
+
+  /* рисуем: попросить красный карандаш */
+  heike.walkTo(0.2);
+  await emily.walkTo(TBX - 0.1);
+  await play('n16_malen');
+  isabel.set('wave'); await sleep(300); isabel.set('idle');
+  await T.repeat('e16_stift');
+  await isabel.say('i16_hier');
+  await T.move(pencil, TBX - 0.02, 0, 800); pencil.o.py = () => L.floorY - L.hE*0.5; pencil.place();
+  await T.repeat('e_danke');
+  await play('n16_tipp_malen');
+  await T.tap([paper], 'n16_tipp_malen', 'r_tipp_licht');
+  for (let i = 0; i < 3; i++){ await T.move(pencil, TBX - 0.06 + (i % 2)*0.06, 0, 250); }
+  paper.el.innerHTML = DRAWING; sfx.ding(); emily.set('jump'); await praise(); emily.set('idle');
+  await T.bone(paper);
+
+  /* Пауль упал: пожалеть и позвать Heike */
+  paul = T.hero('paul', {x: 1.12, h: 0.95, poses: KP});
+  await paul.walkTo(0.86, 900); sfx.bonk(); paul.set('hide'); tears(paul, true);
+  await play('n16_paul');
+  await T.choose([
+    {parts: [{img: 'emily_laugh', x: 36, h: 74}, {img: 'paul_hide', x: 66, h: 52}, {fx: 'tears', x: 64, y: 34}], clip: 'n16_opt1', ok: false},
+    {parts: [{img: 'emily_crouch', x: 40, h: 58}, {img: 'paul_hide', x: 66, h: 52}, {fx: 'hearts', x: 52, y: 12}], clip: 'n16_opt2'}
+  ], 'a_was_besser', 'r_choose_kind', 'a_nicht_nett');
+  await emily.walkTo(0.74); emily.set('crouch');
+  await T.repeat('e16_los');
+  await paul.say('p16_knie');
+  emily.set('idle');
+  await T.repeat('e16_heike');
+  await heike.walkTo(0.62);
+  await heike.say('s16_pflaster');
+  const pl = T.prop(PLASTER, {x: 0.62, py: () => L.floorY - L.hE*0.9, w: 0.18, ratio: 0.4, z: 66});
+  await T.move(pl, 0.86, 0, 800); pl.o.py = () => L.floorY - L.hE*0.22; pl.place();
+  tears(paul, false); paul.set('idle'); sfx.ding(); await sleep(400);
+  paul.set('jump'); await paul.say('p16_danke'); paul.set('idle');
+  await T.bone(paul);
+
+  /* в туалет */
+  await play('n16_klo');
+  await T.repeat('e16_klo');
+  await heike.say('s16_geh');
+  await emily.walkTo(-0.15, 1300); await sleep(900); sfx.whoosh(); await sleep(700); await emily.walkTo(0.4, 1300);
+
+  /* вечер: куртка и до свидания */
+  await T.go('kita', () => { emily.x = 0.2; heike.x = 0.5; paul.x = 0.86; pl.el.remove(); });
+  emily.set('jacketoff');
+  await play('n16_jacke');
+  await T.repeat('e16_helfen');
+  await heike.walkTo(0.32);
+  await heike.say('s16_klar');
+  emily.dress('out'); emily.set('jump'); sfx.pop(); await sleep(500); emily.set('idle');
+  await T.bone(emily);
+  await heike.say('s16_abholen');
+  await T.repeat('e16_bis_morgen');
+  heike.set('wave'); emily.set('wave'); isabel.set('wave'); paul.set('wave'); await sleep(900);
+  emily.set('idle');
+}
+T.start(IMG.emily_wave_out[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
