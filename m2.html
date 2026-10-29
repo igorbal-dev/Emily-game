@@ -23,7 +23,7 @@
 </div>
 <script>
 const IMG = {"theo_happy": ["assets/img/e2a2a3c50086.webp", 322, 316], "theo_side": ["assets/img/b29899406034.webp", 375, 326], "theo_jump": ["assets/img/282bb288f557.webp", 365, 366], "theo_sniff": ["assets/img/d5c733713dff.webp", 378, 387], "theo_look": ["assets/img/1f328979cdfc.webp", 275, 389], "theo_run1": ["assets/img/3b191919007b.webp", 343, 407], "emily_idle_out": ["assets/img/75212f3d100c.webp", 220, 407], "emily_jump_out": ["assets/img/afd822bd4c46.webp", 276, 377], "mark_idle_out": ["assets/img/445af52614b6.webp", 193, 397], "mark_laugh_out": ["assets/img/82ef3421dc54.webp", 189, 386]};  /*IMG: theo_happy theo_side theo_jump theo_sniff theo_look theo_run1 emily_idle_out emily_jump_out mark_idle_out mark_laugh_out*/
-const SND = {"a_ding_auto": "assets/snd/9d36e81c3112.mp3", "a_ding_buch": "assets/snd/26bc005a97bb.mp3", "a_ding_dose": "assets/snd/f487f4925ce4.mp3", "a_ding_flasche": "assets/snd/139992c363ab.mp3", "a_ding_loeffel": "assets/snd/f90bb40ea44b.mp3", "a_ding_muetze": "assets/snd/791dec089fde.mp3", "a_ding_schluessel": "assets/snd/b43d72d0bae9.mp3", "a_ding_schuh": "assets/snd/011a93b8d9cd.mp3", "a_ding_socke": "assets/snd/2d5a26a7a1f3.mp3", "a_ding_stein": "assets/snd/edee759e3dbf.mp3", "a_fang_knochen": "assets/snd/22359d772adc.mp3", "a_fertig_zeit": "assets/snd/c3a0c7cf1e2f.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_nicht_theo": "assets/snd/5133e9cefba0.mp3", "a_nur_knochen": "assets/snd/64648ea833a3.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_runde": "assets/snd/04b85091b434.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_theo_satt": "assets/snd/bcbee916d91c.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wie_viele_theo": "assets/snd/12035db43a6f.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "a_zaehl_noch": "assets/snd/43043313b339.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_11": "assets/snd/b3092361945a.mp3", "e_12": "assets/snd/ff5ef4e6c6ad.mp3", "e_13": "assets/snd/2342f25d6853.mp3", "e_14": "assets/snd/ab206047d729.mp3", "e_15": "assets/snd/5782cc7126d4.mp3", "e_16": "assets/snd/bda8543a0fa5.mp3", "e_17": "assets/snd/e92e903d2a89.mp3", "e_18": "assets/snd/d96da37b4c68.mp3", "e_19": "assets/snd/bf49ac088cdc.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_20": "assets/snd/6eb46e3201f0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "r_fang": "assets/snd/f98d18e28247.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_wie_viele_theo": "assets/snd/68392fbe9517.mp3", "t_bark": "assets/snd/d5a7365a3230.mp3"};  /*SND: e_{1..20} a_ding_schuh a_ding_socke a_ding_stein a_ding_dose a_ding_schluessel a_ding_loeffel a_ding_muetze a_ding_buch a_ding_flasche a_ding_auto a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily*/
+const SND = {"a_ding_auto": "assets/snd/9d36e81c3112.mp3", "a_ding_buch": "assets/snd/26bc005a97bb.mp3", "a_ding_dose": "assets/snd/f487f4925ce4.mp3", "a_ding_flasche": "assets/snd/139992c363ab.mp3", "a_ding_loeffel": "assets/snd/f90bb40ea44b.mp3", "a_ding_muetze": "assets/snd/791dec089fde.mp3", "a_ding_schluessel": "assets/snd/b43d72d0bae9.mp3", "a_ding_schuh": "assets/snd/011a93b8d9cd.mp3", "a_ding_socke": "assets/snd/2d5a26a7a1f3.mp3", "a_ding_stein": "assets/snd/edee759e3dbf.mp3", "a_fang_knochen": "assets/snd/22359d772adc.mp3", "a_fertig_zeit": "assets/snd/c3a0c7cf1e2f.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_nicht_theo": "assets/snd/5133e9cefba0.mp3", "a_nur_knochen": "assets/snd/64648ea833a3.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_runde": "assets/snd/04b85091b434.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_theo_satt": "assets/snd/bcbee916d91c.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_11": "assets/snd/b3092361945a.mp3", "e_12": "assets/snd/ff5ef4e6c6ad.mp3", "e_13": "assets/snd/2342f25d6853.mp3", "e_14": "assets/snd/ab206047d729.mp3", "e_15": "assets/snd/5782cc7126d4.mp3", "e_16": "assets/snd/bda8543a0fa5.mp3", "e_17": "assets/snd/e92e903d2a89.mp3", "e_18": "assets/snd/d96da37b4c68.mp3", "e_19": "assets/snd/bf49ac088cdc.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_20": "assets/snd/6eb46e3201f0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "r_fang": "assets/snd/f98d18e28247.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "t_bark": "assets/snd/d5a7365a3230.mp3"};  /*SND: e_{1..20} a_ding_schuh a_ding_socke a_ding_stein a_ding_dose a_ding_schluessel a_ding_loeffel a_ding_muetze a_ding_buch a_ding_flasche a_ding_auto a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily*/
 </script>
 <script src="js/mini.js"></script>
 <script>
@@ -68,7 +68,7 @@ function drawThing(type, x, y, s, rot){
 }
 
 /* ---------- состояние ---------- */
-const MAX_BONES = 20;
+const MAX_BONES = 10;                 /* за одну игру не больше 10 косточек */
 let S;
 function reset(){
   S = {phase:'intro', t:0, items:[], caught:0, spawned:0, junk:0, nextSpawn:0, x:W/2, tx:W/2, face:1, jumpUntil:0, sniffUntil:0, shakeT:0, fly:[], told:{}, cheerUntil:0, t0:0};
@@ -204,20 +204,8 @@ async function finish(){
   await play('a_fertig_zeit');
   const n = S.caught;
   if (n === 0){ await play('a_runde'); $('#again').hidden = false; finishing = false; return; }
-  /* сколько косточек? косточки лежат в рядах, три карточки с числами */
-  S.phase = 'ask';
-  await play('a_wie_viele_theo');
-  const opts = new Set([n]); for (const d of [1, -1, 2, -2, 3]) if (opts.size < 3 && n + d >= 1 && n + d <= 20) opts.add(n + d);
-  const list = [...opts].sort(() => Math.random() - 0.5);
-  await numChoice(list, n, 'a_wie_viele_theo', 'r_wie_viele_theo', async () => {
-    /* ошиблась — «Zähl noch mal!» и считаем вместе */
-    await play('a_zaehl_noch');
-    for (let i = 0; i < n; i++){ S.hl = i; await play('e_' + (i + 1)); }
-    S.hl = -1;
-  });
-  S.hl = -1;
   await play('a_theo_satt');
-  /* все пойманные косточки: Эмили пересчитывает их и кладёт в общий сундучок */
+  /* все пойманные косточки: Эмили считает их по одной с микрофоном и кладёт в общий сундучок */
   S.phase = 'end';
   await saveMini('theo', n, {intro: false});
   await praise();

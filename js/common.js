@@ -1,3 +1,51 @@
+/* ---------- прогресс, цены и режим разработчика (общие для карты и всех игр) ----------
+   localStorage 'emily-game': {done, bones (кошелёк), earned, friends, mini, own: {lvl, mini, hair}} — own: открыто для Эмили насовсем
+   (уровень без прохождения предыдущего, мини-игра бесплатно, причёска куплена или подарена). 'emily-dev' = '1' — режим разработчика:
+   всё доступно бесплатно, а игра на страницах уровней и мини-игр прогресс не меняет (запись 'emily-game' там отключается).
+   Новый игрок: кошелёк 0, открыт уровень 0; дальше уровень открывается, когда пройден предыдущий; мини-игры и причёски — за косточки. */
+window.Game = (function(){
+  const KEY = 'emily-game';
+  const G = {
+    KEY,
+    /* награда за уровень: короткие 4, средние 5, длинные 6 (считает Эмили, максимум 10) */
+    LEVEL_BONES: {0: 4, 1: 6, 2: 6, 3: 4, 4: 6, 5: 6, 6: 6, 7: 5, 8: 4, 9: 5, 10: 4, 11: 6, 12: 5, 13: 5, 14: 6, 15: 5, 16: 5},
+    /* мини-игры: ключ, страница, максимум награды, цена (в полтора раза выше максимума — один выигрыш не окупает следующую игру) */
+    MINIS: {race: {page: 1, max: 10, price: 15}, theo: {page: 2, max: 10, price: 15}, fangen: {page: 3, max: 3, price: 5}},
+    HAIR_PRICE: [0, 8, 10, 12, 15, 18, 20, 25],            /* причёска 0 — своя, всегда есть */
+    load(){ try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e){ return {}; } },
+    save(d){ try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){} },
+    dev(){ try { return localStorage.getItem('emily-dev') === '1'; } catch(e){ return false; } },
+    own(kind, id){ const o = (G.load().own || {})[kind] || {}; return !!o[id]; },
+    setOwn(kind, id, on){ const d = G.load(); d.own = d.own || {}; d.own[kind] = d.own[kind] || {}; if (on) d.own[kind][id] = 1; else delete d.own[kind][id]; G.save(d); },
+    levelOpen(i){ const d = G.load(); return i === 0 || !!(d.done || {})[i - 1] || !!((d.own || {}).lvl || {})[i]; },
+    miniFree(key){ return G.dev() || G.own('mini', key); },
+    reset(){ try { localStorage.removeItem(KEY); localStorage.removeItem('emily-hair'); } catch(e){} }
+  };
+  const path = location.pathname, lv = path.match(/\/l(\d+)\.html$/), mn = path.match(/\/m(\d+)\.html$/);
+  G.level = lv ? +lv[1] : -1;
+  G.miniKey = mn ? Object.keys(G.MINIS).find(k => G.MINIS[k].page === +mn[1]) : null;
+  if (lv || mn){
+    /* свободная игра: прогресс Эмили не трогаем */
+    if (G.dev()){ const set = Storage.prototype.setItem; Storage.prototype.setItem = function(k, v){ if (this === localStorage && k === KEY) return; return set.call(this, k, v); }; }
+    /* закрытый уровень по прямой ссылке — на карту */
+    else if (lv && !G.levelOpen(G.level)) location.replace('index.html');
+  }
+  if (G.miniKey){
+    /* мини-игра: заход только после оплаты на карте (пропуск в sessionStorage), «ещё раз» — снова за косточки */
+    const k = G.miniKey, price = G.MINIS[k].price;
+    document.addEventListener('click', e => {
+      if (G.miniFree(k)) return;
+      if (e.target.closest('#go')){
+        let pass = null; try { pass = sessionStorage.getItem('emily-pass'); sessionStorage.removeItem('emily-pass'); } catch(e){}
+        if (pass !== k){ e.stopImmediatePropagation(); location.href = 'index.html'; }
+      } else if (e.target.closest('#again')){
+        if (!(window.Wallet && Wallet.spend(price))){ e.stopImmediatePropagation(); location.href = 'index.html'; }
+      }
+    }, true);
+  }
+  return G;
+})();
+
 /* Общие улучшения для всех уровней. Подключается в конце каждой страницы уровня, после кода уровня.
    1. Мягкий микрофон: засчитывается любая попытка сказать вслух, даже если Эмили заговорила
       чуть раньше, чем появился значок микрофона. Пока значок светится, можно повторить ещё раз.
@@ -184,12 +232,12 @@
 /* ---------- общий кошелёк косточек (сундучок) и подсчёт косточек в конце игры ----------
    Баланс один на всю игру: localStorage 'emily-game'.bones — сколько косточек можно потратить (мини-игры станут платными),
    .earned — сколько заработано за всё время (по нему открываются причёски, траты их не закрывают).
-   countBones(n, {from, hide, intro, voice}) — в конце уровня или мини-игры: косточки выстраиваются в ряд, мультяшная Эмили считает
-   их вслух цифра за цифрой (настоящая Эмили считает вместе с ней), потом косточки по одной падают в сундучок.
+   countBones(n, {from, hide, intro, voice}) — в конце уровня или мини-игры: косточки выстраиваются в ряд, Эмили считает их
+   вслух по одной (после каждого числа — микрофон), потом косточки падают в сундучок. На уровнях n берётся из Game.LEVEL_BONES.
    Сам баланс показывается только на карте; в играх сундучок появляется лишь на время подсчёта. */
 (function(){
   const KEY = 'emily-game';
-  const CB_SND = {"e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_11": "assets/snd/b3092361945a.mp3", "e_12": "assets/snd/ff5ef4e6c6ad.mp3", "e_13": "assets/snd/2342f25d6853.mp3", "e_14": "assets/snd/ab206047d729.mp3", "e_15": "assets/snd/5782cc7126d4.mp3", "e_16": "assets/snd/bda8543a0fa5.mp3", "e_17": "assets/snd/e92e903d2a89.mp3", "e_18": "assets/snd/d96da37b4c68.mp3", "e_19": "assets/snd/bf49ac088cdc.mp3", "e_20": "assets/snd/6eb46e3201f0.mp3", "a_knochen_zaehlen": "assets/snd/d6bd5c9baa28.mp3", "a_schatzkiste": "assets/snd/69752bae3814.mp3"};
+  const CB_SND = {"e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_11": "assets/snd/b3092361945a.mp3", "e_12": "assets/snd/ff5ef4e6c6ad.mp3", "e_13": "assets/snd/2342f25d6853.mp3", "e_14": "assets/snd/ab206047d729.mp3", "e_15": "assets/snd/5782cc7126d4.mp3", "e_16": "assets/snd/bda8543a0fa5.mp3", "e_17": "assets/snd/e92e903d2a89.mp3", "e_18": "assets/snd/d96da37b4c68.mp3", "e_19": "assets/snd/bf49ac088cdc.mp3", "e_20": "assets/snd/6eb46e3201f0.mp3", "a_knochen_zaehlen": "assets/snd/d6bd5c9baa28.mp3", "a_schatzkiste": "assets/snd/69752bae3814.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "r_repeat": "assets/snd/17dff5d39745.mp3"};
   const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e){ return {}; } };
   const save = d => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){} };
   const Wallet = window.Wallet = {
@@ -233,7 +281,8 @@
 
   window.countBones = async function(n, o = {}){
     const from = o.from || [...document.querySelectorAll('.bone')];        /* уровни 0–12: косточки Тео уже лежат на экране */
-    if (n === undefined) n = Math.max(1, from.length);
+    if (Game.level >= 0) n = Game.LEVEL_BONES[Game.level] || 5;             /* за уровень — по таблице (Game.LEVEL_BONES) */
+    n = Math.min(10, n || 0);
     if (!n) return;
     await ensure();
     const st = stage.getBoundingClientRect(), W = st.width, H = st.height;
@@ -254,12 +303,20 @@
     if (o.hide) o.hide.forEach(e => e && (e.hidden = true));
     await wait(700 + n*60);
     if (o.voice !== false){
+      /* считает Эмили: косточка загорается, звучит число, микрофон ждёт, пока Эмили его скажет, только потом следующая.
+         Молчит — образец, ещё раз образец, «Sag es nach!» + образец, русская подсказка + образец, потом дальше (как при счёте в прятках) */
       if (o.intro !== false) await say('a_knochen_zaehlen');
       for (let i = 1; i <= n; i++){
         items.forEach(b => b.classList.remove('on')); items[i - 1].classList.add('on');
         big.hidden = false; big.textContent = i; big.classList.remove('pop'); void big.offsetWidth; big.classList.add('pop');
         ding(700 + i*30, 900 + i*30);
-        await say('e_' + i); await wait(i <= 20 ? 350 : 650);            /* пауза: настоящая Эмили успевает сказать число вместе */
+        for (let a = 0; a < 4; a++){
+          if (a === 2) await say('a_nach');
+          if (a === 3) await say('r_repeat');
+          await say('e_' + i); await wait(100);
+          if (typeof listen !== 'function'){ await wait(900); break; }
+          if (await listen()) break;
+        }
       }
       items.forEach(b => b.classList.remove('on')); await wait(300);
     }
@@ -278,7 +335,7 @@
       await wait(Math.max(90, 700/n));
     }
     await wait(600); await talk;
-    Wallet.add(n);
+    if (!Game.dev()) Wallet.add(n);                                          /* свободная игра косточек не даёт */
     await chest.animate([{transform: 'none', opacity: 1}, {transform: 'scale(.3)', opacity: 0}], {duration: 350, fill: 'forwards'}).finished.catch(() => {});
     box.remove();
   };
