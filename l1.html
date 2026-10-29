@@ -821,12 +821,9 @@ async function level(){
   await roundEmilySeeks(counts[0]);
   /* 3. Раунд 2: водит Марк, прячутся Эмили и Тео */
   await roundMarkSeeks(counts[1]);
-  /* 5. Финал: считаем косточки */
+  /* 5. Финал (косточки Эмили считает в конце сама, countBones) */
   theo.setBase('curious');
-  await play('a_wie_viele'); await sleep(300);
-  for (const [i, w] of ['a_1','a_2','a_3'].entries()){ bones[i].classList.add('glowb'); sfx.pop(); await play(w); await sleep(600); }
   theo.setBase('happy'); theo.anim('wiggle');
-  await play('a_bones');
   bones.forEach(b => b.classList.remove('glowb'));
   mark.setBase('wave'); emily.setBase('wave');
   for (const h of [mark, emily, theo]) h.anim('hop');

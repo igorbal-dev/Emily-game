@@ -68,7 +68,7 @@ function drawThing(type, x, y, s, rot){
 }
 
 /* ---------- состояние ---------- */
-const MAX_BONES = 20;
+const MAX_BONES = 10;                 /* за одну игру не больше 10 косточек */
 let S;
 function reset(){
   S = {phase:'intro', t:0, items:[], caught:0, spawned:0, junk:0, nextSpawn:0, x:W/2, tx:W/2, face:1, jumpUntil:0, sniffUntil:0, shakeT:0, fly:[], told:{}, cheerUntil:0, t0:0};
@@ -204,20 +204,8 @@ async function finish(){
   await play('a_fertig_zeit');
   const n = S.caught;
   if (n === 0){ await play('a_runde'); $('#again').hidden = false; finishing = false; return; }
-  /* сколько косточек? косточки лежат в рядах, три карточки с числами */
-  S.phase = 'ask';
-  await play('a_wie_viele_theo');
-  const opts = new Set([n]); for (const d of [1, -1, 2, -2, 3]) if (opts.size < 3 && n + d >= 1 && n + d <= 20) opts.add(n + d);
-  const list = [...opts].sort(() => Math.random() - 0.5);
-  await numChoice(list, n, 'a_wie_viele_theo', 'r_wie_viele_theo', async () => {
-    /* ошиблась — «Zähl noch mal!» и считаем вместе */
-    await play('a_zaehl_noch');
-    for (let i = 0; i < n; i++){ S.hl = i; await play('e_' + (i + 1)); }
-    S.hl = -1;
-  });
-  S.hl = -1;
   await play('a_theo_satt');
-  /* все пойманные косточки: Эмили пересчитывает их и кладёт в общий сундучок */
+  /* все пойманные косточки: Эмили считает их по одной с микрофоном и кладёт в общий сундучок */
   S.phase = 'end';
   await saveMini('theo', n, {intro: false});
   await praise();
