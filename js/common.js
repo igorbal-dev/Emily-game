@@ -31,6 +31,13 @@ window.Game = (function(){
     /* закрытый уровень по прямой ссылке — на карту */
     else if (lv && !G.levelOpen(G.level)) location.replace('index.html');
   }
+  /* синяя кнопка микрофона засчитывает ответ только в режиме разработчика: Эмили должна сказать вслух.
+     Исключение — микрофона нет (не разрешили): тогда кнопка работает, иначе игра встанет */
+  document.addEventListener('pointerdown', e => {
+    if (!e.target.closest || !e.target.closest('#mic') || G.dev()) return;
+    if (typeof mic !== 'undefined' && !mic) return;
+    e.stopImmediatePropagation(); e.preventDefault();
+  }, true);
   if (G.miniKey){
     /* мини-игра: заход только после оплаты на карте (пропуск в sessionStorage), «ещё раз» — снова за косточки */
     const k = G.miniKey, price = G.MINIS[k].price;
