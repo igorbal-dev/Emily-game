@@ -32,12 +32,13 @@ window.Game = (function(){
     else if (lv && !G.levelOpen(G.level)) location.replace('index.html');
   }
   /* синяя кнопка микрофона засчитывает ответ только в режиме разработчика: Эмили должна сказать вслух.
-     Исключение — микрофона нет (не разрешили): тогда кнопка работает, иначе игра встанет */
-  document.addEventListener('pointerdown', e => {
+     Стук пальца по экрану микрофон тоже слышит — 0,7 с после нажатия звук не считается голосом */
+  const micGuard = e => {
     if (!e.target.closest || !e.target.closest('#mic') || G.dev()) return;
-    if (typeof mic !== 'undefined' && !mic) return;
     e.stopImmediatePropagation(); e.preventDefault();
-  }, true);
+    if (window.__mic) window.__mic.busyUntil = performance.now() + 700;
+  };
+  for (const t of ['pointerdown', 'pointerup', 'touchstart', 'touchend', 'mousedown', 'click']) document.addEventListener(t, micGuard, {capture: true, passive: false});
   if (G.miniKey){
     /* мини-игра: заход только после оплаты на карте (пропуск в sessionStorage), «ещё раз» — снова за косточки */
     const k = G.miniKey, price = G.MINIS[k].price;
