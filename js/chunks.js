@@ -83,7 +83,37 @@ const CHUNKS = (() => {
     e16_stift: ['Isabel …', 'gibst du mir bitte …', 'den roten Stift?'],
     e16_heike: ['Komm …', 'wir sagen es …', 'Heike!'],
     e16_helfen: ['Heike …', 'kannst du mir bitte …', 'helfen?'],
-    e16_bis_morgen: ['Tschüss, Heike!', 'Bis morgen!']
+    e16_bis_morgen: ['Tschüss, Heike!', 'Bis morgen!'],
+    /* 17 «Neue Nachbarin» */
+    e17_fuenf: ['Ich bin fünf.', 'Und du?'],
+    e17_bruder: ['Ja.', 'Das ist mein …', 'Bruder Mark.'],
+    e17_haustier: ['Hast du auch …', 'ein Haustier?'],
+    /* 18 «Sofia kommt raus» */
+    e18_schoen: ['Schön!', 'Wie heißt sie?'],
+    e18_eis: ['Ich esse gern …', 'Eis.'],
+    e18_pommes: ['Ich esse gern …', 'Pommes.'],
+    e18_aepfel: ['Ich esse gern …', 'Äpfel.'],
+    e18_nudeln: ['Ich esse gern …', 'Nudeln.'],
+    e18_kpop: ['Ich höre gern …', 'K-Pop!', 'Und du?'],
+    e18_ballett: ['Ich tanze gern!', 'Ich gehe …', 'zum Ballett.'],
+    e18_kommen: ['Willst du mal …', 'zu mir kommen?'],
+    /* 19 «Stopp!» */
+    e19_stopp: ['Stopp!', 'Das mag ich nicht!'],
+    e19_nicht_schubsen: ['Nicht …', 'schubsen!'],
+    e19_bruder: ['Lass meinen Bruder …', 'in Ruhe!', 'Gib den Ball zurück!'],
+    e19_siehst: ['Siehst du?', 'Das ist nicht schön!'],
+    e19_heike: ['Heike!', 'Leon macht …', 'meine Burg kaputt!'],
+    e19_nicht_mehr: ['Okay.', 'Aber mach das …', 'nicht mehr!'],
+    /* 20 «Wir spielen alle zusammen» */
+    e20_nicht_bloed: ['Nein!', 'Ich bin nicht blöd.', 'Das ist nicht nett!'],
+    e20_aua: ['Aua!', 'Nicht hauen!'],
+    e20_heike: ['Heike …', 'Leon hat mich …', 'gehauen.'],
+    e20_entschuldigung: ['Ent …', 'schuldigung.'],
+    e20_traurig: ['Ich bin …', 'traurig.'],
+    e20_wuetend: ['Ich bin …', 'wütend.'],
+    e20_spielt_ihr: ['Isabel, Paul …', 'spielt ihr …', 'mit mir?'],
+    e20_alle: ['Leon, du kannst …', 'auch mitspielen.', 'Wir spielen alle zusammen!'],
+    e20_nein: ['Nein …', 'jetzt nicht.']
   });
   return C;
 })();

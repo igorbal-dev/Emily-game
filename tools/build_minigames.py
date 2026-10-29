@@ -33,8 +33,11 @@ for src_f in sorted(glob.glob('m*.src.html')) + sorted(glob.glob('l*.src.html'))
     used = {k for k in re.findall(r"""play\(\s*['"]([a-z]\w*)['"]""", src) if not k.endswith('_')}
     used |= {k for k in re.findall(r"['\"]([a-z]+\d*_\w+)['\"]", src) if k in snd}   # say('…'), T.repeat('…') и т. п.
     used |= set(expand(re.search(r'/\*SND:(.*?)\*/', src, re.S).group(1).split()))
-    missing = sorted(k for k in used if k not in snd)
+    m = re.search(r'const SAY = \{(.*?)\n\};', src, re.S)                    # фразы без записи — голос браузера (js/mini.js)
+    say = set(re.findall(r'^\s*(\w+):', m.group(1), re.M)) if m else set()
+    used |= say
+    missing = sorted(k for k in used if k not in snd and k not in say)
     if missing: raise SystemExit(f'{src_f}: нет записи: ' + ', '.join(missing))
-    out = src.replace('__IMG__', json.dumps(img)).replace('__SND__', json.dumps({k: snd[k] for k in sorted(used)}))
+    out = src.replace('__IMG__', json.dumps(img)).replace('__SND__', json.dumps({k: snd[k] for k in sorted(used) if k in snd}))
     dst = src_f.replace('.src.html', '.html'); open(dst, 'w').write(out)
     print(f'{dst}: {len(img)} картинок, {len(used)} записей')

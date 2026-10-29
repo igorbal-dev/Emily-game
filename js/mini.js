@@ -51,11 +51,41 @@ const BUF = {};
 let speaking = 0;
 function decode(ab){ return new Promise((res, rej) => { const p = actx.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); }); }
 async function loadSounds(){ await Promise.all(Object.entries(SND).map(async ([k, uri]) => { try { BUF[k] = await decode(await (await fetch(uri)).arrayBuffer()); } catch(e){} })); }
+/* ---------- фразы без записи ElevenLabs: страница задаёт SAY {ключ: 'текст'}, их говорит голос браузера (временно) ----------
+   Кто говорит — по первой букве ключа: a/n ведущая, r русская подсказка, e Эмили, f София, l Леон, k Марк, i Изабель, p Пауль, s Heike.
+   Высота голоса разная, чтобы герои различались. Как только запись появится (SND), играет запись. */
+const SAYS = typeof SAY !== 'undefined' ? SAY : {};
+for (const [k, t] of Object.entries(SAYS)) if (!TEXT[k]) TEXT[k] = [t, k[0]];
+const SAY_TONE = {a: [1, .95], n: [1, .95], r: [1, .95], e: [1.35, .92], f: [1.55, .92], l: [1.1, 1], k: [1.75, .95], i: [1.45, .92], p: [1.2, .95], s: [1.05, .92], t: [1, 1]};
+function sayVoice(lang){
+  let vs = []; try { vs = ('speechSynthesis' in window && speechSynthesis.getVoices()) || []; } catch(e){}
+  vs = vs.filter(v => new RegExp('^' + lang + '([-_]|$)', 'i').test(v.lang || ''));
+  return lang === 'de' ? (vs.find(v => /^anna\b/i.test(v.name)) || vs.find(v => /google deutsch/i.test(v.name)) || vs[0] || null)
+    : (vs.find(v => /^milena\b/i.test(v.name)) || vs.find(v => /google/i.test(v.name)) || vs[0] || null);
+}
+let sayU = null;                                          /* держим фразу, чтобы браузер не потерял её посреди чтения */
+function sayTTS(name){
+  const text = SAYS[name].replace(/\[[^\]]*\]/g, '').trim(), ru = name[0] === 'r', [pitch, rate] = SAY_TONE[name[0]] || [1, .95];
+  return new Promise(res => {
+    if (!('speechSynthesis' in window)) return setTimeout(res, 400 + text.length*40);
+    const u = sayU = new SpeechSynthesisUtterance(text), v = sayVoice(ru ? 'ru' : 'de');
+    u.lang = ru ? 'ru-RU' : 'de-DE'; if (v) u.voice = v; u.pitch = pitch; u.rate = rate;
+    let done = false; const fin = () => { if (!done){ done = true; res(); } };
+    u.onend = fin; u.onerror = fin; setTimeout(fin, 2500 + text.length*110);
+    try { speechSynthesis.resume(); } catch(e){}
+    speechSynthesis.speak(u);
+  });
+}
+document.addEventListener('click', e => {                 /* iPhone пускает речь только после нажатия */
+  if (!e.target.closest('#go') || !('speechSynthesis' in window)) return;
+  try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; u.lang = 'de-DE'; sayU = u; speechSynthesis.speak(u); } catch(err){}
+}, true);
 async function play(name){
   speaking++;
   try {
     const b = BUF[name];
-    if (actx && b){
+    if (!b && SAYS[name]) await sayTTS(name);
+    else if (actx && b){
       if (actx.state !== 'running') actx.resume();
       await new Promise(resolve => {
         const s = actx.createBufferSource(); s.buffer = b; s.connect(actx.destination);

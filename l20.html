@@ -1,0 +1,249 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Wir spielen alle zusammen. Уровень 20</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 20 «Wir spielen alle zusammen» — садик: Леон дразнит и дерётся, Эмили зовёт Heike, говорит о чувствах, не даёт настроить друзей против себя и зовёт всех играть вместе. ТЗ: docs/tz/level-20.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_shoes": ["assets/img/f3c638bc729d.webp", 208, 407], "emily_blink_shoes": ["assets/img/0f33b1ccf809.webp", 208, 407], "emily_mouth1_shoes": ["assets/img/3b7a1bb44669.webp", 208, 407], "emily_mouth2_shoes": ["assets/img/349db2cdaea9.webp", 208, 407], "emily_talk_shoes": ["assets/img/d3e54ca225ed.webp", 270, 413], "emily_wave_shoes": ["assets/img/2ab85334263f.webp", 252, 394], "emily_jump_shoes": ["assets/img/31f33a5548ba.webp", 279, 346], "emily_surprised_shoes": ["assets/img/b65576956668.webp", 208, 407], "emily_crouch": ["assets/img/56b917379eef.webp", 227, 309], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk": ["assets/img/8e591eafe46b.webp", 225, 385], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600], "leon_idle": ["assets/img/75329a72130b.svg", 240, 420], "leon_blink": ["assets/img/386a5ba75ea2.svg", 240, 420], "leon_talk": ["assets/img/d51b0cec0ae9.svg", 240, 420], "leon_wave": ["assets/img/980311427a0d.svg", 240, 420], "leon_jump": ["assets/img/602968ec6bcc.svg", 240, 420], "leon_laugh": ["assets/img/1f1ae3e9f023.svg", 240, 420], "leon_sad": ["assets/img/dd2a1be522f6.svg", 240, 420], "leon_throw": ["assets/img/ee723d20fbe8.svg", 240, 420], "leon_sly": ["assets/img/965125ec4a3d.svg", 240, 420], "leon_shy": ["assets/img/a198b3b57489.svg", 240, 420], "leon_oh": ["assets/img/e68921ca1ecf.svg", 240, 420]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised}_shoes emily_{crouch,laugh,walk} isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave} leon_{idle,blink,talk,wave,jump,laugh,sad,throw,sly,shy,oh}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht*/
+/* фразы без записи — пока голос браузера (js/mini.js), тексты для озвучки — voice-next.md */
+const SAY = {
+  n20_intro: 'In der Kita. Isabel und Paul bauen mit Bausteinen. Leon ist auch da.',
+  l20_bloed: 'Du bist blöd!',
+  e20_nicht_bloed: 'Nein! Ich bin nicht blöd. Das ist nicht nett!',
+  n20_haut: 'Au! Leon haut Emily auf den Arm!',
+  e20_aua: 'Aua! Nicht hauen!',
+  n19_was: 'Was macht Emily? Tipp auf ein Bild!',
+  r19_was: 'Что сделает Эмили? Нажми на картинку!',
+  n20_opt_heike: 'Emily sagt es Heike.',
+  n20_opt_hauen: 'Emily haut zurück.',
+  n20_opt_nichts: 'Emily sagt nichts.',
+  e20_heike: 'Heike, Leon hat mich gehauen.',
+  s20_gut: 'Gut, dass du es mir sagst. Leon, wir hauen nicht!',
+  s20_stopp: 'Stopp! Ihr zwei! Hier haut keiner, nicht Leon und nicht Emily! Sagt euch Entschuldigung.',
+  e20_entschuldigung: 'Entschuldigung.',
+  l19_entschuldigung: 'Entschuldigung.',
+  s20_hol_mich: 'Wenn dich jemand haut, hol mich. Dann helfe ich dir.',
+  e20_okay: 'Okay.',
+  n20_sag: 'Sag etwas! Hol Hilfe!',
+  s20_fuehlst: 'Wie fühlst du dich?',
+  r20_fuehlst: 'Как ты себя чувствуешь? Нажми на картинку!',
+  n20_traurig: 'Traurig.',
+  n20_wuetend: 'Wütend.',
+  e20_traurig: 'Ich bin traurig.',
+  e20_wuetend: 'Ich bin wütend.',
+  s20_verstehe: 'Das verstehe ich. Komm, jetzt ist alles wieder gut.',
+  l20_fluester: 'Spielt nicht mit Emily! Spielt nur mit mir!',
+  n20_opt_fragen: 'Emily fragt ihre Freunde.',
+  n20_opt_heike2: 'Emily holt Heike.',
+  n20_opt_allein: 'Emily geht allein weg.',
+  e20_spielt_ihr: 'Isabel, Paul, spielt ihr mit mir?',
+  i20_klar: 'Ja, klar! Du bist meine Freundin.',
+  p20_bestimmt: 'Leon bestimmt das nicht!',
+  s20_alle: 'Alle dürfen mitspielen.',
+  n20_frag: 'Frag deine Freunde!',
+  e20_alle: 'Leon, du kannst auch mitspielen. Wir spielen alle zusammen!',
+  l20_okay: 'Okay …',
+  n20_turm: 'Tipp auf die Bausteine! Ihr baut zusammen einen Turm.',
+  l20_spielst: 'Entschuldigung. Spielst du mit mir?',
+  n20_ja: 'Ja!',
+  n20_nein: 'Nein, jetzt nicht.',
+  n20_was_sagst: 'Was sagst du? Tipp auf ein Bild!',
+  r20_sagst: 'Что ты ответишь? Нажми на картинку!',
+  e20_ja: 'Ja!',
+  e20_nein: 'Nein, jetzt nicht.',
+  n20_lob_ja: 'Schön! Ihr spielt zusammen.',
+  n20_lob_nein: 'Das ist auch okay. Du darfst Nein sagen.',
+  n20_ende: 'Super! Heute spielen alle zusammen.'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script>
+/* Уровень 20: садик. Леон дразнит («Nein! Ich bin nicht blöd…»), бьёт по руке («Aua! Nicht hauen!») — три карточки: сказать Heike, дать сдачи
+   (засчитывается, но Heike объясняет), ничего не делать (снова). Чувства на карточках-лицах. Леон шепчет друзьям «Spielt nicht mit Emily!» —
+   спросить друзей, позвать Heike или уйти одной (снова). Эмили зовёт всех играть, башня вчетвером. Леон: «Spielst du mit mir?» — «Ja» и «Nein» оба верны. */
+const LEVEL = 20;
+const STICKER = '<svg viewBox="0 0 100 100"><g stroke-width="3" stroke-linejoin="round"><rect x="30" y="66" width="40" height="22" rx="3" fill="#ff7a59" stroke="#d65a3b"/><rect x="34" y="44" width="32" height="22" rx="3" fill="#ffd34d" stroke="#d6a21e"/><rect x="38" y="24" width="24" height="20" rx="3" fill="#32b67a" stroke="#1f8a5a"/><rect x="42" y="8" width="16" height="16" rx="3" fill="#5aa8f0" stroke="#2f80ed"/></g><path d="M14 56 C6 50 8 42 13 43 C14 44 14 45 14 46 C14 45 14 44 15 43 C20 42 22 50 14 56 Z M86 56 C78 50 80 42 85 43 C86 44 86 45 86 46 C86 45 86 44 87 43 C92 42 94 50 86 56 Z" fill="#ff6b8a"/></svg>';
+
+/* ---------- фон: игровой уголок садика — окно, полки с игрушками, ковёр ---------- */
+const RUG = 0.64;
+function drawScene(g, W, H, L){
+  const fy = L.floorY, hE = L.hE; g.lineCap = 'round'; g.lineJoin = 'round';
+  g.fillStyle = '#fff1c9'; g.fillRect(0, 0, W, fy);
+  g.fillStyle = '#ffe2a0'; g.fillRect(0, fy - hE*0.55, W, hE*0.5);
+  g.fillStyle = '#c98f55'; g.fillRect(0, fy - hE*0.06, W, H - fy + hE*0.06);
+  /* окна */
+  for (const wx of [0.3, 0.52]){ const x = W*wx, y = fy - hE*1.65;
+    g.fillStyle = '#8fd3ff'; g.fillRect(x, y, hE*0.7, hE*0.55); g.strokeStyle = '#fff'; g.lineWidth = hE*0.04; g.strokeRect(x, y, hE*0.7, hE*0.55);
+    g.beginPath(); g.moveTo(x + hE*0.35, y); g.lineTo(x + hE*0.35, y + hE*0.55); g.stroke(); }
+  /* полка с игрушками справа */
+  const sx = W*0.86; g.fillStyle = '#e8904a'; g.fillRect(sx - hE*0.4, fy - hE*1.1, hE*0.8, hE*0.06); g.fillRect(sx - hE*0.4, fy - hE*0.7, hE*0.8, hE*0.06);
+  [['#ff7a59', -0.25], ['#32b67a', 0], ['#9b6bff', 0.25]].forEach(([c, dx]) => { g.fillStyle = c; g.fillRect(sx + hE*dx - hE*0.08, fy - hE*1.28, hE*0.16, hE*0.18); });
+  g.fillStyle = '#ffd34d'; g.beginPath(); g.arc(sx, fy - hE*0.82, hE*0.1, 0, 7); g.fill();
+  /* ковёр для игры */
+  g.fillStyle = '#7ab8f5'; g.beginPath(); g.ellipse(W*RUG, fy + hE*0.02, hE*0.95, hE*0.13, 0, 0, 7); g.fill();
+  g.strokeStyle = '#fff'; g.lineWidth = hE*0.02; g.setLineDash([hE*0.05, hE*0.04]); g.beginPath(); g.ellipse(W*RUG, fy + hE*0.02, hE*0.85, hE*0.1, 0, 0, 7); g.stroke(); g.setLineDash([]);
+}
+
+const BLOCK = c => `<svg viewBox="0 0 60 40"><rect x="3" y="3" width="54" height="34" rx="5" fill="${c}" stroke="rgba(0,0,0,.25)" stroke-width="4"/><circle cx="18" cy="20" r="5" fill="#fff" opacity=".5"/><circle cx="42" cy="20" r="5" fill="#fff" opacity=".5"/></svg>`;
+const BCOL = ['#ff7a59', '#ffd34d', '#32b67a', '#5aa8f0', '#9b6bff', '#ff8fb8'];
+const PILE = '<svg viewBox="0 0 100 60"><g stroke="rgba(0,0,0,.25)" stroke-width="3"><rect x="4" y="30" width="30" height="26" rx="4" fill="#ff7a59"/><rect x="36" y="34" width="30" height="22" rx="4" fill="#5aa8f0"/><rect x="68" y="30" width="28" height="26" rx="4" fill="#32b67a"/><rect x="22" y="8" width="30" height="22" rx="4" fill="#ffd34d"/><rect x="54" y="10" width="26" height="20" rx="4" fill="#9b6bff"/></g></svg>';
+const FACE_SAD = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#9fd0ff" stroke="#2f80ed" stroke-width="5"/><circle cx="34" cy="42" r="6" fill="#1f3f70"/><circle cx="66" cy="42" r="6" fill="#1f3f70"/><path d="M28 30 l12 -5 M72 30 l-12 -5" stroke="#1f3f70" stroke-width="5" stroke-linecap="round"/><path d="M30 76 Q50 58 70 76" fill="none" stroke="#1f3f70" stroke-width="6" stroke-linecap="round"/><path d="M33 52 q-4 10 0 16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/></svg>';
+const FACE_MAD = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#ff8f7a" stroke="#d65a3b" stroke-width="5"/><circle cx="34" cy="46" r="6" fill="#5a1a10"/><circle cx="66" cy="46" r="6" fill="#5a1a10"/><path d="M24 30 l18 8 M76 30 l-18 8" stroke="#5a1a10" stroke-width="6" stroke-linecap="round"/><path d="M32 74 Q50 64 68 74" fill="none" stroke="#5a1a10" stroke-width="6" stroke-linecap="round"/><path d="M80 14 l6 -8 M88 22 l8 -4" stroke="#d65a3b" stroke-width="5" stroke-linecap="round"/></svg>';
+const YES = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#32b67a" stroke="#1f8a5a" stroke-width="5"/><path d="M28 52 L44 68 L74 34" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const LATER = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#fff" stroke="#9b6bff" stroke-width="6"/><path d="M50 20 V50 L68 62" fill="none" stroke="#9b6bff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="50" r="5" fill="#9b6bff"/></svg>';
+
+let emily, leon, isabel, paul, heike, pile, blocks = [];
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised', 'crouch', 'laugh', 'walk'];
+const LP = ['idle', 'blink', 'talk', 'wave', 'jump', 'laugh', 'sad', 'throw', 'sly', 'shy', 'oh'];
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; blocks = [];
+  pile = T.prop(PILE, {x: RUG, py: () => L.floorY + L.hE*0.06, w: 0.5, ratio: 0.6, z: 38});
+  heike = T.hero('sommer', {x: 0.1, h: 1.5, poses: ['idle', 'blink', 'talk', 'wave']});
+  isabel = T.hero('isabel', {x: RUG - 0.12, h: 0.92, poses: ['idle', 'blink', 'talk', 'wave', 'jump']});
+  paul = T.hero('paul', {x: RUG + 0.13, h: 0.95, poses: ['idle', 'blink', 'talk', 'wave', 'jump']});
+  leon = T.hero('leon', {x: 0.48, h: 1.02, poses: LP});
+  emily = T.hero('emily', {x: 0.3, outfit: 'shoes', poses: EP});
+}
+/* кубик ложится на башню */
+async function addBlock(i, from){
+  const w = 0.32, h = L.hE*w*40/60, y = () => L.floorY - L.hE*0.12 - blocks.length*h*0.92;
+  const lvl = blocks.length, b = T.prop(BLOCK(BCOL[i % BCOL.length]), {x: RUG, py: () => L.floorY - L.hE*0.12 - lvl*h*0.92, w, ratio: 40/60, z: 46 + lvl});
+  blocks.push(b);
+  const r0 = (from.el || from).getBoundingClientRect(), r1 = b.el.getBoundingClientRect();
+  await b.el.animate([{transform: `translate(${r0.left + r0.width/2 - r1.left - r1.width/2}px,${r0.top + r0.height*0.4 - r1.top}px) scale(.6)`}, {transform: 'none'}], {duration: 600, easing: 'cubic-bezier(.3,.7,.4,1)'}).finished.catch(() => {});
+  sfx.clink();
+}
+const card = (parts, clip) => ({parts, clip, bg: '#fff8e8', ground: '#e8b47a'});
+
+async function story(){
+  await play('n20_intro');
+  /* 1. дразнит */
+  leon.set('sly'); await leon.walkTo(0.42, 700);
+  await leon.say('l20_bloed');
+  emily.set('surprised'); await sleep(400);
+  await T.repeat('e20_nicht_bloed');
+  leon.set('idle'); await sleep(300);
+
+  /* 2. ударил: три карточки */
+  leon.set('throw'); sfx.bonk(); emily.set('surprised'); emily.hop(); await play('n20_haut'); leon.set('sly');
+  await T.repeat('e20_aua');
+  while (true){
+    const i = await T.choose([
+      card([{img: 'emily_wave_shoes', x: 30, h: 66}, {img: 'sommer_talk', x: 70, h: 86}], 'n20_opt_heike'),
+      card([{img: 'emily_jump_shoes', x: 34, h: 70}, {img: 'leon_oh', x: 68, h: 70, rot: 10}, {fx: 'zap', x: 42, y: 36}], 'n20_opt_hauen'),
+      card([{img: 'emily_crouch', x: 38, h: 52}, {img: 'leon_throw', x: 70, h: 70}], 'n20_opt_nichts')
+    ], 'n19_was', 'r19_was');
+    if (i === 0){
+      /* лучший: сказать Heike */
+      await emily.walkTo(0.2, 700); emily.set('wave');
+      await T.repeat('e20_heike'); emily.set('idle');
+      await heike.say('s20_gut');
+      leon.set('shy'); await leon.say('l19_entschuldigung');
+      break;
+    }
+    if (i === 1){
+      /* дать сдачи: толкаются, Heike разнимает и объясняет */
+      emily.set('jump'); await T.glide(emily, 0.36, 0, 250, 'ease-out'); sfx.bonk(); leon.set('oh');
+      await sleep(300); leon.set('throw'); sfx.bonk();
+      emily.el.classList.add('wobble'); leon.el.classList.add('wobble');
+      const dust = setInterval(() => T.burst([L.W*0.39, L.floorY - L.hE*0.5], null, '#d9cbb8', 6), 400);
+      await heike.walkTo(0.24, 700); clearInterval(dust);
+      emily.el.classList.remove('wobble'); leon.el.classList.remove('wobble'); emily.set('idle'); leon.set('idle');
+      await T.glide(emily, 0.3, 0, 300);
+      heike.set('wave'); await heike.say('s20_stopp'); heike.set('idle');
+      await T.repeat('e20_entschuldigung');
+      leon.set('shy'); await leon.say('l19_entschuldigung');
+      await heike.walkTo(0.22, 400);
+      await heike.say('s20_hol_mich');
+      await T.repeat('e20_okay');
+      break;
+    }
+    /* ничего не делать: Леон снова замахивается */
+    emily.set('crouch'); await sleep(400);
+    leon.set('throw'); leon.hop(); sfx.tone(300, 200, 150, 'triangle', .2); await sleep(500); leon.set('sly');
+    await play('n20_sag'); emily.set('idle');
+  }
+  leon.set('idle'); await T.bone(emily);
+
+  /* 3. чувства: карточки-лица */
+  await heike.walkTo(0.18, 500);
+  await heike.say('s20_fuehlst');
+  const f = await T.choose([card([{svg: FACE_SAD, x: 50, y: 12, w: 56, hh: 72}], 'n20_traurig'), card([{svg: FACE_MAD, x: 50, y: 12, w: 56, hh: 72}], 'n20_wuetend')], 's20_fuehlst', 'r20_fuehlst');
+  await T.repeat(f ? 'e20_wuetend' : 'e20_traurig');
+  await heike.say('s20_verstehe');
+  T.hearts(emily); await T.bone(emily);
+
+  /* 4. Леон настраивает друзей: три карточки */
+  await emily.walkTo(0.3, 400);
+  leon.set('sly'); await leon.walkTo(RUG - 0.02, 800);
+  await leon.say('l20_fluester');
+  isabel.set('idle'); paul.set('idle'); isabel.face(true); paul.face(true);
+  isabel.el.animate([{transform: 'rotate(0)'}, {transform: 'rotate(-6deg)'}, {transform: 'rotate(0)'}], {duration: 700});
+  paul.el.animate([{transform: 'rotate(0)'}, {transform: 'rotate(6deg)'}, {transform: 'rotate(0)'}], {duration: 700}); await sleep(800);
+  while (true){
+    const i = await T.choose([
+      card([{img: 'emily_talk_shoes', x: 28, h: 68}, {img: 'isabel_wave', x: 58, h: 64}, {img: 'paul_wave', x: 80, h: 66}, {fx: 'hearts', x: 48, y: 10}], 'n20_opt_fragen'),
+      card([{img: 'emily_wave_shoes', x: 30, h: 66}, {img: 'sommer_wave', x: 70, h: 86}], 'n20_opt_heike2'),
+      card([{img: 'emily_crouch', x: 24, h: 52}, {fx: 'tears', x: 24, y: 46}, {img: 'isabel_idle', x: 66, h: 60}, {img: 'paul_idle', x: 84, h: 62}], 'n20_opt_allein')
+    ], 'n19_was', 'r19_was');
+    if (i === 2){
+      /* уйти одной: грустит в углу */
+      await emily.walkTo(0.04, 900); emily.set('crouch'); T.tears(emily, true); await sleep(900);
+      await play('n20_frag'); T.tears(emily, false); emily.set('idle'); await emily.walkTo(0.3, 900);
+      continue;
+    }
+    if (i === 1){ emily.set('wave'); await heike.walkTo(0.42, 900); await heike.say('s20_alle'); emily.set('idle'); await heike.walkTo(0.12, 700); }
+    break;
+  }
+  await emily.walkTo(RUG - 0.22, 600);
+  await T.repeat('e20_spielt_ihr');
+  isabel.face(false); paul.face(false);
+  isabel.set('jump'); await isabel.say('i20_klar'); isabel.set('idle');
+  paul.set('wave'); await paul.say('p20_bestimmt'); paul.set('idle');
+  leon.set('sad'); await T.bone(isabel);
+
+  /* 5. Эмили зовёт всех, башня вчетвером */
+  await leon.walkTo(RUG + 0.26, 500); leon.face(true);
+  await T.repeat('e20_alle');
+  leon.set('shy'); await leon.say('l20_okay'); leon.set('idle');
+  await play('n20_turm');
+  const kids = [emily, isabel, paul, leon];
+  for (let k = 0; k < 4; k++){
+    await T.tap([pile], 'n20_turm', 'r_tipp_licht');
+    kids[k].set('jump'); kids[k].hop(); await addBlock(k, kids[k]); kids[k].set('idle');
+  }
+  kids.forEach(h => h.set('jump')); sfx.fanfare(); await praise(); kids.forEach(h => h.set('idle'));
+  await T.bone(leon);
+
+  /* 6. мир: оба ответа правильные */
+  leon.set('shy'); await leon.say('l20_spielst');
+  const a = await T.choose([card([{svg: YES, x: 50, y: 12, w: 56, hh: 72}], 'n20_ja'), card([{svg: LATER, x: 50, y: 12, w: 56, hh: 72}], 'n20_nein')], 'n20_was_sagst', 'r20_sagst');
+  await T.repeat(a ? 'e20_nein' : 'e20_ja');
+  if (a){ leon.set('idle'); await play('n20_lob_nein'); }
+  else { leon.set('jump'); T.hearts(leon); await play('n20_lob_ja'); leon.set('idle'); }
+  await T.bone(emily);
+  heike.set('wave'); await play('n20_ende'); heike.set('idle');
+}
+T.start(IMG.leon_shy[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

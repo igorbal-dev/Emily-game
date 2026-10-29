@@ -317,3 +317,394 @@
 [warmly] Danke! Möchtest du eine Tüte?
 
 [warmly] Bitte schön! Schönen Tag noch!
+
+## НОВОЕ 29.10: мини-игры 4–5 и уровни 17–20 — ещё НЕ записано
+
+Пока эти фразы говорит голос браузера (тексты — в `SAY` страниц m4, m5, l17–l20). Озвучить после выбора голосов Софии и Леона.
+Модель eleven_v3, одна генерация на блок; ключи по порядку — как в списке. Кусочки фраз Эмили (js/chunks.js) не озвучиваем.
+
+### Ведущая — Skittle Bee (German)
+
+Фраз: 61. Ключи по порядку: a_m4_zaehl, a_m4_baum, a_m4_vogel, a_m4_wolke, a_m5_schiess, a_m5_tor, a_m5_1_0, a_m5_2_0, a_m5_3_0, a_m5_4_0, a_m5_5_0, a_m5_nochmal, a_m5_theo, a_m5_fang, a_m5_ende, n17_intro, n17_armer, n18_intro, n18_rosa, n18_gruen, n18_eis, n18_pommes, n18_aepfel, n18_nudeln, n18_tipp_emily, n18_tanzen, n19_intro, n19_sand, n19_stopp_tipp, n19_was, n19_opt_weg, n19_opt_zurueck, n19_opt_augen, n19_platsch, n19_beide, n19_noch_mal, n19_mark, n19_opt_kaputt, n19_opt_heike, n19_opt_weinen, n19_weinen, n19_ende, n20_intro, n20_haut, n20_opt_heike, n20_opt_hauen, n20_opt_nichts, n20_sag, n20_traurig, n20_wuetend, n20_opt_fragen, n20_opt_heike2, n20_opt_allein, n20_frag, n20_turm, n20_ja, n20_nein, n20_was_sagst, n20_lob_ja, n20_lob_nein, n20_ende
+
+[excited] Wir zählen zusammen! Sag die Zahlen laut!
+
+[cheerfully] Ein Baum!
+
+[cheerfully] Ein Vogel!
+
+[cheerfully] Eine Wolke!
+
+[cheerfully] Wisch zum Tor und schieß!
+
+[excited] Tor!
+
+[cheerfully] Eins zu null!
+
+[cheerfully] Zwei zu null!
+
+[cheerfully] Drei zu null!
+
+[cheerfully] Vier zu null!
+
+[cheerfully] Fünf zu null!
+
+[encouraging] Macht nichts! Noch mal!
+
+[laughing] Oh! Theo hat den Ball!
+
+[cheerfully] Tipp auf den Ball und fang ihn!
+
+[cheerfully] Super gespielt!
+
+[cheerfully] Emily, Mark und Theo sind im Hof. Da ist ein neues Mädchen mit vielen Kartons!
+
+[laughing] Armer Theo! Er wollte doch nur Hallo sagen.
+
+[cheerfully] Am nächsten Tag. Sofia kommt raus!
+
+[cheerfully] Rosa!
+
+[cheerfully] Grün!
+
+[cheerfully] Eis!
+
+[cheerfully] Pommes!
+
+[cheerfully] Äpfel!
+
+[cheerfully] Nudeln!
+
+[cheerfully] Tipp auf Emily!
+
+[cheerfully] Jetzt tanzen alle!
+
+[cheerfully] Emily baut eine Sandburg. Da kommt ein neuer Junge. Das ist Leon.
+
+[surprised] Oh nein! Leon wirft Sand!
+
+[encouraging] Streck die Hand aus und sag ganz laut: Stopp!
+
+[cheerfully] Was macht Emily? Tipp auf ein Bild!
+
+[cheerfully] Emily springt zur Seite.
+
+[cheerfully] Emily schubst zurück.
+
+[cheerfully] Emily macht die Augen zu.
+
+[laughing] Platsch! Leon ist im Matsch!
+
+[laughing] Oh-oh! Jetzt seid ihr beide nass!
+
+[cheerfully] Noch mal. Was macht Emily?
+
+[worried] Oh! Mark weint. Hilf deinem Bruder!
+
+[cheerfully] Emily macht Leons Burg kaputt.
+
+[cheerfully] Emily ruft Heike.
+
+[cheerfully] Emily setzt sich hin und weint.
+
+[gently] Weinen hilft nicht. Tu etwas!
+
+[cheerfully] Super! Emily hat laut Stopp gesagt.
+
+[cheerfully] In der Kita. Isabel und Paul bauen mit Bausteinen. Leon ist auch da.
+
+[surprised] Au! Leon haut Emily auf den Arm!
+
+[cheerfully] Emily sagt es Heike.
+
+[cheerfully] Emily haut zurück.
+
+[cheerfully] Emily sagt nichts.
+
+[encouraging] Sag etwas! Hol Hilfe!
+
+[sad] Traurig.
+
+[grumpy] Wütend.
+
+[cheerfully] Emily fragt ihre Freunde.
+
+[cheerfully] Emily holt Heike.
+
+[cheerfully] Emily geht allein weg.
+
+[cheerfully] Frag deine Freunde!
+
+[cheerfully] Tipp auf die Bausteine! Ihr baut zusammen einen Turm.
+
+[cheerfully] Ja!
+
+[cheerfully] Nein, jetzt nicht.
+
+[cheerfully] Was sagst du? Tipp auf ein Bild!
+
+[cheerfully] Schön! Ihr spielt zusammen.
+
+[cheerfully] Das ist auch okay. Du darfst Nein sagen.
+
+[cheerfully] Super! Heute spielen alle zusammen.
+
+### Русские подсказки — Skittle Bee (Russian)
+
+Фраз: 7. Ключи по порядку: r_m4_zaehl, r_m5_schiess, r_m5_fang, r19_stopp, r19_was, r20_fuehlst, r20_sagst
+
+[warmly] Считай вместе с Эмили вслух — тогда качели полетят выше!
+
+[warmly] Проведи пальцем к воротам или нажми на ворота — Эмили ударит по мячу!
+
+[warmly] Нажми на мяч, чтобы его поймать!
+
+[warmly] Вытяни ладошку и скажи громко-громко!
+
+[warmly] Что сделает Эмили? Нажми на картинку!
+
+[warmly] Как ты себя чувствуешь? Нажми на картинку!
+
+[warmly] Что ты ответишь? Нажми на картинку!
+
+### Эмили — Tilly (German)
+
+Фраз: 45. Ключи по порядку: e_m4_ja, e_m4_hoeher, e_m5_tor, e_m5_gehalten, e17_theo, e17_emily, e17_lieb, e17_fuenf, e17_wohne, e17_bruder, e17_haustier, e17_kita, e17_bis_morgen, e18_hallo, e18_schoen, e18_rosa, e18_blau, e18_gelb, e18_gruen, e18_eis, e18_pommes, e18_aepfel, e18_nudeln, e18_kpop, e18_ballett, e18_kommen, e18_tschuess, e19_stopp, e19_hoer_auf, e19_nicht_schubsen, e19_bruder, e19_siehst, e19_heike, e19_nicht_mehr, e20_nicht_bloed, e20_aua, e20_heike, e20_entschuldigung, e20_okay, e20_traurig, e20_wuetend, e20_spielt_ihr, e20_alle, e20_ja, e20_nein
+
+[cheerfully] Ja!
+
+[excited] Höher, höher!
+
+[excited] Tor!
+
+[proudly] Gehalten!
+
+[cheerfully] Ja! Das ist Theo.
+
+[cheerfully] Ich heiße Emily.
+
+[cheerfully] Ja, er ist lieb.
+
+[cheerfully] Ich bin fünf. Und du?
+
+[cheerfully] Ja, ich wohne hier.
+
+[cheerfully] Ja. Das ist mein Bruder Mark.
+
+[cheerfully] Hast du auch ein Haustier?
+
+[cheerfully] Ja! Und du?
+
+[happily] Bis morgen, Sofia!
+
+[cheerfully] Hallo, Sofia!
+
+[cheerfully] Schön! Wie heißt sie?
+
+[cheerfully] Rosa! Und deine?
+
+[cheerfully] Blau! Und deine?
+
+[cheerfully] Gelb! Und deine?
+
+[cheerfully] Grün! Und deine?
+
+[cheerfully] Ich esse gern Eis.
+
+[cheerfully] Ich esse gern Pommes.
+
+[cheerfully] Ich esse gern Äpfel.
+
+[cheerfully] Ich esse gern Nudeln.
+
+[cheerfully] Ich höre gern K-Pop! Und du?
+
+[proudly] Ich tanze gern! Ich gehe zum Ballett.
+
+[cheerfully] Willst du mal zu mir kommen?
+
+[cheerfully] Tschüss, Sofia!
+
+[loudly, firmly] Stopp! Das mag ich nicht!
+
+[loudly, firmly] Hör auf!
+
+[loudly, firmly] Nicht schubsen!
+
+[loudly, firmly] Lass meinen Bruder in Ruhe! Gib den Ball zurück!
+
+[firmly] Siehst du? Das ist nicht schön!
+
+[upset, loudly] Heike! Leon macht meine Burg kaputt!
+
+[firmly] Okay. Aber mach das nicht mehr!
+
+[firmly] Nein! Ich bin nicht blöd. Das ist nicht nett!
+
+[hurt, loudly] Aua! Nicht hauen!
+
+[upset] Heike, Leon hat mich gehauen.
+
+[grumbling] Entschuldigung.
+
+[softly] Okay.
+
+[sad] Ich bin traurig.
+
+[angry] Ich bin wütend.
+
+[cheerfully] Isabel, Paul, spielt ihr mit mir?
+
+[cheerfully] Leon, du kannst auch mitspielen. Wir spielen alle zusammen!
+
+[cheerfully] Ja!
+
+[calmly] Nein, jetzt nicht.
+
+### Марк — Tilly, потом +5 полутонов (German)
+
+Фраз: 2. Ключи по порядку: k19_hihi, k19_ball
+
+[giggling] Hihihi!
+
+[crying] Mein Ball!
+
+### Изабель — Gungun (German)
+
+Фраз: 5. Ключи по порядку: i_m4_schaukeln, i_m4_hoeher, i_m4_juhu, i_m4_spass, i20_klar
+
+[cheerfully] Wollen wir schaukeln?
+
+[excited] Höher!
+
+[excited] Juhu!
+
+[cheerfully] Das hat Spaß gemacht!
+
+[cheerfully] Ja, klar! Du bist meine Freundin.
+
+### Пауль — Prayan (German)
+
+Фраз: 7. Ключи по порядку: p_m5_fussball, p_m5_gehalten, p_m5_theo, p_m5_tausch, p_m5_tor, p_m5_ende, p20_bestimmt
+
+[cheerfully] Wir spielen Fußball! Ich bin im Tor!
+
+[proudly] Gehalten!
+
+[cheerfully] Theo, bring den Ball zurück!
+
+[cheerfully] Jetzt tauschen wir! Du bist im Tor!
+
+[excited] Tor!
+
+[cheerfully] Das war ein tolles Spiel!
+
+[cheerfully] Leon bestimmt das nicht!
+
+### Heike — Rhea (German)
+
+Фраз: 7. Ключи по порядку: s19_sag, s20_gut, s20_stopp, s20_hol_mich, s20_fuehlst, s20_verstehe, s20_alle
+
+[firmly] Leon, sag Entschuldigung.
+
+[warmly, then firmly] Gut, dass du es mir sagst. Leon, wir hauen nicht!
+
+[firmly, loudly] Stopp! Ihr zwei! Hier haut keiner, nicht Leon und nicht Emily! Sagt euch Entschuldigung.
+
+[warmly] Wenn dich jemand haut, hol mich. Dann helfe ich dir.
+
+[warmly] Wie fühlst du dich?
+
+[warmly] Das verstehe ich. Ich bin für dich da.
+
+[warmly] Alle dürfen mitspielen.
+
+### София — НОВЫЙ голос, выбрать из проб (German)
+
+Фраз: 27. Ключи по порядку: f17_hund, f17_name, f17_streicheln, f17_kitzelt, f17_alt, f17_auch_fuenf, f17_wohnst, f17_neu, f17_geschwister, f17_katze, f17_angst, f17_kita, f17_bald, f17_tschuess, f18_hallo, f18_puppe, f18_lotta, f18_farbe, f18_blau, f18_auch_blau, f18_essen, f18_lecker, f18_hoeren, f18_lieder, f18_zeig, f18_mama, f18_bis_bald
+
+[cheerfully] Hallo! Ist das dein Hund?
+
+[cheerfully] Der ist süß! Ich heiße Sofia. Und du?
+
+[cheerfully] Darf ich Theo streicheln?
+
+[giggling] Hihi! Das kitzelt!
+
+[cheerfully] Wie alt bist du?
+
+[cheerfully] Ich bin auch fünf!
+
+[cheerfully] Wohnst du hier?
+
+[cheerfully] Wir sind neu hier.
+
+[cheerfully] Hast du Geschwister?
+
+[cheerfully] Ja, eine Katze! Sie heißt Mimi.
+
+[laughing] Mimi hat Angst vor Hunden!
+
+[cheerfully] Gehst du in die Kita?
+
+[cheerfully] Ich komme bald in deine Kita!
+
+[cheerfully] Tschüss, Emily! Tschüss, Theo!
+
+[cheerfully] Hallo, Emily!
+
+[cheerfully] Guck mal! Das ist meine Puppe.
+
+[cheerfully] Sie heißt Lotta.
+
+[cheerfully] Was ist deine Lieblingsfarbe?
+
+[cheerfully] Blau!
+
+[excited] Blau! Wie du!
+
+[cheerfully] Was isst du gern?
+
+[cheerfully] Lecker! Ich auch!
+
+[cheerfully] Was hörst du gern?
+
+[cheerfully] Ich höre gern Kinderlieder.
+
+[amazed] Wow! Zeig mal!
+
+[cheerfully] Ja! Ich frage meine Mama.
+
+[cheerfully] Tschüss, Emily! Bis bald!
+
+### Леон — НОВЫЙ голос, выбрать из проб (German)
+
+Фраз: 14. Ключи по порядку: l19_okay, l19_schubse, l19_igitt, l19_meins, l19_hier, l19_haha, l19_meine_burg, l19_ok_entschuldigung, l19_entschuldigung, l19_mach_nicht, l20_bloed, l20_fluester, l20_okay, l20_spielst
+
+[grumpy] Okay, okay! Ich höre auf.
+
+[mischievously] Ich schubse dich!
+
+[disgusted, then laughing] Igitt! Hahaha!
+
+[mischievously] Der Ball ist jetzt meiner!
+
+[sheepishly] Okay. Hier ist der Ball.
+
+[laughing] Haha! Kaputt!
+
+[upset] Hey! Meine Burg!
+
+[sheepishly] Okay … Entschuldigung.
+
+[grumbling] Entschuldigung.
+
+[sheepishly] Okay. Mach ich nicht mehr.
+
+[teasing] Du bist blöd!
+
+[whispering] Spielt nicht mit Emily! Spielt nur mit mir!
+
+[shyly] Okay …
+
+[shyly] Entschuldigung. Spielst du mit mir?

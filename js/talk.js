@@ -53,6 +53,18 @@ const T = {};
   .swinging{animation:swing 1.6s ease-in-out infinite}
   @keyframes swing{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(13deg)}}
   #fade{position:absolute;inset:0;z-index:90;background:#fffaf2;pointer-events:none;opacity:0;transition:opacity .45s}
+  /* три-четыре карточки выбора — поменьше, чтобы влезли в ряд */
+  #scenes .card:nth-last-child(n+3):first-child,#scenes .card:nth-last-child(n+3):first-child ~ .card{width:min(28vw,46vh)}
+  #scenes .card:nth-last-child(n+4):first-child,#scenes .card:nth-last-child(n+4):first-child ~ .card{width:min(21vw,40vh)}
+  #scenes{gap:3vw}
+  .mudspot{position:absolute;border-radius:50%;background:#7a5230;opacity:.92;pointer-events:none}
+  .grain{position:absolute;z-index:70;border-radius:50%;pointer-events:none}
+  .spin{animation:spin 1.3s ease-in-out}
+  @keyframes spin{0%{transform:translateY(0) scaleX(1)}25%{transform:translateY(-6%) scaleX(-1)}50%{transform:translateY(-8%) scaleX(1)}75%{transform:translateY(-6%) scaleX(-1)}100%{transform:translateY(0) scaleX(1)}}
+  .dance{animation:dance .5s ease-in-out infinite}
+  @keyframes dance{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7%) rotate(4deg)}}
+  .wobble{animation:wobble .3s ease-in-out infinite}
+  @keyframes wobble{0%,100%{transform:translateX(-3%) rotate(-3deg)}50%{transform:translateX(3%) rotate(3deg)}}
   #fade.on{opacity:1}
   `;
   document.head.appendChild(css);
@@ -202,6 +214,51 @@ T.choose = async (opts, askClip, ruAsk, wrongClip) => {
     if (opts[i].ok !== false){ cards[i].classList.add('lit'); sfx.ding(); await sleep(500); box.hidden = true; return i; }
     cards[i].classList.add('no'); sfx.bonk(); await sleep(400); box.hidden = true; await play(wrongClip); await sleep(300);
   }
+};
+
+/* ---------- эффекты для героев: слёзы, грязь, брызги/песок, громкость голоса ---------- */
+T.tears = (h, on) => {
+  h.el.querySelectorAll('.tear').forEach(t => t.remove()); if (!on) return;
+  for (const [x, d] of [[38, 0], [58, .6]]){ const t = document.createElement('i'); t.className = 'tear'; Object.assign(t.style, {left: x + '%', top: '30%', animationDelay: d + 's'}); h.body.appendChild(t); }
+};
+T.mud = (h, on) => {
+  h.el.querySelectorAll('.mudspot').forEach(t => t.remove()); if (!on) return;
+  for (const [x, y, w] of [[30, 48, 22], [58, 60, 18], [40, 74, 26], [62, 30, 10], [36, 22, 9], [48, 92, 30]]){
+    const m = document.createElement('i'); m.className = 'mudspot'; Object.assign(m.style, {left: x + '%', top: y + '%', width: w + '%', height: w*0.6 + '%'}); h.body.appendChild(m); }
+};
+/* горсть частиц (песок, брызги грязи) летит из точки from в to; to не задан — разлетаются во все стороны */
+T.burst = (from, to, color = '#e8c27a', n = 14) => {
+  const st = stage.getBoundingClientRect(), c = el => { const r = (el.el || el).getBoundingClientRect(); return [r.left - st.left + r.width/2, r.top - st.top + r.height*0.4]; };
+  const [x0, y0] = Array.isArray(from) ? from : c(from), dest = to ? (Array.isArray(to) ? to : c(to)) : null;
+  const all = [];
+  for (let i = 0; i < n; i++){
+    const g = document.createElement('i'), w = L.hE*(0.025 + Math.random()*0.03); g.className = 'grain';
+    Object.assign(g.style, {left: x0 + 'px', top: y0 + 'px', width: w + 'px', height: w + 'px', background: color}); stage.appendChild(g);
+    const dx = dest ? dest[0] - x0 + (Math.random() - .5)*L.hE*0.3 : (Math.random() - .5)*L.hE*1.6, dy = dest ? dest[1] - y0 + (Math.random() - .5)*L.hE*0.3 : -Math.random()*L.hE*0.9;
+    all.push(g.animate([{transform: 'translate(0,0)', opacity: 1}, {transform: `translate(${dx/2}px,${dy/2 - L.hE*0.25}px)`, opacity: 1}, {transform: `translate(${dx}px,${dest ? dy : dy + L.hE*0.9}px)`, opacity: 0}],
+      {duration: 600 + Math.random()*300, easing: 'ease-out'}).finished.then(() => g.remove()).catch(() => g.remove()));
+  }
+  return Promise.all(all);
+};
+/* сердечки над героем (кто-то радуется, гладит Тео, мирятся) */
+T.hearts = async (h, n = 3) => {
+  const st = stage.getBoundingClientRect(), r = (h.el || h).getBoundingClientRect();
+  for (let i = 0; i < n; i++){
+    const d = document.createElement('i'), w = L.hE*0.16; d.className = 'fly'; d.innerHTML = HEART_SVG;
+    Object.assign(d.style, {left: (r.left - st.left + r.width*(0.3 + Math.random()*0.4) - w/2) + 'px', top: (r.top - st.top + r.height*0.1) + 'px', width: w + 'px', height: w + 'px'}); stage.appendChild(d);
+    d.animate([{transform: 'translateY(0) scale(.4)', opacity: 0}, {transform: `translateY(${-L.hE*0.2}px) scale(1)`, opacity: 1, offset: .3}, {transform: `translateY(${-L.hE*0.55}px) scale(1.1)`, opacity: 0}], {duration: 1500, easing: 'ease-out'}).finished.then(() => d.remove()).catch(() => d.remove());
+    await sleep(220);
+  }
+};
+/* пока горит микрофон, f(громкость 0…~3) вызывается каждый кадр; возвращает «стоп», который отдаёт самую большую громкость.
+   Без микрофона (кнопка) громкость считается средней. */
+T.loudness = f => {
+  let on = true, max = 0;
+  const tick = () => { if (!on) return; requestAnimationFrame(tick);
+    const listening = !micBtn.hidden && micBtn.classList.contains('on'), v = listening && window.__mic && mic ? Math.min(3, __mic.level || 0) : 0;
+    if (v > max) max = v; f(v); };
+  requestAnimationFrame(tick);
+  return () => { on = false; return mic ? max : 1.2; };
 };
 
 /* ---------- косточка за хороший ответ: летит в кошелёк ---------- */
