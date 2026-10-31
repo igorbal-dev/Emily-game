@@ -111,7 +111,37 @@ const CHUNKS = (() => {
     e20_wuetend: ['Ich bin …', 'wütend.'],
     e20_spielt_ihr: ['Isabel, Paul …', 'spielt ihr …', 'mit mir?'],
     e20_alle: ['Leon, du kannst …', 'auch mitspielen.', 'Wir spielen …', 'alle zusammen!'],
-    e20_nein: ['Nein …', 'jetzt nicht.']
+    e20_nein: ['Nein …', 'jetzt nicht.'],
+    /* 21 «Abiha ist wieder da!» */
+    e21_endlich: ['Abiha! Hallo!', 'Endlich bist du …', 'wieder da!'],
+    e21_vermisst: ['Ich habe dich …', 'so vermisst!'],
+    e21_wo: ['Wo warst du …', 'im Urlaub?'],
+    e21_gesehen: ['Was hast du …', 'gesehen?'],
+    e21_eis: ['Habt ihr auch …', 'Eis gegessen?'],
+    e21_gefallen: ['Hat dir …', 'der Urlaub …', 'gefallen?'],
+    e21_froh: ['Ich bin froh, …', 'dass du …', 'wieder da bist!'],
+    e21_spielen: ['Jetzt können wir …', 'wieder zusammen …', 'spielen!'],
+    /* 22 «Wir spielen draußen» */
+    e22_draussen: ['Möchtest du …', 'draußen spielen …', 'oder drinnen?'],
+    e22_ich_auch: ['Ich auch!', 'Lass uns …', 'nach draußen gehen!'],
+    e22_rutschen: ['Wollen wir …', 'zusammen rutschen?'],
+    e22_jetzt_ich: ['Haha!', 'Jetzt bin ich …', 'dran!'],
+    e22_anschubsen: ['Ja!', 'Kannst du mich …', 'ein bisschen …', 'anschubsen?'],
+    e22_danke: ['Das macht Spaß!', 'Danke, Abiha!'],
+    e22_wette: ['Wollen wir …', 'um die Wette …', 'laufen?'],
+    e22_los: ['Auf die Plätze, …', 'fertig, …', 'los!'],
+    e22_gerne: ['Ich spiele …', 'so gerne …', 'mit dir!'],
+    /* 23 «Jahreszeiten» */
+    e23_kennst: ['Abiha, …', 'welche Jahreszeiten …', 'kennst du?'],
+    e23_herbst: ['Jetzt ist …', 'Herbst!'],
+    e23_winter: ['Bald kommt …', 'der Winter!'],
+    e23_liebsten: ['Ich mag …', 'den Winter …', 'am liebsten!', 'Und du?'],
+    e23_dezember: ['Mein Lieblingsmonat …', 'ist Dezember!'],
+    e23_wuenschst: ['Was wünschst …', 'du dir …', 'vom Nikolaus?'],
+    e23_spielzeug: ['Ich wünsche mir …', 'ein Spielzeug!'],
+    e23_ski: ['Ja!', 'Ich fahre …', 'sehr gerne Ski!'],
+    e23_riesig: ['Ja, …', 'ich freue mich …', 'riesig!'],
+    e23_wunderschoen: ['Der Winter …', 'ist einfach …', 'wunderschön!']
   });
   return C;
 })();

@@ -24,6 +24,7 @@ const SND = __SND__;  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar 
 <script src="js/talk.js"></script>
 <script src="js/chunks.js"></script>
 <script src="js/repeat.js"></script>
+<script src="js/scenes.js"></script>
 <script>
 /* Уровень 13: Эмили на площадке. Качели — «Darf ich auch mal schaukeln?», ждём «noch fünfmal», говорим «Danke».
    Горка — выбираем, как поступить, и говорим «Du zuerst, dann ich!». Песочница — «Entschuldigung!» и «Ich helfe dir!». */
@@ -32,39 +33,7 @@ const STICKER = '<svg viewBox="0 0 100 100"><path d="M18 92 L32 10 L68 10 L82 92
 
 /* ---------- площадка: небо, деревья, качели, горка, песочница ---------- */
 const SWX = 0.3, SLX = 0.74, SBX = 0.52;
-function drawScene(g, W, H, L){
-  const fy = L.floorY, hE = L.hE, hz = H*0.55;
-  let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#8fd3ff'); gr.addColorStop(1, '#e4f6ff'); g.fillStyle = gr; g.fillRect(0, 0, W, hz);
-  g.fillStyle = '#fff3a8'; g.beginPath(); g.arc(W*0.9, H*0.13, hE*0.16, 0, 7); g.fill();
-  g.fillStyle = 'rgba(255,255,255,.9)'; for (const [cx, cy, r] of [[0.18, 0.12, 0.09], [0.55, 0.08, 0.07], [0.68, 0.17, 0.06]]){ g.beginPath(); g.ellipse(W*cx, H*cy, hE*r*2, hE*r, 0, 0, 7); g.fill(); }
-  /* дома Берлина вдали */
-  const cols = ['#f4c9a8', '#cfe0f0', '#f3e1a0', '#e6b8b8', '#d7e8c6'];
-  for (let i = 0, x = -10; x < W; i++){ const w = hE*(0.55 + (i % 3)*0.12), h = hE*(0.6 + ((i*7) % 4)*0.12);
-    g.fillStyle = cols[i % cols.length]; g.fillRect(x, hz - h, w, h); g.fillStyle = 'rgba(80,110,150,.35)';
-    for (let wy = hz - h + hE*0.1; wy < hz - hE*0.15; wy += hE*0.18) for (let wx = x + w*0.15; wx < x + w*0.8; wx += w*0.3) g.fillRect(wx, wy, w*0.16, hE*0.09);
-    x += w + 2; }
-  for (let i = 0; i < 9; i++){ const tx = W*(i/8), r = hE*(0.16 + (i % 3)*0.04); g.fillStyle = i % 2 ? '#5fae4a' : '#4f9e3e'; g.beginPath(); g.arc(tx, hz - r*0.4, r, 0, 7); g.fill(); }
-  gr = g.createLinearGradient(0, hz, 0, H); gr.addColorStop(0, '#a6dd78'); gr.addColorStop(1, '#7cc35a'); g.fillStyle = gr; g.fillRect(0, hz, W, H - hz);
-  g.lineCap = 'round'; g.lineJoin = 'round';
-  /* качели */
-  const sx = W*SWX, top = fy - hE*1.55, foot = fy - hE*0.02, spread = hE*0.55;
-  g.strokeStyle = '#8a5a1e'; g.lineWidth = hE*0.05;
-  for (const s of [-1, 1]){ g.beginPath(); g.moveTo(sx + s*spread, foot); g.lineTo(sx + s*spread*0.55, top); g.stroke(); }
-  g.lineWidth = hE*0.06; g.beginPath(); g.moveTo(sx - spread*0.7, top); g.lineTo(sx + spread*0.7, top); g.stroke();
-  /* горка: лесенка слева, площадка, скат вправо */
-  const lx = W*(SLX - 0.06), px = W*(SLX - 0.01), py = fy - hE*0.95, ex = W*(SLX + 0.19);
-  g.strokeStyle = '#2f80ed'; g.lineWidth = hE*0.035;
-  for (const dx of [0, hE*0.16]){ g.beginPath(); g.moveTo(lx + dx - hE*0.08, fy); g.lineTo(lx + dx, py - hE*0.25); g.stroke(); }
-  g.lineWidth = hE*0.02; for (let k = 1; k < 6; k++){ const y = fy - (fy - py)*k/6, sh = hE*0.08*(1 - k/6); g.beginPath(); g.moveTo(lx - sh, y); g.lineTo(lx + hE*0.16 - sh, y); g.stroke(); }
-  g.fillStyle = '#ffd84d'; g.strokeStyle = '#d6a21e'; g.lineWidth = hE*0.015; g.fillRect(lx - hE*0.02, py - hE*0.04, px - lx + hE*0.14, hE*0.05); g.strokeRect(lx - hE*0.02, py - hE*0.04, px - lx + hE*0.14, hE*0.05);
-  g.fillStyle = '#ff7a59'; g.strokeStyle = '#d65a3b'; g.lineWidth = hE*0.02; g.beginPath();
-  g.moveTo(px + hE*0.1, py - hE*0.04); g.bezierCurveTo(px + (ex - px)*0.45, py + hE*0.05, ex - hE*0.25, fy - hE*0.12, ex, fy - hE*0.06);
-  g.lineTo(ex, fy - hE*0.01); g.bezierCurveTo(ex - hE*0.3, fy - hE*0.05, px + (ex - px)*0.4, py + hE*0.14, px + hE*0.1, py + hE*0.05); g.closePath(); g.fill(); g.stroke();
-  /* песочница */
-  const bx = W*SBX, bw = hE*0.85;
-  g.fillStyle = '#f3d79a'; g.beginPath(); g.ellipse(bx, fy + hE*0.02, bw, hE*0.12, 0, 0, 7); g.fill();
-  g.strokeStyle = '#b07b3c'; g.lineWidth = hE*0.05; g.beginPath(); g.ellipse(bx, fy + hE*0.02, bw, hE*0.12, 0, 0, 7); g.stroke();
-}
+function drawScene(g, W, H, L){ drawPlayground(g, W, H, L, SWX, SLX, SBX); }
 
 /* ---------- предметы ---------- */
 const SEAT = '<svg viewBox="0 0 45 125" preserveAspectRatio="none"><path d="M8 0 V118 M37 0 V118" stroke="#7a5a3a" stroke-width="2.2"/><rect x="2" y="114" width="41" height="9" rx="4" fill="#ff7a59" stroke="#d65a3b" stroke-width="2"/></svg>';

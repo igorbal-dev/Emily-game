@@ -1,7 +1,8 @@
 #!/bin/sh
 # Публикация игры на сайт (ветка gh-pages). Ничего не удаляется:
 #   корень сайта — всегда актуальная версия; прошлая версия уходит в папку vN/ (v1, v2, …), её можно открыть по ссылке;
-#   versions.html — список всех версий с датой и описанием; old/ — старая ссылка, ведёт на v1/.
+#   versions.html — список всех версий с датой и описанием.
+#   Удалять старые версии — только когда скажет Игорь. Скрипт предупреждает, если сайт приближается к пределу GitHub Pages (~1 ГБ).
 # Запуск после commit: sh tools/publish.sh "Коротко, что нового в этой версии"
 set -e
 DESC=${1:-$(git log -1 --format=%s HEAD)}
@@ -31,14 +32,17 @@ echo "$(date +%F)|$DESC" > $TMP/version.txt
   tac $TMP/versions.txt | while IFS='|' read -r v d t; do echo "<li><a href=\"$v/\">$v</a> <small>$d</small><br>$(echo "$t" | esc)</li>"; done
   echo '</ul>'
 } > $TMP/versions.html
-echo '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../v1/"><a href="../v1/">v1</a>' > $TMP/old.html
 
 # новый сайт: рабочая ветка + все прошлые версии + список
 git read-tree HEAD
+git rm -r -q --cached --ignore-unmatch art_source >/dev/null   # исходные листы героев (art_source/) на сайт не нужны
 for d in $DIRS; do git read-tree --prefix="$d/" "$G:$d"; done
 git read-tree --prefix="v$N/" "$PREV"
-add $TMP/versions.txt versions.txt; add $TMP/version.txt version.txt; add $TMP/versions.html versions.html; add $TMP/old.html old/index.html
+add $TMP/versions.txt versions.txt; add $TMP/version.txt version.txt; add $TMP/versions.html versions.html;
 C=$(git commit-tree "$(git write-tree)" -p $G -p HEAD -m "Публикация $(git rev-parse --short HEAD); прошлая версия сайта — v$N/")
 rm -rf "$TMP"
 git push origin "$(git rev-parse --abbrev-ref HEAD)" "$C:refs/heads/gh-pages"
 echo "Опубликовано. Прошлая версия: v$N/"
+MB=$(( $(git ls-tree -r -l "$C" | awk '{s+=$4} END {print s}') / 1048576 ))
+echo "Размер сайта: $MB МБ из ~1000."
+[ "$MB" -gt 800 ] && echo "ВНИМАНИЕ: места на сайте мало — сказать Игорю, что нужно удалить старые версии (какие — решает он)." || true

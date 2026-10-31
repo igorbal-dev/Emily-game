@@ -1,0 +1,195 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Abiha ist wieder da! Уровень 21</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 21 «Abiha ist wieder da!» — Абиха вернулась из отпуска в Кёльне: встречаем, спрашиваем, где была и что видела. ТЗ: docs/tz/level-21.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_shoes": ["assets/img/f3c638bc729d.webp", 208, 407], "emily_blink_shoes": ["assets/img/0f33b1ccf809.webp", 208, 407], "emily_mouth1_shoes": ["assets/img/3b7a1bb44669.webp", 208, 407], "emily_mouth2_shoes": ["assets/img/349db2cdaea9.webp", 208, 407], "emily_talk_shoes": ["assets/img/d3e54ca225ed.webp", 270, 413], "emily_wave_shoes": ["assets/img/2ab85334263f.webp", 252, 394], "emily_jump_shoes": ["assets/img/31f33a5548ba.webp", 279, 346], "emily_surprised_shoes": ["assets/img/b65576956668.webp", 208, 407], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk": ["assets/img/8e591eafe46b.webp", 225, 385], "abiha_idle": ["assets/img/fa848f76752c.webp", 252, 361], "abiha_blink": ["assets/img/80c0b58f8e9f.webp", 252, 361], "abiha_mouth1": ["assets/img/d3289978defd.webp", 252, 361], "abiha_mouth2": ["assets/img/3569203761d0.webp", 252, 361], "abiha_wave": ["assets/img/3d7524d2c8fa.webp", 252, 361], "abiha_cross": ["assets/img/d80c857c06db.webp", 252, 361], "abiha_peace": ["assets/img/540be744bd81.webp", 252, 361], "abiha_walk": ["assets/img/fffa865249e2.webp", 252, 361], "abiha_walkf": ["assets/img/e4388dec932b.webp", 252, 361], "abiha_run": ["assets/img/3d830c89807d.webp", 252, 361], "abiha_jump": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_think": ["assets/img/fe368e6c3218.webp", 252, 361], "abiha_sit": ["assets/img/cb1193d78e14.webp", 252, 361], "abiha_laugh": ["assets/img/4cfb6296447d.webp", 252, 361]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised}_shoes emily_{laugh,walk} abiha_{idle,blink,mouth1,mouth2,wave,cross,peace,walk,walkf,run,jump,think,sit,laugh}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e21_eis": "assets/snd/0d6545d01514.mp3", "e21_endlich": "assets/snd/8474680d5e38.mp3", "e21_froh": "assets/snd/a5228bf04e89.mp3", "e21_gefallen": "assets/snd/c1c5c7ee94cc.mp3", "e21_gemacht": "assets/snd/1e06e729a507.mp3", "e21_gesehen": "assets/snd/16e486add671.mp3", "e21_spielen": "assets/snd/cfd34b23de35.mp3", "e21_spielplatz": "assets/snd/2caafaa76565.mp3", "e21_vermisst": "assets/snd/80b4d14f8f42.mp3", "e21_verwandte": "assets/snd/5fee914ca5da.mp3", "e21_wie_war": "assets/snd/435f7c0b8104.mp3", "e21_wo": "assets/snd/264ba51e2d02.mp3", "e21_zwei_wochen": "assets/snd/d4583fbedcf0.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "n21_intro": "assets/snd/cbd167c0b403.mp3", "n21_tipp_dom": "assets/snd/9087ac542c37.mp3", "n21_tipp_schoko": "assets/snd/6714b1026a05.mp3", "n21_tuerme": "assets/snd/ff0783c2cc3d.mp3", "n21_vier": "assets/snd/f009a6005238.mp3", "n21_zaehl": "assets/snd/9894f56355ac.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..4} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, e — Эмили, b — Абиха) */
+const SAY = {
+  n21_intro: 'Montag in der Kita. Abiha war zwei Wochen nicht da. Und jetzt ist sie wieder da!',
+  e21_endlich: 'Abiha! Hallo! Endlich bist du wieder da!',
+  b21_hallo: 'Hallo, Emily!',
+  e21_vermisst: 'Ich habe dich so vermisst!',
+  e21_zwei_wochen: 'Du warst zwei Wochen nicht in der Kita!',
+  b21_urlaub: 'Ja, ich war im Urlaub!',
+  e21_wo: 'Wo warst du im Urlaub?',
+  b21_koeln: 'Ich war mit meiner Mama, meinem Papa und meinem Bruder Ali in Köln.',
+  n21_zaehl: 'Wie viele sind sie zusammen? Tipp auf jeden und zähl mit!',
+  n21_vier: 'Vier! Mama, Papa, Ali und Abiha.',
+  e21_wie_war: 'Wow! Wie schön! Wie war es dort?',
+  b21_schoen: 'Es war sehr schön!',
+  e21_gemacht: 'Was hast du dort gemacht?',
+  b21_stadt: 'Ich war mit meiner Familie in der Stadt.',
+  e21_gesehen: 'Was hast du gesehen?',
+  b21_dom: 'Ich habe den Kölner Dom gesehen! Er ist riesengroß!',
+  n21_tipp_dom: 'Wo ist der Dom? Tipp auf den Dom!',
+  n21_tuerme: 'Der Dom hat zwei große Türme. Zählen wir!',
+  e21_spielplatz: 'Wart ihr auch auf einem Spielplatz?',
+  b21_ali: 'Ja! Ich habe mit Ali gespielt. Das hat viel Spaß gemacht!',
+  e21_eis: 'Habt ihr auch Eis gegessen?',
+  b21_schoko: 'Ja! Ich habe Schokoladeneis gegessen. Das war lecker!',
+  n21_tipp_schoko: 'Welches Eis ist Schokoladeneis? Tipp drauf!',
+  e21_verwandte: 'Hast du in Köln Verwandte besucht?',
+  b21_familie: 'Nein, wir waren nur mit unserer Familie dort. Mama, Papa, Ali und ich.',
+  e21_gefallen: 'Hat dir der Urlaub gefallen?',
+  b21_sehr: 'Ja, sehr! Es war richtig schön!',
+  e21_froh: 'Ich bin froh, dass du wieder da bist!',
+  b21_auch: 'Ich habe dich auch vermisst, Emily!',
+  e21_spielen: 'Jetzt können wir wieder zusammen spielen!',
+  b21_ja: 'Ja! Das habe ich auch vermisst!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 21: в садике Абиха вернулась из отпуска. Эмили радуется («Endlich bist du wieder da!», «Ich habe dich so vermisst!»),
+   спрашивает: где была («Wo warst du im Urlaub?»), что видела, ели ли мороженое, понравилось ли. На «фото» из Кёльна:
+   считаем семью Абихи (4), находим собор и две башни, выбираем шоколадное мороженое. В конце — «Jetzt können wir wieder zusammen spielen!». */
+const LEVEL = 21, FRIENDS = ['abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M50 90 C14 66 10 36 30 28 C42 24 50 34 50 40 C50 34 58 24 70 28 C90 36 86 66 50 90 Z" fill="#ff6b8a" stroke="#d6476a" stroke-width="5"/><path d="M36 18 l4 -10 l4 10 M56 18 l4 -10 l4 10" stroke="#8a7a6a" stroke-width="4" fill="none" stroke-linejoin="round"/><path d="M40 56 l7 7 l14 -16" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const RUG = 0.5;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG); }
+
+/* «фото» из Кёльна над героями: рамка, внутри меняется картинка */
+const FRAME = inner => `<svg viewBox="0 0 200 110"><rect x="3" y="3" width="194" height="104" rx="10" fill="#fff" stroke="#e2b98a" stroke-width="6"/><rect x="11" y="11" width="178" height="88" rx="5" fill="#cfeeff"/><rect x="11" y="78" width="178" height="21" fill="#bde3a0"/>${inner || ''}</svg>`;
+const DOM = '<svg viewBox="0 0 100 120"><g fill="#a89a8a" stroke="#6f6355" stroke-width="2.5" stroke-linejoin="round"><path d="M14 118 V44 L24 6 L34 44 V118 Z"/><path d="M66 118 V44 L76 6 L86 44 V118 Z"/><rect x="30" y="62" width="40" height="56"/><path d="M30 62 L50 46 L70 62 Z"/></g><g fill="#6f6355"><path d="M44 118 V96 a6 6 0 0 1 12 0 V118 Z"/><circle cx="50" cy="76" r="7"/><path d="M20 60 v10 M28 60 v10 M72 60 v10 M80 60 v10 M20 84 v10 M28 84 v10 M72 84 v10 M80 84 v10" stroke="#6f6355" stroke-width="3"/></g><path d="M24 6 v-5 M76 6 v-5" stroke="#6f6355" stroke-width="2.5"/></svg>';
+const HOUSE = '<svg viewBox="0 0 100 120"><path d="M14 118 V58 L50 26 L86 58 V118 Z" fill="#ffd34d" stroke="#d6a21e" stroke-width="3" stroke-linejoin="round"/><path d="M6 62 L50 22 L94 62" fill="none" stroke="#ff7a59" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><rect x="40" y="84" width="20" height="34" fill="#8a5a1e"/><rect x="22" y="66" width="14" height="14" fill="#9fd0ff"/><rect x="64" y="66" width="14" height="14" fill="#9fd0ff"/></svg>';
+const TREE = '<svg viewBox="0 0 100 120"><rect x="44" y="70" width="12" height="48" fill="#8a5a1e"/><circle cx="50" cy="50" r="34" fill="#4f9e3e"/><circle cx="34" cy="40" r="18" fill="#5fae4a"/><circle cx="64" cy="36" r="16" fill="#5fae4a"/></svg>';
+const PLAY = '<g transform="translate(40 18)"><path d="M10 80 L22 10 L50 10 L62 80" fill="none" stroke="#8a5a1e" stroke-width="4" stroke-linecap="round"/><path d="M18 10 h40" stroke="#8a5a1e" stroke-width="5" stroke-linecap="round"/><path d="M30 12 V54 M42 12 V54" stroke="#7a5a3a" stroke-width="1.6"/><rect x="26" y="52" width="20" height="6" rx="3" fill="#ff7a59"/><path d="M80 40 L94 40 L120 78 L110 80 Z" fill="#ff7a59" stroke="#d65a3b" stroke-width="2"/><path d="M78 80 V40 M88 80 V40" stroke="#2f80ed" stroke-width="3"/></g>';
+const FAM = [
+  personSVG({style: 'long', hair: '#2e1d12', shirt: '#9b6bff', pants: '#3c4a6b'}),                       /* мама */
+  personSVG({style: 'short', hair: '#1f140c', shirt: '#32b67a', pants: '#2c3346', skin: '#d9a273'}),      /* папа */
+  personSVG({style: 'short', hair: '#2e1d12', shirt: '#ff7a59', pants: '#5aa8f0'}),                       /* Али */
+  personSVG({style: 'pony', hair: '#4a2e1c', shirt: '#222', pants: '#9b3fc4', shoes: '#ff8fc8'})         /* Абиха */
+];
+const FAM_X = [-0.4, -0.13, 0.14, 0.38], FAM_H = [0.5, 0.56, 0.36, 0.38];
+
+let emily, abiha, photo, fam = [], dom, house, tree, ices = [];
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised', 'laugh', 'walk'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'cross', 'peace', 'walk', 'walkf', 'run', 'jump', 'think', 'sit', 'laugh'];
+/* низ фото и место внутри него (dx — сдвиг от центра в ростах героя) */
+const PB = () => L.floorY - L.hE*1.04, PW = 1.6;
+const inPhoto = (dx, up = 0.06) => ({px: () => L.W*0.5 + L.hE*dx, py: () => PB() - L.hE*up});
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; fam = []; ices = [];
+  photo = T.prop(FRAME(), {x: 0.5, py: PB, w: PW, ratio: 110/200, z: 20}); photo.el.style.opacity = 0;
+  FAM.forEach((svg, i) => { const p = T.prop(svg, {...inPhoto(FAM_X[i]), w: FAM_H[i]*60/130, ratio: 130/60, z: 22}); p.el.hidden = true; fam.push(p); });
+  [house, dom, tree] = [HOUSE, DOM, TREE].map((svg, i) => { const p = T.prop(svg, {...inPhoto((i - 1)*0.42), w: 0.36, ratio: 1.2, z: 22}); p.el.hidden = true; return p; });
+  ices = [ICE_PINK, ICE_CHOC, ICE_VAN].map((svg, i) => { const p = T.prop(svg, {...inPhoto((i - 1)*0.38, 0.1), w: 0.26, ratio: 100/60, z: 22}); p.el.hidden = true; return p; });
+  abiha = T.hero('abiha', {x: 1.15, poses: AP});
+  emily = T.hero('emily', {x: 0.22, outfit: 'shoes', poses: EP});
+}
+const showPhoto = async (inner, items = []) => {
+  photo.el.innerHTML = FRAME(inner); [...fam, house, dom, tree, ...ices].forEach(p => p.el.hidden = !items.includes(p));
+  await photo.el.animate([{opacity: 0, transform: 'scale(.7)'}, {opacity: 1, transform: 'none'}], {duration: 400, fill: 'forwards', easing: 'cubic-bezier(.3,1.4,.5,1)'}).finished.catch(() => {});
+};
+const hidePhoto = async () => { [...fam, house, dom, tree, ...ices].forEach(p => p.el.hidden = true);
+  await photo.el.animate([{opacity: 1}, {opacity: 0}], {duration: 300, fill: 'forwards'}).finished.catch(() => {}); };
+/* Эмили считает вслух: число на экране, рот двигается */
+const count = async i => { showNum(i); await emily.say('e_' + i); };
+
+async function story(){
+  /* встреча: Абиха входит, Эмили бежит к ней */
+  await play('n21_intro');
+  abiha.set('walk'); await abiha.walkTo(0.74, 1700); abiha.set('idle');
+  emily.set('surprised'); sfx.ding(); await sleep(500);
+  emily.set('jump'); emily.hop(); await emily.walkTo(0.42, 700); emily.set('idle');
+  await T.repeat('e21_endlich');
+  abiha.set('wave'); await abiha.say('b21_hallo'); abiha.set('jump'); emily.set('jump'); abiha.hop(); emily.hop();
+  T.hearts(emily); T.hearts(abiha); await sleep(900); emily.set('idle'); abiha.set('idle');
+  await T.bone(abiha);
+  await T.repeat('e21_vermisst');
+  showNum(2); await emily.say('e21_zwei_wochen'); hideNum();
+  abiha.set('peace'); await abiha.say('b21_urlaub'); abiha.set('idle');
+
+  /* где была: семья Абихи на фото, считаем до 4 */
+  await T.repeat('e21_wo');
+  await showPhoto('', fam);
+  await abiha.say('b21_koeln');
+  await play('n21_zaehl');
+  let left = [...fam];
+  for (let i = 1; i <= 4; i++){
+    const el = await T.tap(left, 'n21_zaehl', 'r_tipp_licht'); const p = left.find(f => f.el === el); left = left.filter(f => f !== p);
+    p.el.animate([{transform: 'translateY(0)'}, {transform: 'translateY(-14%)'}, {transform: 'translateY(0)'}], {duration: 400});
+    await count(i);
+  }
+  hideNum(); await play('n21_vier'); abiha.set('jump'); abiha.hop(); await sleep(500); abiha.set('idle');
+  await T.bone(photo);
+  await emily.say('e21_wie_war');
+  await abiha.say('b21_schoen');
+  await hidePhoto();
+
+  /* что видела: собор с двумя башнями */
+  await emily.say('e21_gemacht');
+  await abiha.say('b21_stadt');
+  await T.repeat('e21_gesehen');
+  await showPhoto('', [house, dom, tree]);
+  abiha.set('wave'); await abiha.say('b21_dom'); abiha.set('idle');
+  await play('n21_tipp_dom');
+  await T.tap([dom], 'n21_tipp_dom', 'r_tipp_licht');
+  sfx.ding(); house.el.hidden = tree.el.hidden = true; dom.o.w = 0.6; dom.place();
+  await T.move(dom, 0.5, 0, 500); await praise();
+  await play('n21_tuerme');
+  for (let i = 1; i <= 2; i++){ dom.el.animate([{filter: 'none'}, {filter: 'drop-shadow(0 0 10px #ffd84d)'}, {filter: 'none'}], {duration: 700}); await count(i); }
+  hideNum(); await T.bone(dom);
+  await hidePhoto(); dom.o.w = 0.36; dom.o.x = undefined; dom.o.px = inPhoto(0).px; dom.place();
+
+  /* площадка с Али */
+  await emily.say('e21_spielplatz');
+  await showPhoto(PLAY);
+  abiha.set('laugh'); await abiha.say('b21_ali'); abiha.set('idle');
+  await hidePhoto();
+
+  /* мороженое: находим шоколадное */
+  await T.repeat('e21_eis');
+  await showPhoto('', ices);
+  await abiha.say('b21_schoko');
+  await play('n21_tipp_schoko');
+  await T.tap([ices[1]], 'n21_tipp_schoko', 'r_tipp_licht');
+  sfx.ding(); emily.set('laugh'); abiha.set('laugh'); T.hearts(ices[1]); await praise();
+  emily.set('idle'); abiha.set('idle');
+  await T.bone(ices[1]);
+  await hidePhoto();
+
+  /* родственники? только семья */
+  await emily.say('e21_verwandte');
+  await showPhoto('', fam);
+  abiha.set('think'); await sleep(400); abiha.set('idle');
+  await abiha.say('b21_familie');
+  await hidePhoto();
+
+  /* понравилось? рада, что вернулась */
+  await T.repeat('e21_gefallen');
+  abiha.set('jump'); abiha.hop(); await abiha.say('b21_sehr'); abiha.set('idle');
+  await T.repeat('e21_froh');
+  await abiha.say('b21_auch'); T.hearts(abiha); T.hearts(emily); await sleep(800);
+  await T.bone(emily);
+  await T.repeat('e21_spielen');
+  abiha.set('jump'); emily.set('jump'); abiha.hop(); emily.hop(); sfx.ding();
+  await abiha.say('b21_ja');
+  emily.set('wave'); abiha.set('peace'); await sleep(600);
+}
+T.start(IMG.abiha_wave[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

@@ -143,5 +143,145 @@
   "assets/img/70fd438f000a.svg",
   240,
   420
+ ],
+ "abiha_idle": [
+  "assets/img/fa848f76752c.webp",
+  252,
+  361
+ ],
+ "abiha_wave": [
+  "assets/img/3d7524d2c8fa.webp",
+  252,
+  361
+ ],
+ "abiha_cross": [
+  "assets/img/d80c857c06db.webp",
+  252,
+  361
+ ],
+ "abiha_peace": [
+  "assets/img/540be744bd81.webp",
+  252,
+  361
+ ],
+ "abiha_walk": [
+  "assets/img/fffa865249e2.webp",
+  252,
+  361
+ ],
+ "abiha_walkf": [
+  "assets/img/e4388dec932b.webp",
+  252,
+  361
+ ],
+ "abiha_run": [
+  "assets/img/3d830c89807d.webp",
+  252,
+  361
+ ],
+ "abiha_jump": [
+  "assets/img/4cfb6296447d.webp",
+  252,
+  361
+ ],
+ "abiha_think": [
+  "assets/img/fe368e6c3218.webp",
+  252,
+  361
+ ],
+ "abiha_sit": [
+  "assets/img/cb1193d78e14.webp",
+  252,
+  361
+ ],
+ "abiha_laugh": [
+  "assets/img/4cfb6296447d.webp",
+  252,
+  361
+ ],
+ "abiha_blink": [
+  "assets/img/80c0b58f8e9f.webp",
+  252,
+  361
+ ],
+ "abiha_mouth1": [
+  "assets/img/d3289978defd.webp",
+  252,
+  361
+ ],
+ "abiha_mouth2": [
+  "assets/img/3569203761d0.webp",
+  252,
+  361
+ ],
+ "abiha_idle_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_blink_out": [
+  "assets/img/cd9612e1c921.webp",
+  141,
+  375
+ ],
+ "abiha_mouth1_out": [
+  "assets/img/67d4d4438d8b.webp",
+  141,
+  375
+ ],
+ "abiha_mouth2_out": [
+  "assets/img/f1119565498c.webp",
+  141,
+  375
+ ],
+ "abiha_wave_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_cross_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_peace_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_walk_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_walkf_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_run_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_jump_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_think_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_sit_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_laugh_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
  ]
 }

@@ -8,7 +8,7 @@ window.Game = (function(){
   const G = {
     KEY,
     /* награда за уровень: короткие 4, средние 5, длинные 6 (считает Эмили, максимум 10) */
-    LEVEL_BONES: {0: 4, 1: 6, 2: 6, 3: 4, 4: 6, 5: 6, 6: 6, 7: 5, 8: 4, 9: 5, 10: 4, 11: 6, 12: 5, 13: 5, 14: 6, 15: 5, 16: 5, 17: 6, 18: 6, 19: 6, 20: 6},
+    LEVEL_BONES: {0: 4, 1: 6, 2: 6, 3: 4, 4: 6, 5: 6, 6: 6, 7: 5, 8: 4, 9: 5, 10: 4, 11: 6, 12: 5, 13: 5, 14: 6, 15: 5, 16: 5, 17: 6, 18: 6, 19: 6, 20: 6, 21: 6, 22: 6, 23: 6},
     /* мини-игры: ключ, страница, максимум награды, цена (в полтора раза выше максимума — один выигрыш не окупает следующую игру) */
     MINIS: {race: {page: 1, max: 10, price: 15}, theo: {page: 2, max: 10, price: 15}, fangen: {page: 3, max: 3, price: 5},
             schaukel: {page: 4, max: 5, price: 7}, fussball: {page: 5, max: 8, price: 10}},   /* качели и футбол: цена чуть выше максимума награды */
@@ -212,7 +212,7 @@ window.Game = (function(){
   const again = document.getElementById('again'), stage = document.getElementById('stage');
   const m = location.pathname.match(/l(\d+)\.html$/);
   if (again && stage && m){
-    const n = +m[1], LAST = 20, href = n < LAST ? `l${n + 1}.html` : 'index.html';
+    const n = +m[1], LAST = 23, href = n < LAST ? `l${n + 1}.html` : 'index.html';
     const css = document.createElement('style');
     css.textContent = `
     #next{position:absolute;left:auto;top:auto;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:97;width:min(26vw,30vh,170px);height:min(26vw,30vh,170px);border-radius:50%;
