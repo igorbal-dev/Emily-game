@@ -7,9 +7,11 @@ extends Node2D
 
 signal action_finished(anim: String)
 
-## units per second when "walk" / "run" play (the viewer moves him with these)
-const WALK_SPEED := 190.0
-const RUN_SPEED := 470.0
+## units per second when "walk" / "run" play (the viewer moves him with these):
+## the run frames move the planted paws ~37 units per frame; walk = 7 fps, run = 14 fps (tools/build_theo.gd)
+const STRIDE_PER_FRAME := 37.0
+const WALK_SPEED := STRIDE_PER_FRAME * 7.0
+const RUN_SPEED := STRIDE_PER_FRAME * 14.0
 var walk_speed: float:
 	get: return WALK_SPEED
 var run_speed: float:
@@ -21,7 +23,7 @@ var auto_blink := true
 ## one-shot actions: back to idle afterwards
 const ONE_SHOT := ["jump", "shake", "bark", "blink"]
 ## order of the buttons in the viewer
-var anim_order := ["idle", "wag", "happy", "walk", "run", "jump", "shake", "bark", "sit", "tilt", "beg",
+var anim_order := ["idle", "wag", "happy", "walk", "walk_paddle", "run", "jump", "shake", "bark", "sit", "tilt", "beg",
 	"sniff", "dig", "lie", "sleep", "hide", "front", "back", "blink"]
 
 @export_range(-1, 1, 2) var facing := 1:
@@ -48,7 +50,7 @@ func _on_finished(anim: StringName) -> void:
 		player.play("idle")
 
 const RU := {
-	"idle": "Стоит", "wag": "Виляет хвостом", "happy": "Радуется", "walk": "Идёт", "run": "Бежит", "jump": "Прыжок",
+	"idle": "Стоит", "wag": "Виляет хвостом", "happy": "Радуется", "walk": "Идёт", "walk_paddle": "Топчется", "run": "Бежит", "jump": "Прыжок",
 	"shake": "Отряхивается", "bark": "Лает", "sit": "Сидит", "tilt": "Слушает", "beg": "Служит", "sniff": "Нюхает",
 	"dig": "Копает", "lie": "Лежит", "sleep": "Спит", "hide": "Выглядывает", "front": "Анфас", "back": "Спиной",
 	"blink": "Моргает",

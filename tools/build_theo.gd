@@ -3,6 +3,8 @@ extends SceneTree
 ##   godot --headless --path . --script res://tools/build_theo.gd
 
 var F := {}
+const WALK_FPS := 7.0     # keep in sync with theo.gd (WALK_SPEED = 37 * WALK_FPS)
+const RUN_FPS := 14.0
 
 func _init() -> void:
 	F = JSON.parse_string(FileAccess.open("res://theo/frames.json", FileAccess.READ).get_as_text())
@@ -35,8 +37,13 @@ func _init() -> void:
 	wm["tail"] = [[0, -0.12], [0.25, 0.2], [0.5, -0.12], [0.75, 0.2], [1.0, -0.12]]
 	A["wag"] = anim(1.0, true, [[0, "stand_notail"]], wm)
 	A["happy"] = anim(0.5, true, seq("wag_happy", 4, 0.125))
-	A["walk"] = anim(0.6, true, seq("walk", 6, 0.1))
-	A["run"] = anim(6.0 / 14.0, true, seq("run", 6, 1.0 / 14.0))
+	# The ChatGPT walk strip has no real steps (the paws stay in the same place under the body: it
+	# paddles on the spot and slides). The run strip has real strides (~37 units of ground per frame),
+	# so walk = the same frames, slower (a brisk trot); speeds in theo.gd match 37 units/frame.
+	A["walk"] = anim(6.0 / WALK_FPS, true, seq("run", 6, 1.0 / WALK_FPS),
+		{"y": [[0, 0.0], [1.0 / WALK_FPS, -3.0], [2.0 / WALK_FPS, -1.0], [3.0 / WALK_FPS, 0.0], [4.0 / WALK_FPS, -3.0], [5.0 / WALK_FPS, -1.0], [6.0 / WALK_FPS, 0.0]]})
+	A["walk_paddle"] = anim(0.6, true, seq("walk", 6, 0.1))     # the original strip, on the spot
+	A["run"] = anim(6.0 / RUN_FPS, true, seq("run", 6, 1.0 / RUN_FPS))
 	var sh := []
 	for r in 3:
 		for i in 4:
