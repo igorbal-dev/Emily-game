@@ -350,17 +350,17 @@ static func cloth_pieces(item) -> Array:
 				out.append({"bone": "Forearm" + s, "poly": keep(grow(forearm_shape(), 3.0), above(FOREARM_LEN - 3.0))})
 				if P.get("cuffs", true):
 					out.append({"bone": "Forearm" + s, "poly": keep(grow(forearm_shape(), 3.4), rect(-60, FOREARM_LEN - 13.0, 60, FOREARM_LEN - 3.0)),
-						"cat": "decal", "color": white, "outline": white_line, "line_w": 2.0})
+						"cat": "base", "z_add": 1, "color": white, "outline": white_line, "line_w": 2.0})
 				out.append({"bone": "Thigh" + s, "poly": grow(thigh_shape(), 2.0), "trim": 8.0 if near else NAN})
 				out.append({"bone": "Shin" + s, "poly": grow(shin_shape(), 2.0)})
 				out.append({"bone": "Foot" + s, "poly": grow(foot_shape(), 3.0)})
 			if P.get("collar", true):
 				for c in [[Vector2(-12, -99), Vector2(-2, -106)], [Vector2(19, -99), Vector2(9, -106)]]:
-					out.append({"bone": "Torso", "poly": hull([[c[0], 13.0], [c[1], 9.0]]), "cat": "decal",
-						"color": white, "outline": white_line, "line_w": 2.0, "z_add": 2})
+					out.append({"bone": "Torso", "poly": hull([[c[0], 13.0], [c[1], 9.0]]), "cat": "base", "z_add": 1,
+						"color": white, "outline": white_line, "line_w": 2.0})
 			if P.get("buttons", true):
 				for i in 4:
-					out.append({"bone": "Torso", "poly": circle(Vector2(5, -78 + i * 20), 3.2, 16), "cat": "decal",
+					out.append({"bone": "Torso", "poly": circle(Vector2(5, -78 + i * 20), 3.2, 16), "cat": "base", "z_add": 1,
 						"color": item.decal_color, "outline": item.color.darkened(0.4), "line_w": 1.2})
 		"tshirt", "longsleeve":
 			var hem: float = P.get("hem", 40.0)
@@ -382,7 +382,7 @@ static func cloth_pieces(item) -> Array:
 				out.append({"bone": "UpperArm" + s, "poly": sleeve, "trim": 3.0 if near else NAN})
 			if item.decal != "":
 				for d in decal_polys(item.decal, P.get("decal_pos", Vector2(15, -56)), P.get("decal_size", 13.0)):
-					out.append({"bone": "Torso", "poly": d, "cat": "decal", "color": item.decal_color,
+					out.append({"bone": "Torso", "poly": d, "cat": "base", "z_add": 1, "color": item.decal_color,
 						"outline": item.decal_color.darkened(0.3), "line_w": 1.6})
 		"leggings", "shorts":
 			var waist: float = P.get("waist", -16.0)
@@ -401,6 +401,76 @@ static func cloth_pieces(item) -> Array:
 			var sk := PackedVector2Array([Vector2(-40, -18), Vector2(40, -18), Vector2(56, ln), Vector2(-52, ln)])
 			sk = union(grow(sk, 3.0), hull([[Vector2(0, -18), 41.0]]))
 			out.append({"bone": "Hips", "poly": keep(sk, below(-20.0)), "cat": "top"})
+		"jacket":
+			# puffy quilted jacket: long puffy sleeves with ribbed cuffs, zip, hood lying on the shoulders
+			var hem: float = P.get("hem", 34.0)
+			var cs := torso_circles(6.5)
+			cs.append_array([[Vector2(-30, hem - 20), 22.0], [Vector2(38, hem - 20), 22.0], [Vector2(4, hem - 30), 50.0]])
+			var t := keep(hull(cs), above(hem))
+			t = clip(t, circle(Vector2(3, -112), 14))
+			out.append({"bone": "Torso", "poly": t})
+			var dark: Color = item.color.darkened(0.28)
+			var ribbed: Color = item.color.darkened(0.12)
+			# quilting lines
+			var inner := grow(t, -5.0)
+			var y := -84.0
+			while y < hem - 6.0:
+				var line := keep(inner, rect(-100, y, 100, y + 2.0))
+				if line.size() > 2:
+					out.append({"bone": "Torso", "poly": line, "cat": "decal", "color": dark, "outline": dark, "line_w": 0.3})
+				y += P.get("quilt", 19.0)
+			# zip + pull
+			out.append({"bone": "Torso", "poly": keep(inner, rect(5, -110, 8, hem)), "cat": "decal",
+				"color": P.get("zip_color", Color("8e97b8")), "outline": dark, "line_w": 0.8, "z_add": 2})
+			out.append({"bone": "Torso", "poly": hull([[Vector2(6.5, -92), 2.6], [Vector2(6.5, -82), 2.0]]), "cat": "decal",
+				"color": P.get("zip_color", Color("8e97b8")).lightened(0.2), "outline": dark, "line_w": 1.0, "z_add": 3})
+			# hem band
+			out.append({"bone": "Torso", "poly": keep(grow(t, 0.5), below(hem - 7.0)), "cat": "decal", "color": ribbed,
+				"outline": dark, "line_w": 1.0})
+			if P.get("hood", true):
+				out.append({"bone": "Torso", "poly": hull([[Vector2(-18, -104), 15.0], [Vector2(24, -104), 15.0], [Vector2(3, -98), 18.0]]),
+					"cat": "decal", "color": item.color.lightened(0.06), "outline": item.get_outline(), "line_w": 2.5, "z_add": -1})
+			for s in ["L", "R"]:
+				var near: bool = s == "R"
+				out.append({"bone": "UpperArm" + s, "poly": grow(upper_arm_shape(), 7.0), "trim": 3.0 if near else NAN})
+				var fa := keep(grow(forearm_shape(), 6.5), above(FOREARM_LEN - 4.0))
+				out.append({"bone": "Forearm" + s, "poly": fa})
+				out.append({"bone": "Forearm" + s, "poly": keep(grow(forearm_shape(), 3.0), rect(-60, FOREARM_LEN - 13.0, 60, FOREARM_LEN - 3.0)),
+					"cat": "decal", "color": ribbed, "outline": dark, "line_w": 1.5})
+				for yy in [22.0, 46.0]:
+					out.append({"bone": "UpperArm" + s, "poly": keep(grow(upper_arm_shape(), 2.0), rect(-60, yy, 60, yy + 2.0)),
+						"cat": "decal", "color": dark, "outline": dark, "line_w": 0.3})
+				out.append({"bone": "Forearm" + s, "poly": keep(grow(forearm_shape(), 2.0), rect(-60, 24.0, 60, 26.0)),
+					"cat": "decal", "color": dark, "outline": dark, "line_w": 0.3})
+		"trousers":
+			var waist: float = P.get("waist", -16.0)
+			out.append({"bone": "Hips", "poly": keep(grow(pelvis_shape(), 3.0), below(waist))})
+			for s in ["L", "R"]:
+				var near: bool = s == "R"
+				out.append({"bone": "Thigh" + s, "poly": grow(thigh_shape(), 4.0), "trim": 8.0 if near else NAN})
+				out.append({"bone": "Shin" + s, "poly": keep(grow(shin_shape(), 4.5), above(SHIN_LEN + 4.0))})
+		"boots":
+			# ankle boots: sole, fur cuff, two straps
+			var h: float = P.get("height", SHIN_LEN - 30.0)
+			var sole: Color = P.get("sole_color", Color("4a3022"))
+			var fur: Color = P.get("fur_color", Color("e9d3b0"))
+			var strap: Color = item.color.darkened(0.22)
+			for s in ["L", "R"]:
+				var boot := grow(foot_shape(), 5.0)
+				out.append({"bone": "Foot" + s, "poly": boot})
+				out.append({"bone": "Shin" + s, "poly": keep(grow(shin_shape(), 6.0), below(h))})
+				out.append({"bone": "Foot" + s, "poly": keep(grow(foot_shape(), 5.6), below(30.0)), "cat": "decal",
+					"color": sole, "outline": sole.darkened(0.3), "line_w": 1.5})
+				out.append({"bone": "Shin" + s, "poly": keep(grow(shin_shape(), 7.5), rect(-60, h - 3.0, 60, h + 6.0)), "cat": "decal",
+					"color": fur, "outline": fur.darkened(0.25), "line_w": 1.5})
+				# velcro straps across the instep, from the top of the boot down towards the sole
+				var upper := keep(grow(foot_shape(), 4.0), above(24.0))
+				for x in [6.0, 19.0]:
+					var band := PackedVector2Array([Vector2(x, -30), Vector2(x + 8, -30), Vector2(x + 14, 30), Vector2(x + 6, 30)])
+					var st := keep(upper, band)
+					if st.size() > 2:
+						out.append({"bone": "Foot" + s, "poly": st, "cat": "decal",
+							"color": strap, "outline": strap.darkened(0.3), "line_w": 1.2})
 		"socks":
 			var h: float = P.get("height", 64.0)
 			for s in ["L", "R"]:

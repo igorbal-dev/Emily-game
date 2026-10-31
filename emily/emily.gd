@@ -251,6 +251,7 @@ const RU := {
 	"pigtails": "Два хвостика", "ponytail": "Хвостик", "braids": "Косички", "headband": "Ободок",
 	"bun": "Пучок", "stars": "Звёздочки", "flowers": "Венок", "cap": "Кепка",
 	"curls": "Кудряшки", "hat": "Шапка", "romper": "Комбинезон",
+	"jacket_navy": "Куртка", "trousers_navy": "Штаны", "boots_brown": "Ботинки",
 	"open": "Открыты", "half": "Прищур", "closed": "Закрыты", "happy": "Радость", "surprised": "Удивление", "sad": "Грусть",
 	"smile": "Улыбка", "a": "А", "o": "О", "e": "И", "m": "М", "laugh": "Смех",
 }
@@ -270,7 +271,7 @@ func viewer_options() -> Array:
 		if not by_slot.has(item.slot):
 			by_slot[item.slot] = []
 		by_slot[item.slot].append(f)
-	var slot_titles := {"top": "Верх", "bottom": "Низ", "socks": "Носки"}
+	var slot_titles := {"top": "Верх", "bottom": "Низ", "socks": "Носки", "shoes": "Обувь"}
 	for slot in ["top", "bottom", "socks"] + by_slot.keys().filter(func(s): return not s in ["top", "bottom", "socks"]):
 		if not by_slot.has(slot):
 			continue

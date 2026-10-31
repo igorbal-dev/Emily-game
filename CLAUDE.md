@@ -17,7 +17,8 @@
 - Кости, код и анимации те же, что у Эмили; пропорции малыша — `EmilyShapes.BODIES["mark"]` (emily/emily_shapes.gd): фигура Эмили «пересчитывается» по костям (туловище/таз/шея растягиваются, у рук/ног меняется длина и толщина, суставы остаются круглыми), `motion` уменьшает шаги и прыжки. Одежда тоже пересчитывается сама.
 - Сцена `mark/mark.tscn` собирается `build_emily.gd -- mark` (персонажи — `CHARS` в сборщике). Одежда — `mark/outfits/` (комбинезон `romper`: воротничок, манжеты, пуговки).
 - Голова ВРЕМЕННАЯ: старая картинка игры с волосами (`mark/head/base.png`), глаза/рот не меняются. Задание для ChatGPT: `for_chatgpt/mark/TASK_MARK.md` (+ всё в одном `mark_for_chatgpt.zip`): голова, 6 глаз, 6 ртов, кудряшки, шапка. Ответ положить в `from_chatgpt/mark/`, импорт `python3 tools/import_chatgpt.py --src from_chatgpt/mark --dst mark/head`, потом пересобрать `build_emily.gd -- mark`.
-- Дальше: уличная одежда (куртка, штаны, ботинки — новые выкройки), свитер, нарядный костюмчик (см. листы M3/M6/M7 в ветке игры, docs/chatgpt-prompts.md).
+- Уличная одежда сделана: выкройки `jacket` (пуховик: стёжка, молния, капюшон, манжеты), `trousers`, `boots` (подошва, мех, липучки; слот "shoes") — `mark/outfits/jacket_navy, trousers_navy, boots_brown`. Шапка будет причёской `hat` от ChatGPT.
+- Дальше: свитер, нарядный костюмчик (листы M6/M7 в ветке игры, docs/chatgpt-prompts.md).
 - Сравнить персонажей: `xvfb-run -a godot --path . --rendering-driver opengl3 --script res://tools/shot_poses.gd -- out.png res://emily/emily.tscn res://mark/mark.tscn`; просмотрщик с Марком: `shot_viewer.gd -- out.png idle 0 1`.
 
 ## Текущая задача: Абиха на том же скелете

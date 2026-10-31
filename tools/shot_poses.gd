@@ -1,6 +1,6 @@
 extends SceneTree
 ## Characters side by side in a few poses (same scale, to compare sizes):
-## xvfb-run -a godot --path . --rendering-driver opengl3 --script res://tools/shot_poses.gd -- out.png res://emily/emily.tscn res://mark/mark.tscn
+## xvfb-run -a godot --path . --rendering-driver opengl3 --script res://tools/shot_poses.gd -- out.png res://emily/emily.tscn res://mark/mark.tscn [outfit=top:jacket_navy,shoes:boots_brown]
 const POSES := [["idle", 0.0], ["walk", 0.2], ["run", 0.15], ["jump", 0.68], ["wave", 1.0], ["spin", 0.5]]
 const CW := 300
 const H := 640
@@ -8,7 +8,18 @@ const GROUND := 600.0
 
 func _initialize() -> void:
 	var args := OS.get_cmdline_user_args()
-	var scenes := args.slice(1)
+	# optional "outfit=top:jacket_navy,bottom:trousers_navy,shoes:boots_brown" after a scene: dress that row
+	var scenes := []
+	var outfits := []
+	for a in args.slice(1):
+		if a.begins_with("outfit="):
+			var o := {}
+			for kv in a.trim_prefix("outfit=").split(","):
+				o[kv.get_slice(":", 0)] = kv.get_slice(":", 1)
+			outfits[-1] = o
+		else:
+			scenes.append(a)
+			outfits.append({})
 	var vp := SubViewport.new()
 	vp.size = Vector2i(CW * POSES.size(), H * scenes.size())
 	vp.transparent_bg = false
@@ -23,6 +34,8 @@ func _initialize() -> void:
 		for pi in POSES.size():
 			var c = load(scenes[si]).instantiate()
 			c.auto_blink = false
+			if not outfits[si].is_empty():
+				c.outfit = c.outfit.merged(outfits[si], true)
 			c.position = Vector2(CW * pi + CW / 2.0, H * si + GROUND)
 			vp.add_child(c)
 			chars.append([c, POSES[pi]])

@@ -4,8 +4,8 @@ extends Resource
 ## One piece of clothing. Saved as .tres in res://emily/outfits/.
 ## New T-shirt = duplicate tshirt_pink.tres, change color / decal. That's all.
 ##
-## pattern: "tshirt", "longsleeve", "leggings", "shorts", "skirt", "socks", "bodysuit", "romper"
-## slot:    "top", "bottom", "socks", "base" (base = the bodysuit, always worn)
+## pattern: "tshirt", "longsleeve", "leggings", "shorts", "skirt", "socks", "bodysuit", "romper", "jacket", "trousers", "boots"
+## slot:    "top", "bottom", "socks", "shoes", "base" (base = the bodysuit, always worn)
 
 @export var slot := "top"
 @export var pattern := "tshirt"
