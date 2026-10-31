@@ -1,13 +1,13 @@
 [gd_scene load_steps=20 format=3]
 
-[ext_resource type="Script" path="res://emily/emily.gd" id="1_wg5g7"]
-[ext_resource type="Texture2D" path="res://abiha/head/hair/ponytail_back.png" id="2_jswhe"]
-[ext_resource type="Texture2D" path="res://abiha/head/base.png" id="3_drfx0"]
-[ext_resource type="Texture2D" path="res://abiha/head/eyes/open.png" id="4_gcqlx"]
-[ext_resource type="Texture2D" path="res://abiha/head/mouth/smile.png" id="5_m1f0l"]
-[ext_resource type="Texture2D" path="res://abiha/head/hair/ponytail_front.png" id="6_fc3ya"]
+[ext_resource type="Script" path="res://emily/emily.gd" id="1_06i0k"]
+[ext_resource type="Texture2D" path="res://abiha/head/hair/ponytail_back.png" id="2_4m02e"]
+[ext_resource type="Texture2D" path="res://abiha/head/base.png" id="3_jx70r"]
+[ext_resource type="Texture2D" path="res://abiha/head/eyes/open.png" id="4_vv817"]
+[ext_resource type="Texture2D" path="res://abiha/head/mouth/smile.png" id="5_t6s8t"]
+[ext_resource type="Texture2D" path="res://abiha/head/hair/ponytail_front.png" id="6_umds8"]
 
-[sub_resource type="Animation" id="Animation_p0ehp"]
+[sub_resource type="Animation" id="Animation_jq01k"]
 length = 0.0333333
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -238,7 +238,7 @@ tracks/18/keys = {
 "values": [Vector2(1, 1), Vector2(1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_bmrwp"]
+[sub_resource type="Animation" id="Animation_1hlur"]
 length = 3.0
 loop_mode = 1
 tracks/0/type = "value"
@@ -470,7 +470,7 @@ tracks/18/keys = {
 "values": [Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_q08vt"]
+[sub_resource type="Animation" id="Animation_wqj84"]
 length = 0.9
 loop_mode = 1
 tracks/0/type = "value"
@@ -702,7 +702,7 @@ tracks/18/keys = {
 "values": [Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_usxbo"]
+[sub_resource type="Animation" id="Animation_f3es8"]
 length = 0.62
 loop_mode = 1
 tracks/0/type = "value"
@@ -934,7 +934,7 @@ tracks/18/keys = {
 "values": [Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_exypn"]
+[sub_resource type="Animation" id="Animation_rmnvh"]
 length = 1.3
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1189,7 +1189,7 @@ tracks/20/keys = {
 "values": ["smile", "laugh", "smile"]
 }
 
-[sub_resource type="Animation" id="Animation_ued3y"]
+[sub_resource type="Animation" id="Animation_fho5c"]
 length = 2.4
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1444,7 +1444,7 @@ tracks/20/keys = {
 "values": ["smile", "a", "laugh", "smile"]
 }
 
-[sub_resource type="Animation" id="Animation_cao2k"]
+[sub_resource type="Animation" id="Animation_6gwdj"]
 length = 1.4
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1699,7 +1699,7 @@ tracks/20/keys = {
 "values": ["smile", "m", "laugh", "smile"]
 }
 
-[sub_resource type="Animation" id="Animation_331ly"]
+[sub_resource type="Animation" id="Animation_aqnw0"]
 length = 2.4
 loop_mode = 1
 tracks/0/type = "value"
@@ -1943,7 +1943,7 @@ tracks/19/keys = {
 "values": ["m", "a", "e", "o", "a", "m", "e", "a", "o", "smile", "a", "e", "o", "a", "m", "smile"]
 }
 
-[sub_resource type="Animation" id="Animation_lxbxn"]
+[sub_resource type="Animation" id="Animation_rdxm5"]
 length = 0.26
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1958,20 +1958,20 @@ tracks/0/keys = {
 "values": ["open", "half", "closed", "half", "open"]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_tdhrq"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_miswn"]
 _data = {
-"RESET": SubResource("Animation_p0ehp"),
-"blink": SubResource("Animation_lxbxn"),
-"idle": SubResource("Animation_bmrwp"),
-"jump": SubResource("Animation_cao2k"),
-"run": SubResource("Animation_usxbo"),
-"spin": SubResource("Animation_exypn"),
-"talk": SubResource("Animation_331ly"),
-"walk": SubResource("Animation_q08vt"),
-"wave": SubResource("Animation_ued3y")
+"RESET": SubResource("Animation_jq01k"),
+"blink": SubResource("Animation_rdxm5"),
+"idle": SubResource("Animation_1hlur"),
+"jump": SubResource("Animation_6gwdj"),
+"run": SubResource("Animation_f3es8"),
+"spin": SubResource("Animation_rmnvh"),
+"talk": SubResource("Animation_aqnw0"),
+"walk": SubResource("Animation_wqj84"),
+"wave": SubResource("Animation_fho5c")
 }
 
-[sub_resource type="Animation" id="Animation_tg7ob"]
+[sub_resource type="Animation" id="Animation_g2vqu"]
 length = 0.26
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1986,7 +1986,7 @@ tracks/0/keys = {
 "values": ["open", "half", "closed", "half", "open"]
 }
 
-[sub_resource type="Animation" id="Animation_14xit"]
+[sub_resource type="Animation" id="Animation_drcv3"]
 length = 2.4
 loop_mode = 1
 tracks/0/type = "value"
@@ -2002,14 +2002,14 @@ tracks/0/keys = {
 "values": ["m", "a", "e", "o", "a", "m", "e", "a", "o", "smile", "a", "e", "o", "a", "m", "smile"]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_dy4cq"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c8mvc"]
 _data = {
-"blink": SubResource("Animation_tg7ob"),
-"talk": SubResource("Animation_14xit")
+"blink": SubResource("Animation_g2vqu"),
+"talk": SubResource("Animation_drcv3")
 }
 
 [node name="Abiha" type="Node2D"]
-script = ExtResource("1_wg5g7")
+script = ExtResource("1_06i0k")
 body = "abiha"
 head_dir = "res://abiha/head/"
 outfit_dir = "res://abiha/outfits/"
@@ -2063,7 +2063,7 @@ z_index = 50
 z_as_relative = false
 position = Vector2(-172.284, -233.526)
 scale = Vector2(0.672986, 0.672986)
-texture = ExtResource("2_jswhe")
+texture = ExtResource("2_4m02e")
 centered = false
 
 [node name="HeadBase" type="Sprite2D" parent="Skeleton2D/Hips/Torso/Neck/Head"]
@@ -2071,7 +2071,7 @@ z_index = 460
 z_as_relative = false
 position = Vector2(-172.284, -233.526)
 scale = Vector2(0.672986, 0.672986)
-texture = ExtResource("3_drfx0")
+texture = ExtResource("3_jx70r")
 centered = false
 
 [node name="Eyes" type="Sprite2D" parent="Skeleton2D/Hips/Torso/Neck/Head"]
@@ -2079,7 +2079,7 @@ z_index = 461
 z_as_relative = false
 position = Vector2(-53.8389, -83.4502)
 scale = Vector2(0.672986, 0.672986)
-texture = ExtResource("4_gcqlx")
+texture = ExtResource("4_vv817")
 centered = false
 
 [node name="Mouth" type="Sprite2D" parent="Skeleton2D/Hips/Torso/Neck/Head"]
@@ -2087,7 +2087,7 @@ z_index = 462
 z_as_relative = false
 position = Vector2(-24.2275, -23.5545)
 scale = Vector2(0.672986, 0.672986)
-texture = ExtResource("5_m1f0l")
+texture = ExtResource("5_t6s8t")
 centered = false
 
 [node name="HairFront" type="Sprite2D" parent="Skeleton2D/Hips/Torso/Neck/Head"]
@@ -2095,7 +2095,7 @@ z_index = 470
 z_as_relative = false
 position = Vector2(-172.284, -233.526)
 scale = Vector2(0.672986, 0.672986)
-texture = ExtResource("6_fc3ya")
+texture = ExtResource("6_umds8")
 centered = false
 
 [node name="body_Neck_line" type="Polygon2D" parent="Skeleton2D/Hips/Torso/Neck"]
@@ -2490,12 +2490,12 @@ metadata/paint = "skin"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_tdhrq")
+"": SubResource("AnimationLibrary_miswn")
 }
 autoplay = "idle"
 playback_default_blend_time = 0.2
 
 [node name="FacePlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_dy4cq")
+"": SubResource("AnimationLibrary_c8mvc")
 }
