@@ -1,8 +1,0 @@
-{
- "faceAnchor": {"eyes": [0.5, 0.53, 0.42], "mouth": [0.5, 0.74, 0.26]},
- "parts": {
-  "uarmL": {"rot": -2}, "uarmR": {"rot": 2},
-  "farmL": {"rot": 6, "z": 35}, "farmR": {"rot": -6, "z": 35},
-  "tailL": {"hidden": true}, "tailR": {"hidden": true}
- }
-}
