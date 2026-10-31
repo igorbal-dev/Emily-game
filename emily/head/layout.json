@@ -1,0 +1,47 @@
+{
+  "canvas": 512,
+  "pivot": [
+    256.0,
+    347.0
+  ],
+  "eyes_rect": [
+    176,
+    223,
+    160,
+    74
+  ],
+  "mouth_rect": [
+    220,
+    312,
+    72,
+    39
+  ],
+  "head_top": 145.0,
+  "chin": 356.0,
+  "eyes": [
+    "open",
+    "half",
+    "closed",
+    "happy",
+    "surprised",
+    "sad"
+  ],
+  "mouths": [
+    "smile",
+    "a",
+    "o",
+    "e",
+    "m",
+    "laugh"
+  ],
+  "hairs": [
+    "pigtails",
+    "ponytail",
+    "braids",
+    "headband",
+    "bun",
+    "stars",
+    "flowers",
+    "cap"
+  ]
+}

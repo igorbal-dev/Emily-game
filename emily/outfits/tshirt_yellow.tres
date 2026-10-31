@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="OutfitItem" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://emily/outfit_item.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+slot = "top"
+pattern = "tshirt"
+color = Color(1, 0.85, 0.36, 1)
+decal = "star"
+decal_color = Color(1, 1, 1, 1)
