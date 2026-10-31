@@ -1,11 +1,10 @@
 #!/bin/sh
-# Публикация игры на сайт (ветка gh-pages):
+# Публикация игры на сайт (ветка gh-pages). Ничего не удаляется:
 #   корень сайта — всегда актуальная версия; прошлая версия уходит в папку vN/ (v1, v2, …), её можно открыть по ссылке;
-#   хранятся только KEEP последних прошлых версий (по умолчанию 2), более старые папки с сайта убираются (место на GitHub Pages);
-#   versions.html — список версий с датой и описанием.
+#   versions.html — список всех версий с датой и описанием.
+#   Удалять старые версии — только когда скажет Игорь. Скрипт предупреждает, если сайт приближается к пределу GitHub Pages (~1 ГБ).
 # Запуск после commit: sh tools/publish.sh "Коротко, что нового в этой версии"
 set -e
-KEEP=${KEEP:-2}
 DESC=${1:-$(git log -1 --format=%s HEAD)}
 git fetch -q origin gh-pages
 G=origin/gh-pages
@@ -16,16 +15,13 @@ esc(){ sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g'; }
 
 DIRS=$(git ls-tree -d --name-only $G | grep -E '^v[0-9]+$' || true)
 N=0; for d in $DIRS; do n=${d#v}; [ "$n" -gt "$N" ] && N=$n; done; N=$((N + 1))
-# какие прошлые версии остаются: KEEP-1 из уже лежащих на сайте + новая vN
-KEPT=$(for d in $DIRS; do echo "${d#v}"; done | sort -n | tail -n $((KEEP - 1)) | sed "s/^/v/")
 
 # прошлая версия = нынешний корень сайта без папок версий и служебных файлов
 git read-tree $G
 git rm -r -q --cached --ignore-unmatch $DIRS old versions.html versions.txt version.txt >/dev/null
 PREV=$(git write-tree)
-git show $G:versions.txt > $TMP/all.txt 2>/dev/null || : > $TMP/all.txt
-echo "v$N|$(git show $G:version.txt 2>/dev/null || git log -1 --format='%cs|%s' $G)" >> $TMP/all.txt
-: > $TMP/versions.txt; for v in $KEPT v$N; do grep "^$v|" $TMP/all.txt >> $TMP/versions.txt || true; done
+git show $G:versions.txt > $TMP/versions.txt 2>/dev/null || : > $TMP/versions.txt
+echo "v$N|$(git show $G:version.txt 2>/dev/null || git log -1 --format='%cs|%s' $G)" >> $TMP/versions.txt
 echo "$(date +%F)|$DESC" > $TMP/version.txt
 
 # список версий: сверху актуальная, ниже прошлые, от новой к старой
@@ -39,10 +35,13 @@ echo "$(date +%F)|$DESC" > $TMP/version.txt
 
 # новый сайт: рабочая ветка + все прошлые версии + список
 git read-tree HEAD
-for d in $KEPT; do git read-tree --prefix="$d/" "$G:$d"; done
+for d in $DIRS; do git read-tree --prefix="$d/" "$G:$d"; done
 git read-tree --prefix="v$N/" "$PREV"
-add $TMP/versions.txt versions.txt; add $TMP/version.txt version.txt; add $TMP/versions.html versions.html
+add $TMP/versions.txt versions.txt; add $TMP/version.txt version.txt; add $TMP/versions.html versions.html;
 C=$(git commit-tree "$(git write-tree)" -p $G -p HEAD -m "Публикация $(git rev-parse --short HEAD); прошлая версия сайта — v$N/")
 rm -rf "$TMP"
 git push origin "$(git rev-parse --abbrev-ref HEAD)" "$C:refs/heads/gh-pages"
 echo "Опубликовано. Прошлая версия: v$N/"
+MB=$(( $(git ls-tree -r -l "$C" | awk '{s+=$4} END {print s}') / 1048576 ))
+echo "Размер сайта: $MB МБ из ~1000."
+[ "$MB" -gt 800 ] && echo "ВНИМАНИЕ: места на сайте мало — сказать Игорю, что нужно удалить старые версии (какие — решает он)." || true
