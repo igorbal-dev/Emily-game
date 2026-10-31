@@ -1,0 +1,494 @@
+{
+ "stand": {
+  "file": "frames/stand.png",
+  "offset": [
+   -161.39,
+   -190.85
+  ],
+  "scale": 0.5,
+  "size_px": [
+   451,
+   382
+  ]
+ },
+ "stand_blink": {
+  "file": "frames/stand_blink.png",
+  "offset": [
+   -161.39,
+   -190.85
+  ],
+  "scale": 0.5,
+  "size_px": [
+   451,
+   382
+  ]
+ },
+ "stand_notail": {
+  "file": "frames/stand_notail.png",
+  "offset": [
+   -144.0,
+   -190.78
+  ],
+  "scale": 0.5,
+  "size_px": [
+   416,
+   382
+  ]
+ },
+ "happy": {
+  "file": "frames/happy.png",
+  "offset": [
+   -152.59,
+   -186.64
+  ],
+  "scale": 0.5,
+  "size_px": [
+   428,
+   373
+  ]
+ },
+ "bark": {
+  "file": "frames/bark.png",
+  "offset": [
+   -129.91,
+   -177.29
+  ],
+  "scale": 0.5,
+  "size_px": [
+   402,
+   355
+  ]
+ },
+ "sniff": {
+  "file": "frames/sniff.png",
+  "offset": [
+   -121.85,
+   -179.3
+  ],
+  "scale": 0.5,
+  "size_px": [
+   424,
+   359
+  ]
+ },
+ "dig": {
+  "file": "frames/dig.png",
+  "offset": [
+   -115.22,
+   -175.15
+  ],
+  "scale": 0.5,
+  "size_px": [
+   435,
+   350
+  ]
+ },
+ "beg": {
+  "file": "frames/beg.png",
+  "offset": [
+   -90.62,
+   -259.55
+  ],
+  "scale": 0.5,
+  "size_px": [
+   310,
+   519
+  ]
+ },
+ "sit": {
+  "file": "frames/sit.png",
+  "offset": [
+   -126.87,
+   -197.39
+  ],
+  "scale": 0.5,
+  "size_px": [
+   372,
+   395
+  ]
+ },
+ "sit_blink": {
+  "file": "frames/sit_blink.png",
+  "offset": [
+   -126.87,
+   -197.39
+  ],
+  "scale": 0.5,
+  "size_px": [
+   372,
+   395
+  ]
+ },
+ "sit_notail": {
+  "file": "frames/sit_notail.png",
+  "offset": [
+   -82.75,
+   -198.66
+  ],
+  "scale": 0.5,
+  "size_px": [
+   286,
+   397
+  ]
+ },
+ "tilt": {
+  "file": "frames/tilt.png",
+  "offset": [
+   -109.72,
+   -210.64
+  ],
+  "scale": 0.5,
+  "size_px": [
+   306,
+   421
+  ]
+ },
+ "lie": {
+  "file": "frames/lie.png",
+  "offset": [
+   -130.15,
+   -158.53
+  ],
+  "scale": 0.5,
+  "size_px": [
+   391,
+   317
+  ]
+ },
+ "sleep": {
+  "file": "frames/sleep.png",
+  "offset": [
+   -99.33,
+   -137.19
+  ],
+  "scale": 0.5,
+  "size_px": [
+   416,
+   274
+  ]
+ },
+ "jump_up": {
+  "file": "frames/jump_up.png",
+  "offset": [
+   -146.9,
+   -256.07
+  ],
+  "scale": 0.5,
+  "size_px": [
+   452,
+   466
+  ]
+ },
+ "jump_air": {
+  "file": "frames/jump_air.png",
+  "offset": [
+   -152.13,
+   -192.34
+  ],
+  "scale": 0.5,
+  "size_px": [
+   455,
+   339
+  ]
+ },
+ "land": {
+  "file": "frames/land.png",
+  "offset": [
+   -131.55,
+   -177.3
+  ],
+  "scale": 0.5,
+  "size_px": [
+   446,
+   355
+  ]
+ },
+ "front": {
+  "file": "frames/front.png",
+  "offset": [
+   -67.7,
+   -189.5
+  ],
+  "scale": 0.5,
+  "size_px": [
+   248,
+   379
+  ]
+ },
+ "back": {
+  "file": "frames/back.png",
+  "offset": [
+   -60.72,
+   -207.33
+  ],
+  "scale": 0.5,
+  "size_px": [
+   244,
+   415
+  ]
+ },
+ "hide": {
+  "file": "frames/hide.png",
+  "offset": [
+   -41.89,
+   -188.98
+  ],
+  "scale": 0.5,
+  "size_px": [
+   265,
+   378
+  ]
+ },
+ "walk_0": {
+  "file": "frames/walk_0.png",
+  "offset": [
+   -148.52,
+   -172.54
+  ],
+  "scale": 0.5,
+  "size_px": [
+   464,
+   346
+  ]
+ },
+ "walk_1": {
+  "file": "frames/walk_1.png",
+  "offset": [
+   -136.62,
+   -169.22
+  ],
+  "scale": 0.5,
+  "size_px": [
+   435,
+   340
+  ]
+ },
+ "walk_2": {
+  "file": "frames/walk_2.png",
+  "offset": [
+   -146.93,
+   -168.83
+  ],
+  "scale": 0.5,
+  "size_px": [
+   461,
+   339
+  ]
+ },
+ "walk_3": {
+  "file": "frames/walk_3.png",
+  "offset": [
+   -144.6,
+   -169.34
+  ],
+  "scale": 0.5,
+  "size_px": [
+   456,
+   340
+  ]
+ },
+ "walk_4": {
+  "file": "frames/walk_4.png",
+  "offset": [
+   -147.39,
+   -169.21
+  ],
+  "scale": 0.5,
+  "size_px": [
+   464,
+   340
+  ]
+ },
+ "walk_5": {
+  "file": "frames/walk_5.png",
+  "offset": [
+   -146.77,
+   -170.69
+  ],
+  "scale": 0.5,
+  "size_px": [
+   463,
+   343
+  ]
+ },
+ "run_0": {
+  "file": "frames/run_0.png",
+  "offset": [
+   -131.35,
+   -161.6
+  ],
+  "scale": 0.5,
+  "size_px": [
+   421,
+   324
+  ]
+ },
+ "run_1": {
+  "file": "frames/run_1.png",
+  "offset": [
+   -164.74,
+   -153.68
+  ],
+  "scale": 0.5,
+  "size_px": [
+   523,
+   309
+  ]
+ },
+ "run_2": {
+  "file": "frames/run_2.png",
+  "offset": [
+   -152.9,
+   -157.91
+  ],
+  "scale": 0.5,
+  "size_px": [
+   475,
+   317
+  ]
+ },
+ "run_3": {
+  "file": "frames/run_3.png",
+  "offset": [
+   -151.96,
+   -171.77
+  ],
+  "scale": 0.5,
+  "size_px": [
+   479,
+   345
+  ]
+ },
+ "run_4": {
+  "file": "frames/run_4.png",
+  "offset": [
+   -165.37,
+   -151.98
+  ],
+  "scale": 0.5,
+  "size_px": [
+   524,
+   305
+  ]
+ },
+ "run_5": {
+  "file": "frames/run_5.png",
+  "offset": [
+   -161.88,
+   -160.91
+  ],
+  "scale": 0.5,
+  "size_px": [
+   503,
+   323
+  ]
+ },
+ "shake_0": {
+  "file": "frames/shake_0.png",
+  "offset": [
+   -139.85,
+   -184.46
+  ],
+  "scale": 0.5,
+  "size_px": [
+   418,
+   370
+  ]
+ },
+ "shake_1": {
+  "file": "frames/shake_1.png",
+  "offset": [
+   -141.18,
+   -196.45
+  ],
+  "scale": 0.5,
+  "size_px": [
+   471,
+   394
+  ]
+ },
+ "shake_2": {
+  "file": "frames/shake_2.png",
+  "offset": [
+   -150.47,
+   -206.8
+  ],
+  "scale": 0.5,
+  "size_px": [
+   467,
+   415
+  ]
+ },
+ "shake_3": {
+  "file": "frames/shake_3.png",
+  "offset": [
+   -140.98,
+   -182.7
+  ],
+  "scale": 0.5,
+  "size_px": [
+   420,
+   366
+  ]
+ },
+ "wag_happy_0": {
+  "file": "frames/wag_happy_0.png",
+  "offset": [
+   -144.15,
+   -174.86
+  ],
+  "scale": 0.5,
+  "size_px": [
+   428,
+   351
+  ]
+ },
+ "wag_happy_1": {
+  "file": "frames/wag_happy_1.png",
+  "offset": [
+   -138.26,
+   -174.03
+  ],
+  "scale": 0.5,
+  "size_px": [
+   417,
+   349
+  ]
+ },
+ "wag_happy_2": {
+  "file": "frames/wag_happy_2.png",
+  "offset": [
+   -147.57,
+   -177.26
+  ],
+  "scale": 0.5,
+  "size_px": [
+   435,
+   356
+  ]
+ },
+ "wag_happy_3": {
+  "file": "frames/wag_happy_3.png",
+  "offset": [
+   -135.94,
+   -174.37
+  ],
+  "scale": 0.5,
+  "size_px": [
+   411,
+   350
+  ]
+ },
+ "tail": {
+  "file": "frames/tail.png",
+  "offset": [
+   -62.99,
+   -75.48
+  ],
+  "pivot": [
+   -83.36,
+   -119.73
+  ],
+  "scale": 0.5
+ }
+}

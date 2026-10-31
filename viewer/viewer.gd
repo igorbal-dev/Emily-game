@@ -8,6 +8,7 @@ const CHARACTERS := [
 	{"name": "Эмили", "scene": "res://emily/emily.tscn"},
 	{"name": "Абиха", "scene": "res://abiha/abiha.tscn"},
 	{"name": "Марк", "scene": "res://mark/mark.tscn"},
+	{"name": "Тео", "scene": "res://theo/theo.tscn"},
 ]
 const CHAR_HEIGHT := 560.0          # character height in its own units (with hair)
 const BG_TOP := Color(0.93, 0.96, 1.0)
@@ -77,7 +78,7 @@ func _play(anim: String) -> void:
 	_refresh()
 
 func _on_anim_finished(anim: StringName) -> void:
-	if anim in [&"wave", &"jump", &"blink", &"spin"]:
+	if anim in [&"wave", &"jump", &"blink", &"spin", &"shake", &"bark"]:
 		cur_anim = "idle"
 		if not ch.has_method("play"):
 			ap.play("idle")
@@ -268,7 +269,9 @@ func _fill_tabs() -> void:
 		for a in ap.get_animation_list():
 			if a != "RESET":
 				anims.append(a)
-	var order := ["idle", "walk", "run", "jump", "spin", "wave", "talk", "blink"]
+	var order: Array = ["idle", "walk", "run", "jump", "spin", "wave", "talk", "blink"]
+	if ch.get("anim_order") != null:
+		order = ch.get("anim_order")
 	anims.sort_custom(func(x, y): return (order.find(x) if x in order else 99) < (order.find(y) if y in order else 99))
 	var move_items := []
 	for a in anims:

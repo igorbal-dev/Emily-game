@@ -12,12 +12,13 @@ func _initialize() -> void:
 	# optional "outfit=top:jacket_navy,bottom:trousers_navy,shoes:boots_brown" after a scene: dress that row
 	var scenes := []
 	var outfits := []
-	var poses := POSES
+	var row_poses := []      # per row (a "poses=" after a scene applies to that row)
 	for a in args.slice(1):
 		if a.begins_with("poses="):
-			poses = []
+			var ps := []
 			for kv in a.trim_prefix("poses=").split(","):
-				poses.append([kv.get_slice(":", 0), float(kv.get_slice(":", 1))])
+				ps.append([kv.get_slice(":", 0), float(kv.get_slice(":", 1))])
+			row_poses[-1] = ps
 		elif a.begins_with("outfit="):
 			var o := {}
 			for kv in a.trim_prefix("outfit=").split(","):
@@ -26,8 +27,12 @@ func _initialize() -> void:
 		else:
 			scenes.append(a)
 			outfits.append({})
+			row_poses.append(POSES)
+	var cols := 0
+	for ps in row_poses:
+		cols = maxi(cols, ps.size())
 	var vp := SubViewport.new()
-	vp.size = Vector2i(CW * poses.size(), H * scenes.size())
+	vp.size = Vector2i(CW * cols, H * scenes.size())
 	vp.transparent_bg = false
 	vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	root.add_child(vp)
@@ -37,6 +42,7 @@ func _initialize() -> void:
 	vp.add_child(bg)
 	var chars := []
 	for si in scenes.size():
+		var poses: Array = row_poses[si]
 		for pi in poses.size():
 			var c = load(scenes[si]).instantiate()
 			c.auto_blink = false
