@@ -1,0 +1,212 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Jahreszeiten. Уровень 23</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 23 «Jahreszeiten» — с Абихой о временах года: что сейчас, что любим, декабрь, Николаус, зимой в горы. ТЗ: docs/tz/level-23.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = __IMG__;  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised}_shoes emily_{laugh,walk} emily_idle_out mark_idle_out theo_happy abiha_{idle,blink,mouth1,mouth2,wave,cross,peace,walk,walkf,run,jump,think,sit,laugh}*/
+const SND = __SND__;  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht t_bark*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха) */
+const SAY = {
+  n23_intro: 'In der Kita hängt ein großes Bild mit vier Jahreszeiten.',
+  e23_kennst: 'Abiha, welche Jahreszeiten kennst du?',
+  b23_vier: 'Frühling, Sommer, Herbst und Winter! Und du?',
+  n23_zaehl: 'Wie viele Jahreszeiten gibt es? Tipp auf jedes Bild und zähl mit!',
+  n23_fruehling: 'Der Frühling.',
+  n23_sommer: 'Der Sommer.',
+  n23_herbst: 'Der Herbst.',
+  n23_winter: 'Der Winter.',
+  n23_vier: 'Vier Jahreszeiten!',
+  e23_jetzt: 'Ich kenne sie auch! Welche Jahreszeit ist jetzt?',
+  b23_herbst: 'Jetzt ist Herbst.',
+  n23_tipp_herbst: 'Wo ist der Herbst? Tipp auf den Herbst!',
+  e23_herbst: 'Jetzt ist Herbst!',
+  b23_bald: 'Und welche Jahreszeit kommt bald?',
+  e23_winter: 'Bald kommt der Winter!',
+  e23_freue: 'Ich freue mich schon sehr!',
+  b23_liebsten: 'Welche Jahreszeit magst du am liebsten?',
+  e23_liebsten: 'Ich mag den Winter am liebsten! Und du?',
+  b23_sommer: 'Ich mag den Sommer am liebsten, weil es warm ist und ich draußen spielen kann!',
+  n23_magst_du: 'Und du? Welche Jahreszeit magst du am liebsten? Tipp drauf!',
+  r23_magst_du: 'А тебе какое время года нравится больше всех? Нажми!',
+  e23_dezember: 'Mein Lieblingsmonat ist Dezember!',
+  b23_warum: 'Warum magst du den Dezember so gerne?',
+  e23_weihnachten: 'Weil Weihnachten ist und der Weihnachtsmann Geschenke bringt!',
+  b23_geschenke: 'Oh ja! Ich liebe Geschenke! Was machst du im Dezember noch gerne?',
+  e23_kinderfeste: 'Ich gehe mit meiner Mama zu Kinderfesten. Das macht mir viel Spaß!',
+  b23_nikolaus: 'Wie schön! Und feierst du auch Nikolaus?',
+  e23_nikolaus: 'Ja! Der Nikolaus bringt auch Geschenke!',
+  e23_wuenschst: 'Was wünschst du dir vom Nikolaus?',
+  b23_puppe: 'Ich wünsche mir eine Puppe. Und du?',
+  n23_tipp_puppe: 'Wo ist die Puppe? Tipp auf die Puppe!',
+  e23_spielzeug: 'Ich wünsche mir ein Spielzeug!',
+  b23_berge: 'Fährst du im Winter auch in die Berge?',
+  e23_ski: 'Ja! Ich fahre sehr gerne Ski!',
+  b23_dieses_jahr: 'Wow! Fährst du dieses Jahr auch in die Berge?',
+  e23_familie: 'Ja! Ich fahre mit Mama, Papa, Mark und unserem Hund Theo in die Berge!',
+  n23_wer: 'Wer fährt in die Berge? Tipp auf jeden und zähl mit!',
+  n23_fuenf: 'Fünf! Emily, Mama, Papa, Mark und Theo.',
+  b23_freust: 'Wie toll! Freust du dich schon?',
+  e23_riesig: 'Ja, ich freue mich riesig!',
+  b23_schnee: 'Gibt es dort viel Schnee?',
+  e23_schnee: 'Ja! Dort gibt es ganz viel Schnee! Ich möchte Ski fahren und im Schnee spielen!',
+  b23_auch_berge: 'Das klingt toll! Ich möchte auch gerne in die Berge fahren!',
+  e23_wunderschoen: 'Der Winter ist einfach wunderschön!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 23: в садике у картины с временами года. Считаем 4 времени года, находим «сейчас» (осень), говорим «Bald kommt der Winter!»,
+   «Ich mag den Winter am liebsten! Und du?», сама Эмили выбирает любимое время года. Декабрь, Николаус: «Was wünschst du dir vom Nikolaus?»,
+   находим куклу. Зимой в горы: считаем, кто едет (5). В конце идёт снег: «Der Winter ist einfach wunderschön!». */
+const LEVEL = 23, FRIENDS = ['abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><g stroke="#5aa8f0" stroke-width="7" stroke-linecap="round"><path d="M50 8 V92 M14 29 L86 71 M14 71 L86 29"/></g><g stroke="#5aa8f0" stroke-width="5" stroke-linecap="round" fill="none"><path d="M40 16 L50 26 L60 16 M40 84 L50 74 L60 84 M18 42 L30 36 L26 22 M82 58 L70 64 L74 78 M18 58 L30 64 L26 78 M82 42 L70 36 L74 22"/></g><circle cx="50" cy="50" r="8" fill="#ffd34d"/></svg>';
+const RUG = 0.5;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG); }
+
+/* картинки времён года: рамка, небо, земля, дерево */
+const SEASON = (sky, ground, crown, extra) => `<svg viewBox="0 0 100 80"><rect x="2" y="2" width="96" height="76" rx="8" fill="${sky}" stroke="#fff" stroke-width="4"/><path d="M4 58 H96 V72 Q96 76 92 76 H8 Q4 76 4 72 Z" fill="${ground}"/><rect x="44" y="36" width="8" height="24" fill="#8a5a1e"/>${crown}${extra}</svg>`;
+const SPRING = SEASON('#d9f2ff', '#9fdc7a', '<circle cx="48" cy="30" r="17" fill="#8fd17a"/><g fill="#ffb3d1"><circle cx="40" cy="24" r="4"/><circle cx="54" cy="20" r="4"/><circle cx="58" cy="34" r="4"/><circle cx="42" cy="38" r="4"/><circle cx="50" cy="30" r="3"/></g>',
+  '<g fill="#ffd34d"><circle cx="16" cy="62" r="3"/><circle cx="26" cy="66" r="3"/><circle cx="74" cy="64" r="3"/><circle cx="84" cy="62" r="3"/></g><g fill="#ff7a9a"><circle cx="20" cy="68" r="3"/><circle cx="80" cy="69" r="3"/></g>');
+const SUMMER = SEASON('#8fd3ff', '#7cc35a', '<circle cx="48" cy="28" r="19" fill="#3f9e3a"/>',
+  '<circle cx="80" cy="16" r="9" fill="#ffd34d"/><path d="M80 2 v4 M80 26 v4 M66 16 h4 M90 16 h4 M70 6 l3 3 M87 23 l3 3 M70 26 l3 -3 M87 9 l3 -3" stroke="#ffd34d" stroke-width="2.5" stroke-linecap="round"/>');
+const AUTUMN = SEASON('#e3eef5', '#c9a35a', '<circle cx="48" cy="30" r="17" fill="#f08a2c"/><circle cx="40" cy="24" r="8" fill="#e8622c"/><circle cx="56" cy="34" r="7" fill="#ffc23d"/>',
+  '<g fill="#e8622c"><ellipse cx="22" cy="44" rx="4" ry="2.5" transform="rotate(30 22 44)"/><ellipse cx="74" cy="50" rx="4" ry="2.5" transform="rotate(-20 74 50)"/><ellipse cx="66" cy="68" rx="4" ry="2.5"/></g><g fill="#ffc23d"><ellipse cx="30" cy="66" rx="4" ry="2.5"/><ellipse cx="80" cy="36" rx="4" ry="2.5" transform="rotate(40 80 36)"/></g><path d="M10 12 q6 -6 12 0 q6 -6 12 0 q-6 6 -24 0z" fill="#b8c4cc"/>');
+const WINTER = SEASON('#cfe3f2', '#fff', '<path d="M48 10 L32 40 H64 Z" fill="#2f7a4a"/><path d="M48 22 L28 56 H68 Z" fill="#2f7a4a"/><path d="M36 38 l8 -2 M54 46 l8 -2" stroke="#fff" stroke-width="3" stroke-linecap="round"/>',
+  '<circle cx="82" cy="60" r="9" fill="#fff" stroke="#c8d8e4" stroke-width="1.5"/><circle cx="82" cy="46" r="6" fill="#fff" stroke="#c8d8e4" stroke-width="1.5"/><path d="M82 46 l5 1" stroke="#ff7a59" stroke-width="2"/><g fill="#fff"><circle cx="14" cy="14" r="2"/><circle cx="26" cy="26" r="2"/><circle cx="66" cy="12" r="2"/><circle cx="18" cy="38" r="2"/><circle cx="88" cy="28" r="2"/></g>');
+const SEASONS = [SPRING, SUMMER, AUTUMN, WINTER], SCLIP = ['n23_fruehling', 'n23_sommer', 'n23_herbst', 'n23_winter'];
+const GIFT = (c, r) => `<svg viewBox="0 0 80 80"><rect x="8" y="30" width="64" height="46" rx="4" fill="${c}" stroke="rgba(0,0,0,.2)" stroke-width="3"/><rect x="4" y="20" width="72" height="14" rx="4" fill="${c}" stroke="rgba(0,0,0,.2)" stroke-width="3"/><rect x="34" y="20" width="12" height="56" fill="${r}"/><path d="M40 20 C26 2 14 12 26 20 Z M40 20 C54 2 66 12 54 20 Z" fill="${r}"/></svg>`;
+const DOLL = '<svg viewBox="0 0 80 100"><path d="M22 52 Q40 44 58 52 L66 96 H14 Z" fill="#ff8fc8" stroke="#d6589a" stroke-width="3" stroke-linejoin="round"/><circle cx="40" cy="30" r="18" fill="#ffd9b8"/><path d="M20 32 Q18 8 40 8 Q62 8 60 32 Q58 18 40 16 Q24 18 20 32 Z M20 30 Q14 52 22 60 L26 34 Z M60 30 Q66 52 58 60 L54 34 Z" fill="#ffd34d"/><circle cx="33" cy="30" r="2.5" fill="#333"/><circle cx="47" cy="30" r="2.5" fill="#333"/><path d="M34 38 Q40 42 46 38" fill="none" stroke="#d6476a" stroke-width="2" stroke-linecap="round"/><circle cx="58" cy="12" r="6" fill="#ff6b8a"/></svg>';
+const BALL = '<svg viewBox="0 0 80 100"><circle cx="40" cy="58" r="34" fill="#ff5a5a" stroke="#b83232" stroke-width="4"/><path d="M8 52 Q40 38 72 52 M10 70 Q40 84 70 70" stroke="#fff" stroke-width="7" fill="none"/></svg>';
+const TEDDY = '<svg viewBox="0 0 80 100"><g fill="#c98a52" stroke="#8a5a2a" stroke-width="3"><circle cx="20" cy="18" r="10"/><circle cx="60" cy="18" r="10"/><ellipse cx="40" cy="74" rx="24" ry="24"/><circle cx="40" cy="34" r="22"/></g><ellipse cx="40" cy="42" rx="9" ry="7" fill="#f0cfa2"/><circle cx="32" cy="30" r="3" fill="#333"/><circle cx="48" cy="30" r="3" fill="#333"/><circle cx="40" cy="40" r="3" fill="#333"/></svg>';
+const CAR = '<svg viewBox="0 0 80 100"><path d="M6 76 V58 Q8 50 16 50 L26 34 H54 L64 50 Q74 50 74 58 V76 Z" fill="#5aa8f0" stroke="#2f6fb4" stroke-width="3" stroke-linejoin="round"/><path d="M30 38 H50 L57 50 H23 Z" fill="#d6ecff"/><circle cx="22" cy="78" r="9" fill="#333"/><circle cx="58" cy="78" r="9" fill="#333"/></svg>';
+const MOUNT = '<svg viewBox="0 0 240 120"><rect x="3" y="3" width="234" height="114" rx="12" fill="#cfe7ff" stroke="#fff" stroke-width="6"/><path d="M6 96 L60 30 L96 70 L140 16 L200 84 L234 60 V114 H6 Z" fill="#8aa6c4"/><path d="M60 30 L48 46 L60 42 L72 46 Z M140 16 L124 36 L140 30 L156 38 Z" fill="#fff"/><path d="M6 100 Q120 80 234 98 V114 H6 Z" fill="#fff"/></svg>';
+const imgSVG = k => `<img src="${IMG[k][0]}" alt="" style="width:100%;height:100%;object-fit:contain;object-position:50% 100%">`;
+
+let emily, abiha, panels = [], gifts = [], mount, trip = [];
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised', 'laugh', 'walk'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'cross', 'peace', 'walk', 'walkf', 'run', 'jump', 'think', 'sit', 'laugh'];
+const TOP = () => L.floorY - L.hE*1.06;
+const row = (i, n, gap) => ({px: () => L.W*0.5 + (i - (n - 1)/2)*L.hE*gap, py: TOP});
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; panels = []; gifts = []; trip = [];
+  panels = SEASONS.map((svg, i) => T.prop(svg, {...row(i, 4, 0.76), w: 0.7, ratio: 0.8, z: 20}));
+  gifts = [DOLL, BALL, TEDDY, CAR].map((svg, i) => { const p = T.prop(svg, {...row(i, 4, 0.62), w: 0.46, ratio: 1.25, z: 22}); p.el.hidden = true; return p; });
+  mount = T.prop(MOUNT, {x: 0.5, py: () => TOP() + L.hE*0.04, w: 1.7, ratio: 0.5, z: 20}); mount.el.hidden = true;
+  const who = [['emily_idle_out', 0.36], [personSVG({style: 'long', hair: '#c98a4a', shirt: '#ff7a59', pants: '#3c4a6b', skin: '#f6d2b8'}), 0.5],
+    [personSVG({style: 'short', hair: '#6b4a2a', shirt: '#2f80ed', pants: '#2c3346', skin: '#f6d2b8'}), 0.54], ['mark_idle_out', 0.26], ['theo_happy', 0.2]];
+  trip = who.map(([k, h], i) => { const isImg = !k.startsWith('<'); const r = isImg ? IMG[k][2]/IMG[k][1] : 130/60;
+    const p = T.prop(isImg ? imgSVG(k) : k, {px: () => L.W*0.5 + (i - 2)*L.hE*0.3, py: () => TOP() - L.hE*0.04, w: h/r, ratio: r, z: 22}); p.el.hidden = true; return p; });
+  abiha = T.hero('abiha', {x: 0.86, poses: AP});
+  emily = T.hero('emily', {x: 0.13, outfit: 'shoes', poses: EP});
+}
+const count = async i => { showNum(i); await emily.say('e_' + i); };
+const glow = p => p.el.animate([{filter: 'none'}, {filter: 'drop-shadow(0 0 10px #ffd84d)'}, {filter: 'none'}], {duration: 900});
+const show = (list, on) => list.forEach(p => { p.el.hidden = !on; if (on) p.el.animate([{opacity: 0, transform: 'scale(.6)'}, {opacity: 1, transform: 'none'}], {duration: 350, easing: 'cubic-bezier(.3,1.4,.5,1)'}); });
+/* снег: снежинки падают по всему экрану */
+function snow(n = 40){
+  for (let i = 0; i < n; i++){ const s = document.createElement('i'), w = 6 + Math.random()*10; s.className = 'fly';
+    Object.assign(s.style, {left: Math.random()*L.W + 'px', top: '-20px', width: w + 'px', height: w + 'px', borderRadius: '50%', background: '#fff', boxShadow: '0 0 4px #9fc8e8'}); stage.appendChild(s);
+    s.animate([{transform: 'translate(0,0)'}, {transform: `translate(${(Math.random() - .5)*80}px,${L.H + 40}px)`}], {duration: 3500 + Math.random()*3000, delay: Math.random()*2500, easing: 'linear', fill: 'forwards'}).finished.then(() => s.remove()).catch(() => s.remove()); }
+}
+
+async function story(){
+  /* четыре времени года: считаем */
+  await play('n23_intro');
+  await T.repeat('e23_kennst');
+  abiha.set('peace'); await abiha.say('b23_vier'); abiha.set('idle');
+  await play('n23_zaehl');
+  let left = [...panels];
+  for (let i = 1; i <= 4; i++){
+    const el = await T.tap(left, 'n23_zaehl', 'r_tipp_licht'); const k = panels.findIndex(p => p.el === el); left = left.filter(p => p.el !== el);
+    glow(panels[k]); await play(SCLIP[k]); await count(i);
+  }
+  hideNum(); await play('n23_vier'); await T.bone(panels[0]);
+
+  /* сейчас осень, скоро зима */
+  await emily.say('e23_jetzt');
+  await abiha.say('b23_herbst');
+  await play('n23_tipp_herbst');
+  await T.tap([panels[2]], 'n23_tipp_herbst', 'r_tipp_licht'); sfx.ding(); glow(panels[2]);
+  await T.repeat('e23_herbst');
+  await T.bone(panels[2]);
+  abiha.set('think'); await abiha.say('b23_bald'); abiha.set('idle');
+  glow(panels[3]); await T.repeat('e23_winter');
+  emily.set('jump'); emily.hop(); await emily.say('e23_freue'); emily.set('idle');
+
+  /* что любим больше всего; сама Эмили выбирает */
+  await abiha.say('b23_liebsten');
+  glow(panels[3]); await T.repeat('e23_liebsten');
+  glow(panels[1]); abiha.set('jump'); abiha.hop(); await abiha.say('b23_sommer'); abiha.set('idle');
+  await T.choose(SEASONS.map((svg, i) => ({parts: [{svg, x: 50, y: 4, w: 92, hh: 92}], clip: SCLIP[i]})), 'n23_magst_du', 'r23_magst_du', 'n23_magst_du');
+  await praise(); await T.bone(emily);
+
+  /* декабрь, Рождество, Николаус */
+  await T.repeat('e23_dezember');
+  await abiha.say('b23_warum');
+  show(panels, false);
+  const presents = [GIFT('#ff5a5a', '#ffd34d'), GIFT('#32b67a', '#ff5a5a'), GIFT('#5aa8f0', '#fff')].map((g, i) => T.prop(g, {...row(i, 3, 0.55), w: 0.4, ratio: 1, z: 22}));
+  sfx.pop(); await emily.say('e23_weihnachten');
+  abiha.set('laugh'); await abiha.say('b23_geschenke'); abiha.set('idle');
+  await emily.say('e23_kinderfeste');
+  presents.forEach(p => p.el.remove());
+  await abiha.say('b23_nikolaus');
+  await emily.say('e23_nikolaus');
+  await T.repeat('e23_wuenschst');
+  show(gifts, true);
+  abiha.set('think'); await abiha.say('b23_puppe'); abiha.set('idle');
+  await play('n23_tipp_puppe');
+  await T.tap([gifts[0]], 'n23_tipp_puppe', 'r_tipp_licht'); sfx.ding(); T.hearts(gifts[0]);
+  abiha.set('jump'); abiha.hop(); await sleep(500); abiha.set('idle');
+  await T.repeat('e23_spielzeug');
+  await T.bone(gifts[0]);
+  show(gifts, false);
+
+  /* зимой в горы: кто едет — считаем до 5 */
+  await abiha.say('b23_berge');
+  show([mount], true);
+  await T.repeat('e23_ski');
+  await abiha.say('b23_dieses_jahr');
+  show(trip, true);
+  await emily.say('e23_familie');
+  play('t_bark');
+  await play('n23_wer');
+  let rest = [...trip];
+  for (let i = 1; i <= 5; i++){
+    const el = await T.tap(rest, 'n23_wer', 'r_tipp_licht'); const p = rest.find(t => t.el === el); rest = rest.filter(t => t !== p);
+    p.el.animate([{transform: 'translateY(0)'}, {transform: 'translateY(-14%)'}, {transform: 'translateY(0)'}], {duration: 400});
+    await count(i);
+  }
+  hideNum(); await play('n23_fuenf'); await T.bone(mount);
+  await abiha.say('b23_freust');
+  emily.set('jump'); emily.hop(); await T.repeat('e23_riesig'); emily.set('idle');
+  await abiha.say('b23_schnee');
+  snow(50); await emily.say('e23_schnee');
+  abiha.set('wave'); await abiha.say('b23_auch_berge'); abiha.set('idle');
+  snow(60); await T.repeat('e23_wunderschoen');
+  emily.set('jump'); abiha.set('jump'); emily.hop(); abiha.hop(); sfx.ding(); await sleep(700);
+  emily.set('wave'); abiha.set('peace');
+}
+T.start(IMG.abiha_wave[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
