@@ -42,13 +42,24 @@ const BONES := [
 const BODIES := {
 	"emily": {},
 	"mark": {
-		# 1.5-year-old toddler: short legs and arms, round tummy, big head, almost no neck
-		"Torso": {"scale": Vector2(1.24, 0.8)},
-		"Hips": {"scale": Vector2(1.16, 0.86)},
-		"Neck": {"scale": Vector2(1.15, 0.45)},
-		"k_arm": 1.02, "UpperArm": {"len": 42.0}, "Forearm": {"len": 36.0},
-		"k_leg": 1.12, "Thigh": {"len": 56.0}, "Shin": {"len": 48.0},
-		"motion": 0.6, "head_units": 136.0, "jump_arm": 0.45,
+		# 1.5-year-old toddler: pear-shaped (round tummy + nappy bottom), short chubby legs set wide,
+		# short chubby arms, sloping shoulders, almost no neck, big head
+		"torso": [
+			[Vector2(-17, -80), 22.0], [Vector2(21, -80), 22.0],      # sloping shoulders
+			[Vector2(3, -60), 44.0],                                  # chest
+			[Vector2(11, -30), 56.0],                                 # round tummy, forward
+			[Vector2(2, -2), 58.0], [Vector2(-2, 12), 54.0],          # wide bottom
+		],
+		"pelvis": [[Vector2(0, -8), 56.0], [Vector2(-8, 10), 52.0], [Vector2(-24, 16), 34.0], [Vector2(24, 16), 34.0]],
+		"bone_pos": {"ThighL": Vector2(23, 12), "ThighR": Vector2(-23, 12),
+			"UpperArmL": Vector2(25, -74), "UpperArmR": Vector2(-24, -76)},
+		"Torso": {"scale": Vector2(1.0, 0.84)},
+		"Hips": {"scale": Vector2(1.0, 0.86)},
+		"Neck": {"scale": Vector2(1.15, 0.4)},
+		"k_arm": 1.12, "UpperArm": {"len": 38.0}, "Forearm": {"len": 32.0},
+		"k_leg": 1.3, "Thigh": {"len": 44.0}, "Shin": {"len": 38.0},
+		"motion": 0.52, "head_units": 140.0, "jump_arm": 0.45,
+		"toddler": true, "jump_height": 0.3, "step_lift": 1.5,
 	},
 }
 
@@ -81,7 +92,8 @@ static func warp_point(p: Vector2, bone: String, B: Dictionary) -> Vector2:
 		if y >= L - c[1]:
 			y += L2 - L
 		elif y > c[0]:
-			y = c[0] + (y - c[0]) * (L2 - c[0] - c[1]) / (L - c[0] - c[1])
+			# a limb shorter than its two joint caps (chubby toddler legs): the middle collapses
+			y = c[0] + (y - c[0]) * maxf(L2 - c[0] - c[1], 0.0) / (L - c[0] - c[1])
 	return Vector2(p.x, y) * f
 
 static func warp_poly(poly: PackedVector2Array, bone: String, B: Dictionary) -> PackedVector2Array:
@@ -90,6 +102,16 @@ static func warp_poly(poly: PackedVector2Array, bone: String, B: Dictionary) -> 
 	var out := PackedVector2Array()
 	for v in poly:
 		out.append(warp_point(v, bone, B))
+	# very short limbs: caps overlap, the warped outline can fold -> use its convex hull (limb pieces are convex)
+	var k := _key(bone)
+	if LIMB_CAPS.has(k) and B.get(k, {}).has("len"):
+		var c: Array = LIMB_CAPS[k]
+		var f: float = B.get("k_arm", 1.0) if k in ["UpperArm", "Forearm"] else B.get("k_leg", 1.0)
+		if B[k]["len"] / f < c[0] + c[1] + 2.0:
+			var h := Geometry2D.convex_hull(out)
+			if h.size() > 3:
+				h.remove_at(h.size() - 1)
+				return h
 	return out
 
 ## BONES re-proportioned for body B (a child bone's position is warped by its parent's warp)
@@ -97,8 +119,10 @@ static func bones(B: Dictionary) -> Array:
 	if B.is_empty():
 		return BONES
 	var out := []
+	var over: Dictionary = B.get("bone_pos", {})
 	for b in BONES:
-		out.append([b[0], b[1], warp_point(b[2], b[1], B) if b[1] != "" else b[2]])
+		var pos: Vector2 = over.get(b[0], b[2])
+		out.append([b[0], b[1], warp_point(pos, b[1], B) if b[1] != "" else pos])
 	# the hips stand so that the feet touch the ground
 	var h: Vector2 = out[0][2]
 	var ankle := -sole_max(B)
@@ -257,11 +281,16 @@ static func above(y: float) -> PackedVector2Array:
 	return rect(-400, -400, 400, y)
 
 # ------------------------------------------------------------------ body parts (bone-local)
-static func torso_shape() -> PackedVector2Array:
-	return hull(torso_circles(0.0))
+static func torso_shape(B: Dictionary = {}) -> PackedVector2Array:
+	return hull(torso_circles(0.0, B))
 
 ## circles of the torso; grow > 0 makes a looser version for clothes
-static func torso_circles(g: float) -> Array:
+static func torso_circles(g: float, B: Dictionary = {}) -> Array:
+	if B.has("torso"):
+		var cs := []
+		for c in B["torso"]:
+			cs.append([c[0], c[1] + g])
+		return cs
 	return [
 		[Vector2(-22, -82), 25.0 + g], [Vector2(24, -82), 25.0 + g],   # shoulders
 		[Vector2(1, -60), 43.0 + g],                                   # chest
@@ -269,7 +298,9 @@ static func torso_circles(g: float) -> Array:
 		[Vector2(1, -2), 46.0 + g], [Vector2(0, 12), 43.0 + g],        # waist (goes under the pelvis)
 	]
 
-static func pelvis_shape() -> PackedVector2Array:
+static func pelvis_shape(B: Dictionary = {}) -> PackedVector2Array:
+	if B.has("pelvis"):
+		return hull(B["pelvis"])
 	return hull([
 		[Vector2(-16, 12), HIP_R + 1], [Vector2(16, 12), HIP_R + 1],
 		[Vector2(0, -6), 44.0], [Vector2(-1, -18), 43.0],
@@ -301,10 +332,10 @@ static func foot_shape() -> PackedVector2Array:
 
 ## Skin pieces: [bone, polygon, trim_top]. trim_top = no outline above that local y
 ## (where a near limb melts into the torso).
-static func body_pieces() -> Array:
+static func body_pieces(B: Dictionary = {}) -> Array:
 	var out := []
-	out.append({"bone": "Torso", "poly": torso_shape()})
-	out.append({"bone": "Hips", "poly": pelvis_shape()})
+	out.append({"bone": "Torso", "poly": torso_shape(B)})
+	out.append({"bone": "Hips", "poly": pelvis_shape(B)})
 	out.append({"bone": "Neck", "poly": neck_shape()})
 	for s in ["L", "R"]:
 		var near: bool = s == "R"
@@ -322,26 +353,26 @@ static func body_pieces() -> Array:
 
 # ------------------------------------------------------------------ clothing patterns
 ## Returns pieces {bone, poly, cat, trim?, color?, outline?, line_w?} for an OutfitItem.
-static func cloth_pieces(item) -> Array:
+static func cloth_pieces(item, B: Dictionary = {}) -> Array:
 	var P: Dictionary = item.params
 	var cat: String = item.slot if item.slot in CAT_SUB else "top"
 	var out := []
 	match item.pattern:
 		"bodysuit":
-			var t := grow(torso_shape(), 1.2)
+			var t := grow(torso_shape(B), 1.2)
 			t = clip(t, circle(Vector2(2, -106), 17))  # scoop neck
 			out.append({"bone": "Torso", "poly": t})
 			var leg_line := PackedVector2Array([Vector2(-80, -80), Vector2(80, -80), Vector2(80, -2), Vector2(46, -2),
 				Vector2(10, 37), Vector2(-10, 37), Vector2(-46, -2), Vector2(-80, -2)])
-			out.append({"bone": "Hips", "poly": keep(grow(pelvis_shape(), 1.2), leg_line)})
+			out.append({"bone": "Hips", "poly": keep(grow(pelvis_shape(B), 1.2), leg_line)})
 			for s in ["L", "R"]:
 				out.append({"bone": "UpperArm" + s, "poly": keep(grow(upper_arm_shape(), 1.2), above(P.get("sleeve", 10.0))), "trim": 3.0 if s == "R" else NAN})
 		"romper":
 			# one-piece: long sleeves, long legs, closed feet (toddler sleepsuit); white collar, cuffs, buttons
-			var t := grow(torso_shape(), 1.6)
+			var t := grow(torso_shape(B), 1.6)
 			t = clip(t, circle(Vector2(3, -110), 15))
 			out.append({"bone": "Torso", "poly": t})
-			out.append({"bone": "Hips", "poly": grow(pelvis_shape(), 1.6)})
+			out.append({"bone": "Hips", "poly": grow(pelvis_shape(B), 1.6)})
 			var white: Color = P.get("trim_color", Color("f7f4ee"))
 			var white_line := Color("c9c2b6")
 			for s in ["L", "R"]:
@@ -356,7 +387,7 @@ static func cloth_pieces(item) -> Array:
 				out.append({"bone": "Foot" + s, "poly": grow(foot_shape(), 3.0)})
 			if P.get("collar", true):
 				for c in [[Vector2(-12, -99), Vector2(-2, -106)], [Vector2(19, -99), Vector2(9, -106)]]:
-					out.append({"bone": "Torso", "poly": hull([[c[0], 13.0], [c[1], 9.0]]), "cat": "base", "z_add": 1,
+					out.append({"bone": "Torso", "poly": keep(hull([[c[0], 13.0], [c[1], 9.0]]), grow(torso_shape(B), 0.5)), "cat": "base", "z_add": 1,
 						"color": white, "outline": white_line, "line_w": 2.0})
 			if P.get("buttons", true):
 				for i in 4:
@@ -364,7 +395,7 @@ static func cloth_pieces(item) -> Array:
 						"color": item.decal_color, "outline": item.color.darkened(0.4), "line_w": 1.2})
 		"tshirt", "longsleeve":
 			var hem: float = P.get("hem", 40.0)
-			var cs := torso_circles(3.5)
+			var cs := torso_circles(3.5, B)
 			cs.append_array([[Vector2(-30, hem - 18), 20.0], [Vector2(36, hem - 18), 20.0], [Vector2(3, hem - 30), 47.0]])
 			var t := hull(cs)
 			t = keep(t, above(hem))
@@ -386,7 +417,7 @@ static func cloth_pieces(item) -> Array:
 						"outline": item.decal_color.darkened(0.3), "line_w": 1.6})
 		"leggings", "shorts":
 			var waist: float = P.get("waist", -16.0)
-			out.append({"bone": "Hips", "poly": keep(grow(pelvis_shape(), 1.2), below(waist))})
+			out.append({"bone": "Hips", "poly": keep(grow(pelvis_shape(B), 1.2), below(waist))})
 			for s in ["L", "R"]:
 				var near: bool = s == "R"
 				if item.pattern == "shorts":
@@ -404,7 +435,7 @@ static func cloth_pieces(item) -> Array:
 		"jacket":
 			# puffy quilted jacket: long puffy sleeves with ribbed cuffs, zip, hood lying on the shoulders
 			var hem: float = P.get("hem", 34.0)
-			var cs := torso_circles(6.5)
+			var cs := torso_circles(6.5, B)
 			cs.append_array([[Vector2(-30, hem - 20), 22.0], [Vector2(38, hem - 20), 22.0], [Vector2(4, hem - 30), 50.0]])
 			var t := keep(hull(cs), above(hem))
 			t = clip(t, circle(Vector2(3, -112), 14))
@@ -444,7 +475,7 @@ static func cloth_pieces(item) -> Array:
 					"cat": "decal", "color": dark, "outline": dark, "line_w": 0.3})
 		"trousers":
 			var waist: float = P.get("waist", -16.0)
-			out.append({"bone": "Hips", "poly": keep(grow(pelvis_shape(), 3.0), below(waist))})
+			out.append({"bone": "Hips", "poly": keep(grow(pelvis_shape(B), 3.0), below(waist))})
 			for s in ["L", "R"]:
 				var near: bool = s == "R"
 				out.append({"bone": "Thigh" + s, "poly": grow(thigh_shape(), 4.0), "trim": 8.0 if near else NAN})
@@ -489,7 +520,7 @@ static func cloth_pieces(item) -> Array:
 			var knit: bool = item.pattern != "shirt"
 			var hem: float = P.get("hem", 30.0 if item.pattern == "vest" else 36.0)
 			var g := 5.0 if item.pattern == "sweater" else (3.0 if item.pattern == "shirt" else 4.5)
-			var cs := torso_circles(g)
+			var cs := torso_circles(g, B)
 			cs.append_array([[Vector2(-28, hem - 18), 20.0], [Vector2(36, hem - 18), 20.0], [Vector2(3, hem - 28), 47.0]])
 			var t := keep(hull(cs), above(hem))
 			var dark: Color = item.color.darkened(0.22)
@@ -497,8 +528,6 @@ static func cloth_pieces(item) -> Array:
 			if item.pattern == "vest":
 				# V-neck, no sleeves, cut in at the armholes
 				t = clip(t, PackedVector2Array([Vector2(-16, -130), Vector2(24, -130), Vector2(5, -50)]))
-				t = clip(t, circle(Vector2(-34, -84), 13))
-				t = clip(t, circle(Vector2(40, -84), 13))
 			else:
 				t = clip(t, circle(Vector2(3, -111), 15))
 			out.append({"bone": "Torso", "poly": t})
@@ -528,7 +557,7 @@ static func cloth_pieces(item) -> Array:
 			if item.pattern == "shirt":
 				# pointed collar, buttons, bow tie
 				for c in [[Vector2(-14, -110), Vector2(4, -96), Vector2(-7, -84)], [Vector2(22, -110), Vector2(4, -96), Vector2(15, -84)]]:
-					out.append({"bone": "Torso", "poly": grow(PackedVector2Array(c), 2.5), "cat": "decal", "color": item.color,
+					out.append({"bone": "Torso", "poly": keep(grow(PackedVector2Array(c), 2.5), grow(torso_shape(B), 0.5)), "cat": "decal", "color": item.color,
 						"outline": line, "line_w": 1.5, "z_add": 6})
 				for i in 5:
 					out.append({"bone": "Torso", "poly": circle(Vector2(4.5, -76 + i * 20), 2.4, 12), "cat": "top", "z_add": 1,

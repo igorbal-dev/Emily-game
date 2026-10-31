@@ -26,6 +26,7 @@ var C := {}         # character config
 var B := {}         # body proportions (EmilyShapes.BODIES)
 var M := 1.0        # motion scale
 var cname := "emily"
+var T := false      # toddler (Mark): own pose and gait
 
 func _init() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -34,6 +35,7 @@ func _init() -> void:
 	C = CHARS[cname]
 	B = S.body(cname)
 	M = S.motion(B)
+	T = B.get("toddler", false)
 	var f := FileAccess.open(C["dir"] + "head/layout.json", FileAccess.READ)
 	layout = JSON.parse_string(f.get_as_text())
 	var root := build_scene()
@@ -81,7 +83,7 @@ func build_scene() -> Node2D:
 		bone_names.append(b[0])
 		bone_paths[b[0]] = "Skeleton2D/" + (str(sk.get_path_to(bone)) if false else _path(b[0]))
 	# skin
-	for piece in S.body_pieces():
+	for piece in S.body_pieces(B):
 		S.make_piece_nodes(nodes[piece["bone"]], piece, S.PALETTE["skin"], S.PALETTE["skin_line"], "body", B)
 	# head slots
 	var head: Node2D = nodes["Head"]
@@ -320,6 +322,16 @@ func pose_idle(t: float) -> Dictionary:
 	p["rot"]["ForearmL"] = deg(-9.0 - 2.0 * sin(ph - 0.5))
 	p["rot"]["HandR"] = deg(-3.0)
 	p["rot"]["HandL"] = deg(-4.0)
+	if T:
+		# toddler: arms a bit away from the body, elbows bent, hands forward (balance); soft knees, tummy out
+		p["rot"]["UpperArmR"] = deg(-7.0 + 2.0 * b)
+		p["rot"]["UpperArmL"] = deg(-4.0 - 2.0 * b)
+		p["rot"]["ForearmR"] = deg(-26.0 - 3.0 * sin(ph - 0.5))
+		p["rot"]["ForearmL"] = deg(-22.0 - 3.0 * sin(ph - 0.5))
+		p["rot"]["HandR"] = deg(-12.0)
+		p["rot"]["HandL"] = deg(-10.0)
+		p["rot"]["Torso"] = deg(-1.5 + 0.8 * b)
+		p["hips"] += Vector2(0, 3.0)
 	_solve_legs(p)
 	return p
 
@@ -341,7 +353,7 @@ func _walk_foot(q: float) -> Array:
 	else:
 		var s := (q - DUTY) / (1.0 - DUTY)
 		x = (-STRIDE / 2.0 + STRIDE * (0.5 - 0.5 * cos(PI * s))) * M
-		lift = M * 26.0 * pow(sin(PI * pow(s, 0.8)), 1.2)
+		lift = M * B.get("step_lift", 1.0) * 26.0 * pow(sin(PI * pow(s, 0.8)), 1.2)
 		if s < 0.35:
 			phi = lerpf(20.0, 0.0, smooth01(s / 0.35))
 		else:
@@ -351,7 +363,7 @@ func _walk_foot(q: float) -> Array:
 func pose_walk(t: float) -> Dictionary:
 	var p := base_pose()
 	var ph := t / WALK_T
-	var hips_rot := deg(1.8 * sin(TAU * ph))
+	var hips_rot := deg((4.0 if T else 1.8) * sin(TAU * ph))
 	p["hips_rot"] = hips_rot
 	var lowest := -1e9
 	var R := 0.982 * (S.thigh_len(B) + S.shin_len(B))
@@ -378,6 +390,15 @@ func pose_walk(t: float) -> Dictionary:
 		p["rot"]["UpperArm" + s] = deg(24.0 * cos(aph - 0.25) - 3.0)
 		p["rot"]["Forearm" + s] = deg(-(22.0 - 13.0 * cos(aph - 0.7)))
 		p["rot"]["Hand" + s] = deg(-6.0 - 5.0 * cos(aph - 1.0))
+		if T:
+			# waddle: arms held up and out for balance, they barely swing
+			p["rot"]["UpperArm" + s] = deg(-22.0 + 7.0 * cos(aph - 0.25))
+			p["rot"]["Forearm" + s] = deg(-50.0 + 6.0 * cos(aph - 0.7))
+			p["rot"]["Hand" + s] = deg(-12.0)
+	if T:
+		# upright, tummy first, rocking from foot to foot
+		p["rot"]["Torso"] = deg(-2.0 + 3.0 * sin(TAU * ph)) - hips_rot * 0.3
+		p["rot"]["Head"] = deg(-2.5 * sin(TAU * ph) + 1.0 * sin(TAU * 2.0 * ph + 1.4))
 	_solve_legs(p)
 	return p
 
@@ -403,7 +424,9 @@ func pose_jump(t: float) -> Dictionary:
 	var p := base_pose()
 	var hy := curve([[0.0, 0.0], [0.28, 38.0], [0.40, 4.0], [0.48, -46.0], [0.68, -100.0], [0.88, -40.0],
 		[0.97, 2.0], [1.06, 30.0], [1.2, 6.0], [1.4, 0.0]], t) * M
-	var tuck := curve([[0.0, 0.0], [0.46, 0.0], [0.64, 1.0], [0.78, 1.0], [0.93, 0.0], [1.4, 0.0]], t)
+	if hy < 0.0:
+		hy *= B.get("jump_height", 1.0)
+	var tuck := curve([[0.0, 0.0], [0.46, 0.0], [0.64, 1.0], [0.78, 1.0], [0.93, 0.0], [1.4, 0.0]], t) * (0.0 if T else 1.0)
 	var air := smooth01((-hy / M - 4.0) / 26.0)
 	p["hips"] += Vector2(0, hy)
 	var lean := curve([[0.0, 0.0], [0.28, 14.0], [0.42, -3.0], [0.68, -6.0], [0.95, 4.0], [1.06, 13.0], [1.4, 0.0]], t)
@@ -470,7 +493,7 @@ func _run_foot(q: float) -> Array:
 		var s := (q - RUN_DUTY) / (1.0 - RUN_DUTY)
 		# heel kicks up behind first, then the leg swings forward
 		x = (-RUN_STRIDE / 2.0 + RUN_STRIDE * smooth01(pow(s, 1.25))) * M
-		lift = M * 62.0 * pow(sin(PI * pow(s, 0.75)), 1.1)
+		lift = M * (0.55 if T else 1.0) * 62.0 * pow(sin(PI * pow(s, 0.75)), 1.1)
 		if s < 0.4:
 			phi = lerpf(24.0, 18.0, smooth01(s / 0.4))
 		else:
@@ -490,7 +513,7 @@ func pose_run(t: float) -> Dictionary:
 		var hip_x: float = S.local_pos("Thigh" + s, B).x
 		p["ankle"][s] = Vector2(hip_x + w[0], ankle_y_for(w[2]) - w[1])
 		p["foot"][s] = w[2]
-	var lean := 11.0
+	var lean := 3.0 if T else 11.0
 	p["rot"]["Torso"] = deg(lean + 1.5 * sin(TAU * 2.0 * ph + 0.8)) - hips_rot * 0.6
 	p["rot"]["Neck"] = deg(-3.0)
 	p["rot"]["Head"] = deg(-lean * 0.55 + 2.0 * sin(TAU * 2.0 * ph + 1.6))
@@ -499,6 +522,9 @@ func pose_run(t: float) -> Dictionary:
 		p["rot"]["UpperArm" + s] = deg(42.0 * cos(aph - 0.2) - 8.0)
 		p["rot"]["Forearm" + s] = deg(-(78.0 - 14.0 * cos(aph - 0.6)))
 		p["rot"]["Hand" + s] = deg(-10.0)
+		if T:
+			p["rot"]["UpperArm" + s] = deg(-30.0 + 14.0 * cos(aph - 0.2))
+			p["rot"]["Forearm" + s] = deg(-62.0 + 8.0 * cos(aph - 0.6))
 	_solve_legs(p)
 	return p
 

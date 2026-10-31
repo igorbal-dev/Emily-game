@@ -157,7 +157,7 @@ func _rebuild_clothes() -> void:
 		var item := get_outfit_item(o[slot])
 		if item == null:
 			continue
-		for piece in EmilyShapes.cloth_pieces(item):
+		for piece in EmilyShapes.cloth_pieces(item, B):
 			var bone := _bone(piece["bone"])
 			if bone == null:
 				continue
