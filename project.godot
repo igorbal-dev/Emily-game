@@ -1,0 +1,23 @@
+; Файл настроек проекта Godot 4.
+
+config_version=5
+
+[application]
+
+config/name="Эмили — скелетная модель"
+config/description="Эмили на скелете (Skeleton2D / Bone2D) с анимациями и демо-сценой."
+run/main_scene="res://scenes/demo.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=1
