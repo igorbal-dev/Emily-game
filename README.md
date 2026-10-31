@@ -4,6 +4,12 @@
 
 ![демо](docs/demo.gif)
 
+## Демо в браузере (без Godot)
+
+Папка `web/` — та же Эмили в виде веб-страницы: кадры выгружены из Godot
+(`editor_tools/export_web_data.gd`) и рисуются теми же картинками.
+Кнопки на экране, на компьютере — клавиши 1–7, ← →, пробел.
+
 ## Как запустить демо на компьютере
 
 1. Скачайте проект: на GitHub нажмите зелёную кнопку **Code**, затем **Download ZIP**.
@@ -44,7 +50,10 @@ python3 -I tools/cut_parts.py tools/source/emily_parts_sheet_preview.jpg assets/
 python3 -I tools/find_anchors.py assets/emily/parts
 godot --headless --path . --import
 godot --headless --path . --script res://editor_tools/build_emily.gd
+godot --headless --path . --script res://editor_tools/export_web_data.gd -- web/emily_data.json
 ```
+
+В демо Godot: клавиши 1–7 — анимации, ← → — предыдущая/следующая, пробел — «по кругу».
 
 Источники: лист частей Scenario `asset_L9Q4SbQsqU4CPs7YpDrSYPLy` (превью 1024×576),
 оригинал `sprites/emily_idle.png` из артефакта «Герои игры Эмили».

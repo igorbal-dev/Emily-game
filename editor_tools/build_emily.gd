@@ -364,8 +364,9 @@ func _anim(keys: Array, length_s: float, loop := true) -> Animation:
 		var parts: PackedStringArray = (prop as String).split(":")
 		var t := anim.add_track(Animation.TYPE_VALUE)
 		anim.track_set_path(t, NodePath(PATHS[parts[0]] + ":" + parts[1]))
-		anim.track_set_interpolation_type(t, Animation.INTERPOLATION_CUBIC)
-		anim.track_set_interpolation_loop_wrap(t, true)
+		anim.track_set_interpolation_type(t, Animation.INTERPOLATION_LINEAR)
+		var times := PackedFloat64Array()
+		var comps: Array = []   # значения по компонентам (x, y) или одно число
 		var prev = null
 		for pk in poses:
 			var v = pk[1][prop]
@@ -375,9 +376,67 @@ func _anim(keys: Array, length_s: float, loop := true) -> Animation:
 					v -= TAU
 				while v - prev < -PI:
 					v += TAU
-			anim.track_insert_key(t, pk[0], v)
 			prev = v
+			times.append(pk[0])
+			comps.append([v.x, v.y] if v is Vector2 else [v])
+		# Плавная кривая без «перелётов» (монотонная), записанная по 30 ключей в секунду
+		var n_comp: int = comps[0].size()
+		var series: Array = []
+		for c in n_comp:
+			var vals := PackedFloat64Array()
+			for row in comps:
+				vals.append(row[c])
+			series.append(vals)
+		var steps := maxi(1, int(round(length_s * SAMPLE_FPS)))
+		for i in steps + 1:
+			var tt := minf(length_s, i / SAMPLE_FPS)
+			if times.size() == 1:
+				tt = 0.0
+			var out_c: Array = []
+			for c in n_comp:
+				out_c.append(_pchip(times, series[c], tt))
+			var value = Vector2(out_c[0], out_c[1]) if n_comp == 2 else out_c[0]
+			anim.track_insert_key(t, tt, value)
+			if times.size() == 1:
+				break
 	return anim
+
+
+const SAMPLE_FPS := 30.0
+
+
+## Монотонная кубическая интерполяция (PCHIP): плавно, но никогда не выходит
+## за пределы соседних ключей — руки не «разлетаются» между похожими позами.
+func _pchip(ts: PackedFloat64Array, vs: PackedFloat64Array, t: float) -> float:
+	var n := ts.size()
+	if n == 1 or t <= ts[0]:
+		return vs[0]
+	if t >= ts[n - 1]:
+		return vs[n - 1]
+	var i := 0
+	while i < n - 2 and t > ts[i + 1]:
+		i += 1
+	var h := PackedFloat64Array()
+	var d := PackedFloat64Array()
+	for k in n - 1:
+		h.append(ts[k + 1] - ts[k])
+		d.append((vs[k + 1] - vs[k]) / h[k])
+	var m := PackedFloat64Array()
+	m.resize(n)
+	m[0] = 0.0
+	m[n - 1] = 0.0
+	for k in range(1, n - 1):
+		if d[k - 1] * d[k] <= 0.0:
+			m[k] = 0.0
+		else:
+			var w1 := 2.0 * h[k] + h[k - 1]
+			var w2 := h[k] + 2.0 * h[k - 1]
+			m[k] = (w1 + w2) / (w1 / d[k - 1] + w2 / d[k])
+	var u := (t - ts[i]) / h[i]
+	var u2 := u * u
+	var u3 := u2 * u
+	return (2 * u3 - 3 * u2 + 1) * vs[i] + (u3 - 2 * u2 + u) * h[i] * m[i] \
+		+ (-2 * u3 + 3 * u2) * vs[i + 1] + (u3 - u2) * h[i] * m[i + 1]
 
 
 # ---------------------------------------------------------------- анимации
@@ -506,8 +565,8 @@ func _build_animations() -> void:
 	], 2.0))
 
 	# 7. Закрывает глаза руками (прятки: «раз, два, три...»)
-	var eye_r_body := _tex_to_global(g_rest["Head"], HEAD_NECK, -90.0, HEAD_EYE_R + Vector2(-4, -42))
-	var eye_l_body := _tex_to_global(g_rest["Head"], HEAD_NECK, -90.0, HEAD_EYE_L + Vector2(4, -42))
+	var eye_r_body := _tex_to_global(g_rest["Head"], HEAD_NECK, -90.0, HEAD_EYE_R + Vector2(-4, -24))
+	var eye_l_body := _tex_to_global(g_rest["Head"], HEAD_NECK, -90.0, HEAD_EYE_L + Vector2(4, -24))
 	var hide := {"head": -6.0, "spine": 2.0, "eyes": "closed",
 		"arm_R": {"ik": eye_r_body, "bend": -1.0, "hand": -70.0},
 		"arm_L": {"ik": eye_l_body, "bend": 1.0, "hand": -110.0}}
