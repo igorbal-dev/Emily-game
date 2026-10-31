@@ -15,6 +15,8 @@ const CHARS := {
 	"emily": {"node": "Emily", "dir": "res://emily/", "hair": "pigtails"},
 	"mark": {"node": "Mark", "dir": "res://mark/", "hair": "curls", "base_outfit": "romper",
 		"outfit": {"base": "romper"}},
+	"abiha": {"node": "Abiha", "dir": "res://abiha/", "hair": "ponytail",
+		"outfit": {"base": "bodysuit", "top": "tshirt_black", "bottom": "cargo_purple", "shoes": "sneakers_pink"}},
 }
 
 var bone_paths := {}

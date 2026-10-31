@@ -449,6 +449,14 @@ static func cloth_pieces(item) -> Array:
 				var near: bool = s == "R"
 				out.append({"bone": "Thigh" + s, "poly": grow(thigh_shape(), 4.0), "trim": 8.0 if near else NAN})
 				out.append({"bone": "Shin" + s, "poly": keep(grow(shin_shape(), 4.5), above(SHIN_LEN + 4.0))})
+				if P.get("pockets", false):
+					# cargo pocket with a flap on the side of the thigh
+					var pc: Color = item.color.darkened(0.08)
+					var pl: Color = item.get_outline()
+					out.append({"bone": "Thigh" + s, "poly": keep(grow(thigh_shape(), 1.0), rect(-16, 46, 10, 78)), "cat": cat,
+						"color": pc, "outline": pl, "line_w": 1.5, "z_add": 2})
+					out.append({"bone": "Thigh" + s, "poly": keep(grow(thigh_shape(), 1.5), rect(-17, 42, 11, 52)), "cat": cat,
+						"color": item.color, "outline": pl, "line_w": 1.5, "z_add": 4})
 				if P.get("cuffs", false):
 					out.append({"bone": "Shin" + s, "poly": keep(grow(shin_shape(), 3.0), rect(-60, SHIN_LEN - 14.0, 60, SHIN_LEN + 4.0)),
 						"cat": cat, "color": item.color.darkened(0.12), "outline": item.get_outline(), "line_w": 1.5, "z_add": 2})
@@ -548,7 +556,7 @@ static func cloth_pieces(item) -> Array:
 				out.append({"bone": "Foot" + s, "poly": keep(grow(foot_shape(), 4.6), below(29.0)), "cat": "decal",
 					"color": sole, "outline": sole.darkened(0.3), "line_w": 1.5})
 				var strap := keep(grow(foot_shape(), 4.2), PackedVector2Array([Vector2(4, -20), Vector2(13, -20), Vector2(17, 28), Vector2(8, 28)]))
-				out.append({"bone": "Foot" + s, "poly": keep(strap, rect(-60, -2.0, 60, 24.0)), "cat": "decal", "color": item.color.darkened(0.2),
+				out.append({"bone": "Foot" + s, "poly": keep(strap, rect(-60, -2.0, 60, 24.0)), "cat": "decal", "color": P.get("strap_color", item.color.darkened(0.2)),
 					"outline": item.get_outline(), "line_w": 1.2})
 				out.append({"bone": "Foot" + s, "poly": circle(Vector2(9, 4), 2.2, 12), "cat": "decal", "color": Color("d8c08a"),
 					"outline": sole, "line_w": 0.8, "z_add": 2})

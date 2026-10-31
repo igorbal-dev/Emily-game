@@ -254,6 +254,7 @@ const RU := {
 	"jacket_navy": "Куртка", "trousers_navy": "Штаны", "boots_brown": "Ботинки",
 	"sweater_mustard": "Свитер с мишкой", "joggers_navy": "Джоггеры", "socks_navy": "Синие носки",
 	"shirt_white": "Рубашка с бабочкой", "vest_grey": "Жилетка", "trousers_grey": "Серые брюки", "shoes_brown": "Туфли",
+	"tshirt_black": "Чёрная футболка", "cargo_purple": "Штаны-карго", "sneakers_pink": "Кроссовки",
 	"open": "Открыты", "half": "Прищур", "closed": "Закрыты", "happy": "Радость", "surprised": "Удивление", "sad": "Грусть",
 	"smile": "Улыбка", "a": "А", "o": "О", "e": "И", "m": "М", "laugh": "Смех",
 }

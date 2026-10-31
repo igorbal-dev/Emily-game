@@ -6,6 +6,7 @@ extends Node2D
 
 const CHARACTERS := [
 	{"name": "Эмили", "scene": "res://emily/emily.tscn"},
+	{"name": "Абиха", "scene": "res://abiha/abiha.tscn"},
 	{"name": "Марк", "scene": "res://mark/mark.tscn"},
 ]
 const CHAR_HEIGHT := 560.0          # character height in its own units (with hair)

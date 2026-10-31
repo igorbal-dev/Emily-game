@@ -44,6 +44,43 @@ def unkey(img, gray_too=False):
     return np.dstack([a, alpha * 255.0])
 
 
+def unmix_grey(arr, outside_alpha):
+    """Hair drawn over the grey guide head: inside the head silhouette, take the grey out of
+    semi-transparent strands (colour = grey + (c - grey) / alpha) instead of leaving a grey haze.
+    arr: RGBA float array from unkey(..., gray_too=True), template-sized."""
+    h, w = arr.shape[:2]
+    c = Canvas(bg=(0, 0, 0, 0))
+    silhouette(c, (255, 255, 255, 255))
+    m = c.out().getchannel("A").resize((w, h)).filter(ImageFilter.MaxFilter(9))
+    inside = np.asarray(m) > 128
+    rgb = arr[..., :3]
+    mx, mn = rgb.max(-1), rgb.min(-1)
+    # plus the grey head as ChatGPT actually drew it (can be a bit bigger than the template):
+    # flat grey pixels, closed over the strands lying on it
+    flat = ((mx - mn < 8) & (mx > 150) & (mx < 230)).astype(np.uint8) * 255
+    gm = Image.fromarray(flat).filter(ImageFilter.MaxFilter(31)).filter(ImageFilter.MinFilter(21))
+    inside = inside | (np.asarray(gm) > 128)
+    pure = inside & (mx - mn < 8) & (mx > 150) & (mx < 230)
+    if pure.sum() < 1000:
+        out = arr.copy()
+        out[..., 3] = outside_alpha
+        return out
+    grey = np.median(rgb[pure], 0)
+    d = np.sqrt(((rgb - grey) ** 2).sum(-1))
+    # grey shading of the guide head (low saturation) is background too; hair is brown/orange (saturated)
+    ag = np.clip((d - 10.0) / 60.0, 0.0, 1.0) * np.clip((mx - mn - 12.0) / 20.0, 0.0, 1.0)
+    # bits of forehead skin drawn into the hair image (light, not very saturated): not hair
+    lum = rgb.mean(-1)
+    sat_rel = (mx - mn) / np.maximum(mx, 1.0)
+    ag = ag * (1.0 - np.clip((lum - 165.0) / 25.0, 0, 1) * np.clip((0.42 - sat_rel) / 0.1, 0, 1))
+    fixed = grey + (rgb - grey) / np.maximum(ag, 0.05)[..., None]
+    out = arr.copy()
+    out[..., :3] = np.where(inside[..., None], np.clip(fixed, 0, 255), rgb)
+    # outside the silhouette: the old saturation-based grey removal (ChatGPT's grey head can be a bit bigger)
+    out[..., 3] = np.where(inside, arr[..., 3] * ag, outside_alpha)
+    return out
+
+
 def to_img(arr):
     return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA")
 
@@ -200,6 +237,8 @@ def main():
 
     if base512 is not None:
         hm = base512.getchannel("A").filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.GaussianBlur(2))
+        # the front layer reaches a bit past the head edge, so the edge never shows through the hair
+        hm_front = base512.getchannel("A").filter(ImageFilter.MaxFilter(11)).filter(ImageFilter.GaussianBlur(2))
     # Emily's hairstyles first (fixed order), then any other hair_<name>.png (Abiha, Mark...)
     names = [h[0] for h in L.HAIRS]
     names += sorted(f[5:-4] for f in os.listdir(src)
@@ -212,14 +251,15 @@ def main():
         found.append(name)
         print("hair", name)
         img = Image.open(p)
-        hair = to_img(unkey(img, gray_too=True)).resize((G, G), Image.LANCZOS)
+        hair = to_img(unmix_grey(unkey(img), unkey(img, gray_too=True)[..., 3])).resize((G, G), Image.LANCZOS)
         a = hair.getchannel("A")
         if base512 is not None:
             hair = fill_ear_gaps(hair, base512)
             a = hair.getchannel("A")
         front, back = hair.copy(), hair.copy()
         if base512 is not None:
-            front.putalpha(ImageChops.multiply(a, hm))
+            # hair lying on the head is denser: thin strands must not show the skull edge through
+            front.putalpha(ImageChops.multiply(a.point(lambda v: min(255, int(v * 1.6))), hm_front))
             back.putalpha(ImageChops.multiply(a, ImageChops.invert(hm)))
         else:
             back.putalpha(Image.new("L", (G, G), 0))
