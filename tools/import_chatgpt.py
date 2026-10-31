@@ -125,6 +125,39 @@ def zone_patch(full512, zone, base512):
     return patch
 
 
+def fill_ear_gaps(hair, base512):
+    """The guide head can be a bit bigger than the drawn head (ears!). Where the guide head was,
+    the drawn head isn't, and hair is right next to it, fill the hole with the colour of the
+    nearby hair (it ends up in the back layer, behind the head)."""
+    c = Canvas(bg=(0, 0, 0, 0))
+    silhouette(c, (255, 255, 255, 255))
+    sil = np.asarray(c.out((G, G)).getchannel("A").filter(ImageFilter.MaxFilter(5))) > 60
+    head = np.asarray(base512.getchannel("A")) > 128
+    ha = np.asarray(hair.getchannel("A")).astype(np.float32) / 255.0
+    near = np.asarray(hair.getchannel("A").filter(ImageFilter.MaxFilter(25))) > 128
+    hole = sil & ~head & near & (ha < 0.9)
+    if hole.sum() == 0:
+        return hair
+    rgb = np.asarray(hair.convert("RGB")).astype(np.float32)
+    # push-pull fill: average colour of nearby hair pixels, several scales
+    fill = np.zeros_like(rgb)
+    got = np.zeros(ha.shape, np.float32)
+    for rad in (3, 6, 12, 24):
+        w = Image.fromarray((ha * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(rad))
+        w = np.asarray(w).astype(np.float32) / 255.0
+        col = np.dstack([np.asarray(Image.fromarray((rgb[..., i] * ha).astype(np.uint8)).filter(ImageFilter.GaussianBlur(rad))).astype(np.float32) / 255.0 * 255.0 for i in range(3)])
+        ok = (w > 0.02) & (got == 0)
+        fill[ok] = col[ok] / w[ok][:, None]
+        got[ok] = 1
+    soft = np.asarray(Image.fromarray((hole * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.5))).astype(np.float32) / 255.0
+    soft = np.maximum(soft - ha, 0) * got
+    out = rgb * ha[..., None] + fill * soft[..., None]
+    alpha = np.clip(ha + soft, 0, 1)
+    out = out / np.maximum(alpha, 1e-3)[..., None]
+    print(f"    filled {int(hole.sum())} px of ear gaps")
+    return to_img(np.dstack([out, alpha * 255]))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default=os.path.join(ROOT, "from_chatgpt"))
@@ -169,12 +202,15 @@ def main():
         hm = base512.getchannel("A").filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.GaussianBlur(2))
     for name, _ in L.HAIRS:
         p = os.path.join(src, f"hair_{name}.png")
-        if not os.path.exists(p):
+        if not os.path.exists(p) or p.endswith(".orig.png"):
             continue
         print("hair", name)
         img = Image.open(p)
         hair = to_img(unkey(img, gray_too=True)).resize((G, G), Image.LANCZOS)
         a = hair.getchannel("A")
+        if base512 is not None:
+            hair = fill_ear_gaps(hair, base512)
+            a = hair.getchannel("A")
         front, back = hair.copy(), hair.copy()
         if base512 is not None:
             front.putalpha(ImageChops.multiply(a, hm))

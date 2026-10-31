@@ -110,6 +110,16 @@ func run() -> void:
 		frames2.append(await grab(region))
 	sheet(frames2, 4).save_png(out_dir + "/outfits.png")
 	emily.set_outfit({"top": "tshirt_pink", "bottom": "leggings_grey", "socks": "socks_pink"})
+	# hairstyles
+	var frames3 := []
+	for h in ["pigtails", "ponytail", "braids", "headband", "bun", "stars", "flowers", "cap"]:
+		if ResourceLoader.exists("res://emily/head/hair/%s_front.png" % h):
+			emily.set_hair(h)
+			await pose("idle", 0.0)
+			frames3.append(await grab(region))
+	if frames3.size() > 0:
+		sheet(frames3, 4).save_png(out_dir + "/hairstyles.png")
+	emily.set_hair("pigtails")
 	# close-ups of joints in bent poses (2.5x)
 	emily.scale = Vector2(2.4, 2.4)
 	var close := []
