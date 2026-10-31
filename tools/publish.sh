@@ -35,6 +35,7 @@ echo "$(date +%F)|$DESC" > $TMP/version.txt
 
 # новый сайт: рабочая ветка + все прошлые версии + список
 git read-tree HEAD
+git rm -r -q --cached --ignore-unmatch art_source >/dev/null   # исходные листы героев (art_source/) на сайт не нужны
 for d in $DIRS; do git read-tree --prefix="$d/" "$G:$d"; done
 git read-tree --prefix="v$N/" "$PREV"
 add $TMP/versions.txt versions.txt; add $TMP/version.txt version.txt; add $TMP/versions.html versions.html;

@@ -708,3 +708,77 @@
 [shyly] Okay …
 
 [shyly] Entschuldigung. Spielst du mit mir?
+
+
+# Уровни 21–23 (Абиха): НЕ ЗАПИСАНО — кончились кредиты ElevenLabs (31.10)
+
+Остальные 98 фраз уровней 21–23 записаны блоками и нарезаны по паузам (`tools/voice_split.py`, блоки — `art/abiha_voice/blocks.json`).
+Эти два блока — по одной генерации eleven_v3 каждый (~650 кредитов), потом:
+`python3 tools/voice_split.py <URL записи> <ключи через запятую> art/abiha_voice/lines.json` (тексты фраз), `python3 tools/build_minigames.py`.
+Пока записи нет, фразу говорит голос браузера (SAY).
+
+## Эмили — Tilly `MkTSSXNgnBULS6ek4pon`
+
+Ключи по порядку: e22_ich_auch, e22_rutschen, e22_jetzt_ich, e22_anschubsen, e22_danke, e22_sandkuchen, e22_hier_bitte, e22_sandburg, e22_wette, e22_los, e22_gerne, e23_kennst, e23_jetzt, e23_herbst
+
+```
+[cheerfully] Ich auch! Lass uns nach draußen gehen!
+
+[curious] Wollen wir zusammen rutschen?
+
+[cheerfully] Haha! Jetzt bin ich dran!
+
+[curious] Ja! Kannst du mich ein bisschen anschubsen?
+
+[cheerfully] Das macht Spaß! Danke, Abiha!
+
+[cheerfully] Ja! Lass uns einen großen Sandkuchen backen!
+
+[cheerfully] Hier, bitte!
+
+[cheerfully] Ich baue eine Sandburg!
+
+[curious] Wollen wir um die Wette laufen?
+
+[cheerfully] Auf die Plätze, fertig, los!
+
+[cheerfully] Ich spiele so gerne mit dir!
+
+[curious] Abiha, welche Jahreszeiten kennst du?
+
+[curious] Ich kenne sie auch! Welche Jahreszeit ist jetzt?
+
+[cheerfully] Jetzt ist Herbst!
+```
+
+## Абиха — Mini `nUX4UWK0Tf1qh5zvFZWR`
+
+Ключи по порядку: b21_hallo, b21_urlaub, b21_koeln, b21_schoen, b21_stadt, b21_dom, b21_ali, b21_schoko, b21_familie, b21_sehr, b21_auch, b21_ja, b22_draussen
+
+```
+[happy] Hallo, Emily!
+
+[happy] Ja, ich war im Urlaub!
+
+[happy] Ich war mit meiner Mama, meinem Papa und meinem Bruder Ali in Köln.
+
+[happy] Es war sehr schön!
+
+[happy] Ich war mit meiner Familie in der Stadt.
+
+[happy] Ich habe den Kölner Dom gesehen! Er ist riesengroß!
+
+[happy] Ja! Ich habe mit Ali gespielt. Das hat viel Spaß gemacht!
+
+[happy] Ja! Ich habe Schokoladeneis gegessen. Das war lecker!
+
+[happy] Nein, wir waren nur mit unserer Familie dort. Mama, Papa, Ali und ich.
+
+[happy] Ja, sehr! Es war richtig schön!
+
+[happy] Ich habe dich auch vermisst, Emily!
+
+[happy] Ja! Das habe ich auch vermisst!
+
+[curious] Ich möchte draußen spielen! Und du?
+```

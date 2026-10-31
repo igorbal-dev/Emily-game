@@ -72,6 +72,7 @@ async function dragTry(page){
     page.on('requestfailed', r => errs.push('404/failed: ' + r.url()));
     page.on('response', r => { if (r.status() >= 400) errs.push(r.status() + ' ' + r.url()); });
     await page.addInitScript(INIT);
+    if (process.env.DEV) await page.addInitScript(() => localStorage.setItem('emily-dev', '1'));   /* DEV=1 — режим разработчика: закрытые уровни открыты */
     await page.goto(BASE + 'l' + lv + '.html');
     await page.waitForTimeout(500);
     await page.click('#go', {force:true});

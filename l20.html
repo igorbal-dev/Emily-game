@@ -74,6 +74,7 @@ const SAY = {
 <script src="js/talk.js"></script>
 <script src="js/chunks.js"></script>
 <script src="js/repeat.js"></script>
+<script src="js/scenes.js"></script>
 <script>
 /* Уровень 20: садик. Леон дразнит («Nein! Ich bin nicht blöd…»), бьёт по руке («Aua! Nicht hauen!») — три карточки: сказать Heike, дать сдачи
    (засчитывается, но Heike объясняет), ничего не делать (снова). Чувства на карточках-лицах. Леон шепчет друзьям «Spielt nicht mit Emily!» —
@@ -83,23 +84,7 @@ const STICKER = '<svg viewBox="0 0 100 100"><g stroke-width="3" stroke-linejoin=
 
 /* ---------- фон: игровой уголок садика — окно, полки с игрушками, ковёр ---------- */
 const RUG = 0.64;
-function drawScene(g, W, H, L){
-  const fy = L.floorY, hE = L.hE; g.lineCap = 'round'; g.lineJoin = 'round';
-  g.fillStyle = '#fff1c9'; g.fillRect(0, 0, W, fy);
-  g.fillStyle = '#ffe2a0'; g.fillRect(0, fy - hE*0.55, W, hE*0.5);
-  g.fillStyle = '#c98f55'; g.fillRect(0, fy - hE*0.06, W, H - fy + hE*0.06);
-  /* окна */
-  for (const wx of [0.3, 0.52]){ const x = W*wx, y = fy - hE*1.65;
-    g.fillStyle = '#8fd3ff'; g.fillRect(x, y, hE*0.7, hE*0.55); g.strokeStyle = '#fff'; g.lineWidth = hE*0.04; g.strokeRect(x, y, hE*0.7, hE*0.55);
-    g.beginPath(); g.moveTo(x + hE*0.35, y); g.lineTo(x + hE*0.35, y + hE*0.55); g.stroke(); }
-  /* полка с игрушками справа */
-  const sx = W*0.86; g.fillStyle = '#e8904a'; g.fillRect(sx - hE*0.4, fy - hE*1.1, hE*0.8, hE*0.06); g.fillRect(sx - hE*0.4, fy - hE*0.7, hE*0.8, hE*0.06);
-  [['#ff7a59', -0.25], ['#32b67a', 0], ['#9b6bff', 0.25]].forEach(([c, dx]) => { g.fillStyle = c; g.fillRect(sx + hE*dx - hE*0.08, fy - hE*1.28, hE*0.16, hE*0.18); });
-  g.fillStyle = '#ffd34d'; g.beginPath(); g.arc(sx, fy - hE*0.82, hE*0.1, 0, 7); g.fill();
-  /* ковёр для игры */
-  g.fillStyle = '#7ab8f5'; g.beginPath(); g.ellipse(W*RUG, fy + hE*0.02, hE*0.95, hE*0.13, 0, 0, 7); g.fill();
-  g.strokeStyle = '#fff'; g.lineWidth = hE*0.02; g.setLineDash([hE*0.05, hE*0.04]); g.beginPath(); g.ellipse(W*RUG, fy + hE*0.02, hE*0.85, hE*0.1, 0, 0, 7); g.stroke(); g.setLineDash([]);
-}
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG); }
 
 const BLOCK = c => `<svg viewBox="0 0 60 40"><rect x="3" y="3" width="54" height="34" rx="5" fill="${c}" stroke="rgba(0,0,0,.25)" stroke-width="4"/><circle cx="18" cy="20" r="5" fill="#fff" opacity=".5"/><circle cx="42" cy="20" r="5" fill="#fff" opacity=".5"/></svg>`;
 const BCOL = ['#ff7a59', '#ffd34d', '#32b67a', '#5aa8f0', '#9b6bff', '#ff8fb8'];
