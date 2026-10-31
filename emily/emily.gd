@@ -8,7 +8,7 @@ extends Node2D
 ##   emily.set_outfit({"bottom": null})           # take off the trousers (bodysuit stays)
 ##   emily.set_hair("braids")
 ##   emily.eyes = "happy"; emily.mouth = "laugh"
-##   emily.play("walk")  # idle, walk, wave, jump, talk, blink
+##   emily.play("walk")  # idle, walk, run, wave, jump, spin, talk, blink
 ##   emily.talking = true  # mouth moves on top of any body animation
 ##   emily.facing = -1     # look left
 
@@ -18,6 +18,8 @@ const OUTFIT_DIR := "res://emily/outfits/"
 const HEAD_DIR := "res://emily/head/"
 ## Units per second the body moves when the "walk" animation plays (feet don't slide).
 const WALK_SPEED := 231.0
+## Units per second for "run".
+const RUN_SPEED := 594.0
 
 const DEFAULT_OUTFIT := {"base": "bodysuit", "top": "tshirt_pink", "bottom": "leggings_grey", "socks": "socks_pink"}
 
@@ -89,7 +91,7 @@ func _process(delta: float) -> void:
 func play(anim: String) -> void:
 	if not player.has_animation(anim):
 		return
-	if anim in ["idle", "walk"]:
+	if anim in ["idle", "walk", "run"]:
 		eyes = "open"
 		if not talking:
 			mouth = "smile"
@@ -98,7 +100,7 @@ func play(anim: String) -> void:
 ## one-shot actions (wave, jump, blink) return to idle by themselves
 func _on_anim_finished(anim: StringName) -> void:
 	action_finished.emit(anim)
-	if anim in [&"wave", &"jump", &"blink"]:
+	if anim in [&"wave", &"jump", &"blink", &"spin"]:
 		play("idle")
 
 # ------------------------------------------------------------------ clothes
@@ -222,3 +224,72 @@ func _apply_face() -> void:
 	var m: Sprite2D = head.get_node("Mouth")
 	e.texture = _tex(HEAD_DIR + "eyes/%s.png" % eyes)
 	m.texture = _tex(HEAD_DIR + "mouth/%s.png" % mouth)
+
+# ------------------------------------------------------------------ viewer (viewer/viewer.gd)
+const RU := {
+	"idle": "Стоит", "walk": "Идёт", "run": "Бежит", "jump": "Прыжок", "wave": "Машет",
+	"spin": "Кружится", "talk": "Говорит", "blink": "Моргает",
+	"tshirt_pink": "Розовая футболка", "tshirt_yellow": "Жёлтая футболка", "longsleeve_mint": "Мятная кофта",
+	"leggings_grey": "Серые леггинсы", "shorts_denim": "Шорты", "skirt_lilac": "Юбка",
+	"socks_pink": "Розовые носки", "socks_white": "Белые носки",
+	"pigtails": "Два хвостика", "ponytail": "Хвостик", "braids": "Косички", "headband": "Ободок",
+	"bun": "Пучок", "stars": "Звёздочки", "flowers": "Венок", "cap": "Кепка",
+	"open": "Открыты", "half": "Прищур", "closed": "Закрыты", "happy": "Радость", "surprised": "Удивление", "sad": "Грусть",
+	"smile": "Улыбка", "a": "А", "o": "О", "e": "И", "m": "М", "laugh": "Смех",
+}
+
+static func ru(id: String) -> String:
+	return RU.get(id, id)
+
+## Everything the phone viewer can switch. Returns [{"tab": ..., "title": ..., "items": [[label, Callable, is_on Callable]]}]
+## New items appear by themselves: any .tres in emily/outfits/, any hair PNG in emily/head/hair/.
+func viewer_options() -> Array:
+	var groups := []
+	var by_slot := {}
+	for f in _list(OUTFIT_DIR, ".tres"):
+		var item: OutfitItem = load(OUTFIT_DIR + f + ".tres")
+		if item == null or item.slot == "base":
+			continue
+		if not by_slot.has(item.slot):
+			by_slot[item.slot] = []
+		by_slot[item.slot].append(f)
+	var slot_titles := {"top": "Верх", "bottom": "Низ", "socks": "Носки"}
+	for slot in ["top", "bottom", "socks"] + by_slot.keys().filter(func(s): return not s in ["top", "bottom", "socks"]):
+		if not by_slot.has(slot):
+			continue
+		var items := []
+		for id in by_slot[slot]:
+			items.append([ru(id), func(): set_outfit({slot: id}), func(): return str(outfit.get(slot, "")) == id])
+		items.append(["Без", func(): set_outfit({slot: null}), func(): return not outfit.has(slot)])
+		groups.append({"tab": "Одежда", "title": slot_titles.get(slot, slot), "items": items})
+	var hairs := []
+	for f in _list(HEAD_DIR + "hair/", "_front.png"):
+		hairs.append([ru(f), func(): set_hair(f), func(): return hair == f])
+	groups.append({"tab": "Причёски", "title": "", "items": hairs})
+	var ev := []
+	for f in _list(HEAD_DIR + "eyes/", ".png"):
+		ev.append([ru(f), func(): eyes = f, func(): return eyes == f])
+	groups.append({"tab": "Лицо", "title": "Глаза", "items": ev})
+	var mv := []
+	for f in _list(HEAD_DIR + "mouth/", ".png"):
+		mv.append([ru(f), func(): mouth = f, func(): return mouth == f])
+	mv.append(["Болтает", func(): talking = not talking, func(): return talking])
+	groups.append({"tab": "Лицо", "title": "Рот", "items": mv})
+	return groups
+
+## file names (without suffix) in a res:// folder; works in exported builds too (.import / .remap)
+func _list(dir: String, suffix: String) -> Array:
+	var out := []
+	for f in DirAccess.get_files_at(dir):
+		f = f.trim_suffix(".import").trim_suffix(".remap")
+		if f.ends_with(suffix):
+			var id := f.trim_suffix(suffix)
+			if not id in out:
+				out.append(id)
+	out.sort()
+	# keep a nice fixed order for the known ones
+	var order := ["tshirt_pink", "tshirt_yellow", "longsleeve_mint", "leggings_grey", "shorts_denim", "skirt_lilac",
+		"socks_pink", "socks_white", "pigtails", "ponytail", "braids", "headband", "bun", "stars", "flowers", "cap",
+		"open", "half", "closed", "happy", "surprised", "sad", "smile", "a", "o", "e", "m", "laugh"]
+	out.sort_custom(func(x, y): return (order.find(x) if x in order else 999) < (order.find(y) if y in order else 999))
+	return out

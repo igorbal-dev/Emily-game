@@ -12,6 +12,7 @@ var emily
 var ground_node: Node2D
 var walk_t := 0.0
 var show_ticks := false
+var tick_speed := 231.0
 var out_dir := ""
 
 func _initialize() -> void:
@@ -32,7 +33,7 @@ func _draw_ground() -> void:
 	ground_node.draw_rect(Rect2(0, GROUND, W, H - GROUND), Color(0.86, 0.82, 0.74))
 	ground_node.draw_line(Vector2(0, GROUND), Vector2(W, GROUND), Color(0.6, 0.55, 0.48), 2.0)
 	if show_ticks:
-		var off := fposmod(-walk_t * 231.0, 80.0)
+		var off := fposmod(-walk_t * tick_speed, 80.0)
 		var x := off - 80.0
 		while x < W:
 			ground_node.draw_line(Vector2(x, GROUND + 2), Vector2(x - 10, GROUND + 22), Color(0.6, 0.55, 0.48), 3.0)
@@ -71,15 +72,16 @@ func run() -> void:
 	await process_frame
 	var region := Rect2i(W / 2 - CELL.x / 2, int(GROUND) - CELL.y + 28, CELL.x, CELL.y)
 	emily.position.y = GROUND
-	var anims := {"idle": [3.0, 8], "walk": [0.9, 12], "wave": [2.4, 12], "jump": [1.4, 14], "talk": [2.4, 8], "blink": [0.24, 6]}
+	var anims := {"idle": [3.0, 8], "walk": [0.9, 12], "run": [0.62, 12], "spin": [1.3, 12], "wave": [2.4, 12], "jump": [1.4, 14], "talk": [2.4, 8], "blink": [0.24, 6]}
 	for anim in anims:
 		var length: float = anims[anim][0]
 		var n: int = anims[anim][1]
-		show_ticks = anim == "walk"
+		show_ticks = anim in ["walk", "run"]
+		tick_speed = 594.0 if anim == "run" else 231.0
 		var frames := []
 		DirAccess.make_dir_recursive_absolute(out_dir + "/" + anim)
 		for i in n:
-			var t := length * i / (n if anim in ["idle", "walk", "talk"] else n - 1)
+			var t := length * i / (n if anim in ["idle", "walk", "run", "talk"] else n - 1)
 			await pose(anim, t)
 			var img: Image = await grab(region)
 			img.save_png("%s/%s/%02d.png" % [out_dir, anim, i])

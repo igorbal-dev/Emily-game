@@ -81,6 +81,11 @@ func build_scene() -> Node2D:
 	lib.add_animation("RESET", make_body_anim("RESET", 1.0 / FPS, false, pose_rest))
 	lib.add_animation("idle", make_body_anim("idle", 3.0, true, pose_idle))
 	lib.add_animation("walk", make_body_anim("walk", WALK_T, true, pose_walk))
+	lib.add_animation("run", make_body_anim("run", RUN_T, true, pose_run))
+	var spin := make_body_anim("spin", 1.3, false, pose_spin)
+	add_face(spin, "eyes", [[0.0, "open"], [0.2, "happy"], [1.15, "open"]])
+	add_face(spin, "mouth", [[0.0, "smile"], [0.2, "laugh"], [1.15, "smile"]])
+	lib.add_animation("spin", spin)
 	var wave := make_body_anim("wave", 2.4, false, pose_wave)
 	add_face(wave, "eyes", [[0.0, "open"], [0.35, "happy"], [2.05, "open"]])
 	add_face(wave, "mouth", [[0.0, "smile"], [0.4, "a"], [0.62, "laugh"], [1.9, "smile"]])
@@ -181,6 +186,13 @@ func make_body_anim(aname: String, length: float, loop: bool, pose: Callable) ->
 			anim.track_insert_key(tr, length * i / n, samples[i][pb[1]])
 		if loop:
 			anim.track_insert_key(tr, length, samples[0][pb[1]])
+	# whole-skeleton scale (used by "spin"; 1 everywhere else so an interrupted spin is reset)
+	var st := anim.add_track(Animation.TYPE_VALUE)
+	anim.track_set_path(st, NodePath("Skeleton2D:scale"))
+	for i in samples.size():
+		anim.track_insert_key(st, length * i / n, samples[i].get("skel", Vector2.ONE))
+	if loop:
+		anim.track_insert_key(st, length, samples[0].get("skel", Vector2.ONE))
 	return anim
 
 func _smooth_hips(samples: Array) -> void:
@@ -406,5 +418,85 @@ func pose_talk(t: float) -> Dictionary:
 	p["rot"]["Head"] += deg(2.6 * sin(TAU * t / 1.2) + 1.5 * sin(TAU * t / 0.8))
 	p["rot"]["Neck"] += deg(1.0 * sin(TAU * t / 2.4))
 	p["rot"]["Torso"] += deg(1.0 * sin(TAU * t / 2.4))
+	_solve_legs(p)
+	return p
+
+const RUN_T := 0.62
+const RUN_STRIDE := 140.0
+const RUN_DUTY := 0.38
+
+func _run_foot(q: float) -> Array:
+	var x := 0.0
+	var lift := 0.0
+	var phi := 0.0
+	if q < RUN_DUTY:
+		x = RUN_STRIDE / 2.0 - RUN_STRIDE * q / RUN_DUTY
+		if q < 0.06:
+			phi = lerpf(-8.0, 0.0, smooth01(q / 0.06))
+		elif q > 0.22:
+			phi = 24.0 * smooth01((q - 0.22) / (RUN_DUTY - 0.22))
+	else:
+		var s := (q - RUN_DUTY) / (1.0 - RUN_DUTY)
+		# heel kicks up behind first, then the leg swings forward
+		x = -RUN_STRIDE / 2.0 + RUN_STRIDE * smooth01(pow(s, 1.25))
+		lift = 62.0 * pow(sin(PI * pow(s, 0.75)), 1.1)
+		if s < 0.4:
+			phi = lerpf(24.0, 18.0, smooth01(s / 0.4))
+		else:
+			phi = lerpf(18.0, -8.0, smooth01((s - 0.4) / 0.6))
+	return [x, lift, deg(phi)]
+
+func pose_run(t: float) -> Dictionary:
+	var p := base_pose()
+	var ph := t / RUN_T
+	var hips_rot := deg(2.5 * sin(TAU * ph))
+	p["hips_rot"] = hips_rot
+	# lowest in the middle of each stance (q = duty/2), highest in flight
+	p["hips"] += Vector2(0, 13.0 + 8.0 * cos(TAU * 2.0 * (ph - RUN_DUTY / 2.0)))
+	for s in ["R", "L"]:
+		var q := fposmod(ph + (0.0 if s == "R" else 0.5), 1.0)
+		var w := _run_foot(q)
+		var hip_x: float = S.local_pos("Thigh" + s).x
+		p["ankle"][s] = Vector2(hip_x + w[0], ankle_y_for(w[2]) - w[1])
+		p["foot"][s] = w[2]
+	var lean := 11.0
+	p["rot"]["Torso"] = deg(lean + 1.5 * sin(TAU * 2.0 * ph + 0.8)) - hips_rot * 0.6
+	p["rot"]["Neck"] = deg(-3.0)
+	p["rot"]["Head"] = deg(-lean * 0.55 + 2.0 * sin(TAU * 2.0 * ph + 1.6))
+	for s in ["R", "L"]:
+		var aph := TAU * (ph + (0.0 if s == "R" else 0.5))
+		p["rot"]["UpperArm" + s] = deg(42.0 * cos(aph - 0.2) - 8.0)
+		p["rot"]["Forearm" + s] = deg(-(78.0 - 14.0 * cos(aph - 0.6)))
+		p["rot"]["Hand" + s] = deg(-10.0)
+	_solve_legs(p)
+	return p
+
+## a happy twirl on the spot: the skeleton turns around (scale.x 1 -> -1 -> 1) with a little hop
+func pose_spin(t: float) -> Dictionary:
+	var p := pose_idle(0.0)
+	var e := smooth01((t - 0.12) / 0.95)
+	p["skel"] = Vector2(cos(TAU * e), 1.0)
+	var hop := sin(PI * clampf((t - 0.15) / 0.9, 0.0, 1.0))
+	var crouch := curve([[0.0, 0.0], [0.12, 10.0], [0.3, -4.0], [1.05, -4.0], [1.15, 8.0], [1.3, 0.0]], t)
+	p["hips"] += Vector2(0, crouch - 26.0 * hop)
+	var arms := sin(PI * clampf((t - 0.08) / 1.1, 0.0, 1.0))
+	p["rot"]["UpperArmR"] = deg(4.0 + 70.0 * arms)
+	p["rot"]["UpperArmL"] = deg(-3.0 - 70.0 * arms)
+	p["rot"]["ForearmR"] = deg(-8.0 + 20.0 * arms)
+	p["rot"]["ForearmL"] = deg(-9.0 - 20.0 * arms)
+	p["rot"]["Head"] = deg(6.0 * arms)
+	var air := smooth01(hop * 3.0)
+	for s in ["L", "R"]:
+		var hip: Vector2 = p["hips"] + S.local_pos("Thigh" + s)
+		var phi := deg(14.0 * air)
+		var ground := Vector2(hip.x, ankle_y_for(phi))
+		var reach := 0.999 * (S.THIGH_LEN + S.SHIN_LEN)
+		var tgt := ground
+		if hip.distance_to(ground) > reach:
+			tgt = hip + Vector2(0, reach)
+		if s == "L":
+			tgt += Vector2(-10.0, -18.0) * hop
+		p["ankle"][s] = tgt
+		p["foot"][s] = phi
 	_solve_legs(p)
 	return p
