@@ -2,6 +2,7 @@
 # Публикация игры на сайт (ветка gh-pages). Ничего не удаляется:
 #   корень сайта — всегда актуальная версия; прошлая версия уходит в папку vN/ (v1, v2, …), её можно открыть по ссылке;
 #   versions.html — список всех версий с датой и описанием.
+#   puppets/ (просмотрщик персонажей) переносится в новый корень как есть и в vN/ не копируется.
 #   Удалять старые версии — только когда скажет Игорь. Скрипт предупреждает, если сайт приближается к пределу GitHub Pages (~1 ГБ).
 # Запуск после commit: sh tools/publish.sh "Коротко, что нового в этой версии"
 set -e
@@ -18,7 +19,7 @@ N=0; for d in $DIRS; do n=${d#v}; [ "$n" -gt "$N" ] && N=$n; done; N=$((N + 1))
 
 # прошлая версия = нынешний корень сайта без папок версий и служебных файлов
 git read-tree $G
-git rm -r -q --cached --ignore-unmatch $DIRS old versions.html versions.txt version.txt >/dev/null
+git rm -r -q --cached --ignore-unmatch $DIRS old versions.html versions.txt version.txt puppets >/dev/null   # puppets/ в прошлые версии не копируем
 PREV=$(git write-tree)
 git show $G:versions.txt > $TMP/versions.txt 2>/dev/null || : > $TMP/versions.txt
 echo "v$N|$(git show $G:version.txt 2>/dev/null || git log -1 --format='%cs|%s' $G)" >> $TMP/versions.txt
@@ -37,6 +38,8 @@ echo "$(date +%F)|$DESC" > $TMP/version.txt
 git read-tree HEAD
 git rm -r -q --cached --ignore-unmatch art_source >/dev/null   # исходные листы героев (art_source/) на сайт не нужны
 for d in $DIRS; do git read-tree --prefix="$d/" "$G:$d"; done
+# просмотрщик персонажей (puppets/, публикует tools/publish_viewer.sh из ветки claude/emily-godot-rig) остаётся как есть, один экземпляр
+git cat-file -e "$G:puppets" 2>/dev/null && git read-tree --prefix="puppets/" "$G:puppets"
 git read-tree --prefix="v$N/" "$PREV"
 add $TMP/versions.txt versions.txt; add $TMP/version.txt version.txt; add $TMP/versions.html versions.html;
 C=$(git commit-tree "$(git write-tree)" -p $G -p HEAD -m "Публикация $(git rev-parse --short HEAD); прошлая версия сайта — v$N/")
