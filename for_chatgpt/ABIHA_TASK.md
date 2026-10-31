@@ -9,10 +9,22 @@ Until the new sheet arrives, the game shows that one standing picture for every 
 
 ## How to send it
 
-1. Open ChatGPT (image generation) or Codex.
-2. Attach **`art_source/abiha/abiha_sheet_1.png`** as the reference. It is the sheet the game uses, so the new sheet must match it.
-3. Paste the prompt below as it is.
-4. Save the result as `art_source/abiha/abiha_sheet_5_winter.png` and tell Claude Code it is there.
+**Codex (has access to the repository):** paste the "Task for Codex" below — it takes the reference from the repo and puts the result back.
+
+**ChatGPT (no repository):** attach **`art_source/abiha/abiha_sheet_1.png`** as the reference, paste the prompt from the box,
+save the result as `art_source/abiha/abiha_sheet_5_winter.png` (upload on GitHub to branch `claude/emily-game-port`) and tell Claude Code it is there.
+
+## Task for Codex (copy as it is)
+
+```
+Repository igorbal-dev/Emily-game, branch claude/emily-game-port.
+1. Open the reference image art_source/abiha/abiha_sheet_1.png (character sheet of the girl Abiha).
+2. Generate ONE new image using that file as the reference and the prompt from the section
+   "Prompt (copy everything inside the box)" in for_chatgpt/ABIHA_TASK.md. Landscape, about 1536x1024 px, PNG.
+3. Save it as art_source/abiha/abiha_sheet_5_winter.png. Do not change, move or delete any other file.
+4. Commit only that file to branch claude/emily-game-port with the message "Abiha: winter poses sheet" and push.
+If image generation is not available to you, stop and say so; do not draw it with code.
+```
 
 ## Prompt (copy everything inside the box)
 
