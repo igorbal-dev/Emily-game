@@ -200,10 +200,16 @@ def main():
 
     if base512 is not None:
         hm = base512.getchannel("A").filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.GaussianBlur(2))
-    for name, _ in L.HAIRS:
+    # Emily's hairstyles first (fixed order), then any other hair_<name>.png (Abiha, Mark...)
+    names = [h[0] for h in L.HAIRS]
+    names += sorted(f[5:-4] for f in os.listdir(src)
+                    if f.startswith("hair_") and f.endswith(".png") and not f.endswith(".orig.png") and f[5:-4] not in names)
+    found = []
+    for name in names:
         p = os.path.join(src, f"hair_{name}.png")
-        if not os.path.exists(p) or p.endswith(".orig.png"):
+        if not os.path.exists(p):
             continue
+        found.append(name)
         print("hair", name)
         img = Image.open(p)
         hair = to_img(unkey(img, gray_too=True)).resize((G, G), Image.LANCZOS)
@@ -220,6 +226,8 @@ def main():
         front.save(os.path.join(dst, "hair", name + "_front.png"))
         back.save(os.path.join(dst, "hair", name + "_back.png"))
 
+    if found:
+        layout["hairs"] = found
     with open(os.path.join(dst, "layout.json"), "w") as f:
         json.dump(layout, f, indent=2)
     print("done. Now open the project in Godot (or run godot --headless --import) to import the new PNGs.")

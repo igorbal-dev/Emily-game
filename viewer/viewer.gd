@@ -2,10 +2,11 @@ extends Node2D
 ## Phone-friendly character viewer (also exported to the web).
 ## Add a new character: put its scene into CHARACTERS. Optional on the character:
 ##   viewer_options() -> [{"tab", "title", "items": [[label, do Callable, is_on Callable]]}]
-##   constants WALK_SPEED / RUN_SPEED, property `facing` (1 / -1), static ru(id) for Russian names.
+##   properties walk_speed / run_speed (or constants WALK_SPEED / RUN_SPEED), property `facing` (1 / -1), static ru(id) for Russian names.
 
 const CHARACTERS := [
 	{"name": "Эмили", "scene": "res://emily/emily.tscn"},
+	{"name": "Марк", "scene": "res://mark/mark.tscn"},
 ]
 const CHAR_HEIGHT := 560.0          # character height in its own units (with hair)
 const BG_TOP := Color(0.93, 0.96, 1.0)
@@ -90,7 +91,8 @@ func _process(delta: float) -> void:
 	var moving := stroll and cur_anim in ["walk", "run"]
 	var cx := stage.position.x + stage.size.x / 2.0
 	if moving:
-		var speed := _const("RUN_SPEED" if cur_anim == "run" else "WALK_SPEED", 230.0) * ch.scale.y * (0.35 if slow else 1.0)
+		var sp = ch.get("run_speed" if cur_anim == "run" else "walk_speed")
+		var speed: float = (float(sp) if sp != null else _const("RUN_SPEED" if cur_anim == "run" else "WALK_SPEED", 230.0)) * ch.scale.y * (0.35 if slow else 1.0)
 		var dir := float(ch.get("facing") if ch.get("facing") != null else 1)
 		ch.position.x += dir * speed * delta
 		var margin := 170.0 * ch.scale.y

@@ -1,0 +1,26 @@
+{
+  "canvas": 512,
+  "pivot": [
+    267.0,
+    383.0
+  ],
+  "eyes_rect": [
+    157,
+    240,
+    220,
+    80
+  ],
+  "mouth_rect": [
+    217,
+    330,
+    100,
+    40
+  ],
+  "head_top": 85.0,
+  "chin": 392.0,
+  "eyes": [],
+  "mouths": [],
+  "hairs": [],
+  "skin": "#fec39b",
+  "placeholder": "head from the old game sprite (art/parts/M1/1.png, hair baked in); replace via import_chatgpt.py"
+}

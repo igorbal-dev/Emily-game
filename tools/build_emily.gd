@@ -2,25 +2,45 @@ extends SceneTree
 ## Builds res://emily/emily.tscn: Skeleton2D + Bone2D, vector body (Polygon2D),
 ## head slots and all animations (computed: legs use IK so feet stay on the ground).
 ##
-## godot --headless --path . --script res://tools/build_emily.gd
+## godot --headless --path . --script res://tools/build_emily.gd            (Emily)
+## godot --headless --path . --script res://tools/build_emily.gd -- mark    (another character)
+## A character = the same bones, code and animations; proportions from EmilyShapes.BODIES,
+## head PNGs from <dir>head/, clothes from <dir>outfits/.
 
 const S := preload("res://emily/emily_shapes.gd")
 const FPS := 30.0
 const HEAD_UNITS := 142.0   # head height (top of skull -> chin) in body units
 
+const CHARS := {
+	"emily": {"node": "Emily", "dir": "res://emily/", "hair": "pigtails"},
+	"mark": {"node": "Mark", "dir": "res://mark/", "hair": "curls", "base_outfit": "romper",
+		"outfit": {"base": "romper"}},
+}
+
 var bone_paths := {}
 var bone_names := []
 var layout := {}
+var C := {}         # character config
+var B := {}         # body proportions (EmilyShapes.BODIES)
+var M := 1.0        # motion scale
+var cname := "emily"
 
 func _init() -> void:
-	var f := FileAccess.open("res://emily/head/layout.json", FileAccess.READ)
+	var args := OS.get_cmdline_user_args()
+	if args.size() > 0:
+		cname = args[0]
+	C = CHARS[cname]
+	B = S.body(cname)
+	M = S.motion(B)
+	var f := FileAccess.open(C["dir"] + "head/layout.json", FileAccess.READ)
 	layout = JSON.parse_string(f.get_as_text())
 	var root := build_scene()
 	var packed := PackedScene.new()
 	var err := packed.pack(root)
 	assert(err == OK)
-	err = ResourceSaver.save(packed, "res://emily/emily.tscn")
-	print("saved emily.tscn: ", err)
+	var out: String = C["dir"] + cname + ".tscn"
+	err = ResourceSaver.save(packed, out)
+	print("saved ", out, ": ", err)
 	root.free()
 	quit()
 
@@ -31,13 +51,20 @@ func own(n: Node, root: Node) -> void:
 
 func build_scene() -> Node2D:
 	var root := Node2D.new()
-	root.name = "Emily"
+	root.name = C["node"]
 	root.set_script(load("res://emily/emily.gd"))
+	if cname != "emily":
+		root.set("body", cname)
+		root.set("head_dir", C["dir"] + "head/")
+		root.set("outfit_dir", C["dir"] + "outfits/")
+		root.set("base_outfit", C.get("base_outfit", "bodysuit"))
+		root.set("outfit", C.get("outfit", {}))
+	root.set("hair", C["hair"])
 	var sk := Skeleton2D.new()
 	sk.name = "Skeleton2D"
 	root.add_child(sk)
 	var nodes := {}
-	for b in S.BONES:
+	for b in S.bones(B):
 		var bone := Bone2D.new()
 		bone.name = b[0]
 		bone.position = b[2]
@@ -53,16 +80,17 @@ func build_scene() -> Node2D:
 		bone_paths[b[0]] = "Skeleton2D/" + (str(sk.get_path_to(bone)) if false else _path(b[0]))
 	# skin
 	for piece in S.body_pieces():
-		S.make_piece_nodes(nodes[piece["bone"]], piece, S.PALETTE["skin"], S.PALETTE["skin_line"], "body")
+		S.make_piece_nodes(nodes[piece["bone"]], piece, S.PALETTE["skin"], S.PALETTE["skin_line"], "body", B)
 	# head slots
 	var head: Node2D = nodes["Head"]
-	var s := HEAD_UNITS / (float(layout["chin"]) - float(layout["head_top"]))
+	var s: float = B.get("head_units", HEAD_UNITS) / (float(layout["chin"]) - float(layout["head_top"]))
 	var pivot := Vector2(layout["pivot"][0], layout["pivot"][1])
-	var slots := [["HairBack", S.Z_HAIR_BACK, Vector2.ZERO, "res://emily/head/hair/pigtails_back.png"],
-		["HeadBase", S.Z_HEAD, Vector2.ZERO, "res://emily/head/base.png"],
-		["Eyes", S.Z_HEAD + 1, Vector2(layout["eyes_rect"][0], layout["eyes_rect"][1]), "res://emily/head/eyes/open.png"],
-		["Mouth", S.Z_HEAD + 2, Vector2(layout["mouth_rect"][0], layout["mouth_rect"][1]), "res://emily/head/mouth/smile.png"],
-		["HairFront", S.Z_HEAD + 10, Vector2.ZERO, "res://emily/head/hair/pigtails_front.png"]]
+	var hd: String = C["dir"] + "head/"
+	var slots := [["HairBack", S.Z_HAIR_BACK, Vector2.ZERO, hd + "hair/%s_back.png" % C["hair"]],
+		["HeadBase", S.Z_HEAD, Vector2.ZERO, hd + "base.png"],
+		["Eyes", S.Z_HEAD + 1, Vector2(layout["eyes_rect"][0], layout["eyes_rect"][1]), hd + "eyes/open.png"],
+		["Mouth", S.Z_HEAD + 2, Vector2(layout["mouth_rect"][0], layout["mouth_rect"][1]), hd + "mouth/smile.png"],
+		["HairFront", S.Z_HEAD + 10, Vector2.ZERO, hd + "hair/%s_front.png" % C["hair"]]]
 	for sl in slots:
 		var sp := Sprite2D.new()
 		sp.name = sl[0]
@@ -71,7 +99,7 @@ func build_scene() -> Node2D:
 		sp.position = (sl[2] - pivot) * s
 		sp.z_as_relative = false
 		sp.z_index = sl[1]
-		sp.texture = load(sl[3])
+		sp.texture = load(sl[3]) if ResourceLoader.exists(sl[3]) else null
 		head.add_child(sp)
 	# animation players
 	var ap := AnimationPlayer.new()
@@ -133,7 +161,7 @@ func _path(bname: String) -> String:
 	var cur := bname
 	while true:
 		var parent := ""
-		for b in S.BONES:
+		for b in S.bones(B):
 			if b[0] == cur:
 				parent = b[1]
 		if parent == "":
@@ -143,7 +171,7 @@ func _path(bname: String) -> String:
 	return "/".join(chain)
 
 func _bone_len(bname: String) -> float:
-	for b in S.BONES:
+	for b in S.bones(B):
 		if b[1] == bname:
 			return b[2].length()
 	match bname:
@@ -242,14 +270,14 @@ static func smooth01(x: float) -> float:
 	return x * x * (3.0 - 2.0 * x)
 
 ## ankle height above ground so that the lowest sole point touches y=0 for foot angle phi
-static func ankle_y_for(phi: float) -> float:
+func ankle_y_for(phi: float) -> float:
 	var m := -1e9
-	for p in S.SOLE:
+	for p in S.sole(B):
 		m = maxf(m, (p as Vector2).rotated(phi).y)
 	return -m
 
 func base_pose() -> Dictionary:
-	return {"rot": {}, "hips": S.local_pos("Hips"), "torso": S.local_pos("Torso"),
+	return {"rot": {}, "hips": S.local_pos("Hips", B), "torso": S.local_pos("Torso", B),
 		"ankle": {"L": null, "R": null}, "foot": {"L": 0.0, "R": 0.0}, "hips_rot": 0.0}
 
 ## Solves both legs with IK: ankle targets in pose["ankle"] (null = planted at rest),
@@ -258,11 +286,11 @@ func _solve_legs(p: Dictionary) -> void:
 	var hips_rot: float = p["hips_rot"]
 	p["rot"]["Hips"] = hips_rot
 	for s in ["L", "R"]:
-		var hip: Vector2 = p["hips"] + S.local_pos("Thigh" + s).rotated(hips_rot)
+		var hip: Vector2 = p["hips"] + S.local_pos("Thigh" + s, B).rotated(hips_rot)
 		var target = p["ankle"][s]
 		if target == null:
-			target = S.rest_global("Foot" + s) + Vector2(0, ankle_y_for(p["foot"][s]) - S.rest_global("Foot" + s).y)
-		var ik := S.leg_ik(hip, target, hips_rot)
+			target = S.rest_global("Foot" + s, B) + Vector2(0, ankle_y_for(p["foot"][s]) - S.rest_global("Foot" + s, B).y)
+		var ik := S.leg_ik(hip, target, hips_rot, B)
 		p["rot"]["Thigh" + s] = ik[0]
 		p["rot"]["Shin" + s] = ik[1]
 		var shin_g: float = hips_rot + ik[0] + ik[1]
@@ -279,8 +307,8 @@ func pose_idle(t: float) -> Dictionary:
 	var p := base_pose()
 	var ph := TAU * t / 3.0
 	var b := sin(ph)
-	p["hips"] += Vector2(0, 1.6 + 0.7 * b)
-	p["torso"] += Vector2(0, -0.9 * (b + 1.0))
+	p["hips"] += Vector2(0, 1.6 + 0.7 * b) * M
+	p["torso"] += Vector2(0, -0.9 * (b + 1.0)) * M
 	p["rot"]["Torso"] = deg(0.8 + 0.6 * b)
 	p["rot"]["Neck"] = deg(-0.5)
 	p["rot"]["Head"] = deg(1.5 * sin(ph - 0.7))
@@ -303,15 +331,15 @@ func _walk_foot(q: float) -> Array:
 	var lift := 0.0
 	var phi := 0.0
 	if q < DUTY:
-		x = STRIDE / 2.0 - STRIDE * q / DUTY
+		x = (STRIDE / 2.0 - STRIDE * q / DUTY) * M
 		if q < 0.1:
 			phi = lerpf(-14.0, 0.0, smooth01(q / 0.1))
 		elif q > 0.42:
 			phi = 20.0 * smooth01((q - 0.42) / (DUTY - 0.42))
 	else:
 		var s := (q - DUTY) / (1.0 - DUTY)
-		x = -STRIDE / 2.0 + STRIDE * (0.5 - 0.5 * cos(PI * s))
-		lift = 26.0 * pow(sin(PI * pow(s, 0.8)), 1.2)
+		x = (-STRIDE / 2.0 + STRIDE * (0.5 - 0.5 * cos(PI * s))) * M
+		lift = M * 26.0 * pow(sin(PI * pow(s, 0.8)), 1.2)
 		if s < 0.35:
 			phi = lerpf(20.0, 0.0, smooth01(s / 0.35))
 		else:
@@ -324,12 +352,12 @@ func pose_walk(t: float) -> Dictionary:
 	var hips_rot := deg(1.8 * sin(TAU * ph))
 	p["hips_rot"] = hips_rot
 	var lowest := -1e9
-	var R := 0.982 * (S.THIGH_LEN + S.SHIN_LEN)
+	var R := 0.982 * (S.thigh_len(B) + S.shin_len(B))
 	var feet := {}
 	for s in ["R", "L"]:
 		var q := fposmod(ph + (0.0 if s == "R" else 0.5), 1.0)
 		var w := _walk_foot(q)
-		var hip_x: float = S.local_pos("Thigh" + s).x
+		var hip_x: float = S.local_pos("Thigh" + s, B).x
 		var ankle := Vector2(hip_x + w[0], ankle_y_for(w[2]) - w[1])
 		feet[s] = ankle
 		p["ankle"][s] = ankle
@@ -337,7 +365,7 @@ func pose_walk(t: float) -> Dictionary:
 		if q < DUTY:
 			var dx := ankle.x - hip_x
 			var hy := ankle.y - sqrt(maxf(R * R - dx * dx, 1.0))
-			lowest = maxf(lowest, hy - S.local_pos("Thigh" + s).y)
+			lowest = maxf(lowest, hy - S.local_pos("Thigh" + s, B).y)
 	p["hips"] = Vector2(0, lowest)
 	var lean := 4.5
 	p["rot"]["Torso"] = deg(lean + 1.2 * sin(TAU * 2.0 * ph + 0.6)) - hips_rot * 0.6
@@ -372,9 +400,9 @@ func pose_wave(t: float) -> Dictionary:
 func pose_jump(t: float) -> Dictionary:
 	var p := base_pose()
 	var hy := curve([[0.0, 0.0], [0.28, 38.0], [0.40, 4.0], [0.48, -46.0], [0.68, -100.0], [0.88, -40.0],
-		[0.97, 2.0], [1.06, 30.0], [1.2, 6.0], [1.4, 0.0]], t)
+		[0.97, 2.0], [1.06, 30.0], [1.2, 6.0], [1.4, 0.0]], t) * M
 	var tuck := curve([[0.0, 0.0], [0.46, 0.0], [0.64, 1.0], [0.78, 1.0], [0.93, 0.0], [1.4, 0.0]], t)
-	var air := smooth01((-hy - 4.0) / 26.0)
+	var air := smooth01((-hy / M - 4.0) / 26.0)
 	p["hips"] += Vector2(0, hy)
 	var lean := curve([[0.0, 0.0], [0.28, 14.0], [0.42, -3.0], [0.68, -6.0], [0.95, 4.0], [1.06, 13.0], [1.4, 0.0]], t)
 	p["rot"]["Torso"] = deg(lean)
@@ -383,7 +411,8 @@ func pose_jump(t: float) -> Dictionary:
 	# near arm (R) goes forward-up but stays below the face, far arm (L) goes high behind the head
 	var arm := curve([[0.0, 0.0], [0.28, 42.0], [0.46, -88.0], [0.68, -100.0], [0.92, -55.0], [1.06, -8.0], [1.4, 0.0]], t)
 	var arm2 := curve([[0.0, 0.0], [0.3, 40.0], [0.49, -140.0], [0.7, -165.0], [0.95, -60.0], [1.1, -6.0], [1.4, 0.0]], t)
-	p["rot"]["UpperArmR"] = deg(arm)
+	# a small child with a big head: the near arm must not cover the face
+	p["rot"]["UpperArmR"] = deg(arm * B.get("jump_arm", 1.0))
 	p["rot"]["UpperArmL"] = deg(arm2)
 	var fa := curve([[0.0, -6.0], [0.28, -10.0], [0.5, -20.0], [0.7, -12.0], [1.06, -18.0], [1.4, -6.0]], t)
 	p["rot"]["ForearmR"] = deg(fa + 4.0 * curve([[0.0, 0.0], [0.4, 0.0], [0.6, 1.0], [0.9, 1.0], [1.1, 0.0], [1.4, 0.0]], t))
@@ -391,13 +420,13 @@ func pose_jump(t: float) -> Dictionary:
 	p["rot"]["HandR"] = deg(-5.0)
 	p["rot"]["HandL"] = deg(-5.0)
 	for s in ["L", "R"]:
-		var hip: Vector2 = p["hips"] + S.local_pos("Thigh" + s)
+		var hip: Vector2 = p["hips"] + S.local_pos("Thigh" + s, B)
 		var phi := deg(22.0 * air)
 		var ground := Vector2(hip.x, ankle_y_for(phi))
-		var reach := 0.999 * (S.THIGH_LEN + S.SHIN_LEN)
+		var reach := 0.999 * (S.thigh_len(B) + S.shin_len(B))
 		if hip.distance_to(ground) > reach - 0.5 or tuck > 0.0:
 			var hang := hip + Vector2(0, reach)
-			var tucked := hip + Vector2(-34.0, 128.0) + Vector2(-8.0 if s == "L" else 0.0, -6.0 if s == "L" else 0.0)
+			var tucked := hip + (Vector2(-34.0, 128.0) + Vector2(-8.0 if s == "L" else 0.0, -6.0 if s == "L" else 0.0)) * M
 			var tgt := hang.lerp(tucked, tuck)
 			if tgt.y > ground.y:
 				tgt = ground
@@ -430,7 +459,7 @@ func _run_foot(q: float) -> Array:
 	var lift := 0.0
 	var phi := 0.0
 	if q < RUN_DUTY:
-		x = RUN_STRIDE / 2.0 - RUN_STRIDE * q / RUN_DUTY
+		x = (RUN_STRIDE / 2.0 - RUN_STRIDE * q / RUN_DUTY) * M
 		if q < 0.06:
 			phi = lerpf(-8.0, 0.0, smooth01(q / 0.06))
 		elif q > 0.22:
@@ -438,8 +467,8 @@ func _run_foot(q: float) -> Array:
 	else:
 		var s := (q - RUN_DUTY) / (1.0 - RUN_DUTY)
 		# heel kicks up behind first, then the leg swings forward
-		x = -RUN_STRIDE / 2.0 + RUN_STRIDE * smooth01(pow(s, 1.25))
-		lift = 62.0 * pow(sin(PI * pow(s, 0.75)), 1.1)
+		x = (-RUN_STRIDE / 2.0 + RUN_STRIDE * smooth01(pow(s, 1.25))) * M
+		lift = M * 62.0 * pow(sin(PI * pow(s, 0.75)), 1.1)
 		if s < 0.4:
 			phi = lerpf(24.0, 18.0, smooth01(s / 0.4))
 		else:
@@ -452,11 +481,11 @@ func pose_run(t: float) -> Dictionary:
 	var hips_rot := deg(2.5 * sin(TAU * ph))
 	p["hips_rot"] = hips_rot
 	# lowest in the middle of each stance (q = duty/2), highest in flight
-	p["hips"] += Vector2(0, 13.0 + 8.0 * cos(TAU * 2.0 * (ph - RUN_DUTY / 2.0)))
+	p["hips"] += Vector2(0, 13.0 + 8.0 * cos(TAU * 2.0 * (ph - RUN_DUTY / 2.0))) * M
 	for s in ["R", "L"]:
 		var q := fposmod(ph + (0.0 if s == "R" else 0.5), 1.0)
 		var w := _run_foot(q)
-		var hip_x: float = S.local_pos("Thigh" + s).x
+		var hip_x: float = S.local_pos("Thigh" + s, B).x
 		p["ankle"][s] = Vector2(hip_x + w[0], ankle_y_for(w[2]) - w[1])
 		p["foot"][s] = w[2]
 	var lean := 11.0
@@ -478,7 +507,7 @@ func pose_spin(t: float) -> Dictionary:
 	p["skel"] = Vector2(cos(TAU * e), 1.0)
 	var hop := sin(PI * clampf((t - 0.15) / 0.9, 0.0, 1.0))
 	var crouch := curve([[0.0, 0.0], [0.12, 10.0], [0.3, -4.0], [1.05, -4.0], [1.15, 8.0], [1.3, 0.0]], t)
-	p["hips"] += Vector2(0, crouch - 26.0 * hop)
+	p["hips"] += Vector2(0, crouch - 26.0 * hop) * M
 	var arms := sin(PI * clampf((t - 0.08) / 1.1, 0.0, 1.0))
 	p["rot"]["UpperArmR"] = deg(4.0 + 70.0 * arms)
 	p["rot"]["UpperArmL"] = deg(-3.0 - 70.0 * arms)
@@ -487,15 +516,15 @@ func pose_spin(t: float) -> Dictionary:
 	p["rot"]["Head"] = deg(6.0 * arms)
 	var air := smooth01(hop * 3.0)
 	for s in ["L", "R"]:
-		var hip: Vector2 = p["hips"] + S.local_pos("Thigh" + s)
+		var hip: Vector2 = p["hips"] + S.local_pos("Thigh" + s, B)
 		var phi := deg(14.0 * air)
 		var ground := Vector2(hip.x, ankle_y_for(phi))
-		var reach := 0.999 * (S.THIGH_LEN + S.SHIN_LEN)
+		var reach := 0.999 * (S.thigh_len(B) + S.shin_len(B))
 		var tgt := ground
 		if hip.distance_to(ground) > reach:
 			tgt = hip + Vector2(0, reach)
 		if s == "L":
-			tgt += Vector2(-10.0, -18.0) * hop
+			tgt += Vector2(-10.0, -18.0) * hop * M
 		p["ankle"][s] = tgt
 		p["foot"][s] = phi
 	_solve_legs(p)

@@ -14,12 +14,27 @@ extends Node2D
 
 signal action_finished(anim: String)
 
+## Emily's values. Other characters (Mark...) use the same script with other
+## body / head_dir / outfit_dir set in their scene (tools/build_emily.gd -- <name>).
 const OUTFIT_DIR := "res://emily/outfits/"
 const HEAD_DIR := "res://emily/head/"
-## Units per second the body moves when the "walk" animation plays (feet don't slide).
+## Units per second the body moves when the "walk" animation plays (feet don't slide), for Emily.
 const WALK_SPEED := 231.0
-## Units per second for "run".
+## Units per second for "run", for Emily.
 const RUN_SPEED := 594.0
+
+## Body proportions: a key of EmilyShapes.BODIES ("emily", "mark").
+@export var body := "emily"
+@export var head_dir := HEAD_DIR
+@export var outfit_dir := OUTFIT_DIR
+## The always-worn base layer (slot "base").
+@export var base_outfit := "bodysuit"
+
+## walk / run speed of THIS character (the viewer uses these)
+var walk_speed: float:
+	get: return WALK_SPEED * EmilyShapes.motion(EmilyShapes.body(body))
+var run_speed: float:
+	get: return RUN_SPEED * EmilyShapes.motion(EmilyShapes.body(body))
 
 const DEFAULT_OUTFIT := {"base": "bodysuit", "top": "tshirt_pink", "bottom": "leggings_grey", "socks": "socks_pink"}
 
@@ -121,7 +136,7 @@ func set_outfit(items: Dictionary) -> void:
 func get_outfit_item(id) -> OutfitItem:
 	if id is OutfitItem:
 		return id
-	var path := OUTFIT_DIR + str(id) + ".tres"
+	var path := outfit_dir + str(id) + ".tres"
 	if ResourceLoader.exists(path):
 		return load(path)
 	push_warning("Emily: no outfit item " + path)
@@ -134,9 +149,10 @@ func _rebuild_clothes() -> void:
 		if n.get_meta("tag", "") == "cloth":
 			n.get_parent().remove_child(n)
 			n.queue_free()
+	var B := EmilyShapes.body(body)
 	var o := outfit.duplicate()
 	if not o.has("base"):
-		o["base"] = "bodysuit"
+		o["base"] = base_outfit
 	for slot in o:
 		var item := get_outfit_item(o[slot])
 		if item == null:
@@ -147,7 +163,7 @@ func _rebuild_clothes() -> void:
 				continue
 			var fill: Color = piece.get("color", item.color)
 			var line: Color = piece.get("outline", item.get_outline())
-			EmilyShapes.make_piece_nodes(bone, piece, fill, line, "cloth")
+			EmilyShapes.make_piece_nodes(bone, piece, fill, line, "cloth", B)
 
 func _all_polys() -> Array:
 	var out := []
@@ -183,7 +199,7 @@ func _apply_skin() -> void:
 
 # ------------------------------------------------------------------ head
 func _load_layout() -> void:
-	var f := FileAccess.open(HEAD_DIR + "layout.json", FileAccess.READ)
+	var f := FileAccess.open(head_dir + "layout.json", FileAccess.READ)
 	if f:
 		_layout = JSON.parse_string(f.get_as_text())
 		if _layout.has("skin"):
@@ -211,8 +227,8 @@ func _apply_head() -> void:
 	var head := _bone("Head")
 	if head == null:
 		return
-	head.get_node("HairBack").texture = _tex(HEAD_DIR + "hair/%s_back.png" % hair)
-	head.get_node("HairFront").texture = _tex(HEAD_DIR + "hair/%s_front.png" % hair)
+	head.get_node("HairBack").texture = _tex(head_dir + "hair/%s_back.png" % hair)
+	head.get_node("HairFront").texture = _tex(head_dir + "hair/%s_front.png" % hair)
 
 func _apply_face() -> void:
 	if not is_inside_tree() or not has_node("Skeleton2D"):
@@ -222,8 +238,8 @@ func _apply_face() -> void:
 		return
 	var e: Sprite2D = head.get_node("Eyes")
 	var m: Sprite2D = head.get_node("Mouth")
-	e.texture = _tex(HEAD_DIR + "eyes/%s.png" % eyes)
-	m.texture = _tex(HEAD_DIR + "mouth/%s.png" % mouth)
+	e.texture = _tex(head_dir + "eyes/%s.png" % eyes)
+	m.texture = _tex(head_dir + "mouth/%s.png" % mouth)
 
 # ------------------------------------------------------------------ viewer (viewer/viewer.gd)
 const RU := {
@@ -234,6 +250,7 @@ const RU := {
 	"socks_pink": "Розовые носки", "socks_white": "Белые носки",
 	"pigtails": "Два хвостика", "ponytail": "Хвостик", "braids": "Косички", "headband": "Ободок",
 	"bun": "Пучок", "stars": "Звёздочки", "flowers": "Венок", "cap": "Кепка",
+	"curls": "Кудряшки", "hat": "Шапка", "romper": "Комбинезон",
 	"open": "Открыты", "half": "Прищур", "closed": "Закрыты", "happy": "Радость", "surprised": "Удивление", "sad": "Грусть",
 	"smile": "Улыбка", "a": "А", "o": "О", "e": "И", "m": "М", "laugh": "Смех",
 }
@@ -246,8 +263,8 @@ static func ru(id: String) -> String:
 func viewer_options() -> Array:
 	var groups := []
 	var by_slot := {}
-	for f in _list(OUTFIT_DIR, ".tres"):
-		var item: OutfitItem = load(OUTFIT_DIR + f + ".tres")
+	for f in _list(outfit_dir, ".tres"):
+		var item: OutfitItem = load(outfit_dir + f + ".tres")
 		if item == null or item.slot == "base":
 			continue
 		if not by_slot.has(item.slot):
@@ -263,18 +280,21 @@ func viewer_options() -> Array:
 		items.append(["Без", func(): set_outfit({slot: null}), func(): return not outfit.has(slot)])
 		groups.append({"tab": "Одежда", "title": slot_titles.get(slot, slot), "items": items})
 	var hairs := []
-	for f in _list(HEAD_DIR + "hair/", "_front.png"):
+	for f in _list(head_dir + "hair/", "_front.png"):
 		hairs.append([ru(f), func(): set_hair(f), func(): return hair == f])
-	groups.append({"tab": "Причёски", "title": "", "items": hairs})
+	if hairs.size() > 1:
+		groups.append({"tab": "Причёски", "title": "", "items": hairs})
 	var ev := []
-	for f in _list(HEAD_DIR + "eyes/", ".png"):
+	for f in _list(head_dir + "eyes/", ".png"):
 		ev.append([ru(f), func(): eyes = f, func(): return eyes == f])
-	groups.append({"tab": "Лицо", "title": "Глаза", "items": ev})
+	if ev.size() > 0:
+		groups.append({"tab": "Лицо", "title": "Глаза", "items": ev})
 	var mv := []
-	for f in _list(HEAD_DIR + "mouth/", ".png"):
+	for f in _list(head_dir + "mouth/", ".png"):
 		mv.append([ru(f), func(): mouth = f, func(): return mouth == f])
-	mv.append(["Болтает", func(): talking = not talking, func(): return talking])
-	groups.append({"tab": "Лицо", "title": "Рот", "items": mv})
+	if mv.size() > 0:
+		mv.append(["Болтает", func(): talking = not talking, func(): return talking])
+		groups.append({"tab": "Лицо", "title": "Рот", "items": mv})
 	return groups
 
 ## file names (without suffix) in a res:// folder; works in exported builds too (.import / .remap)
@@ -289,7 +309,7 @@ func _list(dir: String, suffix: String) -> Array:
 	out.sort()
 	# keep a nice fixed order for the known ones
 	var order := ["tshirt_pink", "tshirt_yellow", "longsleeve_mint", "leggings_grey", "shorts_denim", "skirt_lilac",
-		"socks_pink", "socks_white", "pigtails", "ponytail", "braids", "headband", "bun", "stars", "flowers", "cap",
+		"socks_pink", "socks_white", "pigtails", "ponytail", "braids", "headband", "bun", "stars", "flowers", "cap", "curls", "hat",
 		"open", "half", "closed", "happy", "surprised", "sad", "smile", "a", "o", "e", "m", "laugh"]
 	out.sort_custom(func(x, y): return (order.find(x) if x in order else 999) < (order.find(y) if y in order else 999))
 	return out

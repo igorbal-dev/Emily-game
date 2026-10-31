@@ -31,6 +31,102 @@ const BONES := [
 	["HandR", "ForearmR", Vector2(0, 58)],
 ]
 
+# ------------------------------------------------------------------ bodies (proportions)
+## All shapes above/below are drawn in EMILY units. Another character = the same bones and
+## shapes, re-proportioned per bone ("warp"):
+##   torso/hips/neck: "scale" Vector2 (non-uniform stretch, also moves the child bones);
+##   limbs: one thickness factor per chain ("k_arm", "k_leg", hands/feet included, so the round
+##   joints stay round) and a new bone length "len" (only the middle of the limb is stretched,
+##   the joint caps stay circles).
+##   "motion": scale of the animation distances (stride, jump height...), "head_units": head height.
+const BODIES := {
+	"emily": {},
+	"mark": {
+		# 1.5-year-old toddler: short legs and arms, round tummy, big head, almost no neck
+		"Torso": {"scale": Vector2(1.24, 0.8)},
+		"Hips": {"scale": Vector2(1.16, 0.86)},
+		"Neck": {"scale": Vector2(1.15, 0.45)},
+		"k_arm": 1.02, "UpperArm": {"len": 42.0}, "Forearm": {"len": 36.0},
+		"k_leg": 1.12, "Thigh": {"len": 56.0}, "Shin": {"len": 48.0},
+		"motion": 0.6, "head_units": 136.0, "jump_arm": 0.45,
+	},
+}
+
+static func body(name: String) -> Dictionary:
+	return BODIES.get(name, {})
+
+static func _key(bone: String) -> String:
+	for k in ["UpperArm", "Forearm", "Hand", "Thigh", "Shin", "Foot"]:
+		if bone.begins_with(k):
+			return k
+	return bone
+
+## [cap at the start, cap at the end, emily length] of a limb bone
+const LIMB_CAPS := {"UpperArm": [17.5, 14.0, 64.0], "Forearm": [14.0, 11.5, 58.0],
+	"Thigh": [25.5, 19.5, 98.0], "Shin": [19.5, 13.5, 92.0]}
+
+static func warp_point(p: Vector2, bone: String, B: Dictionary) -> Vector2:
+	if B.is_empty():
+		return p
+	var k := _key(bone)
+	var spec: Dictionary = B.get(k, {})
+	if spec.has("scale"):
+		return p * (spec["scale"] as Vector2)
+	var f: float = B.get("k_arm", 1.0) if k in ["UpperArm", "Forearm", "Hand"] else (B.get("k_leg", 1.0) if k in ["Thigh", "Shin", "Foot"] else 1.0)
+	var y := p.y
+	if LIMB_CAPS.has(k) and spec.has("len"):
+		var c: Array = LIMB_CAPS[k]
+		var L: float = c[2]
+		var L2: float = spec["len"] / f
+		if y >= L - c[1]:
+			y += L2 - L
+		elif y > c[0]:
+			y = c[0] + (y - c[0]) * (L2 - c[0] - c[1]) / (L - c[0] - c[1])
+	return Vector2(p.x, y) * f
+
+static func warp_poly(poly: PackedVector2Array, bone: String, B: Dictionary) -> PackedVector2Array:
+	if B.is_empty():
+		return poly
+	var out := PackedVector2Array()
+	for v in poly:
+		out.append(warp_point(v, bone, B))
+	return out
+
+## BONES re-proportioned for body B (a child bone's position is warped by its parent's warp)
+static func bones(B: Dictionary) -> Array:
+	if B.is_empty():
+		return BONES
+	var out := []
+	for b in BONES:
+		out.append([b[0], b[1], warp_point(b[2], b[1], B) if b[1] != "" else b[2]])
+	# the hips stand so that the feet touch the ground
+	var h: Vector2 = out[0][2]
+	var ankle := -sole_max(B)
+	var leg := thigh_len(B) + shin_len(B) + warp_point(local_pos("ThighR"), "Hips", B).y
+	out[0][2] = Vector2(h.x, ankle - leg)
+	return out
+
+static func sole_max(B: Dictionary) -> float:
+	var m := -1e9
+	for p in sole(B):
+		m = maxf(m, p.y)
+	return m
+
+static func sole(B: Dictionary) -> Array:
+	var out := []
+	for p in SOLE:
+		out.append(warp_point(p, "FootR", B))
+	return out
+
+static func thigh_len(B: Dictionary) -> float:
+	return B.get("Thigh", {}).get("len", THIGH_LEN)
+
+static func shin_len(B: Dictionary) -> float:
+	return B.get("Shin", {}).get("len", SHIN_LEN)
+
+static func motion(B: Dictionary) -> float:
+	return B.get("motion", 1.0)
+
 const THIGH_LEN := 98.0
 const SHIN_LEN := 92.0
 const UPPER_ARM_LEN := 64.0
@@ -240,6 +336,32 @@ static func cloth_pieces(item) -> Array:
 			out.append({"bone": "Hips", "poly": keep(grow(pelvis_shape(), 1.2), leg_line)})
 			for s in ["L", "R"]:
 				out.append({"bone": "UpperArm" + s, "poly": keep(grow(upper_arm_shape(), 1.2), above(P.get("sleeve", 10.0))), "trim": 3.0 if s == "R" else NAN})
+		"romper":
+			# one-piece: long sleeves, long legs, closed feet (toddler sleepsuit); white collar, cuffs, buttons
+			var t := grow(torso_shape(), 1.6)
+			t = clip(t, circle(Vector2(3, -110), 15))
+			out.append({"bone": "Torso", "poly": t})
+			out.append({"bone": "Hips", "poly": grow(pelvis_shape(), 1.6)})
+			var white: Color = P.get("trim_color", Color("f7f4ee"))
+			var white_line := Color("c9c2b6")
+			for s in ["L", "R"]:
+				var near: bool = s == "R"
+				out.append({"bone": "UpperArm" + s, "poly": grow(upper_arm_shape(), 3.0), "trim": 3.0 if near else NAN})
+				out.append({"bone": "Forearm" + s, "poly": keep(grow(forearm_shape(), 3.0), above(FOREARM_LEN - 3.0))})
+				if P.get("cuffs", true):
+					out.append({"bone": "Forearm" + s, "poly": keep(grow(forearm_shape(), 3.4), rect(-60, FOREARM_LEN - 13.0, 60, FOREARM_LEN - 3.0)),
+						"cat": "decal", "color": white, "outline": white_line, "line_w": 2.0})
+				out.append({"bone": "Thigh" + s, "poly": grow(thigh_shape(), 2.0), "trim": 8.0 if near else NAN})
+				out.append({"bone": "Shin" + s, "poly": grow(shin_shape(), 2.0)})
+				out.append({"bone": "Foot" + s, "poly": grow(foot_shape(), 3.0)})
+			if P.get("collar", true):
+				for c in [[Vector2(-12, -99), Vector2(-2, -106)], [Vector2(19, -99), Vector2(9, -106)]]:
+					out.append({"bone": "Torso", "poly": hull([[c[0], 13.0], [c[1], 9.0]]), "cat": "decal",
+						"color": white, "outline": white_line, "line_w": 2.0, "z_add": 2})
+			if P.get("buttons", true):
+				for i in 4:
+					out.append({"bone": "Torso", "poly": circle(Vector2(5, -78 + i * 20), 3.2, 16), "cat": "decal",
+						"color": item.decal_color, "outline": item.color.darkened(0.4), "line_w": 1.2})
 		"tshirt", "longsleeve":
 			var hem: float = P.get("hem", 40.0)
 			var cs := torso_circles(3.5)
@@ -313,17 +435,17 @@ static func decal_polys(kind: String, pos: Vector2, size: float) -> Array:
 
 # ------------------------------------------------------------------ building nodes
 ## Creates outline + fill Polygon2D nodes for a piece under the given bone node.
-static func make_piece_nodes(bone: Node2D, piece: Dictionary, fill: Color, line: Color, tag: String) -> Array:
-	var poly: PackedVector2Array = piece["poly"]
-	var cat: String = piece["cat"]
+static func make_piece_nodes(bone: Node2D, piece: Dictionary, fill: Color, line: Color, tag: String, B: Dictionary = {}) -> Array:
 	var bname: String = piece["bone"]
+	var poly: PackedVector2Array = warp_poly(piece["poly"], bname, B)
+	var cat: String = piece["cat"]
 	var lw: float = piece.get("line_w", OUTLINE_W)
 	var z_add: int = piece.get("z_add", 0)
 	var nodes := []
 	var ol := grow(poly, lw)
 	var trim = piece.get("trim", NAN)
 	if trim is float and not is_nan(trim):
-		ol = clip(ol, above(trim))
+		ol = clip(ol, above(warp_point(Vector2(0, trim), bname, B).y))
 	var o := Polygon2D.new()
 	o.name = "%s_%s_line" % [tag, bname]
 	o.polygon = ol
@@ -349,13 +471,17 @@ static func make_piece_nodes(bone: Node2D, piece: Dictionary, fill: Color, line:
 	return nodes
 
 # ------------------------------------------------------------------ kinematics (used by the animation builder)
-static func rest_global(bone: String) -> Vector2:
-	for b in BONES:
+static func rest_global(bone: String, B: Dictionary = {}) -> Vector2:
+	for b in bones(B):
 		if b[0] == bone:
-			return b[2] + (rest_global(b[1]) if b[1] != "" else Vector2.ZERO)
+			return b[2] + (rest_global(b[1], B) if b[1] != "" else Vector2.ZERO)
 	return Vector2.ZERO
 
-static func local_pos(bone: String) -> Vector2:
+static func local_pos(bone: String, B: Dictionary = {}) -> Vector2:
+	if not B.is_empty():
+		for b in bones(B):
+			if b[0] == bone:
+				return b[2]
 	for b in BONES:
 		if b[0] == bone:
 			return b[2]
@@ -371,9 +497,9 @@ static func limb_angle(d: Vector2) -> float:
 ## Two-bone IK. hip = hip joint (global), target = ankle target (global), parent_rot =
 ## global rotation of the parent (hips). Returns [thigh_local, shin_local, knee_pos, ankle_pos].
 ## Knee always bends forward (+x).
-static func leg_ik(hip: Vector2, target: Vector2, parent_rot: float) -> Array:
-	var l1 := THIGH_LEN
-	var l2 := SHIN_LEN
+static func leg_ik(hip: Vector2, target: Vector2, parent_rot: float, B: Dictionary = {}) -> Array:
+	var l1 := thigh_len(B)
+	var l2 := shin_len(B)
 	var d := target - hip
 	var dist := clampf(d.length(), absf(l1 - l2) + 1.0, l1 + l2 - 0.001)
 	var dir := d.normalized()
