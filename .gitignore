@@ -1,3 +1,4 @@
 .godot/
 tools/_dbg.gd
 build/
+__pycache__/
