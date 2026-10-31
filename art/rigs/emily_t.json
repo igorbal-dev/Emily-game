@@ -1,0 +1,259 @@
+{
+ "name": "emily",
+ "sheet": [
+  1536,
+  1024
+ ],
+ "grid": [
+  4,
+  3
+ ],
+ "parts": {
+  "head": {
+   "cell": 1,
+   "size": [
+    270,
+    330
+   ],
+   "z": 80,
+   "joints": {
+    "pivot": [
+     135,
+     304
+    ]
+   },
+   "parent": "torso",
+   "at": "neck",
+   "rot": 0
+  },
+  "tailL": {
+   "cell": 2,
+   "size": [
+    150,
+    230
+   ],
+   "z": 20,
+   "joints": {
+    "pivot": [
+     75,
+     44
+    ]
+   },
+   "parent": "head",
+   "at": [
+    22,
+    120
+   ],
+   "rot": 16
+  },
+  "tailR": {
+   "cell": 3,
+   "size": [
+    150,
+    230
+   ],
+   "z": 20,
+   "joints": {
+    "pivot": [
+     75,
+     44
+    ]
+   },
+   "parent": "head",
+   "at": [
+    248,
+    120
+   ],
+   "rot": -16
+  },
+  "torso": {
+   "cell": 4,
+   "size": [
+    230,
+    270
+   ],
+   "z": 50,
+   "joints": {
+    "pivot": [
+     115,
+     150
+    ],
+    "neck": [
+     115,
+     26
+    ],
+    "shoulderL": [
+     40,
+     66
+    ],
+    "shoulderR": [
+     190,
+     66
+    ],
+    "hipL": [
+     78,
+     226
+    ],
+    "hipR": [
+     152,
+     226
+    ]
+   },
+   "parent": null,
+   "at": null,
+   "rot": 0
+  },
+  "uarmL": {
+   "cell": 5,
+   "size": [
+    76,
+    170
+   ],
+   "z": 40,
+   "joints": {
+    "pivot": [
+     38,
+     38
+    ],
+    "elbow": [
+     38,
+     128
+    ]
+   },
+   "parent": "torso",
+   "at": "shoulderL",
+   "rot": 8
+  },
+  "uarmR": {
+   "cell": 6,
+   "size": [
+    76,
+    170
+   ],
+   "z": 40,
+   "joints": {
+    "pivot": [
+     38,
+     38
+    ],
+    "elbow": [
+     38,
+     128
+    ]
+   },
+   "parent": "torso",
+   "at": "shoulderR",
+   "rot": -8
+  },
+  "farmL": {
+   "cell": 7,
+   "size": [
+    72,
+    180
+   ],
+   "z": 85,
+   "joints": {
+    "pivot": [
+     36,
+     30
+    ]
+   },
+   "parent": "uarmL",
+   "at": "elbow",
+   "rot": -6
+  },
+  "farmR": {
+   "cell": 8,
+   "size": [
+    72,
+    180
+   ],
+   "z": 85,
+   "joints": {
+    "pivot": [
+     36,
+     30
+    ]
+   },
+   "parent": "uarmR",
+   "at": "elbow",
+   "rot": 6
+  },
+  "thighL": {
+   "cell": 9,
+   "size": [
+    96,
+    200
+   ],
+   "z": 30,
+   "joints": {
+    "pivot": [
+     48,
+     44
+    ],
+    "knee": [
+     48,
+     156
+    ]
+   },
+   "parent": "torso",
+   "at": "hipL",
+   "rot": 0
+  },
+  "thighR": {
+   "cell": 10,
+   "size": [
+    96,
+    200
+   ],
+   "z": 30,
+   "joints": {
+    "pivot": [
+     48,
+     44
+    ],
+    "knee": [
+     48,
+     156
+    ]
+   },
+   "parent": "torso",
+   "at": "hipR",
+   "rot": 0
+  },
+  "shinL": {
+   "cell": 11,
+   "size": [
+    130,
+    240
+   ],
+   "z": 25,
+   "joints": {
+    "pivot": [
+     65,
+     36
+    ]
+   },
+   "parent": "thighL",
+   "at": "knee",
+   "rot": 0
+  },
+  "shinR": {
+   "cell": 12,
+   "size": [
+    130,
+    240
+   ],
+   "z": 25,
+   "joints": {
+    "pivot": [
+     65,
+     36
+    ]
+   },
+   "parent": "thighR",
+   "at": "knee",
+   "rot": 0
+  }
+ }
+}
