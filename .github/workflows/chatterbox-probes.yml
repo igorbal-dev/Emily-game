@@ -30,12 +30,13 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
+          cache-dependency-path: tools/chatterbox/requirements.txt
 
       - name: Install (CPU torch + chatterbox-tts)
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
           pip install torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
-          pip install chatterbox-tts==0.1.7
+          pip install -r tools/chatterbox/requirements.txt
 
       - name: Cache HF models
         uses: actions/cache@v4
