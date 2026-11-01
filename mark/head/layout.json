@@ -36,7 +36,8 @@
   ],
   "hairs": [
     "curls",
-    "hat"
+    "hat",
+    "hat.unscaled"
   ],
-  "skin": "#fbbf96"
+  "skin": "#fbbf95"
 }
