@@ -23,11 +23,12 @@ PX_PER_UNIT = 2.0          # texture pixels per game unit
 STAND_HEIGHT = 190.0       # Theo standing (ears/head top to paws), game units
 POSES = ["stand", "stand_blink", "stand_notail", "happy", "bark", "sniff", "dig", "beg", "sit", "sit_blink",
          "sit_notail", "tilt", "lie", "sleep", "jump_up", "jump_air", "land", "front", "back", "hide"]
-STRIPS = {"walk": 6, "run": 6, "shake": 4, "wag_happy": 4}
+STRIPS = {"walk": 6, "run": 6, "shake": 4, "wag_happy": 4, "walk8": 8}
 # harness seen at an angle / partly hidden -> its area lies about the size: multiply the scale
 FIX = {"beg": 0.9, "sleep": 0.8, "dig": 0.85, "jump_up": 0.86, "jump_air": 0.9}
 # same pose, same size: these use the scale of their base
 TAIL_PIVOT = (345, 440)   # base of the tail in theo_tail.png / theo_stand_notail.png canvas
+UNIFORM = ["walk8"]   # strips that ChatGPT drew at one scale (not fitted per cell)
 SAME_AS = {"stand_blink": "stand", "sit_blink": "sit"}
 
 
@@ -57,14 +58,25 @@ def main():
     unit_per_harness = STAND_HEIGHT / stand_h_px * size["stand"]   # units per harness-size
     os.makedirs(os.path.join(DST, "frames"), exist_ok=True)
     out = {}
+    # strips drawn at ONE scale already (UNIFORM): same scale and anchor for all their frames
+    uni = {}
+    for st in UNIFORM:
+        names = [n for n, _, _ in data if n.startswith(st + "_")]
+        hx = [np.nonzero(blue(a))[1].mean() for n, a, _ in data if n in names]
+        uni[st] = (float(np.median([size[n] for n in names])), float(np.mean(hx)))
     for n, a, ground in data:
         base = SAME_AS.get(n, n)
         s_units = unit_per_harness / size[base] * FIX.get(base, 1.0)   # game units per source pixel
+        st = n.rsplit("_", 1)[0]
+        if st in uni:
+            s_units = unit_per_harness / uni[st][0]
         al = a[..., 3] > 16
         ys, xs = np.nonzero(al)
         x0, y0, x1, y1 = xs.min(), ys.min(), xs.max() + 1, ys.max() + 1
         m = blue(a)
         ax = np.nonzero(m)[1].mean() if m.sum() > 200 else (x0 + x1) / 2
+        if st in uni:
+            ax = uni[st][1]
         k = s_units * PX_PER_UNIT
         img = Image.fromarray(a[y0:y1, x0:x1]).resize((max(1, round((x1 - x0) * k)), max(1, round((y1 - y0) * k))), Image.LANCZOS)
         f = f"frames/{n}.png"

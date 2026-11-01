@@ -479,6 +479,102 @@
    350
   ]
  },
+ "walk8_0": {
+  "file": "frames/walk8_0.png",
+  "offset": [
+   -171.04,
+   -201.36
+  ],
+  "scale": 0.5,
+  "size_px": [
+   498,
+   405
+  ]
+ },
+ "walk8_1": {
+  "file": "frames/walk8_1.png",
+  "offset": [
+   -170.53,
+   -202.39
+  ],
+  "scale": 0.5,
+  "size_px": [
+   482,
+   407
+  ]
+ },
+ "walk8_2": {
+  "file": "frames/walk8_2.png",
+  "offset": [
+   -174.64,
+   -201.88
+  ],
+  "scale": 0.5,
+  "size_px": [
+   492,
+   406
+  ]
+ },
+ "walk8_3": {
+  "file": "frames/walk8_3.png",
+  "offset": [
+   -173.1,
+   -200.34
+  ],
+  "scale": 0.5,
+  "size_px": [
+   487,
+   403
+  ]
+ },
+ "walk8_4": {
+  "file": "frames/walk8_4.png",
+  "offset": [
+   -173.1,
+   -196.74
+  ],
+  "scale": 0.5,
+  "size_px": [
+   495,
+   395
+  ]
+ },
+ "walk8_5": {
+  "file": "frames/walk8_5.png",
+  "offset": [
+   -171.04,
+   -196.74
+  ],
+  "scale": 0.5,
+  "size_px": [
+   488,
+   395
+  ]
+ },
+ "walk8_6": {
+  "file": "frames/walk8_6.png",
+  "offset": [
+   -173.1,
+   -196.74
+  ],
+  "scale": 0.5,
+  "size_px": [
+   499,
+   396
+  ]
+ },
+ "walk8_7": {
+  "file": "frames/walk8_7.png",
+  "offset": [
+   -172.59,
+   -197.25
+  ],
+  "scale": 0.5,
+  "size_px": [
+   490,
+   397
+  ]
+ },
  "tail": {
   "file": "frames/tail.png",
   "offset": [

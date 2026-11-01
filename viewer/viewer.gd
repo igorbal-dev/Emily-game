@@ -91,9 +91,11 @@ func _process(delta: float) -> void:
 		cur_anim = "idle"
 		_refresh()
 	var moving := stroll and cur_anim in ["walk", "run"]
+	if ch.has_method("speed_for"):
+		moving = stroll and ch.speed_for(cur_anim) > 0.0
 	var cx := stage.position.x + stage.size.x / 2.0
 	if moving:
-		var sp = ch.get("run_speed" if cur_anim == "run" else "walk_speed")
+		var sp = ch.speed_for(cur_anim) if ch.has_method("speed_for") else ch.get("run_speed" if cur_anim == "run" else "walk_speed")
 		var speed: float = (float(sp) if sp != null else _const("RUN_SPEED" if cur_anim == "run" else "WALK_SPEED", 230.0)) * ch.scale.y * (0.35 if slow else 1.0)
 		var dir := float(ch.get("facing") if ch.get("facing") != null else 1)
 		ch.position.x += dir * speed * delta
