@@ -10,8 +10,7 @@
 - **Тео** (собака) — покадровый, 20 движений: стоит, виляет, радуется, идёт (новая лента 8 кадров), рысь, бежит, прыжок, отряхивается, лает, сидит, слушает, служит, нюхает, копает, лежит, спит, выглядывает, анфас, спиной, топчется.
 
 ## Что дальше
-1. **Марк — новое лицо.** Текущее лицо от ChatGPT не очень похоже на Марка. Игорь сделает картинки по заданию `for_chatgpt/mark/TASK_MARK_v2.md` (архив `for_chatgpt/mark/mark_for_chatgpt_v2.zip`): 5 файлов `head_base.png, eyes_sheet.png, mouth_sheet.png, hair_curls.png, hair_hat.png`.
-   Когда придут: положить в `from_chatgpt/mark/` (старые заменить), для шапки `python3 tools/fill_knit_holes.py from_chatgpt/mark/hair_hat.png`, удалить `mark/head/.orig`, `python3 tools/import_chatgpt.py --src from_chatgpt/mark --dst mark/head`, `python3 tools/recolor_head.py mark/head for_chatgpt/mark/mark_face.png`, `godot --headless --path . --import`, `godot --headless --path . --script res://tools/build_emily.gd -- mark`. Сравнить с референсом (`for_chatgpt/mark/mark_face.png`) на картинке рядом, потом опубликовать.
+1. **Марк — новое лицо — сделано** (картинки v2 импортированы, команды импорта — в CLAUDE.md, раздел «Марк»). Если захочется ещё ближе к референсу: у ChatGPT глаза получились меньше, а лицо круглее, чем в `mark_face.png`; можно попросить перерисовать только `head_base`/листы с более крупными глазами. Мелочь: еле заметная серая линия по краю волос на лбу.
 2. **Тео — проверить ходьбу на телефоне.** Если «Идёт» скользит — уменьшить `WALK_SPEED` в `theo/theo.gd`. Если ChatGPT нарисует ленту, где задние лапы уходят назад (`for_chatgpt/theo/TASK_THEO_WALK.md`), — подставить её (`from_chatgpt/theo/theo_walk8_strip.png`, `make_theo.py`, `build_theo.gd`) и поднять скорость.
 3. **Абиха — остальная одежда** по её листам (ветка игры `art_source/abiha/cut/sheet1/abiha_outfit_*.png`): платья готовы; дальше пижамы (зайка, мишка), купальник, зимний комплект (куртка, шапка, джинсы, сапоги).
 4. Мелочи: светлая полоска под отворотом шапки Марка; узкая щель у ободка Эмили.
@@ -29,7 +28,3 @@
 Продолжаем по списку «Что дальше» из NEXT_SESSION.md.
 ```
 
-Если прикладываете картинки Марка — добавьте строку:
-```
-Прикладываю новые картинки Марка (5 файлов по TASK_MARK_v2) — импортируй их по пункту 1.
-```

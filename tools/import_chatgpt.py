@@ -44,7 +44,7 @@ def unkey(img, gray_too=False):
     return np.dstack([a, alpha * 255.0])
 
 
-def unmix_grey(arr, outside_alpha):
+def unmix_grey(arr, outside_alpha, pale=False):
     """Hair drawn over the grey guide head: inside the head silhouette, take the grey out of
     semi-transparent strands (colour = grey + (c - grey) / alpha) instead of leaving a grey haze.
     arr: RGBA float array from unkey(..., gray_too=True), template-sized."""
@@ -68,11 +68,16 @@ def unmix_grey(arr, outside_alpha):
     grey = np.median(rgb[pure], 0)
     d = np.sqrt(((rgb - grey) ** 2).sum(-1))
     # grey shading of the guide head (low saturation) is background too; hair is brown/orange (saturated)
-    ag = np.clip((d - 10.0) / 60.0, 0.0, 1.0) * np.clip((mx - mn - 12.0) / 20.0, 0.0, 1.0)
-    # bits of forehead skin drawn into the hair image (light, not very saturated): not hair
-    lum = rgb.mean(-1)
-    sat_rel = (mx - mn) / np.maximum(mx, 1.0)
-    ag = ag * (1.0 - np.clip((lum - 165.0) / 25.0, 0, 1) * np.clip((0.42 - sat_rel) / 0.1, 0, 1))
+    if pale:
+        # very light (platinum/pale blond) opaque hair on a flat grey head: only the distance from the grey counts,
+        # the saturation and "forehead skin" rules below would cut the light strands out
+        ag = np.clip((d - 12.0) / 30.0, 0.0, 1.0) * np.clip((mx - mn - 6.0) / 14.0, 0.0, 1.0)
+    else:
+        ag = np.clip((d - 10.0) / 60.0, 0.0, 1.0) * np.clip((mx - mn - 12.0) / 20.0, 0.0, 1.0)
+        # bits of forehead skin drawn into the hair image (light, not very saturated): not hair
+        lum = rgb.mean(-1)
+        sat_rel = (mx - mn) / np.maximum(mx, 1.0)
+        ag = ag * (1.0 - np.clip((lum - 165.0) / 25.0, 0, 1) * np.clip((0.42 - sat_rel) / 0.1, 0, 1))
     fixed = grey + (rgb - grey) / np.maximum(ag, 0.05)[..., None]
     out = arr.copy()
     out[..., :3] = np.where(inside[..., None], np.clip(fixed, 0, 255), rgb)
@@ -199,10 +204,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default=os.path.join(ROOT, "from_chatgpt"))
     ap.add_argument("--dst", default=os.path.join(ROOT, "emily", "head"))
+    ap.add_argument("--pale-hair", action="store_true", help="very light hair drawn opaque over the grey head (Mark v2)")
+    ap.add_argument("--eyes-pad", type=int, default=0, help="grow the eye patch zone by N template px (big eyes peeking out under the patch edge)")
+    ap.add_argument("--clear-eyes", action="store_true", help="front hair never covers the eyes (curls under a hat hanging over them)")
     args = ap.parse_args()
     src, dst = args.src, args.dst
     for sub in ("eyes", "mouth", "hair"):
         os.makedirs(os.path.join(dst, sub), exist_ok=True)
+    if args.eyes_pad:
+        p_ = args.eyes_pad
+        x_, y_, w_, h_ = L.EYES_ZONE
+        L.EYES_ZONE = (x_ - p_, y_ - p_, w_ + 2 * p_, h_ + 2 * p_)
     layout = L.layout_json()
     base512 = None
 
@@ -251,15 +263,34 @@ def main():
         found.append(name)
         print("hair", name)
         img = Image.open(p)
-        hair = to_img(unmix_grey(unkey(img), unkey(img, gray_too=True)[..., 3])).resize((G, G), Image.LANCZOS)
+        hair = to_img(unmix_grey(unkey(img), unkey(img, gray_too=True)[..., 3], args.pale_hair)).resize((G, G), Image.LANCZOS)
         a = hair.getchannel("A")
         if base512 is not None:
             hair = fill_ear_gaps(hair, base512)
+            a = hair.getchannel("A")
+        if args.pale_hair:
+            # no bluish/grey bits (guide-head outline with green spill) anywhere in the hair
+            hv = np.asarray(hair).astype(np.float32)
+            sat = hv[..., :3].max(-1) - hv[..., :3].min(-1)
+            light = np.clip((hv[..., :3].max(-1) - 110.0) / 20.0, 0, 1)
+            lowsat = np.clip((26.0 - sat) / 8.0, 0, 1) * light + np.clip((12.0 - sat) / 4.0, 0, 1) * (1.0 - light)
+            cold_grey = np.clip((hv[..., 2] - hv[..., 0] + 10.0) / 6.0, 0, 1) * lowsat
+            hv[..., 3] *= 1.0 - cold_grey   # (the navy hat is saturated and stays)
+            hair = to_img(hv)
             a = hair.getchannel("A")
         front, back = hair.copy(), hair.copy()
         if base512 is not None:
             # hair lying on the head is denser: thin strands must not show the skull edge through
             front.putalpha(ImageChops.multiply(a.point(lambda v: min(255, int(v * 1.6))), hm_front))
+            if args.clear_eyes:
+                # fade the front hair out over the eyes (soft ellipse around each eye of the eye zone)
+                ex, ey, ew, eh = [v * G / T for v in L.EYES_ZONE]
+                em = Image.new("L", (G, G), 255)
+                d = ImageDraw.Draw(em)
+                for cx in (ex + ew * 0.27, ex + ew * 0.73):
+                    d.ellipse([cx - ew * 0.2, ey + eh * 0.05, cx + ew * 0.2, ey + eh * 0.95], fill=0)
+                em = em.filter(ImageFilter.GaussianBlur(4))
+                front.putalpha(ImageChops.multiply(front.getchannel("A"), em))
             back.putalpha(ImageChops.multiply(a, ImageChops.invert(hm)))
         else:
             back.putalpha(Image.new("L", (G, G), 0))

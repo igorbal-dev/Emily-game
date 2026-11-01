@@ -35,9 +35,14 @@ def skin_mask(rgb):
     return (r > 150) & (r > g + 10) & (g > b) & (r - b > 35) & (r - b < 130) & (g > 90)
 
 
+PALE = False  # --pale-hair: very light blond source hair (Mark v2): light, little coloured strands count as hair too
+
+
 def hair_mask(rgb, lum_max=200):
     r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
     lum = rgb.mean(-1)
+    if PALE:
+        return (r >= g - 2) & (g >= b - 6) & (r - b > 8) & (lum > 20)
     return (r >= g) & (g >= b - 4) & (r - b > 25) & (lum < lum_max) & (lum > 20)
 
 
@@ -82,7 +87,9 @@ def main(head_dir, ref_path, hair_ref_path=None):
     hp = np.concatenate([np.asarray(Image.open(h).convert("RGBA")).astype(np.float32).reshape(-1, 4) for h in hairs]) if hairs else None
     src_hair = None
     if hp is not None:
-        m = (hp[:, 3] > 200) & hair_mask(hp[None, :, :3])[0] & ~skin_mask(hp[None, :, :3])[0]
+        m = (hp[:, 3] > 200) & hair_mask(hp[None, :, :3])[0]
+        if not PALE:
+            m &= ~skin_mask(hp[None, :, :3])[0]
         src_hair = stats(lab(hp[None, :, :3])[0], m)
     print("skin  src L,a,b", np.round(src_skin[0], 1), "-> ref", np.round(ref_skin[0], 1))
     if src_hair:
@@ -100,7 +107,7 @@ def main(head_dir, ref_path, hair_ref_path=None):
             w = cv2.GaussianBlur(w, (0, 0), 1.2)[..., None]
             new = rgb_of(transfer(l, src_hair, ref_hair, 0.9))
             # skin-coloured bits next to the hairline get the skin transform
-            ws = skin_mask(rgb).astype(np.float32)[..., None]
+            ws = (skin_mask(rgb) & (not PALE)).astype(np.float32)[..., None]
             new_s = rgb_of(transfer(l, src_skin, ref_skin, 0.9))
             out = rgb * (1 - w) + new * w
             out = out * (1 - ws) + new_s * ws
@@ -127,4 +134,6 @@ def main(head_dir, ref_path, hair_ref_path=None):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:])
+    args = [a for a in sys.argv[1:] if a != "--pale-hair"]
+    PALE = "--pale-hair" in sys.argv
+    main(*args)
