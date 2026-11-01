@@ -5,7 +5,7 @@
 ## Начало сессии
 1. `git checkout claude/emily-godot-rig` (если ещё не на ней).
 2. `sh tools/setup_godot.sh` — Godot 4.3 + web-шаблоны + scipy/opencv.
-3. Подробности устройства — README.md.
+3. Подробности устройства — README.md. Состояние и план — NEXT_SESSION.md.
 
 ## Что сделано
 - Эмили: векторное тело (Polygon2D) на Skeleton2D, суставы без швов, одежда-слои (`emily/outfits/*.tres`, `set_outfit`), голова из PNG от ChatGPT (6 глаз, 6 ртов, 8 причёсок), анимации idle/walk/run/jump/spin/wave/talk/blink (ноги через IK).
