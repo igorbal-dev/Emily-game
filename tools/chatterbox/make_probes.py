@@ -7,6 +7,7 @@
 import argparse
 import gc
 import json
+import os
 import random
 import time
 import traceback
@@ -39,6 +40,9 @@ def load_model(kind: str, device: str):
 
 
 def main():
+    # Пустой HF_TOKEN (секрет не задан) ломает загрузку: 'Illegal header value Bearer '
+    if not os.environ.get("HF_TOKEN"):
+        os.environ.pop("HF_TOKEN", None)
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default=str(HERE / "probes.json"))
     ap.add_argument("--out", default="samples/chatterbox")
