@@ -32,7 +32,7 @@ def load_model(kind: str, device: str):
         return ChatterboxTTS.from_pretrained(device=device)
     if kind == "mtl":
         from chatterbox.mtl_tts import ChatterboxMultilingualTTS
-        return ChatterboxMultilingualTTS.from_pretrained(device=torch.device(device))
+        return ChatterboxMultilingualTTS.from_pretrained(device=device)  # строка: from_local сравнивает с "cpu"
     if kind == "turbo":
         from chatterbox.tts_turbo import ChatterboxTurboTTS
         return ChatterboxTurboTTS.from_pretrained(device=device)
