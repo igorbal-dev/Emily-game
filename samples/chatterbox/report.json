@@ -1,0 +1,130 @@
+[
+  {
+    "file": "en_greeting__neutral__default.wav",
+    "model": "tts",
+    "lang": "en",
+    "preset": "neutral",
+    "voice": "default",
+    "params": {
+      "exaggeration": 0.3,
+      "cfg_weight": 0.5
+    },
+    "text": "Hi, I'm Emily. I didn't expect anyone to find this place... but I'm glad you did.",
+    "audio_sec": 4.52,
+    "gen_sec": 50.2
+  },
+  {
+    "file": "en_greeting__default__default.wav",
+    "model": "tts",
+    "lang": "en",
+    "preset": "default",
+    "voice": "default",
+    "params": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.5
+    },
+    "text": "Hi, I'm Emily. I didn't expect anyone to find this place... but I'm glad you did.",
+    "audio_sec": 3.72,
+    "gen_sec": 34.4
+  },
+  {
+    "file": "en_greeting__dramatic__default.wav",
+    "model": "tts",
+    "lang": "en",
+    "preset": "dramatic",
+    "voice": "default",
+    "params": {
+      "exaggeration": 0.8,
+      "cfg_weight": 0.3
+    },
+    "text": "Hi, I'm Emily. I didn't expect anyone to find this place... but I'm glad you did.",
+    "audio_sec": 4.04,
+    "gen_sec": 36.5
+  },
+  {
+    "file": "en_fear__default__default.wav",
+    "model": "tts",
+    "lang": "en",
+    "preset": "default",
+    "voice": "default",
+    "params": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.5
+    },
+    "text": "Wait. Did you hear that? Something is moving behind the door. Please, don't open it!",
+    "audio_sec": 4.52,
+    "gen_sec": 40.1
+  },
+  {
+    "file": "en_fear__dramatic__default.wav",
+    "model": "tts",
+    "lang": "en",
+    "preset": "dramatic",
+    "voice": "default",
+    "params": {
+      "exaggeration": 0.8,
+      "cfg_weight": 0.3
+    },
+    "text": "Wait. Did you hear that? Something is moving behind the door. Please, don't open it!",
+    "audio_sec": 4.44,
+    "gen_sec": 39.3
+  },
+  {
+    "file": "en_joy__default__default.wav",
+    "model": "tts",
+    "lang": "en",
+    "preset": "default",
+    "voice": "default",
+    "params": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.5
+    },
+    "text": "We did it! I can't believe we actually did it! Come on, let's see what's inside!",
+    "audio_sec": 4.16,
+    "gen_sec": 37.7
+  },
+  {
+    "file": "en_joy__dramatic__default.wav",
+    "model": "tts",
+    "lang": "en",
+    "preset": "dramatic",
+    "voice": "default",
+    "params": {
+      "exaggeration": 0.8,
+      "cfg_weight": 0.3
+    },
+    "text": "We did it! I can't believe we actually did it! Come on, let's see what's inside!",
+    "audio_sec": 3.6,
+    "gen_sec": 33.7
+  },
+  {
+    "model": "mtl",
+    "error": "load failed: Illegal header value b'Bearer '"
+  },
+  {
+    "file": "turbo_greeting__default__default.wav",
+    "model": "turbo",
+    "lang": "en",
+    "preset": "default",
+    "voice": "default",
+    "params": {
+      "temperature": 0.8
+    },
+    "text": "Hi, I'm Emily. [chuckle] I didn't expect anyone to find this place... but I'm glad you did.",
+    "audio_sec": 6.12,
+    "gen_sec": 16.5
+  },
+  {
+    "file": "turbo_tired__default__default.wav",
+    "model": "turbo",
+    "lang": "en",
+    "preset": "default",
+    "voice": "default",
+    "params": {
+      "temperature": 0.8
+    },
+    "text": "[sigh] Another locked door. Okay, okay... [laugh] at least this time we have the key.",
+    "audio_sec": 6.4,
+    "gen_sec": 17.1
+  }
+]
