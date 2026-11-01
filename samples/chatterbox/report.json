@@ -11,7 +11,7 @@
     },
     "text": "Hi, I'm Emily. I didn't expect anyone to find this place... but I'm glad you did.",
     "audio_sec": 4.52,
-    "gen_sec": 50.2
+    "gen_sec": 48.9
   },
   {
     "file": "en_greeting__default__default.wav",
@@ -25,7 +25,7 @@
     },
     "text": "Hi, I'm Emily. I didn't expect anyone to find this place... but I'm glad you did.",
     "audio_sec": 3.72,
-    "gen_sec": 34.4
+    "gen_sec": 33.9
   },
   {
     "file": "en_greeting__dramatic__default.wav",
@@ -39,7 +39,7 @@
     },
     "text": "Hi, I'm Emily. I didn't expect anyone to find this place... but I'm glad you did.",
     "audio_sec": 4.04,
-    "gen_sec": 36.5
+    "gen_sec": 36.7
   },
   {
     "file": "en_fear__default__default.wav",
@@ -53,7 +53,7 @@
     },
     "text": "Wait. Did you hear that? Something is moving behind the door. Please, don't open it!",
     "audio_sec": 4.52,
-    "gen_sec": 40.1
+    "gen_sec": 40.4
   },
   {
     "file": "en_fear__dramatic__default.wav",
@@ -67,7 +67,7 @@
     },
     "text": "Wait. Did you hear that? Something is moving behind the door. Please, don't open it!",
     "audio_sec": 4.44,
-    "gen_sec": 39.3
+    "gen_sec": 39.5
   },
   {
     "file": "en_joy__default__default.wav",
@@ -81,7 +81,7 @@
     },
     "text": "We did it! I can't believe we actually did it! Come on, let's see what's inside!",
     "audio_sec": 4.16,
-    "gen_sec": 37.7
+    "gen_sec": 37.4
   },
   {
     "file": "en_joy__dramatic__default.wav",
@@ -95,11 +95,11 @@
     },
     "text": "We did it! I can't believe we actually did it! Come on, let's see what's inside!",
     "audio_sec": 3.6,
-    "gen_sec": 33.7
+    "gen_sec": 33.6
   },
   {
     "model": "mtl",
-    "error": "load failed: Illegal header value b'Bearer '"
+    "error": "load failed: Attempting to deserialize object on a CUDA device but torch.cuda.is_available() is False. If you are running on a CPU-only machine, please use torch.load with map_location=torch.device('cpu') to map your storages to the CPU."
   },
   {
     "file": "turbo_greeting__default__default.wav",
@@ -112,7 +112,7 @@
     },
     "text": "Hi, I'm Emily. [chuckle] I didn't expect anyone to find this place... but I'm glad you did.",
     "audio_sec": 6.12,
-    "gen_sec": 16.5
+    "gen_sec": 16.7
   },
   {
     "file": "turbo_tired__default__default.wav",
@@ -125,6 +125,6 @@
     },
     "text": "[sigh] Another locked door. Okay, okay... [laugh] at least this time we have the key.",
     "audio_sec": 6.4,
-    "gen_sec": 17.1
+    "gen_sec": 17.3
   }
 ]
