@@ -260,7 +260,7 @@ def main():
     # Emily's hairstyles first (fixed order), then any other hair_<name>.png (Abiha, Mark...)
     names = [h[0] for h in L.HAIRS]
     names += sorted(f[5:-4] for f in os.listdir(src)
-                    if f.startswith("hair_") and f.endswith(".png") and not f.endswith(".orig.png") and f[5:-4] not in names)
+                    if f.startswith("hair_") and f.endswith(".png") and not f.endswith(".orig.png") and not f.endswith(".unscaled.png") and f[5:-4] not in names)
     found = []
     for name in names:
         p = os.path.join(src, f"hair_{name}.png")
