@@ -28,7 +28,8 @@
 - Импорт волос улучшен (unmix_grey в import_chatgpt.py): серый шаблон «вычитается» из прядей, убираются тени серой головы и кусочки кожи лба, передний слой волос плотнее и заходит за край головы. Эмили этим не переимпортирована — если переимпортировать, сравнить скриншоты.
 - Одежда: `abiha/outfits/` — tshirt_black (звезда вместо картинки), cargo_purple (trousers с `pockets`), sneakers_pink (shoes с белой подошвой).
 - Цвета подогнаны к референсу: `python3 tools/recolor_head.py abiha/head for_chatgpt/abiha/abiha_face.png` (и `mark/head for_chatgpt/mark/mark_face.png`). Запускать ПОСЛЕ каждого import_chatgpt.py (сначала удалить `<head>/.orig/`, иначе возьмёт старые оригиналы). Меняет только кожу (по всем глазам/ртам одинаково) и волосы (не резинки/шапку), обновляет "skin" в layout.json.
-- Дальше: платья (розовое, сиреневое, джинсовое, радужное, зелёное — новая выкройка dress), пижамы, купальник, куртка+шапка+джинсы+сапоги (листы в ветке игры art_source/abiha/).
+- Платья сделаны: выкройка `dress` (слот "dress" — заменяет верх и низ; в set_outfit и _rebuild_clothes). Лиф на Torso + юбка-колокол на Hips (`skirt_poly`), параметры в описании `dress_pieces` (emily_shapes.gd): neck, sleeve (puff/flutter/short/strap), ruffle, tulle, stripes, flowers, buttons, placket, bow, decal "rainbow". Вещи: dress_pink, dress_lilac, dress_denim, dress_rainbow, dress_green, sneakers_white, shoes_lilac.
+- Дальше: пижамы (зайка, мишка), купальник, зимний комплект (куртка+шапка+джинсы+сапоги), самокат-наряд (листы в ветке игры art_source/abiha/, вырезки в cut/sheet1/).
 - Известные мелочи: у Эмили узкая щель у ободка (headband); голова живописная, тело плоское (можно добавить мягкие тени).
 
 ## Тео (собака, покадровый — БЕЗ скелета)

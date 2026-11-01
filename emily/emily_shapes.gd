@@ -432,6 +432,8 @@ static func cloth_pieces(item, B: Dictionary = {}) -> Array:
 			var sk := PackedVector2Array([Vector2(-40, -18), Vector2(40, -18), Vector2(56, ln), Vector2(-52, ln)])
 			sk = union(grow(sk, 3.0), hull([[Vector2(0, -18), 41.0]]))
 			out.append({"bone": "Hips", "poly": keep(sk, below(-20.0)), "cat": "top"})
+		"dress":
+			out.append_array(dress_pieces(item, B))
 		"jacket":
 			# puffy quilted jacket: long puffy sleeves with ribbed cuffs, zip, hood lying on the shoulders
 			var hem: float = P.get("hem", 34.0)
@@ -600,6 +602,205 @@ static func cloth_pieces(item, B: Dictionary = {}) -> Array:
 	for p in out:
 		if not p.has("cat"):
 			p["cat"] = cat
+	return out
+
+## Dress = bodice on the Torso + flared skirt on the Hips (one item, slot "dress": replaces top and bottom).
+## params: "length" (hem, Hips y), "flare" (hem half-width), "waist" (Hips y of the seam),
+##   "neck": round / square / sweetheart / collar, "sleeve": puff / flutter / short / strap, "sleeve_color",
+##   "ruffle" (scalloped hem), "tulle" (lighter longer petticoat under the skirt), "stripes" [colors, top->bottom],
+##   "flowers" [petal, centre] (print), "buttons" (on the bodice), "placket" (buttons down to the hem),
+##   "bow" (bow at the waist, decal_color), decal "rainbow" (on the chest)
+static func dress_pieces(item, B: Dictionary = {}) -> Array:
+	var P: Dictionary = item.params
+	var out := []
+	var col: Color = item.color
+	var line: Color = item.get_outline()
+	var fold: Color = col.darkened(0.12)
+	var waist: float = P.get("waist", -36.0)
+	var ln: float = P.get("length", 92.0)
+	var flare: float = P.get("flare", 72.0)
+	var neck: String = P.get("neck", "round")
+	var sleeve: String = P.get("sleeve", "puff")
+	var scol: Color = P.get("sleeve_color", col)
+	# ---- bodice (Torso coords; Hips y = Torso y - 14)
+	var t := keep(hull(torso_circles(3.0, B)), above(30.0))
+	match neck:
+		"square":
+			t = clip(t, rect(-13, -140, 20, -97))
+		"sweetheart", "strap":
+			pass
+		_:
+			t = clip(t, circle(Vector2(3, -110), 16))
+	if sleeve == "strap":
+		# sleeveless: straight top with a little dip in the middle, thin straps over the shoulders
+		var top := PackedVector2Array([Vector2(-80, -86), Vector2(-4, -86), Vector2(4, -80), Vector2(12, -86), Vector2(80, -86),
+			Vector2(80, 60), Vector2(-80, 60)])
+		t = keep(t, top)
+		for sx in [[-19.0, -21.0], [23.0, 25.0]]:
+			var st := hull([[Vector2(sx[0], -84), 3.6], [Vector2(sx[1], -104), 3.2]])
+			out.append({"bone": "Torso", "poly": st, "z_add": -1})
+	out.append({"bone": "Torso", "poly": t})
+	if neck == "collar":
+		for c in [[Vector2(-10, -101), Vector2(-1, -107)], [Vector2(17, -101), Vector2(8, -107)]]:
+			out.append({"bone": "Torso", "poly": keep(hull([[c[0], 11.0], [c[1], 8.0]]), grow(torso_shape(B), 1.0)), "cat": "decal",
+				"color": col.lightened(0.08), "outline": line, "line_w": 1.6})
+	var nb: int = P.get("buttons", 0)
+	for i in nb:
+		out.append({"bone": "Torso", "poly": circle(Vector2(5, -94 + i * 14), 2.6, 12), "z_add": 1,
+			"color": P.get("button_color", col.lightened(0.35)), "outline": line, "line_w": 0.9})
+	if item.decal == "rainbow":
+		out.append_array(rainbow_pieces(P.get("decal_pos", Vector2(10, -64)), P.get("decal_size", 1.0)))
+	# ---- sleeves
+	for s in ["L", "R"]:
+		var near: bool = s == "R"
+		var tr = 3.0 if near else NAN
+		match sleeve:
+			"puff":
+				var sl := keep(limb(Vector2(0, -3), Vector2(0, 24), SHOULDER_R + 6.0, ELBOW_R + 8.0, 2.5), above(26.0))
+				out.append({"bone": "UpperArm" + s, "poly": sl, "trim": tr, "color": scol})
+				out.append({"bone": "UpperArm" + s, "poly": keep(grow(upper_arm_shape(), 2.5), rect(-60, 22, 60, 29)), "cat": "decal",
+					"color": scol.darkened(0.06), "outline": line, "line_w": 1.2})
+			"flutter":
+				var fl := hull([[Vector2(0, -2), SHOULDER_R + 5.0], [Vector2(-7, 20), 12.0], [Vector2(9, 20), 12.0]])
+				for x in [-17.0, -8.5, 0.0, 8.5, 17.0]:
+					fl = union(fl, circle(Vector2(x, 28.0 - absf(x) * 0.25), 6.0, 16))
+				out.append({"bone": "UpperArm" + s, "poly": keep(fl, above(36.0)), "trim": tr, "color": scol})
+				for x in [-6.0, 6.0]:
+					out.append({"bone": "UpperArm" + s, "poly": keep(fl, PackedVector2Array([Vector2(x * 0.3, 4), Vector2(x * 0.3 + 1.3, 4),
+						Vector2(x * 1.6 + 1.3, 31), Vector2(x * 1.6, 31)])), "cat": "decal", "color": scol.darkened(0.1),
+						"outline": scol.darkened(0.1), "line_w": 0.2})
+			"short":
+				out.append({"bone": "UpperArm" + s, "poly": keep(grow(upper_arm_shape(), 3.5), above(30.0)), "trim": tr, "color": scol})
+				out.append({"bone": "UpperArm" + s, "poly": keep(grow(upper_arm_shape(), 4.0), rect(-60, 23, 60, 31)), "cat": "decal",
+					"color": scol.lightened(0.06), "outline": line, "line_w": 1.4})
+	# ---- skirt (Hips coords)
+	var sk := skirt_poly(4.0, 54.0, flare, waist, ln, 9.0, 9 if P.get("ruffle", false) else 0, 4.5)
+	sk = union(sk, keep(circle(Vector2(4, -6), 54.0), below(waist)))
+	if P.get("tulle", false):
+		var tu := skirt_poly(4.0, 55.0, flare + 8.0, waist, ln + 16.0, 11.0, 11, 5.0)
+		var tc: Color = P.get("tulle_color", col.lightened(0.3))
+		out.append({"bone": "Hips", "poly": tu, "color": tc, "outline": col.darkened(0.05), "line_w": 2.0, "z_add": 1})
+		for i in 7:
+			var u := -0.75 + i * 0.25
+			var x1 := 2.0 + u * (flare + 6.0)
+			out.append({"bone": "Hips", "poly": keep(tu, PackedVector2Array([Vector2(x1 - 1, ln - 10), Vector2(x1 + 1, ln - 10),
+				Vector2(x1 * 1.04 + 1, ln + 30), Vector2(x1 * 1.04 - 1, ln + 30)])), "color": tc.darkened(0.08), "outline": tc.darkened(0.08),
+				"line_w": 0.3, "z_add": 2})
+	out.append({"bone": "Hips", "poly": sk, "z_add": 3})
+	var stripes: Array = P.get("stripes", [])
+	if stripes.size() > 0:
+		var h0 := waist + 4.0
+		var step := (ln + 12.0 - h0) / stripes.size()
+		for i in stripes.size():
+			var band := keep(grow(sk, -0.5), rect(-200, h0 + i * step - (4.0 if i == 0 else 0.0), 200, h0 + (i + 1) * step + (20.0 if i == stripes.size() - 1 else 0.0)))
+			if band.size() > 2:
+				out.append({"bone": "Hips", "poly": band, "color": stripes[i], "outline": stripes[i], "line_w": 0.2, "z_add": 4})
+	# soft folds fanning out from the waist
+	for i in 6:
+		var u := -0.72 + i * 0.29
+		var x0 := 2.0 + u * 38.0
+		var x1 := 2.0 + u * (flare - 6.0)
+		var fpoly := keep(grow(sk, -2.0), PackedVector2Array([Vector2(x0 - 0.6, waist + 14), Vector2(x0 + 0.6, waist + 14),
+			Vector2(x1 + 1.6, ln + 20), Vector2(x1 - 1.6, ln + 20)]))
+		if fpoly.size() > 2:
+			var fc: Color = fold if stripes.is_empty() else Color(1, 1, 1, 0.35)
+			out.append({"bone": "Hips", "poly": fpoly, "color": fc, "outline": fc, "line_w": 0.2, "z_add": 6})
+	if P.get("ruffle", false):
+		# hem frill: a lighter band along the scallops
+		var hem_band := keep(sk, PackedVector2Array([Vector2(-200, ln - 14), Vector2(200, ln - 14), Vector2(200, ln + 40), Vector2(-200, ln + 40)]))
+		out.append({"bone": "Hips", "poly": hem_band, "color": col.lightened(0.12), "outline": col.lightened(0.12), "line_w": 0.2, "z_add": 5})
+		out.append({"bone": "Hips", "poly": keep(grow(sk, -0.5), rect(-200, ln - 15, 200, ln - 13)), "color": fold, "outline": fold, "line_w": 0.2, "z_add": 7})
+	var fl_cols: Array = P.get("flowers", [])
+	if fl_cols.size() >= 2:
+		var cells := [Vector2(-28, -92), Vector2(18, -84), Vector2(-6, -66), Vector2(30, -54), Vector2(-30, -44), Vector2(8, -36),
+			Vector2(-18, -18), Vector2(28, -16)]
+		for c in cells:
+			out.append_array(flower_pieces("Torso", c, keep(t, grow(t, -3.0)), fl_cols, 1))
+		var sk_in := grow(sk, -4.0)
+		var y := waist + 12.0
+		var row := 0
+		while y < ln + 4.0:
+			var x := -90.0 + (row % 2) * 14.0
+			while x < 100.0:
+				out.append_array(flower_pieces("Hips", Vector2(x + 4.0 * sin(y), y), sk_in, fl_cols, 8))
+				x += 28.0
+			y += 22.0
+			row += 1
+	if P.get("placket", false):
+		for i in 5:
+			out.append({"bone": "Hips", "poly": circle(Vector2(4, waist + 12 + i * 18), 2.6, 12), "z_add": 8,
+				"color": P.get("button_color", col.lightened(0.35)), "outline": line, "line_w": 0.9})
+		out.append({"bone": "Hips", "poly": keep(grow(sk, -1.0), rect(1.2, waist, 2.4, ln + 20)), "color": fold, "outline": fold,
+			"line_w": 0.2, "z_add": 7})
+	if P.get("bow", false):
+		var bc: Color = item.decal_color
+		var bl: Color = bc.darkened(0.35)
+		var c0 := Vector2(4, waist + 1)
+		out.append({"bone": "Hips", "poly": keep(grow(sk, 0.5), rect(-200, waist - 1, 200, waist + 6)), "cat": "decal",
+			"color": bc, "outline": bl, "line_w": 1.0})
+		for tl in [[Vector2(0, 4), Vector2(-9, 36), Vector2(-3, 38)], [Vector2(6, 4), Vector2(15, 34), Vector2(9, 37)]]:
+			out.append({"bone": "Hips", "poly": grow(PackedVector2Array([c0 + tl[0], c0 + tl[1], c0 + tl[2]]), 1.5), "cat": "decal",
+				"color": bc, "outline": bl, "line_w": 1.0, "z_add": 1})
+		for w in [[Vector2(0, 0), Vector2(-16, -9), Vector2(-16, 8)], [Vector2(0, 0), Vector2(18, -9), Vector2(18, 8)]]:
+			out.append({"bone": "Hips", "poly": grow(PackedVector2Array([c0 + w[0], c0 + w[1], c0 + w[2]]), 2.5), "cat": "decal",
+				"color": bc, "outline": bl, "line_w": 1.2, "z_add": 2})
+		out.append({"bone": "Hips", "poly": circle(c0, 4.2, 16), "cat": "decal", "color": bc.lightened(0.1), "outline": bl,
+			"line_w": 1.2, "z_add": 4})
+	for p in out:
+		if not p.has("cat"):
+			p["cat"] = "top"
+	return out
+
+## flared skirt: waist line at y=top (half-width w0), hem at y=hem (half-width w1, bulging down in the middle),
+## optional scallops (bumps) along the hem
+static func skirt_poly(cx: float, w0: float, w1: float, top: float, hem: float, bulge: float, bumps: int, depth: float) -> PackedVector2Array:
+	var p := PackedVector2Array()
+	var hem_y := func(u: float) -> float: return hem - bulge * 0.5 + bulge * (1.0 - u * u)
+	var n := 10
+	for i in n + 1:
+		var tt := float(i) / n
+		p.append(Vector2(cx - (w0 + (w1 - w0) * pow(tt, 0.6)), lerpf(top, hem_y.call(-1.0), tt)))
+	var m := maxi(bumps, 1) * 4
+	for i in range(1, m):
+		var u := -1.0 + 2.0 * i / m
+		var y: float = hem_y.call(u)
+		if bumps > 0:
+			y += depth * absf(sin(PI * bumps * (u + 1.0) / 2.0))
+		p.append(Vector2(cx + u * w1, y))
+	for i in n + 1:
+		var tt := 1.0 - float(i) / n
+		p.append(Vector2(cx + (w0 + (w1 - w0) * pow(tt, 0.6)), lerpf(top, hem_y.call(1.0), tt)))
+	return p
+
+## small 5-petal flower, kept inside region (skipped if mostly outside)
+static func flower_pieces(bone: String, c: Vector2, region: PackedVector2Array, cols: Array, z: int) -> Array:
+	if not Geometry2D.is_point_in_polygon(c, region):
+		return []
+	var f := PackedVector2Array()
+	for i in 5:
+		var a := -PI / 2 + i * TAU / 5
+		f = union(f, circle(c + Vector2(cos(a), sin(a)) * 3.6, 3.0, 10)) if f.size() > 0 else circle(c + Vector2(cos(a), sin(a)) * 3.6, 3.0, 10)
+	f = keep(f, region)
+	if f.size() < 3:
+		return []
+	var pc: Color = cols[0]
+	var cc: Color = cols[1]
+	return [{"bone": bone, "poly": f, "cat": "top", "color": pc, "outline": pc.darkened(0.15), "line_w": 0.6, "z_add": z},
+		{"bone": bone, "poly": circle(c, 1.8, 10), "cat": "top", "color": cc, "outline": cc, "line_w": 0.2, "z_add": z + 1}]
+
+## small rainbow with two clouds (chest print), size 1 = about 30 units wide
+static func rainbow_pieces(pos: Vector2, k: float) -> Array:
+	var out := []
+	var cols := [Color("f48fb1"), Color("ffcc80"), Color("fff59d"), Color("a5d6a7"), Color("90caf9"), Color("ce93d8")]
+	for i in cols.size():
+		var r := (15.0 - i * 2.0) * k
+		var arc := keep(clip(circle(pos, r, 32), circle(pos, r - 2.2 * k, 32)), above(pos.y))
+		if arc.size() > 2:
+			out.append({"bone": "Torso", "poly": arc, "cat": "decal", "color": cols[i], "outline": cols[i], "line_w": 0.2, "z_add": 2 + i})
+	for cx in [-12.0, 12.0]:
+		var cl := union(union(circle(pos + Vector2(cx - 3, 0) * k, 3.6 * k, 14), circle(pos + Vector2(cx + 3, 0) * k, 3.6 * k, 14)),
+			circle(pos + Vector2(cx, -2.5) * k, 4.2 * k, 14))
+		out.append({"bone": "Torso", "poly": cl, "cat": "decal", "color": Color.WHITE, "outline": Color("b8c4d6"), "line_w": 1.0, "z_add": 10})
 	return out
 
 ## little bear face (several colours), size 1 = about 22 units wide

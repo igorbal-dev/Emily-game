@@ -19,7 +19,7 @@
   - `set_outfit({"top": "tshirt_pink", "bottom": "leggings_grey", "socks": "socks_pink"})`, `null` — снять. Боди (`base`) снять нельзя.
   - `set_hair("pigtails")`, `eyes = "happy"`, `mouth = "a"`, `play("walk")`, `talking = true`, `facing = -1`.
   - `WALK_SPEED` — скорость перемещения при ходьбе (ноги не скользят).
-- Одежда — `emily/outfits/*.tres` (`OutfitItem`). Новая футболка: скопировать `tshirt_pink.tres`, поменять `color`, `decal` (heart/star/dot). Выкройки: tshirt, longsleeve, leggings, shorts, skirt, socks, bodysuit.
+- Одежда — `emily/outfits/*.tres` (`OutfitItem`). Новая футболка: скопировать `tshirt_pink.tres`, поменять `color`, `decal` (heart/star/dot). Выкройки: tshirt, longsleeve, leggings, shorts, skirt, socks, bodysuit, dress (слот "dress" заменяет верх и низ) и др. — см. `emily/outfit_item.gd`.
 - Голова — PNG в `emily/head/` (сейчас временная заглушка): `base.png`, `eyes/*.png`, `mouth/*.png`, `hair/<имя>_front.png` и `_back.png`, раскладка — `layout.json`.
 - Анимации (AnimationPlayer): idle, walk, run, jump, spin, wave, talk, blink. FacePlayer — моргание и рот поверх любой анимации (автоморгание включено).
 

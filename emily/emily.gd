@@ -131,6 +131,12 @@ func set_outfit(items: Dictionary) -> void:
 			o.erase(slot)
 		else:
 			o[slot] = v
+			# a dress replaces the top and the bottom (and the other way round)
+			if slot == "dress":
+				o.erase("top")
+				o.erase("bottom")
+			elif slot in ["top", "bottom"]:
+				o.erase("dress")
 	outfit = o
 
 func get_outfit_item(id) -> OutfitItem:
@@ -153,6 +159,9 @@ func _rebuild_clothes() -> void:
 	var o := outfit.duplicate()
 	if not o.has("base"):
 		o["base"] = base_outfit
+	if o.has("dress"):
+		o.erase("top")
+		o.erase("bottom")
 	for slot in o:
 		var item := get_outfit_item(o[slot])
 		if item == null:
@@ -255,6 +264,8 @@ const RU := {
 	"sweater_mustard": "Свитер с мишкой", "joggers_navy": "Джоггеры", "socks_navy": "Синие носки",
 	"shirt_white": "Рубашка с бабочкой", "vest_grey": "Жилетка", "trousers_grey": "Серые брюки", "shoes_brown": "Туфли",
 	"tshirt_black": "Чёрная футболка", "cargo_purple": "Штаны-карго", "sneakers_pink": "Кроссовки",
+	"dress_pink": "Розовое", "dress_lilac": "Сиреневое", "dress_denim": "Джинсовое", "dress_rainbow": "Радужное", "dress_green": "Зелёное",
+	"sneakers_white": "Белые кроссовки", "shoes_lilac": "Туфельки",
 	"open": "Открыты", "half": "Прищур", "closed": "Закрыты", "happy": "Радость", "surprised": "Удивление", "sad": "Грусть",
 	"smile": "Улыбка", "a": "А", "o": "О", "e": "И", "m": "М", "laugh": "Смех",
 }
@@ -274,8 +285,8 @@ func viewer_options() -> Array:
 		if not by_slot.has(item.slot):
 			by_slot[item.slot] = []
 		by_slot[item.slot].append(f)
-	var slot_titles := {"top": "Верх", "bottom": "Низ", "socks": "Носки", "shoes": "Обувь", "outer": "Жилетка"}
-	for slot in ["top", "outer", "bottom", "socks", "shoes"] + by_slot.keys().filter(func(s): return not s in ["top", "outer", "bottom", "socks", "shoes"]):
+	var slot_titles := {"top": "Верх", "bottom": "Низ", "socks": "Носки", "shoes": "Обувь", "outer": "Жилетка", "dress": "Платье"}
+	for slot in ["dress", "top", "outer", "bottom", "socks", "shoes"] + by_slot.keys().filter(func(s): return not s in ["dress", "top", "outer", "bottom", "socks", "shoes"]):
 		if not by_slot.has(slot):
 			continue
 		var items := []
