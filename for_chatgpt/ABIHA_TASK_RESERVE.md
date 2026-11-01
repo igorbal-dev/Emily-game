@@ -1,4 +1,9 @@
-# Abiha — missing poses (task for Codex / ChatGPT)
+# Abiha — missing poses (task for Codex / ChatGPT) — ЗАПАСНОЙ ВАРИАНТ
+
+> **Отложено (1.11.2026).** Игорь делает Абиху и Эмили куклами на 2D-скелете в Godot (ветка `claude/emily-godot-rig`:
+> тело на костях, голова от ChatGPT, одежда меняется, анимации). Если получится — этот лист не нужен.
+> Заказывать только если скелетная анимация не выйдет. Ниже — готовое задание, менять ничего не надо.
+
 
 The game already has enough indoor poses of Abiha (sheet 1: standing, waving, arms crossed, peace, walking, running, jumping, sitting).
 What is missing are **outdoor poses in the winter clothes**: in the game everybody wears a jacket and shoes outside,
@@ -20,7 +25,7 @@ save the result as `art_source/abiha/abiha_sheet_5_winter.png` (upload on GitHub
 Repository igorbal-dev/Emily-game, branch claude/emily-game-port.
 1. Open the reference image art_source/abiha/abiha_sheet_1.png (character sheet of the girl Abiha).
 2. Generate ONE new image using that file as the reference and the prompt from the section
-   "Prompt (copy everything inside the box)" in for_chatgpt/ABIHA_TASK.md. Landscape, about 1536x1024 px, PNG.
+   "Prompt (copy everything inside the box)" in for_chatgpt/ABIHA_TASK_RESERVE.md. Landscape, about 1536x1024 px, PNG.
 3. Save it as art_source/abiha/abiha_sheet_5_winter.png. Do not change, move or delete any other file.
 4. Commit only that file to branch claude/emily-game-port with the message "Abiha: winter poses sheet" and push.
 If image generation is not available to you, stop and say so; do not draw it with code.

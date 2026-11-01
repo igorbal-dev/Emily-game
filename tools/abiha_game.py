@@ -108,7 +108,7 @@ def main():
     base.update(faces(base['idle'], 'idle'))
     base = canvas(base)
     save(base, '', table)
-    # на улице: зимняя куртка (пока одна поза; остальные позы — после листа ABIHA_TASK.md)
+    # на улице: зимняя куртка (пока одна поза; остальные позы — после листа ABIHA_TASK_RESERVE.md)
     w = load('outfit_winter')
     k = 361/w.height*1.04            # ряд нарядов нарисован мельче поз; шапка выше хвостика
     w = w.resize((round(w.width*k), round(w.height*k)), Image.LANCZOS)
@@ -117,7 +117,7 @@ def main():
     out = {'idle': w}; out.update(faces(w, 'outfit_winter'))
     out = canvas(out)
     save(out, '_out', table)
-    # других поз в куртке пока нет (заказ — for_chatgpt/ABIHA_TASK.md): ближайшая — стоит в куртке
+    # других поз в куртке пока нет (заказ — for_chatgpt/ABIHA_TASK_RESERVE.md): ближайшая — стоит в куртке
     for p in POSES:
         if p != 'idle': table[f'abiha_{p}_out'] = table['abiha_idle_out']
     json.dump(table, open('art/talk_img.json', 'w'), ensure_ascii=False, indent=1)
