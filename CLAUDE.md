@@ -10,7 +10,7 @@
 ## Что сделано
 - Эмили: векторное тело (Polygon2D) на Skeleton2D, суставы без швов, одежда-слои (`emily/outfits/*.tres`, `set_outfit`), голова из PNG от ChatGPT (6 глаз, 6 ртов, 8 причёсок), анимации idle/walk/run/jump/spin/wave/talk/blink (ноги через IK).
 - Просмотрщик для телефона: `viewer/` → https://igorbal-dev.github.io/Emily-game/puppets/ (публикация: `GODOT=... sh tools/publish_viewer.sh`, папка puppets/ в gh-pages; publish.sh игры её сохраняет и не копирует в vN/). Файл данных публикуется как `index_<хэш>.pck` (новое имя каждый раз), иначе телефоны показывают старую версию из кэша.
-- Промпт для сессии игры «заменить персонажей на кукол» — `PROMPT_PUPPETS_TO_GAME.md`.
+- Куклы в игру: решено НЕ переносить игру в Godot и не делать фотографии, а выгрузить кукол в данные + JS-проигрыватель в HTML-игре (анимации, одежда, гардероб с наградами); сначала один уровень. Промпт для той сессии — `PROMPT_PUPPETS_TO_GAME.md`.
 - Конвейер картинок ChatGPT/Codex: шаблоны в `for_chatgpt/`, результат в `from_chatgpt/`, импорт `python3 tools/import_chatgpt.py` (фон, выравнивание, патчи глаз/рта, волосы front/back); дыры в украшениях — `python3 tools/repair_accessories.py from_chatgpt/hair_*.png` (до импорта).
 - Проверка: `tools/build_emily.gd` (пересобрать сцену и анимации), `tools/render_previews.gd` + `tools/make_gifs.py` (кадры в previews/), `tools/shot_viewer.gd` (скриншот просмотрщика). Рендер — через `xvfb-run -a ... --rendering-driver opengl3`.
 
