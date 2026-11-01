@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="OutfitItem" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://emily/outfit_item.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+slot = "bottom"
+pattern = "leggings"
+color = Color(0.95, 0.45, 0.66, 1)
+outline_color = Color(0.72, 0.26, 0.45, 1)
+params = {"length": 88.0, "print": [Color(1, 0.86, 0.92, 1), "dots", 5.0, 16.0]}

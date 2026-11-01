@@ -206,6 +206,7 @@ def main():
     ap.add_argument("--dst", default=os.path.join(ROOT, "emily", "head"))
     ap.add_argument("--pale-hair", action="store_true", help="very light hair drawn opaque over the grey head (Mark v2)")
     ap.add_argument("--eyes-pad", type=int, default=0, help="grow the eye patch zone by N template px (big eyes peeking out under the patch edge)")
+    ap.add_argument("--mouth-pad", type=int, default=0, help="grow the mouth patch zone by N template px (open mouths cut at the top)")
     ap.add_argument("--clear-eyes", action="store_true", help="front hair never covers the eyes (curls under a hat hanging over them)")
     args = ap.parse_args()
     src, dst = args.src, args.dst
@@ -215,6 +216,11 @@ def main():
         p_ = args.eyes_pad
         x_, y_, w_, h_ = L.EYES_ZONE
         L.EYES_ZONE = (x_ - p_, y_ - p_, w_ + 2 * p_, h_ + 2 * p_)
+    if args.mouth_pad:
+        p_ = args.mouth_pad
+        x_, y_, w_, h_ = L.MOUTH_ZONE
+        # sideways and down only: upwards the patch would bring a second nose tip from the sheet
+        L.MOUTH_ZONE = (x_ - p_, y_, w_ + 2 * p_, h_ + int(p_ * 1.5))
     layout = L.layout_json()
     base512 = None
 
@@ -273,7 +279,7 @@ def main():
             hv = np.asarray(hair).astype(np.float32)
             sat = hv[..., :3].max(-1) - hv[..., :3].min(-1)
             light = np.clip((hv[..., :3].max(-1) - 110.0) / 20.0, 0, 1)
-            lowsat = np.clip((26.0 - sat) / 8.0, 0, 1) * light + np.clip((12.0 - sat) / 4.0, 0, 1) * (1.0 - light)
+            lowsat = np.clip((26.0 - sat) / 8.0, 0, 1) * light
             cold_grey = np.clip((hv[..., 2] - hv[..., 0] + 10.0) / 6.0, 0, 1) * lowsat
             hv[..., 3] *= 1.0 - cold_grey   # (the navy hat is saturated and stays)
             hair = to_img(hv)
@@ -283,13 +289,12 @@ def main():
             # hair lying on the head is denser: thin strands must not show the skull edge through
             front.putalpha(ImageChops.multiply(a.point(lambda v: min(255, int(v * 1.6))), hm_front))
             if args.clear_eyes:
-                # fade the front hair out over the eyes (soft ellipse around each eye of the eye zone)
+                # front hair stops at the brows: nothing hangs over the eyes / nose (curls under a hat)
                 ex, ey, ew, eh = [v * G / T for v in L.EYES_ZONE]
                 em = Image.new("L", (G, G), 255)
                 d = ImageDraw.Draw(em)
-                for cx in (ex + ew * 0.27, ex + ew * 0.73):
-                    d.ellipse([cx - ew * 0.2, ey + eh * 0.05, cx + ew * 0.2, ey + eh * 0.95], fill=0)
-                em = em.filter(ImageFilter.GaussianBlur(4))
+                d.rounded_rectangle([ex + ew * 0.02, ey + eh * 0.12, ex + ew * 0.98, G], radius=ew * 0.2, fill=0)
+                em = em.filter(ImageFilter.GaussianBlur(3))
                 front.putalpha(ImageChops.multiply(front.getchannel("A"), em))
             back.putalpha(ImageChops.multiply(a, ImageChops.invert(hm)))
         else:

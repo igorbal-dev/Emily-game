@@ -1,0 +1,8 @@
+[
+  {"name": "Дома: пижама с зайкой", "outfit": {"top": "pajama_top_bunny", "bottom": "pajama_pants_pink", "socks": "socks_cream"}},
+  {"name": "Дома: пижама с мишкой", "outfit": {"top": "pajama_top_teddy", "bottom": "pajama_pants_lilac", "socks": "socks_cream"}},
+  {"name": "Дома: футболка", "outfit": {"top": "tshirt_black", "bottom": "cargo_purple", "socks": "socks_cream"}},
+  {"name": "Улица", "outfit": {"top": "longsleeve_grey", "outer": "vest_pink", "bottom": "jeans_blue", "shoes": "sneakers_pink"}},
+  {"name": "Улица: платье", "outfit": {"dress": "dress_denim", "shoes": "sneakers_white"}},
+  {"name": "Зима", "outfit": {"top": "jacket_pink", "bottom": "jeans_blue", "shoes": "boots_pink"}}
+]

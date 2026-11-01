@@ -411,7 +411,11 @@ static func cloth_pieces(item, B: Dictionary = {}) -> Array:
 				else:
 					sleeve = keep(sleeve, above(sl))
 				out.append({"bone": "UpperArm" + s, "poly": sleeve, "trim": 3.0 if near else NAN})
-			if item.decal != "":
+			if item.decal == "bear":
+				out.append_array(bear_pieces(P.get("decal_pos", Vector2(14, -58)), P.get("decal_size", 1.0)))
+			elif item.decal == "bunny":
+				out.append_array(bunny_pieces(P.get("decal_pos", Vector2(14, -60)), P.get("decal_size", 1.0)))
+			elif item.decal != "":
 				for d in decal_polys(item.decal, P.get("decal_pos", Vector2(15, -56)), P.get("decal_size", 13.0)):
 					out.append({"bone": "Torso", "poly": d, "cat": "decal", "color": item.decal_color,
 						"outline": item.decal_color.darkened(0.3), "line_w": 1.6})
@@ -464,6 +468,8 @@ static func cloth_pieces(item, B: Dictionary = {}) -> Array:
 				out.append({"bone": "Torso", "poly": hull([[Vector2(-18, -104), 15.0], [Vector2(24, -104), 15.0], [Vector2(3, -98), 18.0]]),
 					"cat": "decal", "color": item.color.lightened(0.06), "outline": item.get_outline(), "line_w": 2.5, "z_add": -1})
 			for s in ["L", "R"]:
+				if not P.get("sleeves", true):
+					break   # puffer vest
 				var near: bool = s == "R"
 				out.append({"bone": "UpperArm" + s, "poly": grow(upper_arm_shape(), 7.0), "trim": 3.0 if near else NAN})
 				var fa := keep(grow(forearm_shape(), 6.5), above(FOREARM_LEN - 4.0))
@@ -602,6 +608,61 @@ static func cloth_pieces(item, B: Dictionary = {}) -> Array:
 	for p in out:
 		if not p.has("cat"):
 			p["cat"] = cat
+	if P.has("print"):
+		out.append_array(print_pieces(out, P["print"]))
+	return out
+
+## All-over print (pyjamas): params "print" = [Color, "stars" / "dots" / "hearts"(, size, step)].
+## Small motifs scattered over every plain piece of the garment (not over its decals/trims).
+static func print_pieces(pieces: Array, pr: Array) -> Array:
+	var col: Color = pr[0]
+	var kind: String = pr[1] if pr.size() > 1 else "dots"
+	var size: float = pr[2] if pr.size() > 2 else 5.0
+	var step: float = pr[3] if pr.size() > 3 else 17.0
+	var out := []
+	for p in pieces:
+		if p.has("color") or p["cat"] == "decal":
+			continue
+		var poly: PackedVector2Array = p["poly"]
+		var inner := grow(poly, -size * 0.6)
+		if inner.size() < 3:
+			continue
+		var r := Rect2(poly[0], Vector2.ZERO)
+		for v in poly:
+			r = r.expand(v)
+		var row := 0
+		var y := r.position.y + step * 0.5
+		while y < r.end.y:
+			var x := r.position.x + step * (0.3 + 0.5 * (row % 2))
+			while x < r.end.x:
+				var c := Vector2(x, y)
+				if Geometry2D.is_point_in_polygon(c, inner):
+					for d in decal_polys(kind.trim_suffix("s"), c, size):
+						out.append({"bone": p["bone"], "poly": d, "cat": p["cat"], "color": col, "outline": col.darkened(0.15),
+							"line_w": 0.5, "z_add": 1 + int(p.get("z_add", 0))})
+				x += step
+			y += step * 0.8
+			row += 1
+	return out
+
+## bunny face (pyjama print), size 1 = about 26 units wide
+static func bunny_pieces(pos: Vector2, k: float) -> Array:
+	var fur := Color("fbf7f2")
+	var line := Color("b9a99a")
+	var pink := Color("f4a7b9")
+	var ink := Color("4a3a35")
+	var out := []
+	for e in [Vector2(-5, -19), Vector2(5, -19)]:
+		var ear := hull([[pos + e * k, 4.0 * k], [pos + Vector2(e.x * 0.8, -6) * k, 4.2 * k]])
+		out.append({"bone": "Torso", "poly": ear, "cat": "decal", "color": fur, "outline": line, "line_w": 1.2, "z_add": 1})
+		out.append({"bone": "Torso", "poly": hull([[pos + e * k, 1.8 * k], [pos + Vector2(e.x * 0.8, -9) * k, 2.0 * k]]), "cat": "decal",
+			"color": pink, "outline": pink, "line_w": 0.2, "z_add": 2})
+	out.append({"bone": "Torso", "poly": circle(pos, 11.0 * k, 28), "cat": "decal", "color": fur, "outline": line, "line_w": 1.2, "z_add": 3})
+	for e in [Vector2(-4.2, -1.5), Vector2(4.2, -1.5)]:
+		out.append({"bone": "Torso", "poly": circle(pos + e * k, 1.4 * k, 10), "cat": "decal", "color": ink, "outline": ink, "line_w": 0.2, "z_add": 5})
+	for e in [Vector2(-7, 3), Vector2(7, 3)]:
+		out.append({"bone": "Torso", "poly": circle(pos + e * k, 2.2 * k, 12), "cat": "decal", "color": pink.lightened(0.3), "outline": pink.lightened(0.3), "line_w": 0.2, "z_add": 4})
+	out.append({"bone": "Torso", "poly": circle(pos + Vector2(0, 2) * k, 1.4 * k, 10), "cat": "decal", "color": pink, "outline": pink.darkened(0.2), "line_w": 0.5, "z_add": 5})
 	return out
 
 ## Dress = bodice on the Torso + flared skirt on the Hips (one item, slot "dress": replaces top and bottom).

@@ -266,6 +266,9 @@ const RU := {
 	"tshirt_black": "Чёрная футболка", "cargo_purple": "Штаны-карго", "sneakers_pink": "Кроссовки",
 	"dress_pink": "Розовое", "dress_lilac": "Сиреневое", "dress_denim": "Джинсовое", "dress_rainbow": "Радужное", "dress_green": "Зелёное",
 	"sneakers_white": "Белые кроссовки", "shoes_lilac": "Туфельки",
+	"jacket_pink": "Розовый пуховик", "jeans_blue": "Джинсы", "boots_pink": "Сапожки", "longsleeve_grey": "Серая кофта",
+	"vest_pink": "Жилетка-пуховик", "pajama_top_bunny": "Пижама: зайка", "pajama_pants_pink": "Пижамные штаны (розовые)",
+	"pajama_top_teddy": "Пижама: мишка", "pajama_pants_lilac": "Пижамные штаны (сиреневые)", "socks_cream": "Носочки",
 	"open": "Открыты", "half": "Прищур", "closed": "Закрыты", "happy": "Радость", "surprised": "Удивление", "sad": "Грусть",
 	"smile": "Улыбка", "a": "А", "o": "О", "e": "И", "m": "М", "laugh": "Смех",
 }
@@ -277,6 +280,18 @@ static func ru(id: String) -> String:
 ## New items appear by themselves: any .tres in emily/outfits/, any hair PNG in emily/head/hair/.
 func viewer_options() -> Array:
 	var groups := []
+	# whole outfits at once: <outfit_dir>sets.json = [{"name": "Зима", "outfit": {"top": "...", ...}}, ...]
+	var sets_path := outfit_dir + "sets.json"
+	if FileAccess.file_exists(sets_path):
+		var sets = JSON.parse_string(FileAccess.get_file_as_string(sets_path))
+		if sets is Array and sets.size() > 0:
+			var items := []
+			for st in sets:
+				var o: Dictionary = st["outfit"].duplicate()
+				if not o.has("base"):
+					o["base"] = base_outfit
+				items.append([st["name"], func(): outfit = o.duplicate(), func(): return _same_outfit(o)])
+			groups.append({"tab": "Одежда", "title": "Комплекты", "items": items})
 	var by_slot := {}
 	for f in _list(outfit_dir, ".tres"):
 		var item: OutfitItem = load(outfit_dir + f + ".tres")
@@ -311,6 +326,17 @@ func viewer_options() -> Array:
 		mv.append(["Болтает", func(): talking = not talking, func(): return talking])
 		groups.append({"tab": "Лицо", "title": "Рот", "items": mv})
 	return groups
+
+func _same_outfit(o: Dictionary) -> bool:
+	var a := outfit.duplicate()
+	if not a.has("base"):
+		a["base"] = base_outfit
+	if a.size() != o.size():
+		return false
+	for k in o:
+		if str(a.get(k, "")) != str(o[k]):
+			return false
+	return true
 
 ## file names (without suffix) in a res:// folder; works in exported builds too (.import / .remap)
 func _list(dir: String, suffix: String) -> Array:
