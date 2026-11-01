@@ -1,10 +1,13 @@
 {
-  "_comment": "Пробы Chatterbox Multilingual (немецкий), голос клонируется по образцу tools/chatterbox/voices/*.wav (emily.wav — склейка записей ElevenLabs из игры). Настройки как в tools/cb_say.py ветки игры: exaggeration 0.6, cfg_weight 0.5.",
+  "_comment": "Пробы Chatterbox Multilingual (немецкий). Образцы голоса: voices/emily.wav (склейка из ветки игры), voices/emily2.wav (две длинные записи e23_schnee + e23_familie). Пресеты подбирают, чтобы голос меньше «роботил».",
   "presets": {
-    "cb": {"exaggeration": 0.6, "cfg_weight": 0.5}
+    "A_kak_bylo": {"exaggeration": 0.6, "cfg_weight": 0.5, "temperature": 0.8},
+    "B_myagche": {"exaggeration": 0.5, "cfg_weight": 0.3, "temperature": 0.8},
+    "C_spokoyno": {"exaggeration": 0.4, "cfg_weight": 0.5, "temperature": 0.7},
+    "D_zhivee": {"exaggeration": 0.7, "cfg_weight": 0.3, "temperature": 0.9}
   },
   "probes": [
-    {"id": "e22_rutschen", "model": "mtl", "lang": "de", "presets": ["cb"],
+    {"id": "e22_rutschen", "model": "mtl", "lang": "de", "presets": ["A_kak_bylo", "B_myagche", "C_spokoyno", "D_zhivee"],
      "text": "Wollen wir zusammen rutschen?"}
   ]
 }
