@@ -710,7 +710,7 @@
 [shyly] Entschuldigung. Spielst du mit mir?
 
 
-# Уровни 21–23 (Абиха): НЕ ЗАПИСАНО — кончились кредиты ElevenLabs (31.10)
+# Уровни 21–23 (Абиха): ОЗВУЧЕНО Chatterbox 1.11 (кредиты ElevenLabs кончились 31.10), образцы emily2/abiha2.wav
 
 Не записано 22 фраз из 113. Пока записи нет, фразу говорит голос браузера (SAY). Каждый блок — одна генерация eleven_v3, потом
 `python3 tools/voice_split.py <URL записи> <ключи через запятую> art/abiha_voice/lines.json` (у Tilly: `VS_NOISE=-32 VS_D=0.08`), `python3 tools/build_minigames.py`.

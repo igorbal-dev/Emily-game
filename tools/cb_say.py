@@ -8,7 +8,7 @@
    Установка (каждая новая сессия): uv venv -p 3.11 /opt/cb && VIRTUAL_ENV=/opt/cb uv pip install chatterbox-tts
    Модели качаются с huggingface.co (нужен доступ в настройках сети)."""
 import sys, re, json, os, hashlib, subprocess, tempfile
-VOICE = {'b': 'abiha', 'e': 'emily', 'k': 'emily'}
+VOICE = {'b': 'abiha2', 'e': 'emily2', 'k': 'emily2'}   # *2 — две длинные записи без склеек: меньше «робота» (выбрал Игорь 1.11)
 EXAG = float(os.environ.get('CB_EXAG', '0.6'))   # выразительность 0.25–1
 CFG = float(os.environ.get('CB_CFG', '0.5'))
 args = [a for a in sys.argv[1:] if not a.startswith('--')]; test = '--test' in sys.argv
