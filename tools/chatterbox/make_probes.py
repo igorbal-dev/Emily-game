@@ -1,8 +1,8 @@
 """Генерирует пробы голоса Chatterbox (Resemble AI) по списку из probes.json.
 
 Запуск:  python tools/chatterbox/make_probes.py [--out samples/chatterbox] [--only tts,mtl,turbo]
-Если в tools/chatterbox/voices/ лежит .wav (5–15 с чистой речи), он используется
-как референс голоса (voice cloning); иначе — встроенный голос модели.
+Каждый .wav из tools/chatterbox/voices/ (5–15 с чистой речи) — образец голоса (клон);
+если образцов нет — встроенный голос модели.
 """
 import argparse
 import gc
@@ -57,7 +57,7 @@ def main():
     torch.set_num_threads(max(1, torch.get_num_threads()))
 
     voices = sorted((HERE / "voices").glob("*.wav"))
-    voice_variants = [("default", None)] + [(v.stem, str(v)) for v in voices]
+    voice_variants = [(v.stem, str(v)) for v in voices] or [("default", None)]
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
