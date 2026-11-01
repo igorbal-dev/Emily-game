@@ -1,0 +1,332 @@
+[
+  {
+    "file": "b21_schoen__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Es war sehr schön!",
+    "audio_sec": 1.6,
+    "gen_sec": 27.1
+  },
+  {
+    "file": "b21_stadt__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich war mit meiner Familie in der Stadt.",
+    "audio_sec": 3.12,
+    "gen_sec": 22.1
+  },
+  {
+    "file": "b21_dom__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich habe den Kölner Dom gesehen! Er ist riesengroß!",
+    "audio_sec": 4.08,
+    "gen_sec": 25.3
+  },
+  {
+    "file": "b21_ali__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ja! Ich habe mit Ali gespielt. Das hat viel Spaß gemacht!",
+    "audio_sec": 7.68,
+    "gen_sec": 40.0
+  },
+  {
+    "file": "b21_schoko__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ja! Ich habe Schokoladeneis gegessen. Das war lecker!",
+    "audio_sec": 6.04,
+    "gen_sec": 33.8
+  },
+  {
+    "file": "b21_familie__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Nein, wir waren nur mit unserer Familie dort. Mama, Papa, Ali und ich.",
+    "audio_sec": 5.4,
+    "gen_sec": 30.8
+  },
+  {
+    "file": "b21_sehr__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ja, sehr! Es war richtig schön!",
+    "audio_sec": 2.76,
+    "gen_sec": 20.8
+  },
+  {
+    "file": "b22_draussen__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich möchte draußen spielen! Und du?",
+    "audio_sec": 2.88,
+    "gen_sec": 20.7
+  },
+  {
+    "file": "e22_ich_auch__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich auch! Lass uns nach draußen gehen!",
+    "audio_sec": 3.16,
+    "gen_sec": 22.1
+  },
+  {
+    "file": "e22_rutschen__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wollen wir zusammen rutschen?",
+    "audio_sec": 2.36,
+    "gen_sec": 19.2
+  },
+  {
+    "file": "e22_jetzt_ich__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Haha! Jetzt bin ich dran!",
+    "audio_sec": 5.2,
+    "gen_sec": 30.5
+  },
+  {
+    "file": "e22_anschubsen__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ja! Kannst du mich ein bisschen anschubsen?",
+    "audio_sec": 3.16,
+    "gen_sec": 21.0
+  },
+  {
+    "file": "e22_danke__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Das macht Spaß! Danke, Abiha!",
+    "audio_sec": 2.24,
+    "gen_sec": 17.5
+  },
+  {
+    "file": "e22_sandkuchen__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ja! Lass uns einen großen Sandkuchen backen!",
+    "audio_sec": 4.64,
+    "gen_sec": 27.5
+  },
+  {
+    "file": "e22_hier_bitte__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Hier, bitte!",
+    "audio_sec": 1.08,
+    "gen_sec": 13.8
+  },
+  {
+    "file": "e22_sandburg__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich baue eine Sandburg!",
+    "audio_sec": 3.28,
+    "gen_sec": 21.3
+  },
+  {
+    "file": "e22_wette__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wollen wir um die Wette laufen?",
+    "audio_sec": 2.2,
+    "gen_sec": 17.4
+  },
+  {
+    "file": "e22_los__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Auf die Plätze, fertig, los!",
+    "audio_sec": 2.24,
+    "gen_sec": 17.2
+  },
+  {
+    "file": "e22_gerne__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich spiele so gerne mit dir!",
+    "audio_sec": 2.76,
+    "gen_sec": 18.9
+  },
+  {
+    "file": "e23_kennst__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Abiha, welche Jahreszeiten kennst du?",
+    "audio_sec": 4.0,
+    "gen_sec": 23.3
+  },
+  {
+    "file": "e23_jetzt__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich kenne sie auch! Welche Jahreszeit ist jetzt?",
+    "audio_sec": 3.24,
+    "gen_sec": 21.0
+  },
+  {
+    "file": "e23_herbst__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Jetzt ist Herbst!",
+    "audio_sec": 1.32,
+    "gen_sec": 14.0
+  }
+]
