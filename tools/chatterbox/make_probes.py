@@ -79,7 +79,8 @@ def main():
         print(f"    loaded in {time.time() - t0:.0f}s", flush=True)
 
         for p in items:
-            for voice_name, voice_path in voice_variants:
+            vv = [(n, v) for n, v in voice_variants if n == p['voice']] if p.get('voice') else voice_variants
+            for voice_name, voice_path in vv:
                 for preset in p["presets"]:
                     params = dict(presets[preset])
                     for k in ("exaggeration", "cfg_weight", "temperature"):

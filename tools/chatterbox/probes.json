@@ -1,13 +1,232 @@
 {
-  "_comment": "Пробы Chatterbox Multilingual (немецкий). Образцы голоса: voices/emily.wav (склейка из ветки игры), voices/emily2.wav (две длинные записи e23_schnee + e23_familie). Пресеты подбирают, чтобы голос меньше «роботил».",
-  "presets": {
-    "A_kak_bylo": {"exaggeration": 0.6, "cfg_weight": 0.5, "temperature": 0.8},
-    "B_myagche": {"exaggeration": 0.5, "cfg_weight": 0.3, "temperature": 0.8},
-    "C_spokoyno": {"exaggeration": 0.4, "cfg_weight": 0.5, "temperature": 0.7},
-    "D_zhivee": {"exaggeration": 0.7, "cfg_weight": 0.3, "temperature": 0.9}
+ "_comment": "Озвучка недостающих фраз уровней 21–23 (Chatterbox Multilingual, немецкий). Голос клонируется по образцам voices/emily2.wav и voices/abiha2.wav (длинные записи ElevenLabs из игры). Пресет A — выбран Игорем 1.11.",
+ "presets": {
+  "A": {
+   "exaggeration": 0.6,
+   "cfg_weight": 0.5,
+   "temperature": 0.8
+  }
+ },
+ "probes": [
+  {
+   "id": "b21_schoen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Es war sehr schön!"
   },
-  "probes": [
-    {"id": "e22_rutschen", "model": "mtl", "lang": "de", "presets": ["A_kak_bylo", "B_myagche", "C_spokoyno", "D_zhivee"],
-     "text": "Wollen wir zusammen rutschen?"}
-  ]
+  {
+   "id": "b21_stadt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Ich war mit meiner Familie in der Stadt."
+  },
+  {
+   "id": "b21_dom",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Ich habe den Kölner Dom gesehen! Er ist riesengroß!"
+  },
+  {
+   "id": "b21_ali",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Ja! Ich habe mit Ali gespielt. Das hat viel Spaß gemacht!"
+  },
+  {
+   "id": "b21_schoko",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Ja! Ich habe Schokoladeneis gegessen. Das war lecker!"
+  },
+  {
+   "id": "b21_familie",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Nein, wir waren nur mit unserer Familie dort. Mama, Papa, Ali und ich."
+  },
+  {
+   "id": "b21_sehr",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Ja, sehr! Es war richtig schön!"
+  },
+  {
+   "id": "b22_draussen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Ich möchte draußen spielen! Und du?"
+  },
+  {
+   "id": "e22_ich_auch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich auch! Lass uns nach draußen gehen!"
+  },
+  {
+   "id": "e22_rutschen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Wollen wir zusammen rutschen?"
+  },
+  {
+   "id": "e22_jetzt_ich",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Haha! Jetzt bin ich dran!"
+  },
+  {
+   "id": "e22_anschubsen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ja! Kannst du mich ein bisschen anschubsen?"
+  },
+  {
+   "id": "e22_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Das macht Spaß! Danke, Abiha!"
+  },
+  {
+   "id": "e22_sandkuchen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ja! Lass uns einen großen Sandkuchen backen!"
+  },
+  {
+   "id": "e22_hier_bitte",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Hier, bitte!"
+  },
+  {
+   "id": "e22_sandburg",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich baue eine Sandburg!"
+  },
+  {
+   "id": "e22_wette",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Wollen wir um die Wette laufen?"
+  },
+  {
+   "id": "e22_los",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Auf die Plätze, fertig, los!"
+  },
+  {
+   "id": "e22_gerne",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich spiele so gerne mit dir!"
+  },
+  {
+   "id": "e23_kennst",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Abiha, welche Jahreszeiten kennst du?"
+  },
+  {
+   "id": "e23_jetzt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich kenne sie auch! Welche Jahreszeit ist jetzt?"
+  },
+  {
+   "id": "e23_herbst",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Jetzt ist Herbst!"
+  }
+ ]
 }
