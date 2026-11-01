@@ -1,0 +1,3 @@
+b22_test | [happy] Ja, sehr! Es war richtig schön!
+e22_rutschen | [curious] Wollen wir zusammen rutschen?
+e22_los | [cheerfully] Auf die Plätze, fertig, los!
