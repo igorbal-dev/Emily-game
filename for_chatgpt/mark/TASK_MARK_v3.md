@@ -1,20 +1,26 @@
-# Task (v3): Mark's head for a 2D game puppet — EDIT `mark_face.png`, do not redraw
+# Task (v3): Mark's head (baby, ~1 year old) for a 2D game puppet
 
-`mark_face.png` IS Mark. Every image below is an **edit of that picture**: same face, same proportions,
-same painting style, same colours. Do not invent a new baby face.
+Mark is a **baby boy about 1 year old** (in the game he is the youngest: he toddles, babbles, falls on his bottom).
+`mark_face.png` shows who he is: **his colouring, his blue eyes, his golden curls, the painting style**. Keep all of that,
+but make sure he reads as a **one-year-old**:
+- head a soft round oval, **chubby round cheeks**, small soft chin, high round forehead (babies have big foreheads);
+- **big round blue eyes** set wide apart, like in `mark_face.png` (do NOT make them small), light thin brows;
+- **tiny button nose**: a small soft rounded bump, seen straight from the front, **NO nostril holes, no dark spots, not upturned**;
+- small soft mouth, pink lips;
+- hair: **soft, light baby curls** — warm golden-honey blond like `mark_face.png` (NOT pale platinum, NOT orange), a bit shorter
+  and softer than in the reference, forehead open.
 
-The previous attempt went wrong in these ways. Please avoid them:
-- the face became a younger, rounder baby face with **smaller eyes** → keep the eyes as **big** as in `mark_face.png`;
-- the nose became **upturned with visible nostrils**, so from far away it looked like **two noses** →
-  the nose is a **small soft rounded button, seen straight from the front, NO nostril holes, no dark spots under it**;
-- the hair became pale platinum → keep the **warm golden-honey blond** of `mark_face.png`;
-- in the hat picture, curls hung down **over the eyes and nose** → under the hat, curls only at the **sides** and a little fringe
-  that ends **above the eyebrows**.
+The previous attempt was almost right in age, but these things went wrong — avoid them:
+- the nose was **upturned with visible nostrils**, so from far away it looked like **two noses**;
+- the **eyes became small** — keep them big;
+- the hair became **pale platinum** — keep it warm golden;
+- in the hat picture, curls hung down **over the eyes and nose** — under the hat, curls only at the **sides** and a short fringe
+  **above the eyebrows**.
 
 ## Attached files
 | File | What it is |
 |---|---|
-| `mark_face.png` | **Mark himself. Source for every step.** |
+| `mark_face.png` | **Mark himself** (colours, eyes, curls, style). Make him look about 1 year old. |
 | `mark_sheet_1.png`, `mark_idle.png` | More views of him (only for checking colours/character). |
 | `mark_hat.png` | His navy knitted pom-pom hat (step 5). |
 | `guide_head.png` | Where the head goes on the 1024×1024 canvas (grey shape = bald head). Only for reading. |
@@ -25,12 +31,12 @@ The previous attempt went wrong in these ways. Please avoid them:
 2. Front view, head straight. Ears visible. **Nothing below the chin** (no neck).
 3. Head size and place like the grey shape in `guide_head.png`: top of the skull at y≈290, ear to ear ≈420 px, centred.
    Scale **uniformly** (never wider or taller than in `mark_face.png`).
-4. Make the images **one at a time**, one per answer. Before each answer, put it next to `mark_face.png` and check:
-   same eyes (big, blue, long lashes), same small button nose without nostrils, same thin pink smile, same skin.
+4. Make the images **one at a time**, one per answer. Before each answer check: a one-year-old baby face, big blue eyes,
+   tiny button nose **without nostrils**, golden curls, same skin and style as `mark_face.png`.
 
 ## Steps (5 images)
-1. **`head_base.png`** — `mark_face.png` with **all hair removed** (smooth bald skull like a doll head), neck removed, placed by rule 3.
-   Eyes, brows, nose, mouth, cheeks and ears exactly as in `mark_face.png`.
+1. **`head_base.png`** — baby Mark's face (as described above) with **all hair removed** (smooth bald skull like a doll head),
+   no neck, placed by rule 3. **All the next images are copies of this one** — draw it carefully.
 2. **`eyes_sheet.png`** (3×2 grid as in `template_eyes_sheet.png`): six **exact copies of `head_base.png`**, same size and same place
    inside each cell. **Only the eyes and eyebrows change** — nose, mouth, cheeks, ears stay pixel-identical:
    1 open (unchanged) · 2 half-closed (sleepy) · 3 closed (calm lines with lashes) · 4 happy (smiling arcs ^ ^) ·
@@ -39,7 +45,7 @@ The previous attempt went wrong in these ways. Please avoid them:
    **Only the mouth changes**, it stays **between the nose and the chin**; the nose must not move or change:
    1 smile (unchanged) · 2 "a" (open, babbling) · 3 "o" (small round) · 4 "e" (wide, two tiny top teeth) · 5 "m" (lips pressed) ·
    6 laugh (big open, tongue).
-4. **`hair_curls.png`** — the hair of `mark_face.png` (thick golden-honey loose curls, hairline high, forehead open), at the **same size
+4. **`hair_curls.png`** — Mark's soft golden-honey baby curls (forehead open), at the **same size
    and place as on `head_base.png`**. Everything that is not hair (face, ears) becomes **flat grey #BEBEBE**; the background stays green.
    Hair must be **fully opaque** (no see-through strands over the grey).
 5. **`hair_hat.png`** — like step 4, plus the navy knitted pom-pom hat from `mark_hat.png` pulled onto the head: the hat covers the top of the
