@@ -1,0 +1,30 @@
+{
+  "_comment": "Пробы Chatterbox. model: tts (EN, оригинал), mtl (мультиязычный, есть ru), turbo (EN, теги [laugh]/[chuckle]/[sigh]). Параметры: exaggeration (эмоциональность), cfg_weight (темп/следование голосу), temperature.",
+  "presets": {
+    "neutral":  {"exaggeration": 0.3, "cfg_weight": 0.5},
+    "default":  {"exaggeration": 0.5, "cfg_weight": 0.5},
+    "dramatic": {"exaggeration": 0.8, "cfg_weight": 0.3}
+  },
+  "probes": [
+    {"id": "en_greeting", "model": "tts", "lang": "en", "presets": ["neutral", "default", "dramatic"],
+     "text": "Hi, I'm Emily. I didn't expect anyone to find this place... but I'm glad you did."},
+    {"id": "en_fear", "model": "tts", "lang": "en", "presets": ["default", "dramatic"],
+     "text": "Wait. Did you hear that? Something is moving behind the door. Please, don't open it!"},
+    {"id": "en_joy", "model": "tts", "lang": "en", "presets": ["default", "dramatic"],
+     "text": "We did it! I can't believe we actually did it! Come on, let's see what's inside!"},
+
+    {"id": "ru_greeting", "model": "mtl", "lang": "ru", "presets": ["neutral", "default", "dramatic"], "cfg_weight": 0.0,
+     "text": "Привет, я Эмили. Не думала, что кто-то найдёт это место... но я рада, что это ты."},
+    {"id": "ru_fear", "model": "mtl", "lang": "ru", "presets": ["default", "dramatic"], "cfg_weight": 0.0,
+     "text": "Подожди. Ты это слышал? За дверью что-то шевелится. Пожалуйста, не открывай её!"},
+    {"id": "ru_joy", "model": "mtl", "lang": "ru", "presets": ["default", "dramatic"], "cfg_weight": 0.0,
+     "text": "У нас получилось! Не могу поверить, что у нас правда получилось! Пойдём, посмотрим, что внутри!"},
+    {"id": "en_greeting_mtl", "model": "mtl", "lang": "en", "presets": ["default"],
+     "text": "Hi, I'm Emily. I didn't expect anyone to find this place... but I'm glad you did."},
+
+    {"id": "turbo_greeting", "model": "turbo", "lang": "en", "presets": ["default"],
+     "text": "Hi, I'm Emily. [chuckle] I didn't expect anyone to find this place... but I'm glad you did."},
+    {"id": "turbo_tired", "model": "turbo", "lang": "en", "presets": ["default"],
+     "text": "[sigh] Another locked door. Okay, okay... [laugh] at least this time we have the key."}
+  ]
+}

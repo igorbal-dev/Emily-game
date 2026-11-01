@@ -1,0 +1,69 @@
+name: Chatterbox probes
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Модели через запятую (tts,mtl,turbo); пусто = все"
+        required: false
+        default: ""
+  push:
+    paths:
+      - "tools/chatterbox/**"
+      - ".github/workflows/chatterbox-probes.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: chatterbox-probes-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install (CPU torch + chatterbox-tts)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install chatterbox-tts==0.1.7
+
+      - name: Cache HF models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-chatterbox-0.1.7
+
+      - name: Generate probes
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python tools/chatterbox/make_probes.py --out samples/chatterbox --only "${{ github.event.inputs.only }}"
+
+      - name: MP3 copies
+        run: |
+          cd samples/chatterbox
+          for f in *.wav; do ffmpeg -loglevel error -y -i "$f" -b:a 128k "${f%.wav}.mp3"; done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chatterbox-probes
+          path: samples/chatterbox
+
+      - name: Commit samples back to branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add samples/chatterbox
+          git diff --cached --quiet && exit 0
+          git commit -m "Chatterbox probes: generated samples [skip ci]"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
