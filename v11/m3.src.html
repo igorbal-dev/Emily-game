@@ -1,0 +1,245 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Fangen! Мини-игра 3</title>
+<link rel="stylesheet" href="js/mini.css">
+<style>
+/* Догонялки на площадке, вид сверху. Эмили бежит туда, где палец; домик — укрытие, там ловить нельзя. */
+#cv{touch-action:none}
+</style></head><body>
+<div id="stage">
+  <canvas id="cv" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+</div>
+<script>
+const IMG = __IMG__;  /*IMG: emily_idle_out emily_walk_out emily_jump_out emily_laugh_out isabel_idle isabel_jump paul_idle paul_jump mark_walk_out mark_laugh_out theo_run1 theo_run2 theo_run3 theo_side theo_happy*/
+const SND = __SND__;  /*SND: a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily t_bark k_laugh*/
+</script>
+<script src="js/mini.js"></script>
+<script>
+const cv = $('#cv'), g = cv.getContext('2d');
+let W = 0, H = 0, DPR = 1, U = 1, OBJ = [], HOUSE = null;
+function layout(){
+  W = stage.clientWidth; H = stage.clientHeight; DPR = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR); cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  U = Math.min(W, H);
+  /* площадка: горка, песочница, дерево (их оббегают) и домик-укрытие */
+  OBJ = [
+    {kind:'slide', x: W*0.22, y: H*0.3, w: U*0.28, h: U*0.12},
+    {kind:'sand',  x: W*0.62, y: H*0.66, w: U*0.3, h: U*0.2},
+    {kind:'tree',  x: W*0.3, y: H*0.74, r: U*0.08}
+  ];
+  HOUSE = {x: W*0.8, y: H*0.27, w: U*0.24, h: U*0.2};
+}
+const inRect = (o, x, y, pad = 0) => x > o.x - o.w/2 - pad && x < o.x + o.w/2 + pad && y > o.y - o.h/2 - pad && y < o.y + o.h/2 + pad;
+const inHouse = c => inRect(HOUSE, c.x, c.y);
+/* не пускаем внутрь горки, песочницы и дерева, и за край площадки */
+function collide(c){
+  const m = U*0.05; c.x = clamp(c.x, m, W - m); c.y = clamp(c.y, U*0.15, H - m*0.6);
+  for (const o of OBJ){
+    if (o.kind === 'tree'){ const dx = c.x - o.x, dy = c.y - o.y, d = Math.hypot(dx, dy), r = o.r + U*0.025; if (d < r){ c.x = o.x + dx/d*r; c.y = o.y + dy/d*r; } }
+    else if (inRect(o, c.x, c.y, U*0.02)){
+      const l = c.x - (o.x - o.w/2 - U*0.02), rr = (o.x + o.w/2 + U*0.02) - c.x, t = c.y - (o.y - o.h/2 - U*0.02), b = (o.y + o.h/2 + U*0.02) - c.y, mn = Math.min(l, rr, t, b);
+      if (mn === l) c.x -= l; else if (mn === rr) c.x += rr; else if (mn === t) c.y -= t; else c.y += b;
+    }
+  }
+  if (c.noHouseUntil > S.t && inRect(HOUSE, c.x, c.y, U*0.03)) c.y = HOUSE.y + HOUSE.h/2 + U*0.04;   /* домик закрыт на минутку */
+}
+
+/* ---------- герои ---------- */
+const K = {
+  emily:  {name:'emily',  h:1.0,  sp:1.0},
+  isabel: {name:'isabel', h:0.98, sp:0.72, voice:{hab:'i_hab', haus:'i_haus'}},
+  paul:   {name:'paul',   h:1.02, sp:0.72, voice:{hab:'p_hab', haus:'p_haus'}},
+  mark:   {name:'mark',   h:0.72, sp:0.35},
+  theo:   {name:'theo',   h:0.5,  sp:1.15}
+};
+const KIDS = [K.emily, K.isabel, K.paul];
+let S;
+function reset(){
+  S = {phase:'intro', t:0, it:null, freezeUntil:0, round:0, catches:0, emilyCatches:0, roundT0:0, tx:null, ty:null, said:{}, last:{tease:0, bark:0, laugh:0}};
+  const pos = {emily:[0.5, 0.5], isabel:[0.42, 0.42], paul:[0.58, 0.42], mark:[0.15, 0.55], theo:[0.66, 0.55]};
+  for (const c of Object.values(K)){ c.x = W*pos[c.name][0]; c.y = H*pos[c.name][1]; c.vx = c.vy = 0; c.moving = false; c.houseT = 0; c.inHouse = false; c.noHouseUntil = 0; c.cheer = 0; c.face = 1; }
+}
+/* палец: Эмили бежит к пальцу; отпустила — стоит */
+let held = false;
+function setT(e){ const r = stage.getBoundingClientRect(); S.tx = e.clientX - r.left; S.ty = e.clientY - r.top; }
+stage.addEventListener('pointerdown', e => { if (e.target.closest('button,a')) return; held = true; setT(e); tapCatch(S.tx, S.ty); });
+stage.addEventListener('pointermove', e => { if (held) setT(e); });
+addEventListener('pointerup', () => { held = false; S && (S.tx = S.ty = null); });
+addEventListener('pointercancel', () => { held = false; S && (S.tx = S.ty = null); });
+
+function charH(c){ return U*0.25*c.h; }
+function moveToward(c, tx, ty, speed, dt){
+  const dx = tx - c.x, dy = ty - c.y, d = Math.hypot(dx, dy);
+  if (d < 2){ c.moving = false; return; }
+  const v = Math.min(d, speed*dt); c.x += dx/d*v; c.y += dy/d*v; c.moving = true; if (Math.abs(dx) > 1) c.face = dx > 0 ? 1 : -1;
+  collide(c);
+}
+const near = (a, b, r) => Math.hypot(a.x - b.x, a.y - b.y) < r;
+
+/* ---------- шаг ---------- */
+let lastT = 0;
+function frame(now){ requestAnimationFrame(frame); const dt = Math.min(0.05, (now - (lastT || now))/1000); lastT = now; if (!W) return; step(dt); draw(); }
+function step(dt){
+  S.t += dt;
+  const base = U*0.55, e = K.emily, playing = S.phase === 'play', frozen = S.t < S.freezeUntil;
+  /* Эмили */
+  if (playing && S.tx !== null) moveToward(e, S.tx, S.ty, base, dt); else e.moving = false;
+  /* остальные дети */
+  for (const c of [K.isabel, K.paul]){
+    if (!playing || frozen){ c.moving = false; continue; }
+    if (S.it === c){
+      /* водящий бежит за Эмили (если она в домике — за другим), к концу раунда чуть быстрее */
+      const prey = (!e.inHouse ? e : KIDS.find(k => k !== c && !k.inHouse)) || e;
+      const hurry = S.t - S.roundT0 > 14 ? 1.12 : 0.78;
+      moveToward(c, prey.x, prey.y, base*hurry, dt);
+      if (prey && !prey.inHouse && near(c, prey, U*0.07)) caught(c, prey);
+    } else {
+      /* убегают от водящего, иногда прячутся в домик, дразнятся */
+      const ch = S.it; let tx = c.x, ty = c.y;
+      if (c.inHouse){ c.houseT += dt; if (c.houseT > 3){ c.noHouseUntil = S.t + 6; tx = HOUSE.x - HOUSE.w; ty = HOUSE.y + HOUSE.h; } }
+      else if (ch && near(c, ch, U*0.45)){
+        if (ch === e && near(c, HOUSE, U*0.5) && c.noHouseUntil < S.t && Math.random() < 0.02){ tx = HOUSE.x; ty = HOUSE.y; c.goHouse = S.t + 2; }
+        else if (c.goHouse > S.t){ tx = HOUSE.x; ty = HOUSE.y; }
+        else { const dx = c.x - ch.x, dy = c.y - ch.y, d = Math.hypot(dx, dy) || 1; tx = c.x + dx/d*U*0.3; ty = c.y + dy/d*U*0.3;
+          /* у края разворачиваемся вдоль стены, чтобы не застревать в углу */
+          if (tx < U*0.08 || tx > W - U*0.08) ty += (c.y < H/2 ? 1 : -1)*U*0.3; if (ty < U*0.18 || ty > H - U*0.08) tx += (c.x < W/2 ? 1 : -1)*U*0.3; }
+      } else { c.wander = c.wander && S.t < c.wander.until ? c.wander : {x: W*(0.15 + Math.random()*0.7), y: H*(0.25 + Math.random()*0.6), until: S.t + 2 + Math.random()*2}; tx = c.wander.x; ty = c.wander.y; }
+      const sp = ch === e ? base*c.sp : base*0.55;
+      moveToward(c, tx, ty, sp, dt);
+      if (ch === e && !c.inHouse && near(e, c, U*0.075)) caught(e, c);
+      if (ch && S.t - S.last.tease > 9 && near(c, ch, U*0.4) && !speaking && c === K.isabel){ S.last.tease = S.t; play('i_fang_mich'); }
+    }
+  }
+  /* домик: кто вбежал — кричит «Haus!»; Эмили можно быть там недолго */
+  for (const c of KIDS){
+    const h = inHouse(c);
+    if (h && !c.inHouse && playing){ c.inHouse = true; c.houseT = 0; if (S.it !== c) play(c === e ? 'e_haus' : c.voice.haus); }
+    if (!h && c.inHouse){ c.inHouse = false; }
+    if (c === e && c.inHouse && playing){ c.houseT += dt; if (c.houseT > 4 && !S.said.raus){ S.said.raus = true; e.noHouseUntil = S.t + 6; e.y = HOUSE.y + HOUSE.h/2 + U*0.05; play('a_raus_haus').then(() => S.said.raus = false); } }
+  }
+  /* Марк ковыляет за Эмили и смеётся, Тео бегает за водящим и лает */
+  const m = K.mark;
+  if (playing){ moveToward(m, e.x - U*0.12, e.y + U*0.05, base*m.sp, dt); if (S.t - S.last.laugh > 14 && !speaking){ S.last.laugh = S.t; play('k_laugh'); } }
+  const th = K.theo, tgt = S.it || e;
+  if (playing){ moveToward(th, tgt.x + U*0.08*Math.sin(S.t*1.7), tgt.y + U*0.06*Math.cos(S.t*1.3), base*th.sp, dt); if (S.t - S.last.bark > 6 && th.moving && !speaking){ S.last.bark = S.t; play('t_bark'); } }
+}
+/* касание по ребёнку рядом — тоже «поймала» */
+function tapCatch(x, y){
+  if (S.phase !== 'play' || S.it !== K.emily || S.t < S.freezeUntil) return;
+  for (const c of [K.isabel, K.paul]){
+    const h = charH(c);
+    if (Math.abs(x - c.x) < h*0.35 && y > c.y - h && y < c.y + h*0.1 && !c.inHouse && near(K.emily, c, U*0.16)) return caught(K.emily, c);
+  }
+}
+
+/* ---------- поймали ---------- */
+let busy = false;
+async function caught(by, who){
+  if (busy || S.phase !== 'play') return; busy = true;
+  S.phase = 'caught'; S.catches++; sfx.ding(); by.cheer = S.t + 1.6;
+  if (by === K.emily){
+    S.emilyCatches++;
+    await play('e_hab');
+    await repeatAfter('e_hab');                       /* настоящая Эмили кричит «Hab dich!» */
+  } else {
+    await play(by.voice.hab);                        /* «Hab dich! Du bist dran!» */
+  }
+  S.it = who; S.freezeUntil = S.t + 2;
+  if (S.emilyCatches >= 2){ busy = false; return end(); }
+  if (who === K.emily){ await play('a_du_faengst'); if (!S.said.ru2){ S.said.ru2 = true; await play('r_du_faengst'); } }
+  else await play('p_123');
+  S.roundT0 = S.t; S.phase = 'play'; S.freezeUntil = S.t + 1; busy = false;
+}
+
+/* ---------- рисование ---------- */
+function rr(x, y, w, h, r){ g.beginPath(); g.moveTo(x+r, y); g.arcTo(x+w, y, x+w, y+h, r); g.arcTo(x+w, y+h, x, y+h, r); g.arcTo(x, y+h, x, y, r); g.arcTo(x, y, x+w, y, r); g.closePath(); }
+function drawPark(){
+  g.fillStyle = '#9fdc6c'; g.fillRect(0, 0, W, H);
+  g.fillStyle = '#8fd16a'; for (let i = 0; i < 40; i++){ const x = (Math.sin(i*12.9)*0.5 + 0.5)*W, y = (Math.sin(i*7.3)*0.5 + 0.5)*H; g.beginPath(); g.ellipse(x, y, U*0.05, U*0.025, 0, 0, 7); g.fill(); }
+  /* дорожка */
+  g.strokeStyle = '#f0dcae'; g.lineWidth = U*0.09; g.lineCap = 'round'; g.beginPath(); g.moveTo(W*0.05, H*0.95); g.quadraticCurveTo(W*0.5, H*0.35, W*0.95, H*0.5); g.stroke();
+  /* забор сверху */
+  g.fillStyle = '#fffaf2'; g.strokeStyle = '#d9c8a8'; g.lineWidth = 2; const pw = U*0.03;
+  for (let x = 0; x < W; x += pw*1.6){ rr(x, U*0.02, pw, U*0.09, pw*0.3); g.fill(); g.stroke(); }
+  g.fillRect(0, U*0.05, W, U*0.015);
+  for (const o of OBJ){
+    if (o.kind === 'sand'){ g.fillStyle = '#c98a4b'; rr(o.x - o.w/2 - 6, o.y - o.h/2 - 6, o.w + 12, o.h + 12, 10); g.fill(); g.fillStyle = '#f6d58e'; rr(o.x - o.w/2, o.y - o.h/2, o.w, o.h, 8); g.fill();
+      g.fillStyle = '#e9b86a'; g.beginPath(); g.arc(o.x - o.w*0.15, o.y, o.h*0.18, 0, 7); g.fill(); g.fillStyle = '#ff5a5a'; g.fillRect(o.x + o.w*0.2, o.y - o.h*0.2, o.h*0.14, o.h*0.22); }
+    if (o.kind === 'slide'){ g.fillStyle = '#d6894a'; rr(o.x - o.w/2, o.y - o.h/2, o.w*0.34, o.h, 6); g.fill(); g.fillStyle = '#ff7a59';
+      g.beginPath(); g.moveTo(o.x - o.w*0.16, o.y - o.h*0.35); g.lineTo(o.x + o.w/2, o.y - o.h*0.15); g.lineTo(o.x + o.w/2, o.y + o.h*0.15); g.lineTo(o.x - o.w*0.16, o.y + o.h*0.35); g.fill();
+      g.fillStyle = '#ffb59b'; g.fillRect(o.x - o.w*0.1, o.y - o.h*0.08, o.w*0.55, o.h*0.16); }
+  }
+  /* домик-укрытие */
+  const hs = HOUSE; g.fillStyle = 'rgba(40,40,40,.15)'; g.beginPath(); g.ellipse(hs.x, hs.y + hs.h*0.5, hs.w*0.6, hs.h*0.2, 0, 0, 7); g.fill();
+  g.fillStyle = '#ffe9c7'; rr(hs.x - hs.w/2, hs.y - hs.h*0.2, hs.w, hs.h*0.7, 8); g.fill(); g.strokeStyle = '#d9b77a'; g.lineWidth = 3; g.stroke();
+  g.fillStyle = '#e94b6a'; g.beginPath(); g.moveTo(hs.x - hs.w*0.62, hs.y - hs.h*0.15); g.lineTo(hs.x, hs.y - hs.h*0.75); g.lineTo(hs.x + hs.w*0.62, hs.y - hs.h*0.15); g.closePath(); g.fill();
+  g.fillStyle = '#8a5a1e'; rr(hs.x - hs.w*0.14, hs.y + hs.h*0.05, hs.w*0.28, hs.h*0.45, 6); g.fill();
+  g.fillStyle = '#bfe6ff'; rr(hs.x + hs.w*0.22, hs.y - hs.h*0.05, hs.w*0.18, hs.h*0.18, 4); g.fill();
+}
+function drawTree(o){ g.fillStyle = 'rgba(40,40,40,.18)'; g.beginPath(); g.ellipse(o.x, o.y + o.r*0.2, o.r*1.1, o.r*0.4, 0, 0, 7); g.fill();
+  g.fillStyle = '#a8703f'; g.fillRect(o.x - o.r*0.15, o.y - o.r*1.2, o.r*0.3, o.r*1.3); g.fillStyle = '#5cae43';
+  for (const [ox, oy, s] of [[0, -1.8, 1], [-0.7, -1.3, 0.8], [0.7, -1.3, 0.8]]){ g.beginPath(); g.arc(o.x + ox*o.r, o.y + oy*o.r, o.r*s, 0, 7); g.fill(); } }
+function drawKid(c){
+  const h = charH(c);
+  if (S.it === c && (S.phase === 'play' || S.phase === 'caught')){   /* кто водит — под ним красный круг */
+    g.strokeStyle = `rgba(233,75,75,${0.6 + 0.3*Math.sin(S.t*6)})`; g.lineWidth = Math.max(4, U*0.012); g.beginPath(); g.ellipse(c.x, c.y, h*0.32, h*0.1, 0, 0, 7); g.stroke();
+  }
+  g.fillStyle = 'rgba(40,40,40,.2)'; g.beginPath(); g.ellipse(c.x, c.y, h*0.22, h*0.07, 0, 0, 7); g.fill();
+  const cheer = S.t < c.cheer, bob = c.moving ? -Math.abs(Math.sin(S.t*12))*h*0.05 : 0;
+  let key;
+  if (c === K.emily) key = cheer ? 'emily_jump_out' : c.moving && Math.floor(S.t*6) % 2 ? 'emily_walk_out' : 'emily_idle_out';
+  else if (c === K.mark) key = S.t < c.cheer || S.phase === 'end' ? 'mark_laugh_out' : 'mark_walk_out';
+  else if (c === K.theo) key = c.moving ? 'theo_run' + (1 + Math.floor(S.t*9) % 3) : 'theo_happy';
+  else key = c.name + (cheer || S.phase === 'end' ? '_jump' : '_idle');
+  const alpha = c.inHouse ? 0.55 : 1;
+  const ratio = PIC[key] ? PIC[key].h/(c === K.theo ? 400 : 420) : 1;
+  drawImg(g, key, c.x, c.y + bob, h*Math.min(1.08, ratio), false, alpha);
+}
+function draw(){
+  g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  drawPark();
+  const things = [...Object.values(K).map(c => ({y: c.y, f: () => drawKid(c)})), ...OBJ.filter(o => o.kind === 'tree').map(o => ({y: o.y, f: () => drawTree(o)}))];
+  things.sort((a, b) => a.y - b.y).forEach(t => t.f());
+}
+
+/* ---------- ход игры ---------- */
+async function game(){
+  reset(); busy = false; hideNum();
+  await sleep(300);
+  await play('p_fangen');                            /* «Wir spielen Fangen! Ich bin dran!» */
+  S.it = K.paul;
+  /* Пауль считает, все разбегаются */
+  const cnt = play('p_123'); for (const n of [1, 2, 3]){ showNum(n); sfx.pop(); await sleep(650); } await cnt; hideNum();
+  S.phase = 'play'; S.roundT0 = S.t; S.freezeUntil = S.t + 1.2;
+  await play('a_lauf_weg');
+  await play('p_krieg');
+  if (!S.said.ru1){ S.said.ru1 = true; await play('r_lauf_weg'); }
+}
+async function end(){
+  S.phase = 'end'; sfx.fanfare(); K.mark.cheer = S.t + 9;
+  await play('a_fangen_toll');
+  await play('e_spass');
+  purse(3); await saveMini('fangen', 3);
+  await praise();
+  $('#again').hidden = false;
+}
+
+addEventListener('resize', layout);
+addEventListener('orientationchange', () => setTimeout(layout, 200));
+layout(); reset();
+requestAnimationFrame(frame);
+miniStart(IMG.paul_jump[0], game);
+window.__mini = () => ({phase: S.phase, it: S.it && S.it.name, catches: S.catches, emilyCatches: S.emilyCatches, pos: Object.fromEntries(Object.values(K).map(c => [c.name, [Math.round(c.x), Math.round(c.y), c.inHouse]])), W, H});
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

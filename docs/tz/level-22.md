@@ -19,7 +19,7 @@
 
 ## Картинки
 
-Позы Абихи в куртке пока одна (стоит). Заказ листа — `for_chatgpt/ABIHA_TASK.md`; до него все позы на улице = `abiha_idle_out` (`tools/abiha_game.py`).
+Позы Абихи в куртке пока одна (стоит). Заказ листа — `for_chatgpt/ABIHA_TASK_RESERVE.md`; до него все позы на улице = `abiha_idle_out` (`tools/abiha_game.py`).
 
 ## Награда
 
