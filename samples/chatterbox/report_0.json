@@ -1,1 +1,197 @@
-[]
+[
+  {
+    "file": "n24_intro__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Heute ist Sankt Martin! Die Kinder basteln Laternen.",
+    "audio_sec": 4.24,
+    "gen_sec": 63.1
+  },
+  {
+    "file": "e24_rot__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich möchte die rote Laterne!",
+    "audio_sec": 2.04,
+    "gen_sec": 32.4
+  },
+  {
+    "file": "s24_bitte__A__heike.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "heike",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Bitte schön!",
+    "audio_sec": 1.72,
+    "gen_sec": 28.8
+  },
+  {
+    "file": "p24_nein__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Nein! Die ist jetzt meine!",
+    "audio_sec": 2.56,
+    "gen_sec": 36.5
+  },
+  {
+    "file": "n24_geklappt__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Super! Mit fester Stimme hat es geklappt!",
+    "audio_sec": 3.32,
+    "gen_sec": 43.2
+  },
+  {
+    "file": "n24_opt_lachen__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Emily lacht Paul aus.",
+    "audio_sec": 2.44,
+    "gen_sec": 35.6
+  },
+  {
+    "file": "s24_neue__A__heike.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "heike",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Und hier ist eine neue Laterne für dich, Paul.",
+    "audio_sec": 3.0,
+    "gen_sec": 39.5
+  },
+  {
+    "file": "n24_draussen__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Es ist dunkel. Alle gehen mit ihren Laternen nach draußen.",
+    "audio_sec": 4.08,
+    "gen_sec": 49.3
+  },
+  {
+    "file": "s24_lied__A__heike.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "heike",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wir gehen los und singen: Laterne, Laterne, Sonne, Mond und Sterne!",
+    "audio_sec": 4.96,
+    "gen_sec": 57.4
+  },
+  {
+    "file": "r24_mond__A__narr_ru.wav",
+    "model": "mtl",
+    "lang": "ru",
+    "preset": "A",
+    "voice": "narr_ru",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Где луна? Нажми на луну!",
+    "audio_sec": 3.8,
+    "gen_sec": 47.2
+  },
+  {
+    "file": "n24_wie__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Was machen wir? Sankt Martin hat seinen Mantel geteilt.",
+    "audio_sec": 4.2,
+    "gen_sec": 50.0
+  },
+  {
+    "file": "n24_haelften__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wie viele Hälften sind das? Zähl mit!",
+    "audio_sec": 4.08,
+    "gen_sec": 49.8
+  },
+  {
+    "file": "n24_ende__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Schön! Wie Sankt Martin hat Emily geteilt und geholfen.",
+    "audio_sec": 4.72,
+    "gen_sec": 56.0
+  }
+]
