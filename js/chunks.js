@@ -7,7 +7,10 @@
 
    Как делим: по смысловым группам, где в живой речи пауза; в кусочке 2–4 слога и не больше 3 слов, кусочков не больше 4; одно слово никогда не делим (Entschuldigung — целиком, фраза не дробится);
    не рвём артикль + слово, предлог + его группу, обращение + имя; длинное или трудное слово — отдельным кусочком;
-   ничего не выкидываем. Кусочек в середине фразы пишется с «…» (интонация продолжения), последний — с концом фразы (! или ?).
+   ничего не выкидываем.
+   Смысл кусочка = смысл фразы (правила 2.11): отрицание (nicht, kein…, nie, nichts, niemand, nicht mehr, noch nicht, gar nicht) — в одном кусочке
+   со своим глаголом; отделяемую приставку не отрываем от глагола (gib … zurück, hör … auf, mach … kaputt, spiele … mit, komme … wieder);
+   артикль — со словом, zu — с инфинитивом; фразы до ~4 слов не делим; нельзя разделить правильно — не делим совсем. Кусочек в середине фразы пишется с «…» (интонация продолжения), последний — с концом фразы (! или ?).
    Записи кусочков (CHUNK_SND, Barbara Brave – TV Narrator) есть только у уровня 2. На остальных уровнях кусочки говорит
    немецкий голос браузера (js/repeat.js), новые записи кусочков в ElevenLabs не делаем.
 
@@ -49,14 +52,13 @@ const CHUNKS = (() => {
     /* 6 «Kita-Morgen» */
     e_morgen: ['Guten Morgen …', 'Heike!'],
     /* 7 «Eisdiele» */
-    e_zuerst: ['Ich war …', 'zuerst da.', 'Bitte stell dich …', 'hinten an.'],
+    e_zuerst: ['Ich war zuerst da.', 'Bitte stell dich hinten an.'],
     /* 8 «Kita-Weg» */
     e_rot_stehen: ['Rot heißt …', 'stehen!'],
     /* 9 «Aufräumen» */
     e_fertig: ['Fertig!', 'Alles …', 'aufgeräumt!'],
     e_gib_bitte: ['Mark, gib mir …', 'bitte …', 'das Auto!'],
     /* 11 «Ballspiel» */
-    e_ich_auch: ['Ich spiele …', 'auch mit!'],
     e_komm_mark: ['Komm, Mark!', 'Spiel mit!'],
     /* 12 «Turnen» */
     e_cmd_springen: ['Alle …', 'springen!'],
@@ -73,7 +75,7 @@ const CHUNKS = (() => {
     e14_toilette: ['Wo ist …', 'die Toilette …', 'bitte?'],
     e14_einladung: ['Danke für …', 'die Einladung!', 'Tschüss!'],
     /* 15 «Im Supermarkt» */
-    e15_bleib: ['Theo, bleib hier!', 'Wir kommen …', 'gleich wieder.'],
+    e15_bleib: ['Theo, bleib hier!', 'Wir kommen gleich wieder.'],
     e15_wo_milch: ['Entschuldigung …', 'wo ist …', 'die Milch?'],
     e15_bezahlen: ['Wir müssen …', 'zuerst …', 'bezahlen!'],
     e15_ihnen_auch: ['Danke …', 'Ihnen auch!', 'Tschüss!'],
@@ -97,21 +99,19 @@ const CHUNKS = (() => {
     e18_ballett: ['Ich tanze gern!', 'Ich gehe …', 'zum Ballett.'],
     e18_kommen: ['Willst du mal …', 'zu mir kommen?'],
     /* 19 «Stopp!» */
-    e19_stopp: ['Stopp!', 'Das mag ich …', 'nicht!'],
-    e19_nicht_schubsen: ['Nicht …', 'schubsen!'],
-    e19_bruder: ['Lass meinen Bruder …', 'in Ruhe!', 'Gib den Ball …', 'zurück!'],
-    e19_siehst: ['Siehst du?', 'Das ist …', 'nicht schön!'],
-    e19_heike: ['Heike!', 'Leon macht …', 'meine Burg kaputt!'],
-    e19_nicht_mehr: ['Okay.', 'Aber mach das …', 'nicht mehr!'],
+    e19_stopp: ['Stopp!', 'Das mag ich nicht!'],
+    e19_bruder: ['Lass meinen Bruder in Ruhe!', 'Gib den Ball zurück!'],
+    e19_siehst: ['Siehst du?', 'Das ist nicht schön!'],
+    e19_heike: ['Heike!', 'Leon macht meine Burg kaputt!'],
+    e19_nicht_mehr: ['Okay.', 'Aber mach das nicht mehr!'],
     /* 20 «Wir spielen alle zusammen» */
-    e20_nicht_bloed: ['Nein! Ich bin …', 'nicht blöd.', 'Das ist …', 'nicht nett!'],
+    e20_nicht_bloed: ['Nein!', 'Ich bin nicht blöd.', 'Das ist nicht nett!'],
     e20_aua: ['Aua!', 'Nicht hauen!'],
     e20_heike: ['Heike …', 'Leon hat mich …', 'gehauen.'],
     e20_traurig: ['Ich bin …', 'traurig.'],
     e20_wuetend: ['Ich bin …', 'wütend.'],
     e20_spielt_ihr: ['Isabel, Paul …', 'spielt ihr …', 'mit mir?'],
     e20_alle: ['Leon, du kannst …', 'auch mitspielen.', 'Wir spielen …', 'alle zusammen!'],
-    e20_nein: ['Nein …', 'jetzt nicht.'],
     /* 21 «Abiha ist wieder da!» */
     e21_endlich: ['Abiha! Hallo!', 'Endlich bist du …', 'wieder da!'],
     e21_vermisst: ['Ich habe dich …', 'so vermisst!'],
@@ -125,7 +125,7 @@ const CHUNKS = (() => {
     e22_draussen: ['Möchtest du …', 'draußen spielen …', 'oder drinnen?'],
     e22_ich_auch: ['Ich auch!', 'Lass uns …', 'nach draußen gehen!'],
     e22_rutschen: ['Wollen wir …', 'zusammen rutschen?'],
-    e22_jetzt_ich: ['Haha!', 'Jetzt bin ich …', 'dran!'],
+    e22_jetzt_ich: ['Haha!', 'Jetzt bin ich dran!'],
     e22_anschubsen: ['Ja!', 'Kannst du mich …', 'ein bisschen …', 'anschubsen?'],
     e22_danke: ['Das macht Spaß!', 'Danke, Abiha!'],
     e22_wette: ['Wollen wir …', 'um die Wette …', 'laufen?'],
