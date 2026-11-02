@@ -141,7 +141,18 @@ const CHUNKS = (() => {
     e23_spielzeug: ['Ich wünsche mir …', 'ein Spielzeug!'],
     e23_ski: ['Ja!', 'Ich fahre …', 'sehr gerne Ski!'],
     e23_riesig: ['Ja, …', 'ich freue mich …', 'riesig!'],
-    e23_wunderschoen: ['Der Winter …', 'ist einfach …', 'wunderschön!']
+    e23_wunderschoen: ['Der Winter …', 'ist einfach …', 'wunderschön!'],
+    /* 24 «Sankt Martin» */
+    e24_rot: ['Ich möchte …', 'die rote Laterne!'],
+    e24_gelb: ['Ich möchte …', 'die gelbe Laterne!'],
+    e24_blau: ['Ich möchte …', 'die blaue Laterne!'],
+    e24_gruen: ['Ich möchte …', 'die grüne Laterne!'],
+    e24_zurueck: ['Paul, …', 'gib mir bitte meine Laterne zurück.'],
+    e24_meins: ['Nein!', 'Das ist meine Laterne!'],
+    e24_zusammen: ['Paul, komm!', 'Wir gehen zusammen.'],
+    e24_freunde: ['Schon gut.', 'Wieder Freunde?'],
+    e24_laterne: ['Laterne, Laterne, …', 'Sonne, Mond und Sterne!'],
+    e24_teilen: ['Wir teilen!', 'Jeder bekommt eine Hälfte.']
   });
   return C;
 })();

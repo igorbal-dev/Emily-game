@@ -1,0 +1,262 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Sankt Martin. Уровень 24</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 24 «Sankt Martin» — мастерим фонарики в садике (Пауль хватает фонарик: вежливо → твёрдо), фонарик Пауля порвался — идём вместе; вечером шествие, считаем фонарики и звёзды, стишок «Laterne, Laterne», делим Weckmann пополам. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_shoes": ["assets/img/f3c638bc729d.webp", 208, 407], "emily_blink_shoes": ["assets/img/0f33b1ccf809.webp", 208, 407], "emily_mouth1_shoes": ["assets/img/3b7a1bb44669.webp", 208, 407], "emily_mouth2_shoes": ["assets/img/349db2cdaea9.webp", 208, 407], "emily_wave_shoes": ["assets/img/2ab85334263f.webp", 252, 394], "emily_jump_shoes": ["assets/img/31f33a5548ba.webp", 279, 346], "emily_surprised_shoes": ["assets/img/b65576956668.webp", 208, 407], "emily_idle_out": ["assets/img/75212f3d100c.webp", 220, 407], "emily_blink_out": ["assets/img/8f259a32dae9.webp", 220, 407], "emily_mouth1_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_mouth2_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_wave_out": ["assets/img/acf19e1e2d3e.webp", 218, 410], "emily_jump_out": ["assets/img/afd822bd4c46.webp", 276, 377], "emily_surprised_out": ["assets/img/723e0f67193a.webp", 227, 407], "emily_laugh_out": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk_out": ["assets/img/8e591eafe46b.webp", 225, 385], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "abiha_idle_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_blink_out": ["assets/img/cd9612e1c921.webp", 141, 375], "abiha_mouth1_out": ["assets/img/67d4d4438d8b.webp", 141, 375], "abiha_mouth2_out": ["assets/img/f1119565498c.webp", 141, 375], "abiha_wave_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_peace_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_walk_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_jump_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_laugh_out": ["assets/img/6d71ed799083.webp", 141, 375], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600]};  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised}_shoes emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,laugh,walk}_out emily_laugh abiha_{idle,blink,mouth1,mouth2,wave,peace,walk,jump,laugh}_out isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "n19_was": "assets/snd/a410e8e1a1bc.mp3", "r19_was": "assets/snd/b08bdfeafaf6.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht n19_was r19_was*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n24_intro: 'Heute ist Sankt Martin! Die Kinder basteln Laternen.',
+  s24_basteln: 'Jeder bekommt eine Laterne. Welche Farbe möchtest du, Emily?',
+  n24_tipp_farbe: 'Tipp auf eine Laterne!',
+  r24_tipp_farbe: 'Выбери фонарик — нажми на него!',
+  e24_rot: 'Ich möchte die rote Laterne!',
+  e24_gelb: 'Ich möchte die gelbe Laterne!',
+  e24_blau: 'Ich möchte die blaue Laterne!',
+  e24_gruen: 'Ich möchte die grüne Laterne!',
+  s24_bitte: 'Bitte schön!',
+  p24_schoen: 'Oh, die ist schön! Die nehme ich!',
+  n24_paul: 'Oh nein! Paul hat Emilys Laterne genommen.',
+  e24_zurueck: 'Paul, gib mir bitte meine Laterne zurück.',
+  p24_nein: 'Nein! Die ist jetzt meine!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e24_meins: 'Nein! Das ist meine Laterne!',
+  p24_okay: 'Okay, okay. Hier ist deine Laterne.',
+  n24_geklappt: 'Super! Mit fester Stimme hat es geklappt!',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!',
+  p24_kaputt: 'Ich habe keine Laterne. Meine ist kaputt.',
+  n24_opt_lachen: 'Emily lacht Paul aus.',
+  n24_opt_zusammen: 'Emily nimmt Paul mit.',
+  n24_lachen_nein: 'Auslachen ist nicht nett. Paul ist traurig. Noch mal!',
+  e24_zusammen: 'Paul, komm! Wir gehen zusammen.',
+  s24_neue: 'Und hier ist eine neue Laterne für dich, Paul.',
+  p24_danke: 'Danke! Entschuldigung, Emily.',
+  e24_freunde: 'Schon gut. Wieder Freunde?',
+  p24_freunde: 'Ja! Wieder Freunde!',
+  n24_draussen: 'Es ist dunkel. Alle gehen mit ihren Laternen nach draußen.',
+  s24_an: 'Jetzt machen wir die Laternen an!',
+  n24_zaehl: 'Tipp auf die Laternen und zähl mit!',
+  n24_fuenf: 'Fünf Laternen leuchten! Wie schön!',
+  s24_lied: 'Wir gehen los und singen: Laterne, Laterne, Sonne, Mond und Sterne!',
+  e24_laterne: 'Laterne, Laterne, Sonne, Mond und Sterne!',
+  b24_mond: 'Schau mal, Emily! Der Mond!',
+  n24_mond: 'Wo ist der Mond? Tipp auf den Mond!',
+  r24_mond: 'Где луна? Нажми на луну!',
+  n24_sterne: 'Und da sind Sterne! Tipp auf die Sterne und zähl mit!',
+  n24_drei: 'Drei Sterne!',
+  s24_weckmann: 'Zum Schluss gibt es Weckmänner. Aber ich habe nur zwei. Und ihr seid vier Kinder!',
+  n24_wie: 'Was machen wir? Sankt Martin hat seinen Mantel geteilt.',
+  e24_teilen: 'Wir teilen! Jeder bekommt eine Hälfte.',
+  n24_tipp_teilen: 'Tipp auf die Weckmänner!',
+  r24_tipp_teilen: 'Нажми на булочки — разломи их пополам!',
+  n24_haelften: 'Wie viele Hälften sind das? Zähl mit!',
+  n24_vier: 'Vier Hälften für vier Kinder!',
+  b24_lecker: 'Mmh, lecker! Danke, Emily!',
+  i24_danke: 'Danke, Emily!',
+  n24_ende: 'Schön! Wie Sankt Martin hat Emily geteilt und geholfen.'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 24: Sankt Martin. 1) В группе выбираем фонарик (4 цвета). Пауль хватает фонарик Эмили: шаг 1 — «Paul, gib mir bitte meine Laterne zurück.»,
+   не помогло — шаг 2 громче «Nein! Das ist meine Laterne!» (Пауль отступает). Фонарик Пауля порвался: карточки «посмеяться / взять с собой»,
+   «Komm! Wir gehen zusammen.», мирятся «Schon gut. Wieder Freunde?». 2) Вечер во дворе: зажигаем 5 фонариков (счёт), шествие, стишок,
+   луна и 3 звезды. 3) Две булочки Weckmann на четверых — ломаем пополам, считаем 4 половинки. */
+const LEVEL = 24, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M22 10 Q50 30 62 34" fill="none" stroke="#8a5a1e" stroke-width="4" stroke-linecap="round"/><path d="M62 34 v8" stroke="#555" stroke-width="2"/><ellipse cx="62" cy="44" rx="24" ry="6" fill="#ffb347"/><path d="M38 44 V80 Q62 90 86 80 V44" fill="#ff7a59" stroke="#d65a3b" stroke-width="3"/><ellipse cx="62" cy="80" rx="24" ry="6" fill="#d65a3b"/><circle cx="62" cy="62" r="11" fill="#ffe680"/><path d="M14 66 a9 9 0 1 0 12 -12 a7 7 0 1 1 -12 12" fill="#ffd34d"/><path d="M84 18 l3 6 l6 1 l-5 4 l1 6 l-5 -3 l-5 3 l1 -6 l-5 -4 l6 -1 z" fill="#ffd34d"/></svg>';
+const RUG = 0.5;
+function drawNight(g, W, H, L){
+  const fy = L.floorY, hE = L.hE, hz = H*0.6;
+  let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#0e1d45'); gr.addColorStop(1, '#2c3f7a'); g.fillStyle = gr; g.fillRect(0, 0, W, hz);
+  g.fillStyle = 'rgba(255,255,255,.55)'; for (let i = 0; i < 26; i++){ const x = (i*137.3 % 100)/100*W, y = (i*53.7 % 60)/100*hz; g.beginPath(); g.arc(x, y, hE*0.008, 0, 7); g.fill(); }
+  /* садик — домик с окошками */
+  const kx = W*0.08, kw = hE*1.5, kh = hE*0.75;
+  g.fillStyle = '#e8b46a'; g.fillRect(kx, hz - kh, kw, kh); g.fillStyle = '#c9584a'; g.beginPath(); g.moveTo(kx - hE*0.08, hz - kh); g.lineTo(kx + kw/2, hz - kh - hE*0.35); g.lineTo(kx + kw + hE*0.08, hz - kh); g.fill();
+  g.fillStyle = '#ffe680'; for (const dx of [0.15, 0.6]) g.fillRect(kx + kw*dx, hz - kh*0.75, kw*0.25, kh*0.35);
+  for (let i = 0; i < 7; i++){ const tx = W*(0.35 + i*0.11), r = hE*(0.16 + (i % 3)*0.05); g.fillStyle = i % 2 ? '#1f3b2c' : '#244634'; g.beginPath(); g.arc(tx, hz - r*0.5, r, 0, 7); g.fill(); }
+  gr = g.createLinearGradient(0, hz, 0, H); gr.addColorStop(0, '#2e4a33'); gr.addColorStop(1, '#22382a'); g.fillStyle = gr; g.fillRect(0, hz, W, H - hz);
+  /* дорожка и осенние листья */
+  g.fillStyle = '#5a5a66'; g.beginPath(); g.ellipse(W*0.5, fy + hE*0.04, W*0.55, hE*0.12, 0, 0, 7); g.fill();
+  for (let i = 0; i < 18; i++){ const x = (i*71.3 % 100)/100*W, y = fy + hE*(0.06 + (i % 4)*0.05); g.fillStyle = ['#e0763a', '#e3a33a', '#b5452f'][i % 3];
+    g.beginPath(); g.ellipse(x, y, hE*0.03, hE*0.015, i, 0, 7); g.fill(); }
+}
+function drawScene(g, W, H, L){ if (T.place === 'night') drawNight(g, W, H, L); else drawKita(g, W, H, L, RUG); }
+
+const COL = {rot: ['#ff5a4a', '#c43a2e'], gelb: ['#ffd34d', '#d6a21e'], blau: ['#4a8ff0', '#2a5fb0'], gruen: ['#3cc36a', '#24924a']};
+/* фонарик на палочке (viewBox 60×100: палочка из руки вверх, фонарик висит на конце) */
+const LANT = (c, lit) => `<svg viewBox="0 0 60 100"><path d="M2 58 Q20 20 44 8" fill="none" stroke="#8a5a1e" stroke-width="3.5" stroke-linecap="round"/><path d="M44 8 V24" stroke="#555" stroke-width="1.6"/>` +
+  `<ellipse cx="44" cy="26" rx="14" ry="4" fill="${c[1]}"/><path d="M30 26 V62 Q44 70 58 62 V26" fill="${c[0]}" stroke="${c[1]}" stroke-width="2.5"/><ellipse cx="44" cy="62" rx="14" ry="4" fill="${c[1]}"/>` +
+  `<path d="M34 34 Q44 40 54 34 M34 46 Q44 52 54 46" fill="none" stroke="${c[1]}" stroke-width="1.6" opacity=".6"/>` +
+  (lit ? `<circle cx="44" cy="44" r="9" fill="#fff6b0" opacity=".95"/><circle cx="44" cy="44" r="16" fill="#ffe680" opacity=".35"/>` : '') + '</svg>';
+/* фонарик стоит на столе (без палочки) */
+const LANT_T = c => `<svg viewBox="0 0 40 50"><path d="M20 0 V8" stroke="#555" stroke-width="2"/><ellipse cx="20" cy="9" rx="16" ry="4" fill="${c[1]}"/><path d="M4 9 V44 Q20 52 36 44 V9" fill="${c[0]}" stroke="${c[1]}" stroke-width="2.5"/><ellipse cx="20" cy="44" rx="16" ry="4" fill="${c[1]}"/><path d="M8 20 Q20 26 32 20 M8 32 Q20 38 32 32" fill="none" stroke="${c[1]}" stroke-width="1.8" opacity=".6"/></svg>`;
+const TORN = '<svg viewBox="0 0 60 100"><path d="M2 58 Q20 20 44 8" fill="none" stroke="#8a5a1e" stroke-width="3.5" stroke-linecap="round"/><path d="M44 8 V24" stroke="#555" stroke-width="1.6"/><path d="M30 26 L58 26 L56 40 L48 34 L44 48 L38 38 L32 46 Z" fill="#9b6bff" stroke="#6b3fc4" stroke-width="2"/></svg>';
+const TABLE = '<svg viewBox="0 0 200 70"><rect x="4" y="4" width="192" height="16" rx="6" fill="#e8904a" stroke="#b8642a" stroke-width="3"/><rect x="18" y="20" width="12" height="48" fill="#c97a3a"/><rect x="170" y="20" width="12" height="48" fill="#c97a3a"/></svg>';
+const MOON = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#fff3a8"/><circle cx="38" cy="40" r="7" fill="#efe08a"/><circle cx="60" cy="62" r="9" fill="#efe08a"/><circle cx="62" cy="34" r="4" fill="#efe08a"/></svg>';
+const STAR = '<svg viewBox="0 0 100 100"><path d="M50 6 L62 38 L96 40 L69 61 L79 94 L50 75 L21 94 L31 61 L4 40 L38 38 Z" fill="#ffe680" stroke="#ffd34d" stroke-width="4" stroke-linejoin="round"/></svg>';
+const WECK = half => `<svg viewBox="0 0 80 100">${half === 'L' ? '<clipPath id="hl"><rect x="0" y="0" width="40" height="100"/></clipPath>' : half === 'R' ? '<clipPath id="hr"><rect x="40" y="0" width="40" height="100"/></clipPath>' : ''}` +
+  `<g ${half ? `clip-path="url(#h${half.toLowerCase()})"` : ''}><path d="M40 4 a14 14 0 1 1 -0.1 0 Z M22 34 Q40 28 58 34 L74 46 Q78 52 72 54 L58 48 L60 70 L70 92 Q70 98 62 96 L46 76 H34 L18 96 Q10 98 10 92 L20 70 L22 48 L8 54 Q2 52 6 46 Z" fill="#d9954a" stroke="#a8652a" stroke-width="3" stroke-linejoin="round"/>` +
+  `<circle cx="35" cy="16" r="2.5" fill="#4a2a14"/><circle cx="45" cy="16" r="2.5" fill="#4a2a14"/><circle cx="40" cy="46" r="3" fill="#4a2a14"/><circle cx="40" cy="58" r="3" fill="#4a2a14"/><path d="M46 52 l14 -18" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g></svg>`;
+
+let emily, abiha, isabel, paul, heike, table, tl = {}, moon, stars = [], wecks = [];
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'jump', 'surprised'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'walk', 'jump', 'laugh'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+/* фонарик в руке героя: div внутри героя, движется вместе с ним */
+function hold(h, color, svg){
+  h.el.querySelectorAll('.lant').forEach(e => e.remove()); if (!color && !svg) return null;
+  const d = document.createElement('div'); d.className = 'lant';
+  Object.assign(d.style, {position: 'absolute', left: '55%', top: '22%', width: '55%', height: '62%', zIndex: 2, pointerEvents: 'none', transition: 'filter .4s'});
+  d.innerHTML = svg || LANT(COL[color], false); d.dataset.color = color || ''; h.el.appendChild(d); h.lant = d; return d;
+}
+function light(h){ const d = h.lant; if (!d) return; d.innerHTML = LANT(COL[d.dataset.color], true); d.style.filter = 'drop-shadow(0 0 10px #ffe680) drop-shadow(0 0 22px #ffb347)'; }
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; stars = []; wecks = [];
+  T.place = 'kita';
+  table = T.prop(TABLE, {x: 0.47, py: () => L.floorY - L.hE*0.02, w: 1.1, ratio: 70/200, z: 35});
+  ['rot', 'gelb', 'blau', 'gruen'].forEach((c, i) => { tl[c] = T.prop(LANT_T(COL[c]), {x: 0.33 + i*0.09, py: () => L.floorY - L.hE*0.37, w: 0.2, ratio: 50/40, z: 36}); });
+  moon = T.prop(MOON, {x: 0.86, y: 0.2, w: 0.42, z: 10}); moon.el.hidden = true;
+  [[0.6, 0.12], [0.7, 0.28], [0.32, 0.16]].forEach(([x, y]) => { const s = T.prop(STAR, {x, y, w: 0.16, z: 10}); s.el.hidden = true; stars.push(s); });
+  [0.42, 0.58].forEach(x => { const w = T.prop(WECK(), {x, py: () => L.floorY - L.hE*0.37, w: 0.3, ratio: 100/80, z: 36}); w.el.hidden = true; wecks.push(w); });
+  heike = T.hero('sommer', {x: 0.1, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  isabel = T.hero('isabel', {x: 0.8, h: 0.95, poses: KP});
+  paul = T.hero('paul', {x: 0.68, h: 0.97, poses: KP});
+  abiha = T.hero('abiha', {x: 1.2, outfit: 'out', poses: AP});
+  emily = T.hero('emily', {x: 0.22, outfit: 'shoes', poses: EP});
+}
+/* своя мелодия шествия: тихие колокольчики (не настоящая песня) */
+let tune = false;
+async function chimes(){ tune = true; const notes = [523, 587, 659, 784, 659, 587, 523, 440, 523, 659, 784, 880, 784, 659]; let i = 0;
+  while (tune){ sfx.tone(notes[i % notes.length], notes[i % notes.length], 380, 'sine', .07); i++; await sleep(420); } }
+const count = async i => { showNum(i); await emily.say('e_' + i); };
+
+async function story(){
+  /* 1. мастерим фонарики, выбираем цвет */
+  await play('n24_intro');
+  heike.set('talk'); await heike.say('s24_basteln'); heike.set('idle');
+  await play('n24_tipp_farbe');
+  const el = await T.tap(Object.values(tl), 'n24_tipp_farbe', 'r24_tipp_farbe');
+  const mine = Object.keys(tl).find(c => tl[c].el === el);
+  await T.repeat('e24_' + mine);
+  heike.set('wave'); await heike.say('s24_bitte'); heike.set('idle');
+  tl[mine].el.hidden = true; hold(emily, mine); emily.set('jump'); emily.hop(); sfx.ding(); await sleep(500); emily.set('idle');
+  await T.bone(emily);
+  const rest = Object.keys(tl).filter(c => c !== mine);
+  tl[rest[0]].el.hidden = true; hold(isabel, rest[0]); isabel.set('jump'); isabel.hop(); await sleep(400); isabel.set('idle');
+
+  /* Пауль хватает фонарик Эмили: шаг 1 вежливо, шаг 2 твёрдо */
+  await paul.walkTo(0.36, 900); hold(emily, null); hold(paul, mine); sfx.whoosh(); paul.set('talk');
+  await paul.say('p24_schoen'); await paul.walkTo(0.55, 600); paul.face(true); paul.set('idle');
+  emily.set('surprised'); await play('n24_paul'); emily.set('idle');
+  await T.repeat('e24_zurueck');
+  paul.set('talk'); await paul.say('p24_nein'); paul.set('idle'); paul.hop();
+  await play('n24_fester');
+  await T.firm('e24_meins', {who: paul, step: 2});
+  paul.set('talk'); await paul.say('p24_okay'); paul.set('idle');
+  await paul.walkTo(0.4, 500); hold(paul, null); hold(emily, mine); sfx.pop(); await paul.walkTo(0.6, 500); paul.face(true);
+  await play('n24_geklappt'); emily.set('jump'); emily.hop(); await sleep(400); emily.set('idle');
+  await T.bone(emily);
+
+  /* фонарик Пауля порвался — посмеяться или взять с собой? */
+  hold(paul, null, TORN); T.tears(paul, true);
+  await paul.say('p24_kaputt');
+  const cards = () => [
+    {parts: [{img: 'emily_laugh', x: 30, h: 70}, {img: 'paul_idle', x: 70, h: 66}, {fx: 'tears', x: 69, y: 34}], clip: 'n24_opt_lachen', bg: '#fff8e8', ground: '#c98f55'},
+    {parts: [{img: 'emily_wave_shoes', x: 34, h: 70}, {img: 'paul_jump', x: 68, h: 66}, {fx: 'hearts', x: 48, y: 18}], clip: 'n24_opt_zusammen', bg: '#fff8e8', ground: '#c98f55'}];
+  while ((await T.choose(cards(), 'n19_was', 'r19_was')) === 0) await play('n24_lachen_nein');
+  await emily.walkTo(0.48, 600);
+  await T.repeat('e24_zusammen');
+  T.tears(paul, false); paul.set('jump'); paul.hop();
+  heike.set('talk'); await heike.walkTo(0.74, 900); hold(paul, rest[1]); tl[rest[1]].el.hidden = true; await heike.say('s24_neue'); heike.set('idle');
+  paul.set('talk'); await paul.say('p24_danke'); paul.set('idle');
+  await T.repeat('e24_freunde');
+  paul.set('jump'); paul.hop(); await paul.say('p24_freunde'); T.hearts(paul); T.hearts(emily); paul.set('idle');
+  await T.bone(paul);
+
+  /* 2. вечер во дворе: зажигаем фонарики */
+  await play('n24_draussen');
+  await T.go('night', () => { table.el.hidden = true; Object.values(tl).forEach(t => t.el.hidden = true); moon.el.hidden = false;
+    emily.dress('out'); heike.x = 0.1; emily.x = 0.3; abiha.x = 0.46; isabel.x = 0.62; paul.x = 0.78;
+    hold(abiha, rest[2]); hold(heike, 'gelb'); heike.lant.style.top = '30%'; });
+  heike.set('talk'); await heike.say('s24_an'); heike.set('idle');
+  await play('n24_zaehl');
+  let left = [heike, emily, abiha, isabel, paul];
+  for (let i = 1; i <= 5; i++){
+    const el = await T.tap(left, 'n24_zaehl', 'r_tipp_licht'); const h = left.find(x => x.el === el); left = left.filter(x => x !== h);
+    light(h); sfx.clink(); await count(i);
+  }
+  hideNum(); await play('n24_fuenf'); await T.bone(emily);
+
+  /* шествие и стишок */
+  chimes();
+  await Promise.all([heike, emily, abiha, isabel, paul].map(h => h.walkTo(h.x + 0.04, 1800)));
+  heike.set('talk'); await heike.say('s24_lied'); heike.set('idle');
+  await T.repeat('e24_laterne');
+  await Promise.all([heike, emily, abiha, isabel, paul].map(h => h.walkTo(h.x - 0.04, 1800)));
+  tune = false;
+  abiha.set('wave'); await abiha.say('b24_mond'); abiha.set('idle');
+  await play('n24_mond');
+  await T.tap([moon], 'n24_mond', 'r24_mond'); sfx.ding(); moon.el.animate([{transform: 'scale(1)'}, {transform: 'scale(1.15)'}, {transform: 'scale(1)'}], {duration: 600});
+  stars.forEach(s => s.el.hidden = false);
+  await play('n24_sterne');
+  let sl = [...stars];
+  for (let i = 1; i <= 3; i++){
+    const el = await T.tap(sl, 'n24_sterne', 'r_tipp_licht'); const s = sl.find(x => x.el === el); sl = sl.filter(x => x !== s);
+    s.el.animate([{transform: 'scale(1) rotate(0)'}, {transform: 'scale(1.4) rotate(30deg)'}, {transform: 'scale(1) rotate(0)'}], {duration: 500}); await count(i);
+  }
+  hideNum(); await play('n24_drei'); await T.bone(moon);
+
+  /* 3. Weckmann: две булочки на четверых — пополам */
+  wecks.forEach((w, i) => { w.o.py = () => L.floorY - L.hE*1.1; w.o.x = 0.4 + i*0.2; w.o.w = 0.42; w.place(); w.el.hidden = false; });
+  heike.set('talk'); await heike.say('s24_weckmann'); heike.set('idle');
+  await play('n24_wie');
+  await T.repeat('e24_teilen');
+  await play('n24_tipp_teilen');
+  const halves = [];
+  for (let k = 0; k < 2; k++){
+    const el = await T.tap(wecks.filter(w => !w.el.hidden), 'n24_tipp_teilen', 'r24_tipp_teilen'); const w = wecks.find(x => x.el === el);
+    w.el.hidden = true; sfx.pop();
+    for (const side of ['L', 'R']){ const h = T.prop(WECK(side), {x: w.o.x + (side === 'L' ? -0.04 : 0.04), py: w.o.py, w: 0.42, ratio: 100/80, z: 55}); halves.push(h); }
+    await sleep(300);
+  }
+  await play('n24_haelften');
+  const kids = [emily, abiha, isabel, paul];
+  for (let i = 0; i < 4; i++){
+    const el = await T.tap(halves.filter(h => !h.done), 'n24_haelften', 'r_tipp_licht'); const h = halves.find(x => x.el === el); h.done = true;
+    h.o.py = null; h.o.w = 0.3; await T.move(h, kids[i].x + 0.04, (L.floorY - L.hE*0.3)/L.H, 500); await count(i + 1);
+  }
+  hideNum(); await play('n24_vier');
+  abiha.set('laugh'); await abiha.say('b24_lecker'); abiha.set('idle');
+  isabel.set('talk'); await isabel.say('i24_danke'); isabel.set('idle');
+  T.hearts(emily); await T.bone(emily);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n24_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.paul_wave[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
