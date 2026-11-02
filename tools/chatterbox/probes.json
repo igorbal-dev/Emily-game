@@ -1597,6 +1597,246 @@
    ],
    "voice": "narr",
    "text": "Toll! Emily hat die Regel erklärt und Entschuldigung gesagt."
+  },
+  {
+   "id": "n28_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Zu Hause. Emily spielt Memory. Sie sucht Paare: zwei gleiche Bilder."
+  },
+  {
+   "id": "e28_ich_dran",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich bin dran!"
+  },
+  {
+   "id": "n28_tipp",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf zwei Karten!"
+  },
+  {
+   "id": "r28_tipp",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Переверни две карточки — найди две одинаковые!"
+  },
+  {
+   "id": "n28_paar",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Ein Paar!"
+  },
+  {
+   "id": "n28_kein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Kein Paar. Die Karten werden wieder umgedreht."
+  },
+  {
+   "id": "n28_mark_kommt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh! Mark kommt und nimmt die Karten!"
+  },
+  {
+   "id": "e28_bitte_nicht",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Mark, bitte nicht die Karten nehmen."
+  },
+  {
+   "id": "n28_weiter",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Mark hört nicht auf."
+  },
+  {
+   "id": "e28_mein_spiel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein, Mark! Das ist mein Spiel."
+  },
+  {
+   "id": "e28_stopp",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Stopp, Mark! Hör auf!"
+  },
+  {
+   "id": "n28_traurig",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Mark ist traurig. Er möchte mitspielen. Was macht Emily?"
+  },
+  {
+   "id": "n28_opt_weg",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily schickt Mark weg."
+  },
+  {
+   "id": "n28_opt_mit",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily spielt mit Mark zusammen."
+  },
+  {
+   "id": "n28_weg_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Mark ist noch klein. Er möchte so gern mitspielen. Noch mal!"
+  },
+  {
+   "id": "e28_zusammen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Komm, Mark. Wir spielen zusammen."
+  },
+  {
+   "id": "e28_du_dran",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Jetzt bist du dran, Mark!"
+  },
+  {
+   "id": "n28_mark_paar",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Mark hat ein Paar gefunden!"
+  },
+  {
+   "id": "n28_zaehl_emily",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Paare hat Emily? Tipp und zähl!"
+  },
+  {
+   "id": "r28_zaehl",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажимай на пары и считай!"
+  },
+  {
+   "id": "n28_zaehl_mark",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Und wie viele Paare hat Mark?"
+  },
+  {
+   "id": "n28_mehr",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily hat mehr Paare. Aber Mark hat auch toll mitgespielt!"
+  },
+  {
+   "id": "e28_toll",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Toll gemacht, Mark!"
+  },
+  {
+   "id": "n28_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat erst freundlich, dann fest und dann ganz laut Stopp gesagt. Und dann haben alle zusammen gespielt."
   }
  ]
 }
