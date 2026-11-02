@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "file": "s24_basteln__A__heike.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "heike",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Jeder bekommt eine Laterne. Welche Farbe möchtest du, Emily?",
+    "audio_sec": 4.28,
+    "gen_sec": 59.2
+  },
+  {
+    "file": "e24_gelb__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich möchte die gelbe Laterne!",
+    "audio_sec": 3.2,
+    "gen_sec": 38.6
+  },
+  {
+    "file": "p24_schoen__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Oh, die ist schön! Die nehme ich!",
+    "audio_sec": 3.08,
+    "gen_sec": 38.0
+  },
+  {
+    "file": "n24_fester__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!",
+    "audio_sec": 4.6,
+    "gen_sec": 49.4
+  },
+  {
+    "file": "n_lauter__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Lauter! Sag es mit fester Stimme!",
+    "audio_sec": 2.84,
+    "gen_sec": 35.9
+  },
+  {
+    "file": "n24_opt_zusammen__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Emily nimmt Paul mit.",
+    "audio_sec": 2.52,
+    "gen_sec": 33.3
+  },
+  {
+    "file": "p24_danke__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Danke! Entschuldigung, Emily.",
+    "audio_sec": 3.08,
+    "gen_sec": 37.8
+  },
+  {
+    "file": "s24_an__A__heike.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "heike",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Jetzt machen wir die Laternen an!",
+    "audio_sec": 2.6,
+    "gen_sec": 33.3
+  },
+  {
+    "file": "e24_laterne__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Laterne, Laterne, Sonne, Mond und Sterne!",
+    "audio_sec": 3.96,
+    "gen_sec": 44.3
+  },
+  {
+    "file": "n24_sterne__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Und da sind Sterne! Tipp auf die Sterne und zähl mit!",
+    "audio_sec": 4.24,
+    "gen_sec": 46.4
+  },
+  {
+    "file": "e24_teilen__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wir teilen! Jeder bekommt eine Hälfte.",
+    "audio_sec": 4.52,
+    "gen_sec": 48.7
+  },
+  {
+    "file": "n24_vier__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Vier Hälften für vier Kinder!",
+    "audio_sec": 2.16,
+    "gen_sec": 30.6
+  }
+]
