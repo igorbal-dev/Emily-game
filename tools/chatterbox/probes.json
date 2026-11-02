@@ -4697,6 +4697,266 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat gesagt: Die Bank ist für alle! Und sie hat selbst das Spiel gerufen."
+  },
+  {
+   "id": "n39_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "In der Kita gibt es ein Kasperletheater. Emily spielt den Kasper!"
+  },
+  {
+   "id": "s39_vorhang",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Vorhang auf! Die Kinder schauen zu."
+  },
+  {
+   "id": "e39_hallo",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Hallo, Kinder! Seid ihr alle da?"
+  },
+  {
+   "id": "b39_ja",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Ja!"
+  },
+  {
+   "id": "i39_ja",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Jaaa!"
+  },
+  {
+   "id": "n39_kroko",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh! Da kommt das Krokodil! Es schleicht hinter den Kasper."
+  },
+  {
+   "id": "i39_pass",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Kasper, pass auf! Hinter dir!"
+  },
+  {
+   "id": "b39_kroko",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Das Krokodil!"
+  },
+  {
+   "id": "e39_wo",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Wo? Ich sehe kein Krokodil!"
+  },
+  {
+   "id": "n39_wieder",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Das Krokodil kommt wieder!"
+  },
+  {
+   "id": "n39_laut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt sag ganz laut zum Krokodil: Weg mit dir!"
+  },
+  {
+   "id": "e39_weg",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Weg mit dir, Krokodil!"
+  },
+  {
+   "id": "n39_weglaufen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Das Krokodil erschrickt und läuft weg! Eine laute Stimme hilft!"
+  },
+  {
+   "id": "p39_ich",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ich will den Kasper spielen! Gib her!"
+  },
+  {
+   "id": "e39_gleich",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, ich spiele gerade. Du kannst gleich."
+  },
+  {
+   "id": "p39_jetzt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Nein, jetzt!"
+  },
+  {
+   "id": "e39_warte",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein, Paul! Warte bitte. Du kannst das Krokodil spielen!"
+  },
+  {
+   "id": "p39_kroko",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Oh! Das Krokodil! Okay!"
+  },
+  {
+   "id": "n39_zweite",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Zweite Vorstellung! Paul spielt das Krokodil."
+  },
+  {
+   "id": "p39_rrr",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Rrrrr! Ich bin das Krokodil!"
+  },
+  {
+   "id": "e39_freund",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Hallo, Krokodil! Möchtest du mein Freund sein?"
+  },
+  {
+   "id": "p39_lieb",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ja! Ich bin ein liebes Krokodil!"
+  },
+  {
+   "id": "n39_klatschen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Alle klatschen! Tipp auf die Hände und zähl mit!"
+  },
+  {
+   "id": "r39_klatschen",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Хлопай — нажимай на ладошки и считай!"
+  },
+  {
+   "id": "n39_fuenf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Fünfmal geklatscht! Bravo!"
+  },
+  {
+   "id": "n39_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat laut gesprochen und Paul eine gute Rolle gegeben."
   }
  ]
 }
