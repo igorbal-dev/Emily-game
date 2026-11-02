@@ -235,7 +235,14 @@ const CHUNKS = (() => {
     e39_wo: ['Wo?', 'Ich sehe kein Krokodil!'],
     e39_gleich: ['Paul, …', 'ich spiele gerade.', 'Du kannst gleich.'],
     e39_warte: ['Nein, Paul!', 'Warte bitte.', 'Du kannst das Krokodil spielen!'],
-    e39_freund: ['Hallo, Krokodil!', 'Möchtest du …', 'mein Freund sein?']
+    e39_freund: ['Hallo, Krokodil!', 'Möchtest du …', 'mein Freund sein?'],
+    /* 40 «Laufrad» */
+    e40_gerade: ['Ich fahre gerade.', 'Du kannst gleich.'],
+    e40_los: ['Lass los, Isabel!', 'Ich fahre noch.'],
+    e40_zehn: ['Ich fahre bis zehn.', 'Dann bist du dran.'],
+    e40_dran: ['Zehn!', 'Jetzt bist du dran, …', 'Isabel.'],
+    e40_abgemacht: ['Isabel, …', 'wir haben gesagt: …', 'bis zehn.', 'Jetzt bin ich wieder dran.'],
+    e40_nach: ['Klar!', 'Du fährst nach mir.', 'Auch bis zehn!']
   });
   return C;
 })();

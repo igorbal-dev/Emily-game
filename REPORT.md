@@ -245,3 +245,17 @@
 **Лестница:** шаг 2 + предложить другую роль. **Счёт:** 5 хлопков.
 **Кусочки:** «Wo? | Ich sehe kein Krokodil!» («kein» с глаголом), «Nein, Paul! | Warte bitte. | Du kannst das Krokodil spielen!», «Weg mit dir, Krokodil!» — целиком.
 
+## Уровень 40 «Laufrad» — готов
+
+**Где:** двор садика, круговая дорожка мелом, **один** беговел на всех.
+**Что происходит:**
+1. Эмили катается. Изабель: «Jetzt will ich! Steig ab!» — шаг 1: «Ich fahre gerade. Du kannst gleich.» — «Nein, sofort!» — она тянет руль — **шаг 2**: «Lass los, Isabel! Ich fahre noch.»
+2. Эмили придумывает честное правило: «Ich fahre bis zehn. Dann bist du dran.» — «Okay! Ich zähle mit.»
+3. Нажимаем на Эмили — каждый круг считаем на один больше (до 10). «Zehn! Jetzt bist du dran, Isabel.»
+4. Катается Изабель, Эмили считает до 10. Изабель: «Noch ein bisschen!» — Эмили напоминает договор: «Isabel, wir haben gesagt: bis zehn. Jetzt bin ich wieder dran.» — «Stimmt. Abgemacht ist abgemacht.»
+5. Абиха: «Darf ich auch mal?» — «Klar! Du fährst nach mir. Auch bis zehn!»
+
+**Лестница:** шаг 2 + своё правило и договор. **Счёт:** до 10 два раза — счёт здесь нужен по-настоящему, чтобы было честно.
+**Кусочки:** «Lass los, Isabel! | Ich fahre noch.» («los» не отрываем), «Ich fahre bis zehn. | Dann bist du dran.», «Isabel, … | wir haben gesagt: … | bis zehn. | Jetzt bin ich wieder dran.»
+**Заглушка:** Изабель на беговеле — её обычная картинка и беговел, нарисованный кодом (в задании ChatGPT можно добавить «Изабель на беговеле»).
+
