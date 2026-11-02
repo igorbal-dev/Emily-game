@@ -2067,6 +2067,306 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat gesagt: Doch, ich kann das! Und sie hat es geschafft."
+  },
+  {
+   "id": "n30_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "In der Spielecke der Kita spielen die Kinder Arzt. Es gibt nur ein Stethoskop."
+  },
+  {
+   "id": "n30_nimmt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily nimmt schnell das Stethoskop. Aber Abiha wollte es zuerst!"
+  },
+  {
+   "id": "b30_ich_wollte",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Hey! Ich wollte das Stethoskop zuerst haben!"
+  },
+  {
+   "id": "n30_opt_behalten",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily behält das Stethoskop."
+  },
+  {
+   "id": "n30_opt_geben",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily gibt Abiha das Stethoskop."
+  },
+  {
+   "id": "n30_behalten_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Abiha war zuerst da. Das ist nicht fair. Noch mal!"
+  },
+  {
+   "id": "e30_du_zuerst",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Entschuldigung. Du kannst zuerst."
+  },
+  {
+   "id": "b30_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Danke! Du bist danach dran. Wo tut es weh?"
+  },
+  {
+   "id": "e30_bauch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Mein Bauch tut weh."
+  },
+  {
+   "id": "b30_hoeren",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Ich höre dein Herz. Bum, bum!"
+  },
+  {
+   "id": "n30_herz",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf das Herz und zähl die Schläge!"
+  },
+  {
+   "id": "r30_herz",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажимай на сердечко и считай удары!"
+  },
+  {
+   "id": "b30_gesund",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Alles gut! Du bist gesund."
+  },
+  {
+   "id": "e30_tauschen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Jetzt tauschen wir! Jetzt bin ich die Ärztin."
+  },
+  {
+   "id": "b30_klar",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Klar! Hier, bitte."
+  },
+  {
+   "id": "p30_aua",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Aua, aua! Frau Doktor!"
+  },
+  {
+   "id": "e30_wo",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Wo tut es weh?"
+  },
+  {
+   "id": "p30_knie",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Mein Knie tut weh."
+  },
+  {
+   "id": "n30_tipp_knie",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf Pauls Knie! Dann bekommt er ein Pflaster."
+  },
+  {
+   "id": "r30_knie",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажми на коленку Пауля — наклеим пластырь!"
+  },
+  {
+   "id": "p30_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Danke, Frau Doktor!"
+  },
+  {
+   "id": "i30_ich_will",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Ich will auch Ärztin sein! Gib mir den Koffer!"
+  },
+  {
+   "id": "e30_erst",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Wir können tauschen. Erst ich, dann du."
+  },
+  {
+   "id": "i30_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Okay! Erst du, dann ich. Mein Kopf tut weh!"
+  },
+  {
+   "id": "n30_tipp_kopf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf Isabels Kopf!"
+  },
+  {
+   "id": "r30_kopf",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажми Изабель на голову!"
+  },
+  {
+   "id": "n30_kuehl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Ein Kühlpack für den Kopf. Gleich geht es besser!"
+  },
+  {
+   "id": "e30_bitte",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Jetzt bist du dran. Hier, bitte!"
+  },
+  {
+   "id": "i30_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Danke, Emily! Du bist eine gute Ärztin."
+  },
+  {
+   "id": "n30_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat gewartet, getauscht und allen geholfen."
   }
  ]
 }
