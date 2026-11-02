@@ -214,7 +214,12 @@ const CHUNKS = (() => {
     e35_zurueck: ['Paul, …', 'die habe ich gefunden.', 'Gib sie mir bitte zurück.'],
     e35_meine: ['Nein!', 'Das ist meine Kastanie.', 'Gib sie zurück!'],
     e35_suchen: ['Komm, …', 'wir suchen zusammen …', 'eine für dich!'],
-    e35_helfen: ['Entschuldigung!', 'Ich helfe dir.', 'Wir bauen ihn zusammen wieder auf.']
+    e35_helfen: ['Entschuldigung!', 'Ich helfe dir.', 'Wir bauen ihn zusammen wieder auf.'],
+    /* 36 «Würfelspiel» */
+    e36_gut: ['Schade!', 'Aber gut gespielt, …', 'Paul.'],
+    e36_aetsch: ['Paul, …', 'Ätsch sagt man nicht.', 'Das ist nicht nett.'],
+    e36_nochmal: ['Noch mal?', 'Nächstes Mal …', 'gewinne ich!'],
+    e36_juhu: ['Juhu!', 'Und du hast auch …', 'gut gespielt, Paul.']
   });
   return C;
 })();

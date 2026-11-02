@@ -191,3 +191,16 @@
 **Лестница:** шаг 2. **Счёт:** 8 каштанов, 5. **Цвета:** rot, gelb, braun.
 **Кусочки:** «Nein! | Das ist meine Kastanie. | Gib sie zurück!» («zurück» с глаголом), «Entschuldigung! | Ich helfe dir. | Wir bauen ihn zusammen wieder auf.» («auf» не отрываем — длинный кусок целиком).
 
+## Уровень 36 «Würfelspiel» — готов
+
+**Где:** стол в группе, настольная игра: дорожка из 12 кружков к домику, кубик, две фишки.
+**Новое:** учимся **проигрывать и выигрывать** по-доброму.
+**Что происходит:**
+1. Пауль: «Du darfst anfangen, Emily!» Эмили нажимает на кубик, выбираем, сколько точек (из трёх чисел), Эмили говорит «Ich habe eine Vier!», фишка шагает — считаем шаги. «Jetzt bist du dran, Paul!» — Пауль бросает сам.
+2. Первый раунд выигрывает Пауль и дразнится: «Ich habe gewonnen! Ätsch, du hast verloren!» Эмили грустно. Картинки: сбросить игру со стола (нет), плакать (нет), сказать «Gut gespielt!» (да).
+3. Эмили: «Schade! Aber gut gespielt, Paul.» и — шаг 1 — «Paul, Ätsch sagt man nicht. Das ist nicht nett.» — «Stimmt. Entschuldigung. Du hast auch gut gespielt!» — «Noch mal? Nächstes Mal gewinne ich!»
+4. Второй раунд: Эмили выбрасывает шестёрку и выигрывает — и сама хвалит: «Juhu! Und du hast auch gut gespielt, Paul.»
+
+**Лестница:** шаг 1 (вежливо остановить «Ätsch»). **Счёт:** точки на кубике 2–6, шаги фишки.
+**Кусочки:** «Paul, … | Ätsch sagt man nicht. | Das ist nicht nett.» (оба «nicht» со своими глаголами), «Schade! | Aber gut gespielt, … | Paul.», «Ich habe eine Vier!» — целиком.
+
