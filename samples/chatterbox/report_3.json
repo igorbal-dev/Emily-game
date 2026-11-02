@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "file": "r24_tipp_farbe__A__narr_ru.wav",
+    "model": "mtl",
+    "lang": "ru",
+    "preset": "A",
+    "voice": "narr_ru",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Выбери фонарик — нажми на него!",
+    "audio_sec": 3.96,
+    "gen_sec": 64.6
+  },
+  {
+    "file": "e24_gruen__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich möchte die grüne Laterne!",
+    "audio_sec": 2.04,
+    "gen_sec": 35.3
+  },
+  {
+    "file": "e24_zurueck__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Paul, gib mir bitte meine Laterne zurück.",
+    "audio_sec": 4.24,
+    "gen_sec": 55.0
+  },
+  {
+    "file": "p24_okay__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Okay, okay. Hier ist deine Laterne.",
+    "audio_sec": 4.32,
+    "gen_sec": 55.4
+  },
+  {
+    "file": "p24_kaputt__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich habe keine Laterne. Meine ist kaputt.",
+    "audio_sec": 4.08,
+    "gen_sec": 53.5
+  },
+  {
+    "file": "e24_zusammen__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Paul, komm! Wir gehen zusammen.",
+    "audio_sec": 4.32,
+    "gen_sec": 55.1
+  },
+  {
+    "file": "p24_freunde__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ja! Wieder Freunde!",
+    "audio_sec": 3.6,
+    "gen_sec": 48.8
+  },
+  {
+    "file": "n24_fuenf__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Fünf Laternen leuchten! Wie schön!",
+    "audio_sec": 2.48,
+    "gen_sec": 39.2
+  },
+  {
+    "file": "n24_mond__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wo ist der Mond? Tipp auf den Mond!",
+    "audio_sec": 3.32,
+    "gen_sec": 47.1
+  },
+  {
+    "file": "s24_weckmann__A__heike.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "heike",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Zum Schluss gibt es Weckmänner. Aber ich habe nur zwei. Und ihr seid vier Kinder!",
+    "audio_sec": 5.32,
+    "gen_sec": 64.9
+  },
+  {
+    "file": "r24_tipp_teilen__A__narr_ru.wav",
+    "model": "mtl",
+    "lang": "ru",
+    "preset": "A",
+    "voice": "narr_ru",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Нажми на булочки — разломи их пополам!",
+    "audio_sec": 4.72,
+    "gen_sec": 59.8
+  },
+  {
+    "file": "i24_danke__A__isabel.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "isabel",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Danke, Emily!",
+    "audio_sec": 1.08,
+    "gen_sec": 26.7
+  }
+]
