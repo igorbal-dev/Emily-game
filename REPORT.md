@@ -232,3 +232,16 @@
 **Лестница:** до шага 3 (без взрослого). **Счёт:** 4.
 **Кусочки:** «Nein, Paul! | Die Bank ist für alle. | Rutsch bitte rüber!» («rüber» не отрываем), «Stopp, Paul! | Ich will auch … | auf die Bank!», «Paul, mach bitte Platz.» — целиком.
 
+## Уровень 39 «Kasperletheater» — готов
+
+**Где:** группа садика, ширма кукольного театра с красным занавесом; дети сидят и смотрят.
+**Что происходит:**
+1. Эмили играет Кашпера (традиционная немецкая кукла): «Hallo, Kinder! Seid ihr alle da?» — дети: «Ja!»
+2. Крокодил крадётся за Кашпером, дети кричат: «Kasper, pass auf! Hinter dir!» — Кашпер оборачивается, крокодил прячется: «Wo? Ich sehe kein Krokodil!» (два раза, дети смеются).
+3. На третий раз Эмили **громко** кричит: «Weg mit dir, Krokodil!» — чем громче, тем дальше убегает крокодил. «Eine laute Stimme hilft!»
+4. **Конфликт и компромисс:** Пауль: «Ich will den Kasper spielen! Gib her!» — шаг 1: «Paul, ich spiele gerade. Du kannst gleich.» — «Nein, jetzt!» — **шаг 2**: «Nein, Paul! Warte bitte. Du kannst das Krokodil spielen!» — Пауль доволен.
+5. Второй спектакль: Пауль — крокодил «Rrrrr!», Кашпер: «Hallo, Krokodil! Möchtest du mein Freund sein?» — «Ja! Ich bin ein liebes Krokodil!» Все хлопают — нажимаем на ладошки и считаем до 5.
+
+**Лестница:** шаг 2 + предложить другую роль. **Счёт:** 5 хлопков.
+**Кусочки:** «Wo? | Ich sehe kein Krokodil!» («kein» с глаголом), «Nein, Paul! | Warte bitte. | Du kannst das Krokodil spielen!», «Weg mit dir, Krokodil!» — целиком.
+

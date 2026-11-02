@@ -1,0 +1,156 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Kasperletheater. Уровень 39</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 39 «Kasperletheater» — кукольный театр в садике: Эмили играет Кашпера, дети кричат «Pass auf! Hinter dir!», громко «Weg mit dir, Krokodil!»; Пауль хватает куклу — шаги 1–2 и компромисс «Du kannst das Krokodil spielen!»; крокодил становится другом; считаем хлопки. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_shoes": ["assets/img/f3c638bc729d.webp", 208, 407], "emily_blink_shoes": ["assets/img/0f33b1ccf809.webp", 208, 407], "emily_mouth1_shoes": ["assets/img/3b7a1bb44669.webp", 208, 407], "emily_mouth2_shoes": ["assets/img/349db2cdaea9.webp", 208, 407], "emily_talk_shoes": ["assets/img/d3e54ca225ed.webp", 270, 413], "emily_wave_shoes": ["assets/img/2ab85334263f.webp", 252, 394], "emily_jump_shoes": ["assets/img/31f33a5548ba.webp", 279, 346], "emily_surprised_shoes": ["assets/img/b65576956668.webp", 208, 407], "abiha_idle": ["assets/img/fa848f76752c.webp", 252, 361], "abiha_blink": ["assets/img/80c0b58f8e9f.webp", 252, 361], "abiha_mouth1": ["assets/img/d3289978defd.webp", 252, 361], "abiha_mouth2": ["assets/img/3569203761d0.webp", 252, 361], "abiha_wave": ["assets/img/3d7524d2c8fa.webp", 252, 361], "abiha_peace": ["assets/img/540be744bd81.webp", 252, 361], "abiha_jump": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_laugh": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_sit": ["assets/img/cb1193d78e14.webp", 252, 361], "abiha_think": ["assets/img/fe368e6c3218.webp", 252, 361], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised}_shoes abiha_{idle,blink,mouth1,mouth2,wave,peace,jump,laugh,sit,think} isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "i_hihi": "assets/snd/9c8910580b2c.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "n24_fester": "assets/snd/62af96e91cb6.mp3", "n_lauter": "assets/snd/514e958e006e.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3", "r_lauter": "assets/snd/2e0c8abce899.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht k_laugh i_hihi p_hihi*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n39_intro: 'In der Kita gibt es ein Kasperletheater. Emily spielt den Kasper!',
+  s39_vorhang: 'Vorhang auf! Die Kinder schauen zu.',
+  e39_hallo: 'Hallo, Kinder! Seid ihr alle da?',
+  b39_ja: 'Ja!',
+  i39_ja: 'Jaaa!',
+  n39_kroko: 'Oh! Da kommt das Krokodil! Es schleicht hinter den Kasper.',
+  i39_pass: 'Kasper, pass auf! Hinter dir!',
+  b39_kroko: 'Das Krokodil!',
+  e39_wo: 'Wo? Ich sehe kein Krokodil!',
+  n39_wieder: 'Das Krokodil kommt wieder!',
+  n39_laut: 'Jetzt sag ganz laut zum Krokodil: Weg mit dir!',
+  e39_weg: 'Weg mit dir, Krokodil!',
+  n39_weglaufen: 'Das Krokodil erschrickt und läuft weg! Eine laute Stimme hilft!',
+  p39_ich: 'Ich will den Kasper spielen! Gib her!',
+  e39_gleich: 'Paul, ich spiele gerade. Du kannst gleich.',
+  p39_jetzt: 'Nein, jetzt!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e39_warte: 'Nein, Paul! Warte bitte. Du kannst das Krokodil spielen!',
+  p39_kroko: 'Oh! Das Krokodil! Okay!',
+  n39_zweite: 'Zweite Vorstellung! Paul spielt das Krokodil.',
+  p39_rrr: 'Rrrrr! Ich bin das Krokodil!',
+  e39_freund: 'Hallo, Krokodil! Möchtest du mein Freund sein?',
+  p39_lieb: 'Ja! Ich bin ein liebes Krokodil!',
+  n39_klatschen: 'Alle klatschen! Tipp auf die Hände und zähl mit!',
+  r39_klatschen: 'Хлопай — нажимай на ладошки и считай!',
+  n39_fuenf: 'Fünfmal geklatscht! Bravo!',
+  n39_ende: 'Super! Emily hat laut gesprochen und Paul eine gute Rolle gegeben.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 39: кукольный театр. Ширма с занавесом, над ней куклы: Кашпер (Эмили) и крокодил. «Hallo, Kinder! Seid ihr alle da?» — «Ja!».
+   Крокодил крадётся, дети кричат «Kasper, pass auf! Hinter dir!», Кашпер поворачивается — крокодил прячется («Wo? Ich sehe kein Krokodil!»).
+   На третий раз — громко «Weg mit dir, Krokodil!» (T.firm без обидчика): чем громче, тем дальше убегает крокодил.
+   Пауль хватает куклу: шаг 1 «Paul, ich spiele gerade. Du kannst gleich.», шаг 2 «Nein, Paul! Warte bitte. Du kannst das Krokodil spielen!» — компромисс.
+   Второй спектакль: «Hallo, Krokodil! Möchtest du mein Freund sein?» — «Ja!». Хлопаем 5 раз (счёт). */
+const LEVEL = 39, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M34 30 Q50 0 66 30 Z" fill="#ff5a4a"/><circle cx="66" cy="12" r="5" fill="#ffd34d"/><circle cx="50" cy="42" r="16" fill="#ffd7b5" stroke="#c9895a" stroke-width="3"/><circle cx="50" cy="46" r="5" fill="#ff7a59"/><path d="M30 92 Q32 58 50 56 Q68 58 70 92 Z" fill="#ffd34d" stroke="#d6a21e" stroke-width="3"/><circle cx="44" cy="40" r="2.5" fill="#333"/><circle cx="56" cy="40" r="2.5" fill="#333"/></svg>';
+const RUG = 0.3;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG); }
+const BOOTH = '<svg viewBox="0 0 200 160"><rect x="6" y="40" width="188" height="118" rx="6" fill="#c9584a" stroke="#8a3a2e" stroke-width="5"/><path d="M6 40 Q30 60 52 40 Q76 60 100 40 Q124 60 148 40 Q172 60 194 40" fill="#ffd34d" stroke="#d6a21e" stroke-width="4"/><rect x="0" y="34" width="200" height="12" rx="6" fill="#8a3a2e"/><path d="M40 70 h120 M40 100 h120 M40 130 h120" stroke="#a8453a" stroke-width="5"/></svg>';
+const KASPER = '<svg viewBox="0 0 80 110"><path d="M22 34 Q40 -6 58 34 Z" fill="#ff5a4a" stroke="#c43a2e" stroke-width="3"/><circle cx="58" cy="8" r="7" fill="#ffd34d"/><circle cx="40" cy="44" r="18" fill="#ffd7b5" stroke="#c9895a" stroke-width="3"/><circle cx="40" cy="50" r="6" fill="#ff7a59"/><circle cx="33" cy="40" r="3" fill="#333"/><circle cx="47" cy="40" r="3" fill="#333"/><path d="M32 56 Q40 64 48 56" fill="none" stroke="#8a3a2e" stroke-width="3" stroke-linecap="round"/><path d="M14 110 Q16 66 40 62 Q64 66 66 110 Z" fill="#ffd34d" stroke="#d6a21e" stroke-width="3"/><path d="M14 80 Q2 70 6 60 M66 80 Q78 70 74 60" stroke="#ffd7b5" stroke-width="8" stroke-linecap="round" fill="none"/></svg>';
+const CROC = '<svg viewBox="0 0 140 90"><path d="M10 60 Q10 30 44 28 L120 30 Q136 34 134 46 L96 52 L134 58 Q136 70 120 72 L44 74 Q10 76 10 60 Z" fill="#3cc36a" stroke="#24924a" stroke-width="4" stroke-linejoin="round"/><path d="M60 52 l6 -6 l6 6 l6 -6 l6 6 l6 -6 l6 6 M60 56 l6 6 l6 -6 l6 6 l6 -6 l6 6 l6 -6" fill="#fff" stroke="#fff" stroke-width="2"/><circle cx="48" cy="22" r="10" fill="#3cc36a" stroke="#24924a" stroke-width="4"/><circle cx="50" cy="20" r="4" fill="#333"/><path d="M30 74 V90 M50 74 V90" stroke="#24924a" stroke-width="8" stroke-linecap="round"/></svg>';
+const HANDS = '<svg viewBox="0 0 100 80"><path d="M20 70 Q8 40 22 18 Q28 10 34 18 L40 40 L44 10 Q48 2 54 8 L54 40 Z" fill="#ffd7b5" stroke="#c9895a" stroke-width="4" stroke-linejoin="round"/><path d="M80 70 Q92 40 78 18 Q72 10 66 18 L60 40 L56 10 Q52 2 46 8 L46 40 Z" fill="#ffd7b5" stroke="#c9895a" stroke-width="4" stroke-linejoin="round"/><path d="M50 0 v-6 M38 2 l-4 -6 M62 2 l4 -6" stroke="#ffd34d" stroke-width="4"/></svg>';
+let emily, abiha, isabel, paul, heike, booth, kasper, croc, hands;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'jump', 'laugh', 'sit', 'think'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+const BX = 0.68, TOP = () => L.floorY - L.hE*0.92;
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  heike = T.hero('sommer', {x: 0.06, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  abiha = T.hero('abiha', {x: 0.2, poses: AP}); abiha.set('sit');
+  isabel = T.hero('isabel', {x: 0.32, h: 0.95, poses: KP});
+  paul = T.hero('paul', {x: 0.44, h: 0.97, poses: KP});
+  emily = T.hero('emily', {x: BX, outfit: 'shoes', poses: EP}); emily.el.style.zIndex = 20;
+  booth = T.prop(BOOTH, {x: BX, py: () => L.floorY + L.hE*0.02, w: 1.15, ratio: 0.8, z: 45});
+  kasper = T.prop(KASPER, {x: BX - 0.04, py: TOP, w: 0.34, ratio: 110/80, z: 44});
+  croc = T.prop(CROC, {x: BX + 0.2, py: TOP, w: 0.4, ratio: 90/140, z: 43}); croc.el.hidden = true;
+  hands = T.prop(HANDS, {x: 0.3, y: 0.3, w: 0.3, ratio: 0.8, z: 60}); hands.el.hidden = true;
+}
+/* кукла «говорит»: качается, пока звучит фраза */
+async function puppet(p, clip, hero){ const a = p.el.animate([{transform: 'rotate(-6deg)'}, {transform: 'rotate(6deg)'}], {duration: 260, iterations: Infinity, direction: 'alternate'}); try { if (hero) await T.repeat(clip, hero); else await play(clip); } finally { a.cancel(); } }
+async function crocSneak(){ croc.el.hidden = false; croc.o.x = BX + 0.22; croc.place(); await T.move(croc, BX + 0.06, TOP()/L.H, 1400); }
+async function crocHide(){ await T.move(croc, BX + 0.22, (TOP() + L.hE*0.4)/L.H, 300); croc.el.hidden = true; }
+
+async function story(){
+  await play('n39_intro');
+  heike.set('talk'); await heike.say('s39_vorhang'); heike.set('idle'); sfx.fanfare();
+  /* Кашпер здоровается */
+  const kas = kasper.el; let a = kas.animate([{transform: 'rotate(-6deg)'}, {transform: 'rotate(6deg)'}], {duration: 260, iterations: Infinity, direction: 'alternate'});
+  await T.repeat('e39_hallo'); a.cancel();
+  abiha.set('laugh'); await abiha.say('b39_ja'); isabel.set('jump'); await isabel.say('i39_ja'); abiha.set('sit'); isabel.set('idle');
+  await T.bone(kasper);
+  /* крокодил крадётся — дети кричат — Кашпер оборачивается, крокодил прячется */
+  for (let k = 0; k < 2; k++){
+    await play(k ? 'n39_wieder' : 'n39_kroko'); await crocSneak();
+    isabel.set('jump'); isabel.hop(); await isabel.say('i39_pass'); abiha.set('think'); await abiha.say('b39_kroko'); isabel.set('idle'); abiha.set('sit');
+    kasper.el.style.transform = 'scaleX(-1)'; sfx.whoosh(); await crocHide();
+    a = kas.animate([{transform: 'scaleX(-1) rotate(-6deg)'}, {transform: 'scaleX(-1) rotate(6deg)'}], {duration: 260, iterations: Infinity, direction: 'alternate'});
+    await T.repeat('e39_wo'); a.cancel(); kasper.el.style.transform = '';
+    await Promise.all([play('k_laugh'), play('i_hihi'), play('p_hihi')]);
+  }
+  /* громко прогнать крокодила */
+  await crocSneak(); kasper.el.style.transform = 'scaleX(-1)';
+  await play('n39_laut');
+  const max = await T.firm('e39_weg', {need: 1.8});
+  sfx.whoosh(); await T.move(croc, Math.min(1.2, BX + 0.3 + Math.min(0.3, max*0.1)), TOP()/L.H, 600); croc.el.hidden = true; kasper.el.style.transform = '';
+  await play('n39_weglaufen'); await T.bone(emily);
+
+  /* Пауль хватает куклу */
+  paul.set('talk'); await paul.walkTo(BX - 0.2, 900); paul.face(false); await paul.say('p39_ich'); paul.set('idle');
+  await T.repeat('e39_gleich');
+  paul.set('talk'); await paul.say('p39_jetzt'); paul.set('idle'); paul.hop();
+  await play('n24_fester');
+  await T.firm('e39_warte', {who: paul, step: 2, dir: -1});
+  paul.set('jump'); paul.hop(); await paul.say('p39_kroko'); paul.set('idle');
+  await T.bone(paul);
+
+  /* второй спектакль: Пауль — крокодил, становятся друзьями */
+  await paul.walkTo(BX + 0.12, 700); paul.el.style.zIndex = 20; paul.face(true);
+  await play('n39_zweite');
+  croc.el.hidden = false; croc.o.x = BX + 0.08; croc.place();
+  const c = croc.el.animate([{transform: 'rotate(-5deg)'}, {transform: 'rotate(5deg)'}], {duration: 240, iterations: Infinity, direction: 'alternate'});
+  await paul.say('p39_rrr'); c.cancel();
+  kasper.el.style.transform = 'scaleX(-1)';
+  a = kas.animate([{transform: 'scaleX(-1) rotate(-6deg)'}, {transform: 'scaleX(-1) rotate(6deg)'}], {duration: 260, iterations: Infinity, direction: 'alternate'});
+  await T.repeat('e39_freund'); a.cancel();
+  await paul.say('p39_lieb'); T.hearts(croc); T.hearts(kasper);
+  /* хлопаем */
+  hands.el.hidden = false; await play('n39_klatschen');
+  for (let i = 1; i <= 5; i++){ await T.tap([hands], 'n39_klatschen', 'r39_klatschen'); sfx.noise(120, 2500, .5); hands.el.animate([{transform: 'scale(1)'}, {transform: 'scale(.8)'}, {transform: 'scale(1)'}], {duration: 200}); showNum(i); await emily.say('e_' + i); }
+  hideNum(); hands.el.hidden = true; await play('n39_fuenf'); sfx.fanfare();
+  await T.bone(emily);
+  emily.el.style.zIndex = paul.el.style.zIndex = '';
+  await Promise.all([emily.walkTo(0.56, 600), paul.walkTo(0.44, 700)]); paul.face(false);
+  [emily, isabel, paul].forEach(h => h.set('jump')); abiha.set('laugh'); await play('n39_ende');
+  [emily, isabel, paul, abiha].forEach(h => h.set('idle'));
+}
+T.start(IMG.abiha_laugh[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

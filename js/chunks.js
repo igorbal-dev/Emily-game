@@ -229,7 +229,13 @@ const CHUNKS = (() => {
     e37_nein: ['Nein, heute nicht.', 'Lulu ist müde.'],
     /* 38 «Feuer, Wasser, Sturm» */
     e38_alle: ['Nein, Paul!', 'Die Bank ist für alle.', 'Rutsch bitte rüber!'],
-    e38_stopp: ['Stopp, Paul!', 'Ich will auch …', 'auf die Bank!']
+    e38_stopp: ['Stopp, Paul!', 'Ich will auch …', 'auf die Bank!'],
+    /* 39 «Kasperletheater» */
+    e39_hallo: ['Hallo, Kinder!', 'Seid ihr alle da?'],
+    e39_wo: ['Wo?', 'Ich sehe kein Krokodil!'],
+    e39_gleich: ['Paul, …', 'ich spiele gerade.', 'Du kannst gleich.'],
+    e39_warte: ['Nein, Paul!', 'Warte bitte.', 'Du kannst das Krokodil spielen!'],
+    e39_freund: ['Hallo, Krokodil!', 'Möchtest du …', 'mein Freund sein?']
   });
   return C;
 })();
