@@ -3827,6 +3827,306 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat ihre Kastanie zurückgeholt, Paul geholfen und Entschuldigung gesagt."
+  },
+  {
+   "id": "n36_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "In der Kita spielen Emily und Paul ein Würfelspiel. Wer zuerst im Haus ist, gewinnt!"
+  },
+  {
+   "id": "p36_du",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Du darfst anfangen, Emily!"
+  },
+  {
+   "id": "n36_wuerfel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf den Würfel!"
+  },
+  {
+   "id": "r36_wuerfel",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажми на кубик — брось его!"
+  },
+  {
+   "id": "n36_punkte",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Punkte hat der Würfel?"
+  },
+  {
+   "id": "r36_punkte",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Сколько точек на кубике?"
+  },
+  {
+   "id": "e36_zwei",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich habe eine Zwei!"
+  },
+  {
+   "id": "e36_drei",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich habe eine Drei!"
+  },
+  {
+   "id": "e36_vier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich habe eine Vier!"
+  },
+  {
+   "id": "e36_sechs",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich habe eine Sechs!"
+  },
+  {
+   "id": "n36_zaehl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Zähl die Schritte mit!"
+  },
+  {
+   "id": "e36_du_dran",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Jetzt bist du dran, Paul!"
+  },
+  {
+   "id": "p36_fuenf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Eine Fünf!"
+  },
+  {
+   "id": "p36_drei",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Eine Drei!"
+  },
+  {
+   "id": "p36_vier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Eine Vier!"
+  },
+  {
+   "id": "p36_zwei",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Eine Zwei!"
+  },
+  {
+   "id": "p36_gewonnen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ich bin im Haus! Ich habe gewonnen! Ätsch, du hast verloren!"
+  },
+  {
+   "id": "n36_traurig",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh. Emily hat verloren. Was macht sie jetzt?"
+  },
+  {
+   "id": "n36_opt_werfen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily wirft das Spiel vom Tisch."
+  },
+  {
+   "id": "n36_opt_gut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily sagt: Gut gespielt!"
+  },
+  {
+   "id": "n36_werfen_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Nein! Das macht es nicht besser. Noch mal!"
+  },
+  {
+   "id": "e36_gut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Schade! Aber gut gespielt, Paul."
+  },
+  {
+   "id": "e36_aetsch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, Ätsch sagt man nicht. Das ist nicht nett."
+  },
+  {
+   "id": "p36_stimmt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Stimmt. Entschuldigung. Du hast auch gut gespielt!"
+  },
+  {
+   "id": "e36_nochmal",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Noch mal? Nächstes Mal gewinne ich!"
+  },
+  {
+   "id": "p36_ja",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ja! Noch eine Runde!"
+  },
+  {
+   "id": "n36_runde",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Zweite Runde! Emily ist schon fast im Haus."
+  },
+  {
+   "id": "e36_juhu",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Juhu! Und du hast auch gut gespielt, Paul."
+  },
+  {
+   "id": "p36_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Danke! Das war ein tolles Spiel."
+  },
+  {
+   "id": "n36_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily kann verlieren und gewinnen. Und sie sagt: Gut gespielt!"
   }
  ]
 }
