@@ -3477,6 +3477,356 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat gefragt, war fest und hat Hilfe geholt. Und dann hat sie Abiha mitspielen lassen."
+  },
+  {
+   "id": "n35_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Die Kita macht einen Spaziergang im Park. Überall liegen bunte Blätter und Kastanien!"
+  },
+  {
+   "id": "s35_sammeln",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Wer sammelt Kastanien in den Eimer?"
+  },
+  {
+   "id": "n35_tipp",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf die Kastanien und zähl mit!"
+  },
+  {
+   "id": "n35_acht",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Acht Kastanien!"
+  },
+  {
+   "id": "n35_gross",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh! Emily findet eine ganz große Kastanie!"
+  },
+  {
+   "id": "p35_meine",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Die ist toll! Die gehört jetzt mir!"
+  },
+  {
+   "id": "e35_zurueck",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, die habe ich gefunden. Gib sie mir bitte zurück."
+  },
+  {
+   "id": "p35_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ich habe sie aber jetzt!"
+  },
+  {
+   "id": "e35_meine",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein! Das ist meine Kastanie. Gib sie zurück!"
+  },
+  {
+   "id": "p35_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Okay. Hier ist sie."
+  },
+  {
+   "id": "e35_suchen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Komm, wir suchen zusammen eine für dich!"
+  },
+  {
+   "id": "n35_such",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wo ist noch eine große Kastanie? Tipp darauf!"
+  },
+  {
+   "id": "r35_such",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Где ещё большой каштан? Нажми на него!"
+  },
+  {
+   "id": "p35_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Juhu! Danke, Emily!"
+  },
+  {
+   "id": "n35_blaetter",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt sammeln die Kinder Blätter. Es gibt rote, gelbe und braune."
+  },
+  {
+   "id": "n35_rot",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf ein rotes Blatt!"
+  },
+  {
+   "id": "n35_gelb",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf ein gelbes Blatt!"
+  },
+  {
+   "id": "n35_braun",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf ein braunes Blatt!"
+  },
+  {
+   "id": "r35_blatt",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажми на листик нужного цвета!"
+  },
+  {
+   "id": "n35_falsch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Das ist eine andere Farbe. Schau genau!"
+  },
+  {
+   "id": "e35_rot",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Das Blatt ist rot."
+  },
+  {
+   "id": "e35_gelb",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Das Blatt ist gelb."
+  },
+  {
+   "id": "e35_braun",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Das Blatt ist braun."
+  },
+  {
+   "id": "n35_haufen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Paul hat einen großen Laubhaufen gemacht."
+  },
+  {
+   "id": "n35_spring",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Hui! Emily springt mitten hinein!"
+  },
+  {
+   "id": "p35_kaputt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Hey! Mein Laubhaufen ist kaputt!"
+  },
+  {
+   "id": "n35_opt_weg",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily lacht und läuft weg."
+  },
+  {
+   "id": "n35_opt_helfen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily hilft Paul."
+  },
+  {
+   "id": "n35_weg_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Paul ist traurig. Das war sein Haufen. Noch mal!"
+  },
+  {
+   "id": "e35_helfen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Entschuldigung! Ich helfe dir. Wir bauen ihn zusammen wieder auf."
+  },
+  {
+   "id": "n35_bauen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf die Blätter! Der Haufen wird wieder groß."
+  },
+  {
+   "id": "r35_bauen",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажимай на листики — куча снова растёт!"
+  },
+  {
+   "id": "p35_zusammen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Super! Jetzt springen wir zusammen!"
+  },
+  {
+   "id": "s35_zurueck",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Kommt, Kinder! Wir gehen zurück in die Kita."
+  },
+  {
+   "id": "n35_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat ihre Kastanie zurückgeholt, Paul geholfen und Entschuldigung gesagt."
   }
  ]
 }
