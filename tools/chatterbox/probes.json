@@ -967,6 +967,386 @@
    ],
    "voice": "narr",
    "text": "Super gespielt! Emily hat fest gesagt, was sie gesehen hat."
+  },
+  {
+   "id": "n26_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Auf dem Hof der Kita. Emily malt mit Kreide."
+  },
+  {
+   "id": "n26_sonne",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily malt eine Sonne. Welche Farbe hat die Sonne? Tipp auf die Kreide!"
+  },
+  {
+   "id": "r26_sonne",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Какого цвета солнце? Нажми на нужный мелок!"
+  },
+  {
+   "id": "n26_nicht",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Nicht diese Farbe. Die Sonne ist gelb!"
+  },
+  {
+   "id": "e26_sonne",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Die Sonne ist gelb."
+  },
+  {
+   "id": "n26_strahlen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf die Sonne! Sie bekommt fünf Strahlen."
+  },
+  {
+   "id": "n26_fuenf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Fünf Strahlen! Was für eine schöne Sonne!"
+  },
+  {
+   "id": "n26_blume",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt malt Emily eine Blume. Mit der rosa Kreide."
+  },
+  {
+   "id": "p26_nehme",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Oh, rosa! Die nehme ich!"
+  },
+  {
+   "id": "e26_zurueck",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, das ist meine Kreide. Gib sie mir bitte zurück."
+  },
+  {
+   "id": "p26_aber",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ich brauche sie aber!"
+  },
+  {
+   "id": "e26_frag",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein! Frag bitte zuerst!"
+  },
+  {
+   "id": "p26_pff",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Pff! Hüpf, hüpf!"
+  },
+  {
+   "id": "n26_drauf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh nein! Paul hüpft auf Emilys Bild!"
+  },
+  {
+   "id": "e26_stopp",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Stopp! Hör auf! Ich will das nicht!"
+  },
+  {
+   "id": "p26_hihi",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Hihi! Das ist lustig!"
+  },
+  {
+   "id": "n26_hilfe",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Paul hört nicht auf. Was macht Emily jetzt?"
+  },
+  {
+   "id": "n26_opt_schubsen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily schubst Paul."
+  },
+  {
+   "id": "n26_schubsen_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Nein! Emily schubst nicht. Die Hände bleiben bei dir."
+  },
+  {
+   "id": "e26_heike",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Heike, Paul macht mein Bild kaputt!"
+  },
+  {
+   "id": "s26_paul",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Paul, stopp! Das ist Emilys Bild. Frag Emily, ob du mitmalen darfst."
+  },
+  {
+   "id": "p26_entschuldigung",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Entschuldigung, Emily. Darf ich mitmalen?"
+  },
+  {
+   "id": "e26_ja",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ja! Du kannst die blaue Kreide haben."
+  },
+  {
+   "id": "p26_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Danke! Und hier ist deine rosa Kreide."
+  },
+  {
+   "id": "n26_gruen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Die Blume braucht einen grünen Stiel. Aber Emilys grüne Kreide ist kaputt."
+  },
+  {
+   "id": "n26_nimmt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily nimmt einfach Isabels grüne Kreide."
+  },
+  {
+   "id": "i26_hey",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Hey! Das ist meine Kreide!"
+  },
+  {
+   "id": "n26_opt_weg",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily rennt mit der Kreide weg."
+  },
+  {
+   "id": "n26_opt_fragen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily fragt Isabel."
+  },
+  {
+   "id": "n26_weg_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Das ist nicht fair. Isabel ist traurig. Noch mal!"
+  },
+  {
+   "id": "e26_darf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Entschuldigung. Darf ich die grüne Kreide haben?"
+  },
+  {
+   "id": "i26_klar",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Ja, klar! Hier."
+  },
+  {
+   "id": "n26_blaetter",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf die Blume! Sie bekommt sechs Blütenblätter."
+  },
+  {
+   "id": "n26_sechs",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Sechs Blütenblätter!"
+  },
+  {
+   "id": "b26_mit",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Darf ich auch mitmalen?"
+  },
+  {
+   "id": "e26_klar",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Klar! Wir malen alle zusammen."
+  },
+  {
+   "id": "s26_toll",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Was für ein schönes Bild! Ihr malt alle zusammen."
+  },
+  {
+   "id": "n26_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat erst freundlich gefragt, dann fest Stopp gesagt und dann Hilfe geholt."
   }
  ]
 }
