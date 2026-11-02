@@ -5157,6 +5157,266 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat eine faire Regel gefunden: Bis zehn zählen, dann tauschen!"
+  },
+  {
+   "id": "n41_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Musikkreis in der Kita! Heike hat Instrumente mitgebracht."
+  },
+  {
+   "id": "s41_was",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Das ist eine Trommel, das ist eine Rassel und das ist eine Glocke. Emily, was möchtest du?"
+  },
+  {
+   "id": "n41_tipp",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf ein Instrument!"
+  },
+  {
+   "id": "r41_tipp",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажми на инструмент!"
+  },
+  {
+   "id": "e41_trommel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich möchte die Trommel, bitte."
+  },
+  {
+   "id": "e41_rassel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich möchte die Rassel, bitte."
+  },
+  {
+   "id": "e41_glocke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich möchte die Glocke, bitte."
+  },
+  {
+   "id": "s41_hoer",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Hör gut zu! Ich spiele vor, du spielst nach."
+  },
+  {
+   "id": "n41_nach",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt du! Tipp genauso oft!"
+  },
+  {
+   "id": "r41_nach",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Теперь ты! Нажми столько же раз!"
+  },
+  {
+   "id": "n41_drei",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Drei Mal! Super!"
+  },
+  {
+   "id": "n41_vier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Vier Mal! Toll!"
+  },
+  {
+   "id": "n41_falsch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Hör noch mal gut zu!"
+  },
+  {
+   "id": "n41_paul",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh! Paul trommelt ganz laut, direkt neben Emilys Ohr!"
+  },
+  {
+   "id": "e41_laut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, das ist zu laut. Bitte leiser."
+  },
+  {
+   "id": "p41_spass",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Aber laut macht Spaß! Bumm, bumm, bumm!"
+  },
+  {
+   "id": "e41_ohren",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Hör auf! Das tut mir in den Ohren weh."
+  },
+  {
+   "id": "p41_oh",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Oh! Entschuldigung. Ich spiele leiser."
+  },
+  {
+   "id": "s41_dirigent",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Emily, jetzt bist du die Dirigentin! Sag: laut oder leise."
+  },
+  {
+   "id": "n41_wahl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Was sagt Emily? Laut oder leise? Tipp auf ein Bild!"
+  },
+  {
+   "id": "r41_wahl",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Громко или тихо? Нажми на картинку!"
+  },
+  {
+   "id": "n41_opt_laut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Laut!"
+  },
+  {
+   "id": "n41_opt_leise",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Leise!"
+  },
+  {
+   "id": "e41_laut2",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Jetzt alle laut!"
+  },
+  {
+   "id": "e41_leise",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Jetzt alle ganz leise!"
+  },
+  {
+   "id": "n41_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat gesagt: Das ist zu laut! Und sie war eine tolle Dirigentin."
   }
  ]
 }
