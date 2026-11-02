@@ -1,12 +1,11 @@
 name: Chatterbox probes
 
+# Озвучка фраз игры Эмили: фразы — tools/chatterbox/probes.json, образцы голосов — tools/chatterbox/voices/.
+# 4 параллельных задания (каждое — каждая 4-я фраза), готовые WAV/MP3 коммитятся в samples/chatterbox/.
+# Уже сделанные фразы не переделываются, поэтому новый запуск только доделывает недостающее.
+
 on:
   workflow_dispatch:
-    inputs:
-      only:
-        description: "Модели через запятую (tts,mtl,turbo); пусто = все"
-        required: false
-        default: ""
   push:
     paths:
       - "tools/chatterbox/**"
@@ -17,12 +16,16 @@ permissions:
 
 concurrency:
   group: chatterbox-probes-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   probes:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
     steps:
       - uses: actions/checkout@v4
 
@@ -44,27 +47,25 @@ jobs:
           path: ~/.cache/huggingface
           key: hf-chatterbox-0.1.7
 
-      - name: Generate probes
+      - name: Generate
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python tools/chatterbox/make_probes.py --out samples/chatterbox --only "${{ github.event.inputs.only }}"
+        run: python tools/chatterbox/make_probes.py --out samples/chatterbox --shard ${{ matrix.shard }} --shards 4
 
       - name: MP3 copies
         run: |
           cd samples/chatterbox
-          for f in *.wav; do ffmpeg -loglevel error -y -i "$f" -b:a 128k "${f%.wav}.mp3"; done
+          for f in *.wav; do [ -f "${f%.wav}.mp3" ] || ffmpeg -loglevel error -y -i "$f" -b:a 128k "${f%.wav}.mp3"; done
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: chatterbox-probes
-          path: samples/chatterbox
-
-      - name: Commit samples back to branch
+      - name: Commit to branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
           git add samples/chatterbox
           git diff --cached --quiet && exit 0
-          git commit -m "Chatterbox probes: generated samples [skip ci]"
-          git pull --rebase origin "${GITHUB_REF_NAME}"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git commit -m "Chatterbox: generated samples (shard ${{ matrix.shard }}) [skip ci]"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i*7))
+          done
+          exit 1
