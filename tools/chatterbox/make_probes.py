@@ -29,6 +29,11 @@ def seed_all(seed: int):
     torch.manual_seed(seed)
 
 
+def max_len(text: str) -> float:
+    """Сколько секунд максимум может длиться фраза (с запасом): ~0.11 с на букву + 0.9 с."""
+    return 0.9 + 0.11*len(re.sub(r"[^\w]", "", text))*1.15
+
+
 def load_model(kind: str, device: str):
     if kind == "tts":
         from chatterbox.tts import ChatterboxTTS
@@ -106,10 +111,20 @@ def main():
             if kind == "mtl":
                 kwargs["language_id"] = p["lang"]
             text = re.sub(r"\[[^\]]*\]", "", p["text"]).strip()
-            seed_all(args.seed)
             t1 = time.time()
             try:
-                wav = model.generate(text, **kwargs)
+                # модель иногда «договаривает» лишнее после фразы: слишком длинная запись — ещё раз с другим зерном, берём самую короткую
+                limit = max_len(text)
+                best = None
+                for tryn in range(3):
+                    seed_all(args.seed + 1000*tryn)
+                    w = model.generate(text, **kwargs)
+                    if best is None or w.shape[-1] < best.shape[-1]:
+                        best = w
+                    if w.shape[-1]/model.sr <= limit:
+                        break
+                    print(f"    {name}: {w.shape[-1]/model.sr:.1f}s > {limit:.1f}s, retry", flush=True)
+                wav = best
                 ta.save(str(out / name), wav, model.sr)
                 dur = wav.shape[-1] / model.sr
                 took = time.time() - t1
