@@ -3167,6 +3167,316 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat gesagt: Das ist nicht fair! Und sie hat selbst fair gespielt."
+  },
+  {
+   "id": "n34_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "In der Puppenecke spielen Isabel und Paul Mama, Papa, Kind."
+  },
+  {
+   "id": "e34_darf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Darf ich mitspielen?"
+  },
+  {
+   "id": "i34_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Nein! Du darfst nicht mitspielen!"
+  },
+  {
+   "id": "n34_frag",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh. Das ist nicht schön. Frag noch einmal!"
+  },
+  {
+   "id": "e34_baby",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Bitte! Ich kann das Baby sein."
+  },
+  {
+   "id": "i34_wir",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Nein! Wir haben schon ein Baby. Die Puppe!"
+  },
+  {
+   "id": "e34_nicht_nett",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Das ist nicht nett. Ich will auch mitspielen!"
+  },
+  {
+   "id": "i34_trotzdem",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Trotzdem nein!"
+  },
+  {
+   "id": "n34_was",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Isabel sagt immer noch nein. Was macht Emily jetzt?"
+  },
+  {
+   "id": "n34_opt_puppe",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily wirft die Puppe um."
+  },
+  {
+   "id": "n34_puppe_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Nein, das macht es nicht besser. Noch mal!"
+  },
+  {
+   "id": "e34_heike",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Heike, Isabel sagt, ich darf nicht mitspielen."
+  },
+  {
+   "id": "s34_alle",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Bei uns dürfen alle mitspielen. Isabel, Emily kann die große Schwester sein."
+  },
+  {
+   "id": "i34_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Okay. Du bist die große Schwester."
+  },
+  {
+   "id": "e34_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Danke! Was kochen wir?"
+  },
+  {
+   "id": "i34_suppe",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Wir kochen Suppe! Deck bitte den Tisch!"
+  },
+  {
+   "id": "n34_teller",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Teller brauchen wir? Mama, Papa, Schwester und Baby. Tipp auf die Teller!"
+  },
+  {
+   "id": "r34_teller",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Сколько тарелок нужно? Нажимай на тарелки и считай!"
+  },
+  {
+   "id": "n34_vier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Vier Teller!"
+  },
+  {
+   "id": "e34_appetit",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Guten Appetit!"
+  },
+  {
+   "id": "p34_lecker",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Mmh, lecker Suppe!"
+  },
+  {
+   "id": "b34_mit",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Hallo! Darf ich auch mitspielen?"
+  },
+  {
+   "id": "n34_abiha",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt weiß Emily, wie das ist. Was sagt sie?"
+  },
+  {
+   "id": "e34_oma",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ja, klar! Du kannst die Oma sein!"
+  },
+  {
+   "id": "b34_oma",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Hihi! Ich bin die Oma!"
+  },
+  {
+   "id": "n34_noch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Noch ein Teller für die Oma! Wie viele Teller sind es jetzt?"
+  },
+  {
+   "id": "r34_noch",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Сколько теперь тарелок?"
+  },
+  {
+   "id": "n34_fuenf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Fünf Teller!"
+  },
+  {
+   "id": "i34_entschuldigung",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Entschuldigung, Emily. Mit dir ist es viel lustiger."
+  },
+  {
+   "id": "i34_ja",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Ja! Wieder Freunde!"
+  },
+  {
+   "id": "n34_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat gefragt, war fest und hat Hilfe geholt. Und dann hat sie Abiha mitspielen lassen."
   }
  ]
 }
