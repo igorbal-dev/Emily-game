@@ -4957,6 +4957,206 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat laut gesprochen und Paul eine gute Rolle gegeben."
+  },
+  {
+   "id": "n40_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Auf dem Hof der Kita gibt es nur ein Laufrad. Emily fährt!"
+  },
+  {
+   "id": "i40_ich",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Jetzt will ich! Steig ab!"
+  },
+  {
+   "id": "e40_gerade",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich fahre gerade. Du kannst gleich."
+  },
+  {
+   "id": "i40_sofort",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Nein, sofort!"
+  },
+  {
+   "id": "n40_zieht",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Isabel zieht am Lenker!"
+  },
+  {
+   "id": "e40_los",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Lass los, Isabel! Ich fahre noch."
+  },
+  {
+   "id": "n40_idee",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Isabel lässt los. Emily hat eine gute Idee, damit es fair ist."
+  },
+  {
+   "id": "e40_zehn",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich fahre bis zehn. Dann bist du dran."
+  },
+  {
+   "id": "i40_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Okay! Ich zähle mit."
+  },
+  {
+   "id": "n40_tipp",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf Emily! Bei jeder Runde zählt sie eins weiter."
+  },
+  {
+   "id": "r40_tipp",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажимай на Эмили — за каждый круг считаем на один больше!"
+  },
+  {
+   "id": "e40_dran",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Zehn! Jetzt bist du dran, Isabel."
+  },
+  {
+   "id": "i40_juhu",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Juhu! Danke!"
+  },
+  {
+   "id": "n40_zaehl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt fährt Isabel. Emily zählt bis zehn."
+  },
+  {
+   "id": "i40_noch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Noch ein bisschen! Noch eine Runde!"
+  },
+  {
+   "id": "e40_abgemacht",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Isabel, wir haben gesagt: bis zehn. Jetzt bin ich wieder dran."
+  },
+  {
+   "id": "i40_stimmt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Stimmt. Abgemacht ist abgemacht. Hier, bitte!"
+  },
+  {
+   "id": "b40_ich",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Darf ich auch mal?"
+  },
+  {
+   "id": "e40_nach",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Klar! Du fährst nach mir. Auch bis zehn!"
+  },
+  {
+   "id": "n40_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat eine faire Regel gefunden: Bis zehn zählen, dann tauschen!"
   }
  ]
 }
