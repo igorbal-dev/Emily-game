@@ -81,3 +81,19 @@
 **Лестница:** шаг 2. **Счёт:** сколько детей осталось (3, 2).
 **Кусочки:** «Doch! | Die Musik war aus. | Das ist die Regel.», «Paul, … | du hast dich bewegt! | Du bist raus.», «Entschuldigung, Abiha! | Tut es weh?», «Schon gut!» — целиком.
 
+## Уровень 28 «Memory mit Mark» — готов
+
+**Где:** дома, ковёр в комнате, Тео лежит у дивана.
+**Что происходит:**
+1. Настоящая игра Memory: 12 карточек (6 пар: Тео, мяч, яблоко, солнце, машинка, звезда). Эмили: «Ich bin dran!» — открываем по две, ищем пары. Пара уходит в стопку Эмили.
+2. **Конфликт с братом (до шага 3):** приходит Марк и хватает карточки («Meins!»), они разлетаются и перемешиваются.
+   - Шаг 1: «Mark, bitte nicht die Karten nehmen.» — не помогает.
+   - Шаг 2 (громче): «Nein, Mark! Das ist mein Spiel.» — снова хватает.
+   - Шаг 3 (ладонь): «Stopp, Mark! Hör auf!» — Марк останавливается и грустит: «Mark auch!»
+   - Картинки: прогнать Марка / играть вместе. Эмили: «Komm, Mark. Wir spielen zusammen.»
+3. Дальше по очереди: «Jetzt bist du dran, Mark!» — Марк сам открывает карточки и тоже находит пары.
+4. В конце нажимаем на стопки и считаем пары Эмили и Марка, кто больше; «Toll gemacht, Mark!»
+
+**Лестница:** до шага 3 (взрослый не нужен — малыш останавливается). **Счёт:** пары, сравнение.
+**Кусочки:** «Mark, … | bitte nicht die Karten nehmen.» («nicht» вместе с «nehmen»), «Nein, Mark! | Das ist mein Spiel.», «Stopp, Mark! | Hör auf!», «Komm, Mark. | Wir spielen zusammen.», «Ich bin dran!» — целиком.
+

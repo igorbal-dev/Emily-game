@@ -1,0 +1,205 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Memory mit Mark. Уровень 28</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 28 «Memory mit Mark» — дома на ковре настоящая игра Memory (6 пар), очередь «Ich bin dran / Du bist dran», Марк хватает карточки: шаги 1–3, потом Эмили принимает его в игру; считаем и сравниваем пары. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle": ["assets/img/c64929b2d467.webp", 208, 407], "emily_blink": ["assets/img/bb16d273f7a0.webp", 208, 407], "emily_mouth1": ["assets/img/b6fea28bbe9b.webp", 208, 407], "emily_mouth2": ["assets/img/159e6b3f3df4.webp", 208, 407], "emily_talk": ["assets/img/d36ef0e49481.webp", 270, 413], "emily_wave": ["assets/img/1fdaea62d38d.webp", 252, 394], "emily_jump": ["assets/img/7b1a90a6eb6d.webp", 279, 346], "emily_surprised": ["assets/img/080d300a6733.webp", 208, 407], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "mark_idle": ["assets/img/13c388a98a6d.webp", 186, 397], "mark_blink": ["assets/img/33d1a4b2bf81.webp", 186, 397], "mark_talk": ["assets/img/1aaa73be62ad.webp", 186, 397], "mark_mouth": ["assets/img/bfd0f2508288.webp", 186, 397], "mark_sad": ["assets/img/2ecc9da5e9f2.webp", 186, 397], "mark_wave": ["assets/img/6af173299333.webp", 244, 423], "mark_laugh": ["assets/img/51fbcbb1152b.webp", 204, 425], "mark_walk": ["assets/img/a28d60306ee6.webp", 254, 394], "mark_surprised": ["assets/img/009aba113652.webp", 186, 397], "theo_idle": ["assets/img/8ce5fe0202bd.webp", 258, 346], "theo_blink": ["assets/img/5bd18fc57314.webp", 259, 347], "theo_happy": ["assets/img/e2a2a3c50086.webp", 322, 316], "theo_bark": ["assets/img/9a746a81bb63.webp", 258, 347], "theo_lie": ["assets/img/9355ae5995a1.webp", 325, 255]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised,laugh} mark_{idle,blink,talk,mouth,sad,wave,laugh,walk,surprised} theo_{idle,blink,happy,bark,lie}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "k_ja": "assets/snd/bfbf45261edb.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "k_mark_auch": "assets/snd/12e677cd021f.mp3", "k_meins": "assets/snd/eca220954da6.mp3", "k_ohoh": "assets/snd/80eb7b25d5ca.mp3", "n19_stopp_tipp": "assets/snd/75611822af7f.mp3", "n19_was": "assets/snd/a410e8e1a1bc.mp3", "r19_was": "assets/snd/b08bdfeafaf6.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3", "t_bark": "assets/snd/d5a7365a3230.mp3"};  /*SND: e_{1..6} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht k_laugh k_meins k_ja k_mark_auch k_ohoh t_bark*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, k — Марк) */
+const SAY = {
+  n28_intro: 'Zu Hause. Emily spielt Memory. Sie sucht Paare: zwei gleiche Bilder.',
+  e28_ich_dran: 'Ich bin dran!',
+  n28_tipp: 'Tipp auf zwei Karten!',
+  r28_tipp: 'Переверни две карточки — найди две одинаковые!',
+  n28_paar: 'Ein Paar!',
+  n28_kein: 'Kein Paar. Die Karten werden wieder umgedreht.',
+  n28_mark_kommt: 'Oh! Mark kommt und nimmt die Karten!',
+  e28_bitte_nicht: 'Mark, bitte nicht die Karten nehmen.',
+  n28_weiter: 'Mark hört nicht auf.',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e28_mein_spiel: 'Nein, Mark! Das ist mein Spiel.',
+  n19_stopp_tipp: 'Streck die Hand aus und sag ganz laut: Stopp!',
+  e28_stopp: 'Stopp, Mark! Hör auf!',
+  n28_traurig: 'Mark ist traurig. Er möchte mitspielen. Was macht Emily?',
+  n28_opt_weg: 'Emily schickt Mark weg.',
+  n28_opt_mit: 'Emily spielt mit Mark zusammen.',
+  n28_weg_nein: 'Mark ist noch klein. Er möchte so gern mitspielen. Noch mal!',
+  e28_zusammen: 'Komm, Mark. Wir spielen zusammen.',
+  e28_du_dran: 'Jetzt bist du dran, Mark!',
+  n28_mark_paar: 'Mark hat ein Paar gefunden!',
+  n28_zaehl_emily: 'Wie viele Paare hat Emily? Tipp und zähl!',
+  r28_zaehl: 'Нажимай на пары и считай!',
+  n28_zaehl_mark: 'Und wie viele Paare hat Mark?',
+  n28_mehr: 'Emily hat mehr Paare. Aber Mark hat auch toll mitgespielt!',
+  e28_toll: 'Toll gemacht, Mark!',
+  n28_ende: 'Super! Emily hat erst freundlich, dann fest und dann ganz laut Stopp gesagt. Und dann haben alle zusammen gespielt.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script>
+/* Уровень 28: дома, Memory. Карточки сверху (12 штук, 6 пар), Эмили (игрок) открывает по две. После первой пары приходит Марк и хватает карточки:
+   шаг 1 «Mark, bitte nicht die Karten nehmen.», шаг 2 «Nein, Mark! Das ist mein Spiel.», шаг 3 ладонь «Stopp, Mark! Hör auf!» — Марк останавливается и грустит.
+   Карточки: прогнать / играть вместе → «Komm, Mark. Wir spielen zusammen.», дальше по очереди «Jetzt bist du dran, Mark!» (Марк открывает сам).
+   В конце считаем пары Эмили и Марка, у кого больше. */
+const LEVEL = 28, FRIENDS = [];
+const STICKER = '<svg viewBox="0 0 100 100"><rect x="10" y="20" width="34" height="46" rx="6" fill="#fff" stroke="#2f80ed" stroke-width="4"/><circle cx="27" cy="43" r="10" fill="#ff7a59"/><rect x="54" y="30" width="34" height="46" rx="6" fill="#fff" stroke="#2f80ed" stroke-width="4"/><circle cx="71" cy="53" r="10" fill="#ff7a59"/><path d="M40 86 Q50 94 60 86" fill="none" stroke="#32b67a" stroke-width="5" stroke-linecap="round"/></svg>';
+function drawScene(g, W, H, L){
+  const fy = L.floorY, hE = L.hE;
+  g.fillStyle = '#fde9d2'; g.fillRect(0, 0, W, fy);
+  g.fillStyle = 'rgba(255,170,120,.18)'; for (let x = 0; x < W; x += hE*0.22) g.fillRect(x, 0, hE*0.08, fy);
+  /* окно с осенним деревом, лампа, диван */
+  const wx = W*0.04; g.fillStyle = '#9fd4f5'; g.fillRect(wx, fy - hE*1.7, hE*0.7, hE*0.6); g.fillStyle = '#e0763a'; g.beginPath(); g.arc(wx + hE*0.45, fy - hE*1.3, hE*0.18, 0, 7); g.fill();
+  g.strokeStyle = '#fff'; g.lineWidth = hE*0.04; g.strokeRect(wx, fy - hE*1.7, hE*0.7, hE*0.6);
+  g.fillStyle = '#9b6bff'; const sx = W*0.78; g.fillRect(sx, fy - hE*0.55, hE*1.0, hE*0.35); g.fillRect(sx, fy - hE*0.85, hE*1.0, hE*0.32); g.fillStyle = '#8455e0'; g.fillRect(sx - hE*0.08, fy - hE*0.62, hE*0.12, hE*0.45); g.fillRect(sx + hE*0.96, fy - hE*0.62, hE*0.12, hE*0.45);
+  g.fillStyle = '#ffd34d'; g.beginPath(); g.moveTo(W*0.66, fy - hE*1.3); g.lineTo(W*0.66 + hE*0.22, fy - hE*1.3); g.lineTo(W*0.66 + hE*0.16, fy - hE*1.55); g.lineTo(W*0.66 + hE*0.06, fy - hE*1.55); g.fill();
+  g.strokeStyle = '#8a7a6a'; g.lineWidth = hE*0.025; g.beginPath(); g.moveTo(W*0.66 + hE*0.11, fy - hE*1.3); g.lineTo(W*0.66 + hE*0.11, fy); g.stroke();
+  g.fillStyle = '#d9a35f'; g.fillRect(0, fy - hE*0.05, W, H);
+  g.fillStyle = '#5aa8f0'; g.beginPath(); g.ellipse(W*0.45, fy + hE*0.03, hE*1.2, hE*0.14, 0, 0, 7); g.fill();
+  g.strokeStyle = '#ffd34d'; g.lineWidth = hE*0.02; g.setLineDash([hE*0.05, hE*0.04]); g.beginPath(); g.ellipse(W*0.45, fy + hE*0.03, hE*1.08, hE*0.11, 0, 0, 7); g.stroke(); g.setLineDash([]);
+}
+/* картинки на карточках */
+const FACES = {
+  theo: () => `<img src="${IMG.theo_idle[0]}" alt="" style="width:80%;height:80%;object-fit:contain">`,
+  ball: () => '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="#ffd34d" stroke="#d6a21e" stroke-width="5"/><path d="M14 42 Q50 60 86 42 M50 12 Q32 50 50 88" fill="none" stroke="#ff7a59" stroke-width="7"/></svg>',
+  apfel: () => '<svg viewBox="0 0 100 100"><path d="M50 30 C20 18 10 50 22 72 C32 92 46 86 50 82 C54 86 68 92 78 72 C90 50 80 18 50 30 Z" fill="#ff5a4a" stroke="#c43a2e" stroke-width="4"/><path d="M50 30 Q52 16 60 10" stroke="#8a5a1e" stroke-width="5" fill="none"/><path d="M54 18 Q70 10 76 22 Q62 26 54 18" fill="#3cc36a"/></svg>',
+  sonne: () => '<svg viewBox="0 0 100 100"><g stroke="#ffd34d" stroke-width="7" stroke-linecap="round"><path d="M50 6 v12 M50 82 v12 M6 50 h12 M82 50 h12 M19 19 l8 8 M73 73 l8 8 M19 81 l8 -8 M73 27 l8 -8"/></g><circle cx="50" cy="50" r="24" fill="#ffd34d" stroke="#f0b820" stroke-width="4"/></svg>',
+  auto: () => '<svg viewBox="0 0 100 100"><path d="M10 64 V50 Q12 40 24 40 L34 26 H64 L76 40 Q90 42 90 54 V64 Z" fill="#4a8ff0" stroke="#2a5fb0" stroke-width="4" stroke-linejoin="round"/><rect x="38" y="30" width="22" height="12" fill="#cfe9ff"/><circle cx="28" cy="66" r="10" fill="#333"/><circle cx="72" cy="66" r="10" fill="#333"/></svg>',
+  stern: () => '<svg viewBox="0 0 100 100"><path d="M50 8 L61 38 L94 40 L68 60 L77 92 L50 74 L23 92 L32 60 L6 40 L39 38 Z" fill="#9b6bff" stroke="#6b3fc4" stroke-width="4" stroke-linejoin="round"/></svg>'
+};
+const BACK = '<svg viewBox="0 0 100 100"><rect x="6" y="6" width="88" height="88" rx="12" fill="#32b67a"/><circle cx="50" cy="50" r="20" fill="none" stroke="#fff" stroke-width="6"/><circle cx="50" cy="50" r="6" fill="#fff"/></svg>';
+(function(){ const css = document.createElement('style'); css.textContent = `
+  #memo{position:absolute;left:50%;top:6%;transform:translateX(-50%);z-index:60;display:grid;grid-template-columns:repeat(6,1fr);gap:1.6vmin;width:min(70vw,108vh)}
+  #memo button{aspect-ratio:3/4;border-radius:14px;border:4px solid #fff;background:#fff7ec;box-shadow:0 5px 0 #d9b77a;padding:6%;display:grid;place-items:center;cursor:pointer;transition:transform .25s}
+  #memo button svg,#memo button img{width:100%;height:100%;display:block}
+  #memo button.open{background:#fff}
+  #memo button.gone{visibility:hidden}
+  #memo button.hint{animation:tapme 1.1s ease-in-out infinite}
+  .pile{position:absolute;z-index:58;display:flex;gap:4px}
+  .pile button{width:min(5vw,7vh);aspect-ratio:3/4;border-radius:8px;background:#fff;border:3px solid #32b67a;display:grid;place-items:center;cursor:pointer;padding:0}
+  .pile button svg,.pile button img{width:80%;height:80%}`; document.head.appendChild(css); })();
+
+let emily, mark, theo, memo, cards = [], pileE, pileM;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised', 'laugh'];
+const MP = ['idle', 'blink', 'talk', 'mouth', 'sad', 'wave', 'laugh', 'walk', 'surprised'];
+function setup(){
+  stage.querySelectorAll('.char,.prop,#memo,.pile').forEach(e => e.remove()); T.heroes = {}; T.props = []; cards = [];
+  memo = document.createElement('div'); memo.id = 'memo'; stage.appendChild(memo);
+  const keys = Object.keys(FACES).flatMap(k => [k, k]).sort(() => Math.random() - .5);
+  keys.forEach(k => { const b = document.createElement('button'); b.type = 'button'; b.innerHTML = BACK; b.dataset.k = k; memo.appendChild(b); cards.push(b); });
+  pileE = document.createElement('div'); pileE.className = 'pile'; pileE.style.left = '2%'; pileE.style.bottom = '4%'; stage.appendChild(pileE);
+  pileM = document.createElement('div'); pileM.className = 'pile'; pileM.style.right = '2%'; pileM.style.bottom = '4%'; stage.appendChild(pileM);
+  theo = T.hero('theo', {x: 0.88, h: 0.45, poses: ['idle', 'blink', 'happy', 'bark', 'lie']}); theo.set('lie');
+  mark = T.hero('mark', {x: 1.15, h: 0.62, poses: MP});
+  emily = T.hero('emily', {x: 0.2, poses: EP});
+}
+const open = b => { b.innerHTML = FACES[b.dataset.k](); b.classList.add('open'); sfx.pop(); };
+const close = b => { b.innerHTML = BACK; b.classList.remove('open'); };
+const live = () => cards.filter(b => !b.classList.contains('gone'));
+/* ждём нажатия на закрытую карточку: подсказки два раза по-немецки, потом по-русски */
+function pickCard(){
+  return new Promise(res => {
+    let done = false; const list = live().filter(b => !b.classList.contains('open'));
+    const h = e => { const b = e.currentTarget; if (done || b.classList.contains('open')) return; done = true; list.forEach(x => { x.removeEventListener('click', h); x.classList.remove('hint'); }); res(b); };
+    list.forEach(b => b.addEventListener('click', h));
+    (async () => { let k = 0; while (!done){ await sleep(7000); if (done) break; k++; list.forEach(b => b.classList.add('hint')); if (!speaking) await play(k % 3 === 0 ? 'r28_tipp' : 'n28_tipp'); } })();
+  });
+}
+function toPile(pile, a, b){ for (const c of [a, b]) c.classList.add('gone'); const i = document.createElement('button'); i.type = 'button'; i.innerHTML = FACES[a.dataset.k](); pile.appendChild(i); sfx.ding(); }
+/* ход: открыть две; пара — в стопку игрока */
+async function turnEmily(){
+  const a = await pickCard(); open(a); const b = await pickCard(); open(b); await sleep(700);
+  if (a.dataset.k === b.dataset.k){ toPile(pileE, a, b); await play('n28_paar'); return true; }
+  await play('n28_kein'); close(a); close(b); return false;
+}
+async function turnMark(smart){
+  const l = live(); let a = pick(l), b;
+  if (smart){ b = l.find(x => x !== a && x.dataset.k === a.dataset.k); } else { b = pick(l.filter(x => x !== a)); }
+  mark.set('talk'); open(a); await sleep(600); open(b); await sleep(900); mark.set('idle');
+  if (a.dataset.k === b.dataset.k){ toPile(pileM, a, b); mark.set('laugh'); await play('n28_mark_paar'); await mark.say('k_ja'); mark.set('idle'); return true; }
+  await play('n28_kein'); close(a); close(b); return false;
+}
+/* Марк хватает карточки: они разлетаются и перемешиваются */
+async function markGrab(){
+  mark.set('laugh'); mark.hop(); sfx.whoosh(); await mark.say('k_meins');
+  const l = live(); for (const c of l.slice(0, 3)) c.animate([{transform: 'none'}, {transform: `translate(${(Math.random() - .5)*120}px,${60 + Math.random()*80}px) rotate(${(Math.random() - .5)*90}deg)`}, {transform: 'none'}], {duration: 700});
+  await sleep(700); const ks = l.map(c => c.dataset.k).sort(() => Math.random() - .5); l.forEach((c, i) => { c.dataset.k = ks[i]; close(c); });
+  mark.set('idle');
+}
+async function count(pile){ const items = [...pile.children]; let n = 0;
+  for (const it of items){ await new Promise(r => { it.classList.add('tapme'); const h = () => { it.removeEventListener('click', h); it.classList.remove('tapme'); r(); }; it.addEventListener('click', h); });
+    n++; showNum(n); sfx.pop(); await emily.say('e_' + n); }
+  await sleep(500); hideNum(); return n; }
+
+async function story(){
+  await play('n28_intro');
+  await T.repeat('e28_ich_dran');
+  await play('n28_tipp');
+  /* Эмили ищет, пока не найдёт первую пару (после 3 промахов карточки помогают: вторая из пары светится) */
+  let tries = 0; while (!(await turnEmily())){ if (++tries >= 3){ const a = live()[0]; a.classList.add('hint'); } }
+  await T.bone(emily);
+
+  /* Марк приходит и хватает карточки: шаги 1–3 */
+  mark.set('walk'); await mark.walkTo(0.5, 1300); mark.set('idle');
+  await play('n28_mark_kommt'); await markGrab();
+  emily.set('idle'); await T.repeat('e28_bitte_nicht');
+  await markGrab(); await play('n28_weiter');
+  await play('n24_fester');
+  await T.firm('e28_mein_spiel', {who: mark, step: 2});
+  await markGrab();
+  await play('n19_stopp_tipp');
+  await T.firm('e28_stopp', {who: mark, step: 3});
+  mark.set('sad'); T.tears(mark, true); await mark.say('k_mark_auch');
+  await play('n28_traurig');
+  const opts = () => [
+    {parts: [{img: 'emily_wave', x: 32, h: 70}, {img: 'mark_sad', x: 70, h: 52}, {fx: 'tears', x: 70, y: 46}], clip: 'n28_opt_weg', ok: false, bg: '#fde9d2', ground: '#d9a35f'},
+    {parts: [{img: 'emily_laugh', x: 34, h: 70}, {img: 'mark_laugh', x: 66, h: 52}, {fx: 'hearts', x: 50, y: 20}], clip: 'n28_opt_mit', bg: '#fde9d2', ground: '#d9a35f'}];
+  while ((await T.choose(opts(), 'n19_was', 'r19_was')) === 0) await play('n28_weg_nein');
+  await T.repeat('e28_zusammen');
+  T.tears(mark, false); mark.set('laugh'); T.hearts(mark); await mark.say('k_ja'); mark.set('idle');
+  await mark.walkTo(0.62, 500); await T.bone(mark);
+
+  /* по очереди: Эмили — Марк */
+  let turn = 0;
+  while (live().length){
+    if (turn % 2){ if (turn === 1) await T.repeat('e28_du_dran'); await turnMark(turn === 1 || turn === 5); }
+    else { await turnEmily(); }
+    turn++;
+    if (turn > 14 && live().length){ const l = live(); toPile(pileE, l[0], l.find(x => x !== l[0] && x.dataset.k === l[0].dataset.k)); }   /* мягко: не застреваем */
+  }
+  await T.bone(emily);
+
+  /* считаем пары */
+  await play('n28_zaehl_emily'); const ne = await count(pileE);
+  await play('n28_zaehl_mark'); const nm = await count(pileM);
+  if (ne > nm) await play('n28_mehr');
+  await T.repeat('e28_toll'); mark.set('laugh'); mark.hop(); T.hearts(mark); theo.set('happy'); await play('t_bark'); mark.set('idle');
+  await T.bone(emily);
+  emily.set('jump'); mark.set('laugh'); await play('n28_ende'); emily.set('idle'); mark.set('idle');
+}
+T.start(IMG.mark_laugh[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

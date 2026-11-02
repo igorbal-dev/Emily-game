@@ -170,7 +170,13 @@ const CHUNKS = (() => {
     /* 27 «Stopptanz» */
     e27_raus: ['Paul, …', 'du hast dich bewegt!', 'Du bist raus.'],
     e27_regel: ['Doch!', 'Die Musik war aus.', 'Das ist die Regel.'],
-    e27_tut_weh: ['Entschuldigung, Abiha!', 'Tut es weh?']
+    e27_tut_weh: ['Entschuldigung, Abiha!', 'Tut es weh?'],
+    /* 28 «Memory mit Mark» */
+    e28_bitte_nicht: ['Mark, …', 'bitte nicht die Karten nehmen.'],
+    e28_mein_spiel: ['Nein, Mark!', 'Das ist mein Spiel.'],
+    e28_stopp: ['Stopp, Mark!', 'Hör auf!'],
+    e28_zusammen: ['Komm, Mark.', 'Wir spielen zusammen.'],
+    e28_du_dran: ['Jetzt bist du dran, …', 'Mark!']
   });
   return C;
 })();
