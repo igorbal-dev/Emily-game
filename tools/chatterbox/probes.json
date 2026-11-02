@@ -4417,6 +4417,286 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat laut vor allen gesprochen. Und sie hat gesagt: Hör auf! Das ist gemein."
+  },
+  {
+   "id": "n38_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Im Garten der Kita spielen alle Feuer, Wasser, Sturm!"
+  },
+  {
+   "id": "s38_regel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Bei Feuer legt ihr euch auf die Decke. Bei Wasser klettert ihr auf die Bank. Bei Sturm haltet ihr euch am Baum fest!"
+  },
+  {
+   "id": "s38_feuer",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Feuer!"
+  },
+  {
+   "id": "s38_wasser",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Wasser!"
+  },
+  {
+   "id": "s38_sturm",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Sturm!"
+  },
+  {
+   "id": "n38_feuer",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Feuer! Auf die Decke! Tipp auf die Decke!"
+  },
+  {
+   "id": "n38_wasser",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wasser! Auf die Bank! Tipp auf die Bank!"
+  },
+  {
+   "id": "n38_sturm",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Sturm! Zum Baum! Tipp auf den Baum!"
+  },
+  {
+   "id": "r38_tipp",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Куда бежать? Нажми туда!"
+  },
+  {
+   "id": "n38_falsch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Nein, nicht dahin! Hör genau hin!"
+  },
+  {
+   "id": "p38_kein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Hier ist kein Platz! Geh weg!"
+  },
+  {
+   "id": "e38_platz",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, mach bitte Platz."
+  },
+  {
+   "id": "p38_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Nein! Die Bank ist meine!"
+  },
+  {
+   "id": "e38_alle",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein, Paul! Die Bank ist für alle. Rutsch bitte rüber!"
+  },
+  {
+   "id": "p38_noe",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Hihi, nö!"
+  },
+  {
+   "id": "e38_stopp",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Stopp, Paul! Ich will auch auf die Bank!"
+  },
+  {
+   "id": "p38_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Okay, okay. Hier ist Platz."
+  },
+  {
+   "id": "n38_wie_viele",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Kinder sind auf der Bank? Tipp und zähl!"
+  },
+  {
+   "id": "n38_vier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Vier Kinder! Jetzt haben alle Platz."
+  },
+  {
+   "id": "n38_du",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt ruft Emily! Was ruft sie? Tipp auf ein Bild!"
+  },
+  {
+   "id": "r38_du",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Что крикнет Эмили? Нажми на картинку!"
+  },
+  {
+   "id": "n38_opt_feuer",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Feuer."
+  },
+  {
+   "id": "n38_opt_wasser",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wasser."
+  },
+  {
+   "id": "n38_opt_sturm",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Sturm."
+  },
+  {
+   "id": "e38_feuer",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Feuer!"
+  },
+  {
+   "id": "e38_wasser",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Wasser!"
+  },
+  {
+   "id": "e38_sturm",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Sturm!"
+  },
+  {
+   "id": "n38_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat gesagt: Die Bank ist für alle! Und sie hat selbst das Spiel gerufen."
   }
  ]
 }
