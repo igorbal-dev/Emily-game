@@ -148,3 +148,18 @@
 **Лестница:** шаг 2. **Счёт:** 2 красные вещи.
 **Кусочки:** «Paul, … | der Stuhl ist nicht rot. | Das gilt nicht!», «Nein! | Du hast geschummelt. | Der Stuhl ist blau.», «Nein, … | das ist es nicht.» («nicht» с глаголом), «Ich sehe was, … | was du nicht siehst, … | und das ist gelb!»
 
+## Уровень 33 «Himmel und Hölle» — готов
+
+**Где:** двор садика, на асфальте мелом нарисованы классики (клетки 1–8).
+**Что происходит:**
+1. Абиха: «Wer fängt an? Macht Schnick Schnack Schnuck!» — Эмили говорит «Schnick, Schnack, Schnuck!» и сама выбирает руку: ножницы, камень или бумагу. Эмили выигрывает и начинает.
+2. **Влезла без очереди (до шага 3, без взрослого):** Изабель встаёт первой: «Ich fange an! Ich bin schneller!»
+   - Шаг 1: «Isabel, ich bin dran. Ich habe gewonnen.» — «Egal!»
+   - Шаг 2 (громче): «Nein! Du hast verloren. Stell dich hinten an.» — «Aber ich will zuerst!»
+   - Шаг 3 (ладонь): «Stopp, Isabel! Das ist nicht fair!» — «Okay … Entschuldigung. Du bist dran.»
+3. Эмили прыгает: нажимаем на клетки по порядку, Эмили считает 1…6. **Неправа Эмили:** на шестой наступила на линию — «Du bist auf die Linie getreten!» — честно: «Stimmt. Jetzt bist du dran.»
+4. Прыгает Изабель, Эмили считает до 8. Изабель: «Danke, Emily! Du spielst fair.» Абиха просится — «Klar! Du bist nach Isabel dran.»
+
+**Лестница:** до шага 3 (без взрослого). **Счёт:** 1–8.
+**Кусочки:** «Nein! | Du hast verloren. | Stell dich hinten an.» («an» не отрываем), «Stopp, Isabel! | Das ist nicht fair!» («nicht» вместе), «Stimmt. | Jetzt bist du dran.», «Schnick, Schnack, Schnuck!» — целиком.
+

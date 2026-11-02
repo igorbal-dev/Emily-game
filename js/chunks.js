@@ -197,7 +197,13 @@ const CHUNKS = (() => {
     e32_gelb: ['Ich sehe was, …', 'was du nicht siehst, …', 'und das ist gelb!'],
     e32_gruen: ['Ich sehe was, …', 'was du nicht siehst, …', 'und das ist grün!'],
     e32_nein: ['Nein, …', 'das ist es nicht.'],
-    e32_ja: ['Ja, richtig!', 'Jetzt bist du dran.']
+    e32_ja: ['Ja, richtig!', 'Jetzt bist du dran.'],
+    /* 33 «Himmel und Hölle» */
+    e33_ich_dran: ['Isabel, …', 'ich bin dran.', 'Ich habe gewonnen.'],
+    e33_hinten: ['Nein!', 'Du hast verloren.', 'Stell dich hinten an.'],
+    e33_stopp: ['Stopp, Isabel!', 'Das ist nicht fair!'],
+    e33_stimmt: ['Stimmt.', 'Jetzt bist du dran.'],
+    e33_klar: ['Klar!', 'Du bist nach Isabel dran.']
   });
   return C;
 })();
