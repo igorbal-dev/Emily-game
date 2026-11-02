@@ -37,3 +37,16 @@
 **Кусочки (Лёгкий):** «Paul, komm! | Wir gehen zusammen.», «Schon gut. | Wieder Freunde?», «Nein! | Das ist meine Laterne!», «Laterne, Laterne, … | Sonne, Mond und Sterne!», «Wir teilen! | Jeder bekommt eine Hälfte.»
 **Заглушки картинок:** Пауль грустный = стоит + слёзы; фонарики нарисованы кодом и «висят» у руки. Задание на позы — `for_chatgpt/CONFLICT_POSES.md`.
 
+## Уровень 25 «Ochs am Berg» — готов
+
+**Где:** сад садика, большое осеннее дерево, линия старта мелом.
+**Что происходит:**
+1. Кто водит? Абиха: «Wer fängt an?». Эмили говорит народную считалку «Ene, mene, muh, und raus bist du!», палец бегает по детям — водит Пауль.
+2. Пауль у дерева говорит «Eins, zwei, drei – Ochs am Berg!». **Пока он говорит — нажимаем на Эмили**, она делает шаг и сама считает шаги (1…6). Пауль обернулся — нажимать нельзя, иначе «Ich habe dich gesehen! Zurück zum Start!» (мягко: после 8 кругов Эмили всё равно доходит).
+3. **Неправа Эмили:** во втором круге она качнулась сама, Пауль: «Du hast dich bewegt! Zurück zum Start!» — Эмили честно: «Stimmt. Entschuldigung.» и идёт на старт.
+4. Дошла — «Angeschlagen! Jetzt bin ich dran!». Теперь водит Эмили: сама говорит спруч, оборачивается. Изабель шевельнулась — находим её нажатием, Эмили: «Isabel, du hast dich bewegt! Zurück zum Start!» — Изабель: «Gar nicht!» — **шаг 2**, громче: «Doch! Ich habe es gesehen.» — Изабель уходит на старт. Абиха добегает и «осаливает» Эмили, все смеются.
+
+**Лестница:** шаг 2 (спор о правилах). **Счёт:** шаги 1–6.
+**Кусочки:** «Ene, mene, muh, … | und raus bist du!», «Eins, zwei, drei … | Ochs am Berg!», «Isabel, … | du hast dich bewegt! | Zurück zum Start!», «Doch! | Ich habe es gesehen.», «Stimmt. Entschuldigung.» — целиком.
+**Заглушки:** водящий стоит «к дереву» без отдельной картинки «спиной» (в задании ChatGPT — поза stand_back).
+

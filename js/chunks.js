@@ -152,7 +152,13 @@ const CHUNKS = (() => {
     e24_zusammen: ['Paul, komm!', 'Wir gehen zusammen.'],
     e24_freunde: ['Schon gut.', 'Wieder Freunde?'],
     e24_laterne: ['Laterne, Laterne, …', 'Sonne, Mond und Sterne!'],
-    e24_teilen: ['Wir teilen!', 'Jeder bekommt eine Hälfte.']
+    e24_teilen: ['Wir teilen!', 'Jeder bekommt eine Hälfte.'],
+    /* 25 «Ochs am Berg» */
+    e25_ene: ['Ene, mene, muh, …', 'und raus bist du!'],
+    e25_angeschlagen: ['Angeschlagen!', 'Jetzt bin ich dran!'],
+    e25_ochs: ['Eins, zwei, drei …', 'Ochs am Berg!'],
+    e25_isabel: ['Isabel, …', 'du hast dich bewegt!', 'Zurück zum Start!'],
+    e25_doch: ['Doch!', 'Ich habe es gesehen.']
   });
   return C;
 })();
