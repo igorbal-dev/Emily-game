@@ -227,6 +227,496 @@
    ],
    "voice": "emily2",
    "text": "Jetzt ist Herbst!"
+  },
+  {
+   "id": "n24_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Heute ist Sankt Martin! Die Kinder basteln Laternen."
+  },
+  {
+   "id": "s24_basteln",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Jeder bekommt eine Laterne. Welche Farbe möchtest du, Emily?"
+  },
+  {
+   "id": "n24_tipp_farbe",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf eine Laterne!"
+  },
+  {
+   "id": "r24_tipp_farbe",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Выбери фонарик — нажми на него!"
+  },
+  {
+   "id": "e24_rot",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich möchte die rote Laterne!"
+  },
+  {
+   "id": "e24_gelb",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich möchte die gelbe Laterne!"
+  },
+  {
+   "id": "e24_blau",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich möchte die blaue Laterne!"
+  },
+  {
+   "id": "e24_gruen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich möchte die grüne Laterne!"
+  },
+  {
+   "id": "s24_bitte",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Bitte schön!"
+  },
+  {
+   "id": "p24_schoen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Oh, die ist schön! Die nehme ich!"
+  },
+  {
+   "id": "n24_paul",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh nein! Paul hat Emilys Laterne genommen."
+  },
+  {
+   "id": "e24_zurueck",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, gib mir bitte meine Laterne zurück."
+  },
+  {
+   "id": "p24_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Nein! Die ist jetzt meine!"
+  },
+  {
+   "id": "n24_fester",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!"
+  },
+  {
+   "id": "e24_meins",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein! Das ist meine Laterne!"
+  },
+  {
+   "id": "p24_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Okay, okay. Hier ist deine Laterne."
+  },
+  {
+   "id": "n24_geklappt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Mit fester Stimme hat es geklappt!"
+  },
+  {
+   "id": "n_lauter",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Lauter! Sag es mit fester Stimme!"
+  },
+  {
+   "id": "r_lauter",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Громче! Скажи твёрдо и громко!"
+  },
+  {
+   "id": "p24_kaputt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ich habe keine Laterne. Meine ist kaputt."
+  },
+  {
+   "id": "n24_opt_lachen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily lacht Paul aus."
+  },
+  {
+   "id": "n24_opt_zusammen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily nimmt Paul mit."
+  },
+  {
+   "id": "n24_lachen_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Auslachen ist nicht nett. Paul ist traurig. Noch mal!"
+  },
+  {
+   "id": "e24_zusammen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, komm! Wir gehen zusammen."
+  },
+  {
+   "id": "s24_neue",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Und hier ist eine neue Laterne für dich, Paul."
+  },
+  {
+   "id": "p24_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Danke! Entschuldigung, Emily."
+  },
+  {
+   "id": "e24_freunde",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Schon gut. Wieder Freunde?"
+  },
+  {
+   "id": "p24_freunde",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ja! Wieder Freunde!"
+  },
+  {
+   "id": "n24_draussen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Es ist dunkel. Alle gehen mit ihren Laternen nach draußen."
+  },
+  {
+   "id": "s24_an",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Jetzt machen wir die Laternen an!"
+  },
+  {
+   "id": "n24_zaehl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf die Laternen und zähl mit!"
+  },
+  {
+   "id": "n24_fuenf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Fünf Laternen leuchten! Wie schön!"
+  },
+  {
+   "id": "s24_lied",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Wir gehen los und singen: Laterne, Laterne, Sonne, Mond und Sterne!"
+  },
+  {
+   "id": "e24_laterne",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Laterne, Laterne, Sonne, Mond und Sterne!"
+  },
+  {
+   "id": "b24_mond",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Schau mal, Emily! Der Mond!"
+  },
+  {
+   "id": "n24_mond",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wo ist der Mond? Tipp auf den Mond!"
+  },
+  {
+   "id": "r24_mond",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Где луна? Нажми на луну!"
+  },
+  {
+   "id": "n24_sterne",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Und da sind Sterne! Tipp auf die Sterne und zähl mit!"
+  },
+  {
+   "id": "n24_drei",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Drei Sterne!"
+  },
+  {
+   "id": "s24_weckmann",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Zum Schluss gibt es Weckmänner. Aber ich habe nur zwei. Und ihr seid vier Kinder!"
+  },
+  {
+   "id": "n24_wie",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Was machen wir? Sankt Martin hat seinen Mantel geteilt."
+  },
+  {
+   "id": "e24_teilen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Wir teilen! Jeder bekommt eine Hälfte."
+  },
+  {
+   "id": "n24_tipp_teilen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf die Weckmänner!"
+  },
+  {
+   "id": "r24_tipp_teilen",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажми на булочки — разломи их пополам!"
+  },
+  {
+   "id": "n24_haelften",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Hälften sind das? Zähl mit!"
+  },
+  {
+   "id": "n24_vier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Vier Hälften für vier Kinder!"
+  },
+  {
+   "id": "b24_lecker",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Mmh, lecker! Danke, Emily!"
+  },
+  {
+   "id": "i24_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Danke, Emily!"
+  },
+  {
+   "id": "n24_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Schön! Wie Sankt Martin hat Emily geteilt und geholfen."
   }
  ]
 }
