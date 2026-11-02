@@ -166,7 +166,11 @@ const CHUNKS = (() => {
     e26_heike: ['Heike, …', 'Paul macht mein Bild kaputt!'],
     e26_ja: ['Ja!', 'Du kannst …', 'die blaue Kreide haben.'],
     e26_darf: ['Entschuldigung.', 'Darf ich …', 'die grüne Kreide haben?'],
-    e26_klar: ['Klar!', 'Wir malen alle zusammen.']
+    e26_klar: ['Klar!', 'Wir malen alle zusammen.'],
+    /* 27 «Stopptanz» */
+    e27_raus: ['Paul, …', 'du hast dich bewegt!', 'Du bist raus.'],
+    e27_regel: ['Doch!', 'Die Musik war aus.', 'Das ist die Regel.'],
+    e27_tut_weh: ['Entschuldigung, Abiha!', 'Tut es weh?']
   });
   return C;
 })();

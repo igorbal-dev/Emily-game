@@ -67,3 +67,17 @@
 **Счёт:** 5 лучей, 6 лепестков.
 **Кусочки:** «Stopp! | Hör auf! | Ich will das nicht!» («nicht» вместе с «will»), «Heike, … | Paul macht mein Bild kaputt!» («kaputt» не отрываем), «Nein! | Frag bitte zuerst!», «Entschuldigung. | Darf ich … | die grüne Kreide haben?»
 
+## Уровень 27 «Stopptanz» — готов
+
+**Где:** зал для движения в садике (шведская стенка, флажки, скамейка).
+**Что происходит:**
+1. Хайке объясняет правило: музыка играет — танцуем, музыка стоп — стоим как статуя. Музыка своя (простая мелодия кодом, не чужая песня).
+2. Эмили — ди-джей: жмёт на красную кнопку (музыка), ещё раз — тишина. Кто шевельнулся? Находим Пауля. «Paul, du hast dich bewegt! Du bist raus.» — «Das gilt nicht! Die Musik war noch an!» — **шаг 2**, громче: «Doch! Die Musik war aus. Das ist die Regel.» Пауль садится на скамейку. Сколько детей ещё танцуют? (выбор числа — 3)
+3. По очереди: теперь музыку включает Пауль, Эмили танцует.
+4. **Принять извинение:** Изабель в танце случайно толкнула Эмили — «Oh! Entschuldigung, Emily!» — Эмили: «Schon gut!»
+5. **Попросить прощения (неправа Эмили):** Эмили наступила Абихе на ногу — «Aua!» — «Entschuldigung, Abiha! Tut es weh?» — «Nein, schon gut.»
+6. Абиха засмеялась и выбыла — сколько осталось (2). Эмили и Изабель победили, Эмили делает пируэт.
+
+**Лестница:** шаг 2. **Счёт:** сколько детей осталось (3, 2).
+**Кусочки:** «Doch! | Die Musik war aus. | Das ist die Regel.», «Paul, … | du hast dich bewegt! | Du bist raus.», «Entschuldigung, Abiha! | Tut es weh?», «Schon gut!» — целиком.
+
