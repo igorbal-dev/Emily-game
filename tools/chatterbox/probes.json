@@ -4127,6 +4127,296 @@
    ],
    "voice": "narr",
    "text": "Super! Emily kann verlieren und gewinnen. Und sie sagt: Gut gespielt!"
+  },
+  {
+   "id": "n37_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Heute ist Kuscheltiertag in der Kita! Alle haben ein Kuscheltier mitgebracht."
+  },
+  {
+   "id": "s37_wer",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Wer möchte sein Kuscheltier zeigen? Emily, du?"
+  },
+  {
+   "id": "n37_laut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Sag es laut und deutlich, damit alle es hören!"
+  },
+  {
+   "id": "e37_hase",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Das ist mein Hase. Er heißt Lulu."
+  },
+  {
+   "id": "b37_alt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Wie alt ist Lulu?"
+  },
+  {
+   "id": "e37_alt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Lulu ist drei Jahre alt."
+  },
+  {
+   "id": "i37_mag",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Was mag Lulu?"
+  },
+  {
+   "id": "e37_moehren",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Lulu mag Möhren!"
+  },
+  {
+   "id": "p37_doof",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Dein Hase ist doof! Er hat nur ein Ohr!"
+  },
+  {
+   "id": "e37_nicht_doof",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Lulu ist nicht doof. Ich mag ihn."
+  },
+  {
+   "id": "p37_doch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Doch! Doof, doof!"
+  },
+  {
+   "id": "e37_gemein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Hör auf! Das ist gemein."
+  },
+  {
+   "id": "p37_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Okay … Entschuldigung. Er ist eigentlich süß."
+  },
+  {
+   "id": "i37_halten",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Darf ich Lulu mal halten?"
+  },
+  {
+   "id": "n37_du",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Möchtest du das? Emily darf Ja oder Nein sagen. Tipp auf ein Bild!"
+  },
+  {
+   "id": "r37_du",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Эмили можно сказать и «да», и «нет». Нажми на картинку!"
+  },
+  {
+   "id": "n37_opt_ja",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Ja, aber vorsichtig!"
+  },
+  {
+   "id": "n37_opt_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Nein, heute nicht."
+  },
+  {
+   "id": "e37_ja",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ja, aber vorsichtig!"
+  },
+  {
+   "id": "i37_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Danke! Er ist so weich! Hier ist er wieder."
+  },
+  {
+   "id": "e37_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein, heute nicht. Lulu ist müde."
+  },
+  {
+   "id": "i37_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Okay. Vielleicht morgen."
+  },
+  {
+   "id": "n37_beides",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Beides ist okay. Emily darf Ja oder Nein sagen."
+  },
+  {
+   "id": "n37_zaehl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Kuscheltiere sind im Kreis? Tipp und zähl!"
+  },
+  {
+   "id": "n37_vier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Vier Kuscheltiere!"
+  },
+  {
+   "id": "n37_frag",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Paul hat einen Dino. Frag ihn, wie er heißt!"
+  },
+  {
+   "id": "e37_wie_heisst",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Wie heißt dein Dino?"
+  },
+  {
+   "id": "p37_rex",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Er heißt Rex! Rrrrr!"
+  },
+  {
+   "id": "n37_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat laut vor allen gesprochen. Und sie hat gesagt: Hör auf! Das ist gemein."
   }
  ]
 }
