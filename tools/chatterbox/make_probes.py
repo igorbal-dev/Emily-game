@@ -118,11 +118,12 @@ def main():
                 best = None
                 for tryn in range(3):
                     seed_all(args.seed + 1000*tryn)
+                    tg = time.time()
                     w = model.generate(text, **kwargs)
                     if best is None or w.shape[-1] < best.shape[-1]:
                         best = w
-                    if w.shape[-1]/model.sr <= limit:
-                        break
+                    if w.shape[-1]/model.sr <= limit or time.time() - tg > 90:
+                        break                      # хватит: нормальная длина, или генерация слишком долгая (не зависаем)
                     print(f"    {name}: {w.shape[-1]/model.sr:.1f}s > {limit:.1f}s, retry", flush=True)
                 wav = best
                 ta.save(str(out / name), wav, model.sr)
