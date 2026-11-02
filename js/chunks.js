@@ -226,7 +226,10 @@ const CHUNKS = (() => {
     e37_nicht_doof: ['Lulu ist nicht doof.', 'Ich mag ihn.'],
     e37_gemein: ['Hör auf!', 'Das ist gemein.'],
     e37_ja: ['Ja, …', 'aber vorsichtig!'],
-    e37_nein: ['Nein, heute nicht.', 'Lulu ist müde.']
+    e37_nein: ['Nein, heute nicht.', 'Lulu ist müde.'],
+    /* 38 «Feuer, Wasser, Sturm» */
+    e38_alle: ['Nein, Paul!', 'Die Bank ist für alle.', 'Rutsch bitte rüber!'],
+    e38_stopp: ['Stopp, Paul!', 'Ich will auch …', 'auf die Bank!']
   });
   return C;
 })();

@@ -217,3 +217,18 @@
 **Лестница:** шаг 2. **Счёт:** 4.
 **Кусочки:** «Lulu ist nicht doof. | Ich mag ihn.», «Hör auf! | Das ist gemein.», «Nein, heute nicht. | Lulu ist müde.» («nicht» с отрицанием целиком), «Das ist mein Hase. | Er heißt Lulu.»
 
+## Уровень 38 «Feuer, Wasser, Sturm» — готов
+
+**Где:** сад садика: розовое одеяло, скамейка, большое дерево.
+**Что происходит:**
+1. Хайке объясняет правило и кричит команды. Остальные дети бегут сами, а Эмили бежит туда, куда нажмёт игрок: «Feuer!» — на одеяло (присесть), «Wasser!» — на скамейку, «Sturm!» — к дереву. Не туда — «Nein, nicht dahin! Hör genau hin!».
+2. **Не пускают (до шага 3):** на «Wasser!» Пауль разлёгся на всей скамейке: «Hier ist kein Platz! Geh weg!»
+   - Шаг 1: «Paul, mach bitte Platz.» — «Nein! Die Bank ist meine!»
+   - Шаг 2 (громче): «Nein, Paul! Die Bank ist für alle. Rutsch bitte rüber!» — «Hihi, nö!»
+   - Шаг 3 (ладонь): «Stopp, Paul! Ich will auch auf die Bank!» — «Okay, okay. Hier ist Platz.»
+3. Считаем детей на скамейке (4) — места хватило всем.
+4. Теперь **Эмили ведёт игру**: сама выбирает картинку-команду и кричит «Feuer!», «Wasser!» или «Sturm!», а дети бегут.
+
+**Лестница:** до шага 3 (без взрослого). **Счёт:** 4.
+**Кусочки:** «Nein, Paul! | Die Bank ist für alle. | Rutsch bitte rüber!» («rüber» не отрываем), «Stopp, Paul! | Ich will auch … | auf die Bank!», «Paul, mach bitte Platz.» — целиком.
+
