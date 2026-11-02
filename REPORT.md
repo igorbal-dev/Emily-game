@@ -123,3 +123,16 @@
 **Лестница:** шаг 1 хватило (договорились словами). **Счёт:** 5 ударов сердца. **Новые слова:** Bauch, Knie, Kopf, Ärztin, tauschen.
 **Кусочки:** «Entschuldigung. | Du kannst zuerst.», «Wir können tauschen. | Erst ich, … | dann du.», «Jetzt tauschen wir! | Jetzt bin ich … | die Ärztin.» (артикль со словом), «Mein Bauch tut weh.» и «Wo tut es weh?» — целиком.
 
+## Уровень 31 «Stille Post» — готов
+
+**Где:** утренний круг в группе садика.
+**Новое в игре:** здесь надо говорить **тихо**. Микрофон проверяет, что Эмили шепчет: если громко — «Psst! Leiser! Du musst flüstern!» и ещё раз (мягко, после 4 попыток игра идёт дальше). Это общий код `T.soft` в `js/firm.js`.
+**Что происходит:**
+1. Считаем детей в кругу (4). Хайке объясняет правило.
+2. Слово идёт по кругу: Хайке → Абиха → Эмили; Эмили шепчет Паулю «Theo mag Kekse.», а Изабель в конце говорит вслух «Theo mag Hexe!» — все смеются.
+3. **Конфликт:** во втором круге Пауль выкрикивает слово: «DIE KATZE SCHLÄFT!» — Абиха: «Oh nein! Jetzt wissen es alle!». Шаг 1: «Psst, Paul! Du musst flüstern.» — «Aber laut ist lustiger!» — **шаг 2**, твёрдо: «Nein, Paul. Bei Stiller Post flüstert man. Das ist die Regel.» — «Okay, ich flüstere.»
+4. Третий круг: «Der Mond ist gelb.» доходит правильно — «Richtig! Diesmal hat es geklappt!»
+
+**Лестница:** шаг 2. **Счёт:** дети в кругу (4).
+**Кусочки:** «Psst, Paul! | Du musst flüstern.», «Nein, Paul. | Bei Stiller Post … | flüstert man. | Das ist die Regel.», короткие фразы-слова («Theo mag Kekse.») — целиком.
+

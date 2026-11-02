@@ -23,3 +23,18 @@ T.firm = async (model, o = {}) => {
   if (who){ sfx.whoosh(); await T.glide(who, Math.max(0.05, Math.min(0.95, x0 + (o.dir || 1)*(0.04 + Math.min(0.12, max*0.04)))), 0, 450, 'ease-out'); }
   return max;
 };
+/* Шёпот (уровень 31 «Stille Post»): T.soft(model, {to}) — Эмили наклоняется к уху соседа `to` и говорит тихо.
+   Громко (выше max, по умолчанию 1.9) — «Psst! Leiser!» (два раза по-немецки, на третий по-русски) и ещё раз; после 4 попыток — дальше.
+   Нужны записи n_leiser и r_leiser. */
+T.soft = async (model, o = {}) => {
+  const hero = T.heroes.emily, to = o.to, max0 = o.max || 1.9, x0 = hero.x;
+  if (to){ await hero.walkTo(to.x + (to.x > hero.x ? -0.07 : 0.07), 500); hero.face(to.x < hero.x); }
+  for (let k = 0; k < 4; k++){
+    const stop = T.loudness(() => {});
+    const ok = await T.repeat(model);
+    const m = stop();
+    if (!ok || !mic || m < max0) break;
+    if (k < 3) await play(k === 2 ? 'r_leiser' : 'n_leiser');
+  }
+  if (to){ await hero.walkTo(x0, 500); hero.face(false); }
+};

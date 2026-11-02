@@ -187,7 +187,10 @@ const CHUNKS = (() => {
     e30_du_zuerst: ['Entschuldigung.', 'Du kannst zuerst.'],
     e30_tauschen: ['Jetzt tauschen wir!', 'Jetzt bin ich …', 'die Ärztin.'],
     e30_erst: ['Wir können tauschen.', 'Erst ich, …', 'dann du.'],
-    e30_bitte: ['Jetzt bist du dran.', 'Hier, bitte!']
+    e30_bitte: ['Jetzt bist du dran.', 'Hier, bitte!'],
+    /* 31 «Stille Post» */
+    e31_psst: ['Psst, Paul!', 'Du musst flüstern.'],
+    e31_regel: ['Nein, Paul.', 'Bei Stiller Post …', 'flüstert man.', 'Das ist die Regel.']
   });
   return C;
 })();
