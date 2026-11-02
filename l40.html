@@ -1,0 +1,125 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Laufrad. Уровень 40</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 40 «Laufrad» — двор садика, один беговел на двоих: Изабель тянет руль — «Ich fahre gerade. Du kannst gleich.» → шаг 2 «Lass los, Isabel!»; честное правило «Ich fahre bis zehn. Dann bist du dran.» — считаем до 10, меняемся; Изабель не хочет отдавать — напоминаем договор. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_out": ["assets/img/75212f3d100c.webp", 220, 407], "emily_blink_out": ["assets/img/8f259a32dae9.webp", 220, 407], "emily_mouth1_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_mouth2_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_wave_out": ["assets/img/acf19e1e2d3e.webp", 218, 410], "emily_jump_out": ["assets/img/afd822bd4c46.webp", 276, 377], "emily_surprised_out": ["assets/img/723e0f67193a.webp", 227, 407], "emily_laugh_out": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk_out": ["assets/img/8e591eafe46b.webp", 225, 385], "emily_ride1": ["assets/img/e3cc9c3ba853.webp", 269, 440], "emily_ride2": ["assets/img/82330c8ac62c.webp", 266, 440], "abiha_idle_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_blink_out": ["assets/img/cd9612e1c921.webp", 141, 375], "abiha_mouth1_out": ["assets/img/67d4d4438d8b.webp", 141, 375], "abiha_mouth2_out": ["assets/img/f1119565498c.webp", 141, 375], "abiha_wave_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_peace_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_walk_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_jump_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_laugh_out": ["assets/img/6d71ed799083.webp", 141, 375], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420]};  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,laugh,walk}_out emily_ride1 emily_ride2 abiha_{idle,blink,mouth1,mouth2,wave,peace,walk,jump,laugh}_out isabel_{idle,blink,talk,wave,jump}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e40_abgemacht": "assets/snd/fd1da63e87d2.mp3", "e40_zehn": "assets/snd/1faef196a3fe.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "i40_juhu": "assets/snd/7dd8462d568a.mp3", "n24_fester": "assets/snd/62af96e91cb6.mp3", "n40_zieht": "assets/snd/bb660564ca08.mp3", "n_lauter": "assets/snd/514e958e006e.mp3", "r_lauter": "assets/snd/2e0c8abce899.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..10} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель) */
+const SAY = {
+  n40_intro: 'Auf dem Hof der Kita gibt es nur ein Laufrad. Emily fährt!',
+  i40_ich: 'Jetzt will ich! Steig ab!',
+  e40_gerade: 'Ich fahre gerade. Du kannst gleich.',
+  i40_sofort: 'Nein, sofort!',
+  n40_zieht: 'Isabel zieht am Lenker!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e40_los: 'Lass los, Isabel! Ich fahre noch.',
+  n40_idee: 'Isabel lässt los. Emily hat eine gute Idee, damit es fair ist.',
+  e40_zehn: 'Ich fahre bis zehn. Dann bist du dran.',
+  i40_okay: 'Okay! Ich zähle mit.',
+  n40_tipp: 'Tipp auf Emily! Bei jeder Runde zählt sie eins weiter.',
+  r40_tipp: 'Нажимай на Эмили — за каждый круг считаем на один больше!',
+  e40_dran: 'Zehn! Jetzt bist du dran, Isabel.',
+  i40_juhu: 'Juhu! Danke!',
+  n40_zaehl: 'Jetzt fährt Isabel. Emily zählt bis zehn.',
+  i40_noch: 'Noch ein bisschen! Noch eine Runde!',
+  e40_abgemacht: 'Isabel, wir haben gesagt: bis zehn. Jetzt bin ich wieder dran.',
+  i40_stimmt: 'Stimmt. Abgemacht ist abgemacht. Hier, bitte!',
+  b40_ich: 'Darf ich auch mal?',
+  e40_nach: 'Klar! Du fährst nach mir. Auch bis zehn!',
+  n40_ende: 'Super! Emily hat eine faire Regel gefunden: Bis zehn zählen, dann tauschen!',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 40: беговел (Laufrad) один на всех. Эмили катается; Изабель: «Jetzt will ich! Steig ab!» — шаг 1 «Ich fahre gerade. Du kannst gleich.»,
+   она тянет руль — шаг 2 «Lass los, Isabel! Ich fahre noch.». Эмили придумывает правило: «Ich fahre bis zehn. Dann bist du dran.» — нажимаем на Эмили,
+   10 кругов, считаем. «Zehn! Jetzt bist du dran, Isabel.» Изабель катается, Эмили считает до 10; Изабель хочет ещё —
+   «Isabel, wir haben gesagt: bis zehn. Jetzt bin ich wieder dran.» — «Abgemacht ist abgemacht». Абиха — «Du fährst nach mir. Auch bis zehn!». */
+const LEVEL = 40, FRIENDS = ['isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><circle cx="24" cy="70" r="16" fill="none" stroke="#333" stroke-width="6"/><circle cx="76" cy="70" r="16" fill="none" stroke="#333" stroke-width="6"/><path d="M24 70 L44 44 H62 L76 70 M44 44 L40 34 M62 44 L66 26 H76" fill="none" stroke="#ff5a4a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><text x="36" y="22" font-family="Trebuchet MS,sans-serif" font-weight="800" font-size="20" fill="#2f80ed">10</text></svg>';
+function drawScene(g, W, H, L){ drawYard(g, W, H, L);
+  /* круговая дорожка мелом */
+  g.strokeStyle = 'rgba(255,255,255,.7)'; g.lineWidth = L.hE*0.025; g.setLineDash([L.hE*0.06, L.hE*0.05]);
+  g.beginPath(); g.ellipse(W*0.55, L.floorY + L.hE*0.02, W*0.32, L.hE*0.1, 0, 0, 7); g.stroke(); g.setLineDash([]); }
+const BIKE = '<svg viewBox="0 0 160 100"><circle cx="32" cy="72" r="24" fill="none" stroke="#333" stroke-width="7"/><circle cx="128" cy="72" r="24" fill="none" stroke="#333" stroke-width="7"/><path d="M32 72 L62 40 H104 L128 72 M62 40 L56 26 M104 40 L112 14 H128" fill="none" stroke="#ff5a4a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><rect x="44" y="20" width="26" height="8" rx="4" fill="#333"/></svg>';
+let emily, abiha, isabel, bike;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'jump', 'surprised', 'laugh', 'walk', 'ride1', 'ride2'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'walk', 'jump', 'laugh'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  abiha = T.hero('abiha', {x: 0.08, outfit: 'out', poses: AP});
+  isabel = T.hero('isabel', {x: 0.2, h: 0.95, poses: KP});
+  emily = T.hero('emily', {x: 0.55, outfit: 'out', poses: EP}); emily.set('ride1');
+  bike = T.prop(BIKE, {px: () => L.W*isabel.x, py: () => L.floorY + L.hE*0.02, w: 0.7, ratio: 100/160, z: 58}); bike.el.hidden = true;
+}
+/* Эмили едет круг: туда-обратно по дорожке */
+async function lap(h, ride){ const x0 = h.x; for (const x of [0.82, 0.3, x0]){ if (ride){ h.set(h.pose === 'ride1' ? 'ride2' : 'ride1'); } await T.glide(h, x, 0, 420, 'ease-in-out'); if (!ride) bike.place(); } }
+async function isabelLap(){ for (const x of [0.82, 0.3, 0.55]){ const a = T.glide(isabel, x, 0, 420, 'ease-in-out'); const b = bike.el.animate([{transform: 'none'}], {duration: 420}); await a; bike.place(); } }
+
+async function story(){
+  await play('n40_intro');
+  await lap(emily, true); emily.set('ride1');
+  /* Изабель хочет сейчас же */
+  isabel.set('talk'); await isabel.walkTo(0.45, 700); await isabel.say('i40_ich'); isabel.set('idle');
+  await T.repeat('e40_gerade');
+  isabel.set('talk'); await isabel.say('i40_sofort'); isabel.set('idle');
+  await isabel.walkTo(0.5, 300); emily.el.classList.add('wobble'); await play('n40_zieht'); emily.el.classList.remove('wobble');
+  await play('n24_fester');
+  await T.firm('e40_los', {who: isabel, step: 2, dir: -1}); emily.set('ride1');
+  await play('n40_idee');
+  await T.repeat('e40_zehn');
+  isabel.set('jump'); isabel.hop(); await isabel.say('i40_okay'); isabel.set('idle');
+  await T.bone(emily);
+  /* 10 кругов: нажимаем на Эмили */
+  await play('n40_tipp');
+  for (let i = 1; i <= 10; i++){ await T.tap([emily], 'n40_tipp', 'r40_tipp'); await lap(emily, true); emily.set('ride1'); showNum(i); await play('e_' + i); }
+  hideNum();
+  emily.set('idle'); await T.repeat('e40_dran');
+  isabel.set('jump'); await isabel.say('i40_juhu');
+  /* Изабель катается, Эмили считает */
+  await emily.walkTo(0.35, 500); isabel.x = 0.55; isabel.place(); bike.place(); bike.el.hidden = false; isabel.set('idle');
+  await play('n40_zaehl');
+  for (let i = 1; i <= 10; i++){ await isabelLap(); showNum(i); await emily.say('e_' + i); }
+  hideNum();
+  isabel.set('talk'); await isabel.say('i40_noch'); isabel.set('idle'); await isabelLap();
+  await T.repeat('e40_abgemacht');
+  isabel.set('talk'); await isabel.say('i40_stimmt'); isabel.set('idle'); T.hearts(isabel);
+  bike.el.hidden = true; await isabel.walkTo(0.24, 500); emily.x = 0.55; emily.place(); emily.set('ride1');
+  await T.bone(isabel);
+  abiha.set('wave'); await abiha.walkTo(0.4, 900); await abiha.say('b40_ich'); abiha.set('idle');
+  await T.repeat('e40_nach');
+  abiha.set('jump'); abiha.hop(); T.hearts(abiha); await sleep(400); abiha.set('idle');
+  await T.bone(emily);
+  emily.set('ride2'); isabel.set('jump'); abiha.set('jump'); await play('n40_ende');
+  emily.set('ride1'); isabel.set('idle'); abiha.set('idle');
+}
+T.start(IMG.emily_ride1[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

@@ -1,0 +1,143 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Stille Post. Уровень 31</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 31 «Stille Post» — круг в садике: передаём слово шёпотом (громко — не засчитывается: «Psst! Leiser!»), смешные искажения, Пауль выкрикивает слово — «Psst, Paul! Du musst flüstern.» → шаг 2 «Das ist die Regel.» План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle": ["assets/img/c64929b2d467.webp", 208, 407], "emily_blink": ["assets/img/bb16d273f7a0.webp", 208, 407], "emily_mouth1": ["assets/img/b6fea28bbe9b.webp", 208, 407], "emily_mouth2": ["assets/img/159e6b3f3df4.webp", 208, 407], "emily_talk": ["assets/img/d36ef0e49481.webp", 270, 413], "emily_wave": ["assets/img/1fdaea62d38d.webp", 252, 394], "emily_jump": ["assets/img/7b1a90a6eb6d.webp", 279, 346], "emily_surprised": ["assets/img/080d300a6733.webp", 208, 407], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "abiha_idle": ["assets/img/fa848f76752c.webp", 252, 361], "abiha_blink": ["assets/img/80c0b58f8e9f.webp", 252, 361], "abiha_mouth1": ["assets/img/d3289978defd.webp", 252, 361], "abiha_mouth2": ["assets/img/3569203761d0.webp", 252, 361], "abiha_wave": ["assets/img/3d7524d2c8fa.webp", 252, 361], "abiha_peace": ["assets/img/540be744bd81.webp", 252, 361], "abiha_jump": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_laugh": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_sit": ["assets/img/cb1193d78e14.webp", 252, 361], "abiha_think": ["assets/img/fe368e6c3218.webp", 252, 361], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised,laugh} abiha_{idle,blink,mouth1,mouth2,wave,peace,jump,laugh,sit,think} isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "b31_katze": "assets/snd/5c25ea311d32.mp3", "b31_mond": "assets/snd/580a83a25a4a.mp3", "b31_oh": "assets/snd/49fe03646b81.mp3", "b31_theo": "assets/snd/aace6a476df1.mp3", "e31_katze": "assets/snd/69260c01d7c3.mp3", "e31_mond": "assets/snd/419dfacdcfe4.mp3", "e31_psst": "assets/snd/29e93ceec8e1.mp3", "e31_regel": "assets/snd/a5189473f07d.mp3", "e31_theo": "assets/snd/6c56f0979a5a.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "i31_hexe": "assets/snd/d200dcb89e32.mp3", "i31_mond": "assets/snd/68bf5651ed7a.mp3", "i_hihi": "assets/snd/9c8910580b2c.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "n24_fester": "assets/snd/62af96e91cb6.mp3", "n31_ende": "assets/snd/f8ff5492b82f.mp3", "n31_intro": "assets/snd/e8c50f22d7eb.mp3", "n31_jetzt": "assets/snd/40fd74b79621.mp3", "n31_vier": "assets/snd/114a44cac00d.mp3", "n31_zaehl": "assets/snd/89c540c99dc4.mp3", "n_lauter": "assets/snd/514e958e006e.mp3", "n_leiser": "assets/snd/8f1f77241852.mp3", "p31_laut": "assets/snd/28771c8563e7.mp3", "p31_lustig": "assets/snd/4d2409d9d78f.mp3", "p31_okay": "assets/snd/fc5993989af1.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3", "r31_jetzt": "assets/snd/a6ad5bca5018.mp3", "r_lauter": "assets/snd/2e0c8abce899.mp3", "r_leiser": "assets/snd/3f70e79d554f.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3", "s31_neu": "assets/snd/ecc875d87b49.mp3", "s31_regel": "assets/snd/d6300c691b85.mp3", "s31_richtig": "assets/snd/0590bd76eb10.mp3", "s31_super": "assets/snd/e12a63a21b4c.mp3"};  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht k_laugh i_hihi p_hihi*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n31_intro: 'Im Morgenkreis spielen die Kinder Stille Post.',
+  n31_zaehl: 'Wie viele Kinder sind im Kreis? Tipp und zähl!',
+  n31_vier: 'Vier Kinder!',
+  s31_regel: 'Ich flüstere ein Wort. Ihr flüstert es weiter, ganz leise. Das letzte Kind sagt es laut.',
+  b31_theo: 'Theo mag Kekse.',
+  n31_jetzt: 'Jetzt flüstert Emily es Paul ins Ohr. Ganz leise!',
+  r31_jetzt: 'Теперь Эмили шепчет Паулю на ушко. Тихо-тихо!',
+  e31_theo: 'Theo mag Kekse.',
+  n_leiser: 'Psst! Leiser! Du musst flüstern!',
+  r_leiser: 'Тсс! Тише, шёпотом!',
+  i31_hexe: 'Theo mag Hexe!',
+  s31_richtig: 'Hihi! Das Wort war: Theo mag Kekse!',
+  b31_katze: 'Die Katze schläft.',
+  e31_katze: 'Die Katze schläft.',
+  p31_laut: 'DIE KATZE SCHLÄFT!',
+  b31_oh: 'Oh nein! Jetzt wissen es alle!',
+  e31_psst: 'Psst, Paul! Du musst flüstern.',
+  p31_lustig: 'Aber laut ist lustiger!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e31_regel: 'Nein, Paul. Bei Stiller Post flüstert man. Das ist die Regel.',
+  p31_okay: 'Okay, okay. Ich flüstere.',
+  s31_neu: 'Gut. Wir fangen noch mal an. Ein neues Wort!',
+  b31_mond: 'Der Mond ist gelb.',
+  e31_mond: 'Der Mond ist gelb.',
+  i31_mond: 'Der Mond ist gelb!',
+  s31_super: 'Richtig! Diesmal hat es geklappt!',
+  n31_ende: 'Super! Emily kann laut und leise sprechen. Und sie hat Paul die Regel erklärt.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 31: Stille Post. Считаем детей в кругу (4). Хайке шепчет слово Абихе, Абиха — Эмили; Эмили шепчет Паулю (T.soft — громко не засчитывается),
+   Изабель говорит вслух смешную ошибку «Theo mag Hexe!» — все смеются. Во втором круге Пауль выкрикивает слово — «Psst, Paul! Du musst flüstern.» —
+   «Aber laut ist lustiger!» — шаг 2 «Nein, Paul. Bei Stiller Post flüstert man. Das ist die Regel.» Третий круг проходит правильно. */
+const LEVEL = 31, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M30 20 Q14 22 14 44 Q14 62 28 66 Q32 80 44 82 Q52 82 52 70 Q52 60 40 54 Q34 44 40 34 Q48 26 40 20 Z" fill="#ffd7b5" stroke="#c9895a" stroke-width="4"/><path d="M62 36 q8 8 0 16 M72 28 q14 16 0 32" fill="none" stroke="#9b6bff" stroke-width="5" stroke-linecap="round"/><path d="M80 80 h12 M86 74 v12" stroke="#9b6bff" stroke-width="4" stroke-linecap="round" opacity=".6"/></svg>';
+const RUG = 0.5;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG); }
+
+let emily, abiha, isabel, paul, heike;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised', 'laugh'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'jump', 'laugh', 'sit', 'think'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  heike = T.hero('sommer', {x: 0.1, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  abiha = T.hero('abiha', {x: 0.3, poses: AP});
+  emily = T.hero('emily', {x: 0.46, poses: EP});
+  paul = T.hero('paul', {x: 0.62, h: 0.97, poses: KP});
+  isabel = T.hero('isabel', {x: 0.78, h: 0.95, poses: KP});
+}
+/* шёпот от героя к соседу: наклон и тихое «пш-ш» (запись звучит тише — громкость не меняем, только анимация) */
+async function whisper(from, to, clip){
+  const x0 = from.x; await from.walkTo(to.x + (to.x > from.x ? -0.07 : 0.07), 400); from.face(to.x < from.x);
+  sfx.noise(600, 3000, .05); if (clip) await from.say(clip); else await sleep(900);
+  to.el.animate([{transform: 'none'}, {transform: 'rotate(-4deg)'}, {transform: 'none'}], {duration: 500});
+  await from.walkTo(x0, 400); from.face(false);
+}
+const laughAll = async () => { emily.set('laugh'); abiha.set('laugh'); isabel.set('jump'); paul.set('jump'); await Promise.all([play('k_laugh'), play('i_hihi'), play('p_hihi')]); [emily, abiha, isabel, paul].forEach(h => h.set('idle')); };
+
+async function story(){
+  await play('n31_intro');
+  /* сколько детей в кругу */
+  await play('n31_zaehl');
+  let left = [abiha, emily, paul, isabel];
+  for (let i = 1; i <= 4; i++){ const el = await T.tap(left, 'n31_zaehl', 'r_tipp_licht'); const h = left.find(x => x.el === el); left = left.filter(x => x !== h); h.hop(); showNum(i); await emily.say('e_' + i); }
+  hideNum(); await play('n31_vier');
+  heike.set('talk'); await heike.say('s31_regel'); heike.set('idle');
+
+  /* 1 круг: Эмили шепчет, Изабель путает — смешно */
+  await whisper(heike, abiha);
+  await whisper(abiha, emily, 'b31_theo');
+  await play('n31_jetzt');
+  await T.soft('e31_theo', {to: paul});
+  await whisper(paul, isabel);
+  isabel.set('talk'); await isabel.say('i31_hexe'); isabel.set('idle');
+  await laughAll();
+  heike.set('talk'); await heike.say('s31_richtig'); heike.set('idle');
+  await T.bone(emily);
+
+  /* 2 круг: Пауль кричит */
+  await whisper(heike, abiha);
+  await whisper(abiha, emily, 'b31_katze');
+  await T.soft('e31_katze', {to: paul});
+  paul.set('jump'); paul.hop(); sfx.whoosh(); await paul.say('p31_laut'); paul.set('idle');
+  abiha.set('think'); await abiha.say('b31_oh'); abiha.set('idle');
+  await T.repeat('e31_psst');
+  paul.set('talk'); await paul.say('p31_lustig'); paul.set('idle'); paul.hop();
+  await play('n24_fester');
+  await T.firm('e31_regel', {who: paul, step: 2});
+  paul.set('talk'); await paul.say('p31_okay'); paul.set('idle');
+  await paul.walkTo(0.62, 400);
+  await T.bone(paul);
+
+  /* 3 круг: правильно */
+  heike.set('talk'); await heike.say('s31_neu'); heike.set('idle');
+  await whisper(heike, abiha);
+  await whisper(abiha, emily, 'b31_mond');
+  await T.soft('e31_mond', {to: paul});
+  await whisper(paul, isabel);
+  isabel.set('jump'); isabel.hop(); await isabel.say('i31_mond'); isabel.set('idle');
+  heike.set('wave'); await heike.say('s31_super'); heike.set('idle'); sfx.fanfare();
+  T.hearts(emily); await T.bone(emily);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n31_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.abiha_peace[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

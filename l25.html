@@ -1,0 +1,188 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Ochs am Berg. Уровень 25</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 25 «Ochs am Berg» — сад садика: считалка «Ene, mene, muh», игра «Eins, zwei, drei – Ochs am Berg!» (крадёмся, пока водящий считает; Эмили честно признаёт «Stimmt. Entschuldigung.»), Эмили водит и твёрдо спорит с Изабель «Doch! Ich habe es gesehen.» План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_out": ["assets/img/75212f3d100c.webp", 220, 407], "emily_blink_out": ["assets/img/8f259a32dae9.webp", 220, 407], "emily_mouth1_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_mouth2_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_wave_out": ["assets/img/acf19e1e2d3e.webp", 218, 410], "emily_jump_out": ["assets/img/afd822bd4c46.webp", 276, 377], "emily_surprised_out": ["assets/img/723e0f67193a.webp", 227, 407], "emily_laugh_out": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk_out": ["assets/img/8e591eafe46b.webp", 225, 385], "abiha_idle_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_blink_out": ["assets/img/cd9612e1c921.webp", 141, 375], "abiha_mouth1_out": ["assets/img/67d4d4438d8b.webp", 141, 375], "abiha_mouth2_out": ["assets/img/f1119565498c.webp", 141, 375], "abiha_wave_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_peace_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_walk_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_jump_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_laugh_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_run_out": ["assets/img/6d71ed799083.webp", 141, 375], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420]};  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,laugh,walk}_out abiha_{idle,blink,mouth1,mouth2,wave,peace,walk,jump,laugh,run}_out isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "b25_hab": "assets/snd/cb2de30e8175.mp3", "b25_wer": "assets/snd/c899dcfb755c.mp3", "e25_angeschlagen": "assets/snd/bf063f06e28c.mp3", "e25_doch": "assets/snd/cc9e0f4f997d.mp3", "e25_ene": "assets/snd/282a7fd5b42a.mp3", "e25_isabel": "assets/snd/f791896b5035.mp3", "e25_ochs": "assets/snd/a90b36dd7a6b.mp3", "e25_stimmt": "assets/snd/3dcecdfe1758.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_10": "assets/snd/46a8ffbe7b43.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "i25_gar_nicht": "assets/snd/23f522871019.mp3", "i25_na_gut": "assets/snd/02269ee713f5.mp3", "i_hihi": "assets/snd/9c8910580b2c.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "n24_fester": "assets/snd/62af96e91cb6.mp3", "n25_ende": "assets/snd/16f9cb8e1d11.mp3", "n25_intro": "assets/snd/6198464f05ba.mp3", "n25_jetzt_du": "assets/snd/fe1d557d7fd9.mp3", "n25_keiner": "assets/snd/c05ab779a2da.mp3", "n25_nein": "assets/snd/c09a399924ba.mp3", "n25_paul": "assets/snd/d34747bdfbf0.mp3", "n25_tipp_schritt": "assets/snd/53052703dff8.mp3", "n25_wackel": "assets/snd/8a0edffe789b.mp3", "n25_wer": "assets/snd/98dd819e8acf.mp3", "n25_zaehlt": "assets/snd/975411560272.mp3", "n_lauter": "assets/snd/514e958e006e.mp3", "p25_bewegt": "assets/snd/903bc092ceb6.mp3", "p25_gesehen": "assets/snd/b978c058a2ce.mp3", "p25_ochs": "assets/snd/46f93e0fdd97.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3", "r25_tipp_schritt": "assets/snd/b42e3125163f.mp3", "r25_wer": "assets/snd/bdad74d08593.mp3", "r_lauter": "assets/snd/2e0c8abce899.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..10} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht k_laugh i_hihi p_hihi*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль) */
+const SAY = {
+  n25_intro: 'Im Garten der Kita spielen die Kinder Ochs am Berg.',
+  b25_wer: 'Wer fängt an?',
+  n25_zaehlt: 'Emily zählt aus. Sag den Abzählreim!',
+  e25_ene: 'Ene, mene, muh, und raus bist du!',
+  n25_paul: 'Paul fängt an! Er ist der Ochs am Berg.',
+  p25_ochs: 'Eins, zwei, drei – Ochs am Berg!',
+  n25_tipp_schritt: 'Wenn Paul zählt, tipp auf Emily! Dann macht sie einen Schritt.',
+  r25_tipp_schritt: 'Пока Пауль считает — нажимай на Эмили, она шагает. Когда он обернулся — не нажимай!',
+  p25_gesehen: 'Emily, ich habe dich gesehen! Zurück zum Start!',
+  n25_wackel: 'Oh! Emily hat gewackelt.',
+  p25_bewegt: 'Emily, du hast dich bewegt! Zurück zum Start!',
+  e25_stimmt: 'Stimmt. Entschuldigung.',
+  e25_angeschlagen: 'Angeschlagen! Jetzt bin ich dran!',
+  n25_jetzt_du: 'Jetzt ist Emily der Ochs am Berg. Sag laut den Spruch!',
+  e25_ochs: 'Eins, zwei, drei – Ochs am Berg!',
+  n25_keiner: 'Keiner hat sich bewegt. Noch mal!',
+  n25_wer: 'Wer hat sich bewegt? Tipp auf das Kind!',
+  r25_wer: 'Кто пошевелился? Нажми на него!',
+  n25_nein: 'Nein, schau genau!',
+  e25_isabel: 'Isabel, du hast dich bewegt! Zurück zum Start!',
+  i25_gar_nicht: 'Gar nicht! Ich habe mich nicht bewegt!',
+  e25_doch: 'Doch! Ich habe es gesehen.',
+  i25_na_gut: 'Na gut. Ich gehe zurück.',
+  b25_hab: 'Angeschlagen! Hihi!',
+  n25_ende: 'Super gespielt! Emily hat fest gesagt, was sie gesehen hat.',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script>
+/* Уровень 25: сад садика, игра «Ochs am Berg». 1) Эмили говорит считалку «Ene, mene, muh, und raus bist du!» — палец бегает по детям, водит Пауль.
+   2) Пауль у дерева: пока он говорит «Eins, zwei, drei – Ochs am Berg!», нажимаем на Эмили — шаг (Эмили считает шаги); обернулся — не нажимать,
+   иначе «Zurück zum Start!». Во втором круге Эмили сама качнулась — честно: «Stimmt. Entschuldigung.» Дошла — «Angeschlagen! Jetzt bin ich dran!».
+   3) Эмили водит: говорит спруч, оборачивается; Изабель шевельнулась — находим её, «Isabel, du hast dich bewegt!», «Gar nicht!» → шаг 2 громче «Doch! Ich habe es gesehen.». */
+const LEVEL = 25, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><rect x="62" y="40" width="14" height="52" fill="#8a5a1e"/><circle cx="69" cy="30" r="26" fill="#e0763a"/><circle cx="56" cy="22" r="13" fill="#e3a33a"/><circle cx="82" cy="20" r="12" fill="#e3a33a"/><g fill="#ff7a59" stroke="#d65a3b" stroke-width="2"><circle cx="18" cy="74" r="8"/><circle cx="34" cy="64" r="8"/></g><text x="10" y="38" font-family="Trebuchet MS,sans-serif" font-weight="800" font-size="24" fill="#2f80ed">1 2 3</text></svg>';
+const TREE_X = 0.9, START = 0.1, STEP = 0.11;
+function drawScene(g, W, H, L){
+  const fy = L.floorY, hE = L.hE, hz = H*0.55;
+  let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#9fd4f5'); gr.addColorStop(1, '#e6f4fb'); g.fillStyle = gr; g.fillRect(0, 0, W, hz);
+  g.fillStyle = 'rgba(255,255,255,.9)'; for (const [cx, cy, r] of [[0.2, 0.12, 0.08], [0.6, 0.1, 0.06]]){ g.beginPath(); g.ellipse(W*cx, H*cy, hE*r*2, hE*r, 0, 0, 7); g.fill(); }
+  /* забор садика */
+  g.fillStyle = '#e8c9a0'; for (let x = 0; x < W; x += hE*0.13){ g.beginPath(); g.moveTo(x, hz); g.lineTo(x, hz - hE*0.32); g.lineTo(x + hE*0.05, hz - hE*0.38); g.lineTo(x + hE*0.1, hz - hE*0.32); g.lineTo(x + hE*0.1, hz); g.fill(); }
+  g.fillRect(0, hz - hE*0.26, W, hE*0.04); g.fillRect(0, hz - hE*0.1, W, hE*0.04);
+  gr = g.createLinearGradient(0, hz, 0, H); gr.addColorStop(0, '#a6d878'); gr.addColorStop(1, '#86c25e'); g.fillStyle = gr; g.fillRect(0, hz, W, H - hz);
+  /* большое осеннее дерево — «Berg» */
+  const tx = W*TREE_X; g.fillStyle = '#7a4e22'; g.fillRect(tx - hE*0.07, fy - hE*1.2, hE*0.14, hE*1.22);
+  for (const [dx, dy, r, c] of [[0, -1.45, 0.42, '#e0763a'], [-0.32, -1.25, 0.28, '#e3a33a'], [0.3, -1.3, 0.3, '#c9584a'], [0.05, -1.75, 0.26, '#e3a33a']]){ g.fillStyle = c; g.beginPath(); g.arc(tx + dx*hE, fy + dy*hE, r*hE, 0, 7); g.fill(); }
+  /* линия старта мелом и листья на траве */
+  g.strokeStyle = '#fff'; g.lineWidth = hE*0.03; g.setLineDash([hE*0.06, hE*0.04]); g.beginPath(); g.moveTo(W*START - hE*0.25, fy + hE*0.06); g.lineTo(W*START + hE*0.25, fy + hE*0.06); g.stroke(); g.setLineDash([]);
+  for (let i = 0; i < 16; i++){ const x = (i*61.7 % 100)/100*W, y = fy + hE*(0.03 + (i % 4)*0.04); g.fillStyle = ['#e0763a', '#e3a33a', '#b5452f'][i % 3]; g.beginPath(); g.ellipse(x, y, hE*0.03, hE*0.014, i, 0, 7); g.fill(); }
+}
+
+let emily, abiha, isabel, paul;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'jump', 'surprised', 'laugh', 'walk'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'walk', 'jump', 'laugh', 'run'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  paul = T.hero('paul', {x: 0.62, h: 0.97, poses: KP});
+  isabel = T.hero('isabel', {x: 0.48, h: 0.95, poses: KP});
+  abiha = T.hero('abiha', {x: 0.34, outfit: 'out', poses: AP});
+  emily = T.hero('emily', {x: 0.18, outfit: 'out', poses: EP});
+}
+const laughAll = async () => { emily.set('laugh'); abiha.set('laugh'); isabel.set('jump'); paul.set('jump'); await Promise.all([play('k_laugh'), play('i_hihi'), play('p_hihi')]); [emily, abiha, isabel, paul].forEach(h => h.set('idle')); };
+/* пока mode === 'go', нажатие на Эмили — шаг; 'look' — водящий смотрит, нажатие = попалась */
+let mode = '', steps = 0, caught = false, tapped = 0;
+const tapOrig = T.onTap;
+T.onTap = el => { if (mode && emily && el === emily.el){ stepTap(); return true; } return tapOrig(el); };
+async function stepTap(){
+  if (mode === 'look'){ caught = true; return; }
+  if (mode !== 'go' || emily.busy || steps >= 6) return;
+  emily.busy = true; tapped++; steps++; sfx.pop(); showNum(steps); play('e_' + steps);
+  await emily.walkTo(START + steps*STEP, 380); emily.busy = false;
+}
+const tapOn = on => { emily.el.classList.toggle('tap', on); emily.el.classList.toggle('tapme', on); };
+
+async function story(){
+  /* считалка: кто водит */
+  await play('n25_intro');
+  abiha.set('wave'); await abiha.say('b25_wer'); abiha.set('idle');
+  await play('n25_zaehlt');
+  await T.repeat('e25_ene');
+  for (let i = 0; i < 7; i++){ const k = [abiha, isabel, paul][i % 3]; k.el.classList.add('glow'); sfx.tone(660 + (i % 3)*110, 660 + (i % 3)*110, 160, 'triangle', .14); await sleep(420); k.el.classList.remove('glow'); }
+  paul.el.classList.add('glow'); paul.set('jump'); paul.hop(); await play('n25_paul'); paul.el.classList.remove('glow'); paul.set('idle');
+
+  /* Пауль водит: идёт к дереву, остальные — на старт */
+  await Promise.all([paul.walkTo(TREE_X - 0.06, 1100), emily.walkTo(START, 700), abiha.walkTo(START + 0.06, 700), isabel.walkTo(START - 0.05, 700)]);
+  abiha.el.style.opacity = isabel.el.style.opacity = 0.0; abiha.el.hidden = isabel.el.hidden = true;   /* играет Эмили одна против Пауля */
+  await play('n25_tipp_schritt');
+  steps = 0; let round = 0, wobbled = false;
+  while (steps < 6){
+    round++; tapped = 0; caught = false;
+    paul.face(false); paul.set('talk'); mode = 'go'; tapOn(true);
+    await paul.say('p25_ochs'); await sleep(400); paul.set('idle');
+    mode = 'look'; tapOn(false); paul.face(true); sfx.whoosh(); await sleep(250);
+    if (round === 2 && !wobbled){
+      /* Эмили сама качнулась — честно признаёт */
+      wobbled = true; mode = '';
+      emily.el.classList.add('wobble'); await play('n25_wackel'); emily.el.classList.remove('wobble');
+      paul.set('talk'); await paul.say('p25_bewegt'); paul.set('idle');
+      await T.repeat('e25_stimmt');
+      steps = 0; hideNum(); await emily.walkTo(START, 800); await T.bone(emily);
+      continue;
+    }
+    await sleep(2000);
+    if (caught){ mode = ''; paul.set('talk'); await paul.say('p25_gesehen'); paul.set('idle'); steps = 0; hideNum(); await emily.walkTo(START, 700); }
+    mode = '';
+    if (!tapped){ await play(round % 3 === 0 ? 'r25_tipp_schritt' : 'n25_tipp_schritt'); }
+    if (round >= 8) while (steps < 6){ steps++; showNum(steps); await emily.walkTo(START + steps*STEP, 300); }   /* мягко: не застреваем */
+  }
+  mode = ''; tapOn(false); hideNum();
+  emily.set('jump'); await emily.walkTo(TREE_X - 0.15, 400); paul.face(true); sfx.ding();
+  await T.repeat('e25_angeschlagen');
+  await laughAll(); await T.bone(paul);
+
+  /* Эмили водит */
+  abiha.el.hidden = isabel.el.hidden = false; abiha.el.style.opacity = isabel.el.style.opacity = '';
+  await T.go('emily', () => { emily.x = TREE_X - 0.06; paul.x = START; abiha.x = START + 0.12; isabel.x = START + 0.24; paul.face(false); });
+  await play('n25_jetzt_du');
+  const kids = [paul, abiha, isabel];
+  for (let r = 1; r <= 3; r++){
+    emily.face(false);
+    const sneak = kids.map(h => (async () => { await sleep(300 + Math.random()*400); h.set('jump'); await h.walkTo(h.x + 0.1, 900); h.set('idle'); })());
+    await T.repeat('e25_ochs'); await Promise.all(sneak);
+    emily.face(true); sfx.whoosh(); await sleep(600);
+    if (r === 1){ await sleep(1200); await play('n25_keiner'); continue; }
+    if (r === 2){
+      isabel.el.classList.add('wobble'); await play('n25_wer');
+      while (true){
+        const el = await T.tap(kids, 'n25_wer', 'r25_wer');
+        if (el === isabel.el) break;
+        sfx.bonk(); await play('n25_nein');
+      }
+      isabel.el.classList.remove('wobble'); sfx.ding();
+      await T.repeat('e25_isabel');
+      isabel.set('talk'); await isabel.say('i25_gar_nicht'); isabel.set('idle'); isabel.hop();
+      await play('n24_fester');
+      await T.firm('e25_doch', {who: isabel, step: 2, dir: -1});
+      isabel.set('talk'); await isabel.say('i25_na_gut'); isabel.set('idle');
+      await isabel.walkTo(START, 900);
+      await T.bone(emily);
+      continue;
+    }
+    /* Абиха добежала и «осалила» Эмили */
+    abiha.set('run'); await abiha.walkTo(TREE_X - 0.15, 600); abiha.set('laugh'); sfx.ding();
+    await abiha.say('b25_hab'); await laughAll();
+  }
+  await T.bone(abiha);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n25_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.paul_jump[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
