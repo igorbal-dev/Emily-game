@@ -203,7 +203,13 @@ const CHUNKS = (() => {
     e33_hinten: ['Nein!', 'Du hast verloren.', 'Stell dich hinten an.'],
     e33_stopp: ['Stopp, Isabel!', 'Das ist nicht fair!'],
     e33_stimmt: ['Stimmt.', 'Jetzt bist du dran.'],
-    e33_klar: ['Klar!', 'Du bist nach Isabel dran.']
+    e33_klar: ['Klar!', 'Du bist nach Isabel dran.'],
+    /* 34 «Mama, Papa, Kind» */
+    e34_baby: ['Bitte!', 'Ich kann …', 'das Baby sein.'],
+    e34_nicht_nett: ['Das ist nicht nett.', 'Ich will auch mitspielen!'],
+    e34_heike: ['Heike, …', 'Isabel sagt, …', 'ich darf nicht mitspielen.'],
+    e34_danke: ['Danke!', 'Was kochen wir?'],
+    e34_oma: ['Ja, klar!', 'Du kannst …', 'die Oma sein!']
   });
   return C;
 })();

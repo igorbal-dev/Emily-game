@@ -163,3 +163,19 @@
 **Лестница:** до шага 3 (без взрослого). **Счёт:** 1–8.
 **Кусочки:** «Nein! | Du hast verloren. | Stell dich hinten an.» («an» не отрываем), «Stopp, Isabel! | Das ist nicht fair!» («nicht» вместе), «Stimmt. | Jetzt bist du dran.», «Schnick, Schnack, Schnuck!» — целиком.
 
+## Уровень 34 «Mama, Papa, Kind» — готов
+
+**Где:** кукольный уголок в садике (игрушечная плита, стол, кукла).
+**Что происходит:**
+1. Изабель и Пауль играют в «маму, папу и ребёнка». Эмили: «Darf ich mitspielen?» — **«Nein! Du darfst nicht mitspielen!»**
+2. Лестница:
+   - Шаг 1: «Bitte! Ich kann das Baby sein.» — «Nein! Wir haben schon ein Baby. Die Puppe!»
+   - Шаг 2 (громче): «Das ist nicht nett. Ich will auch mitspielen!» — «Trotzdem nein!»
+   - Что делать? Картинки: уронить куклу (нет), плакать (нет), позвать Хайке.
+   - Шаг 4: «Heike, Isabel sagt, ich darf nicht mitspielen.» — Хайке: «Bei uns dürfen alle mitspielen. Emily kann die große Schwester sein.»
+3. Играем: «Danke! Was kochen wir?» — суп. Накрываем стол: считаем 4 тарелки (мама, папа, сестра, малыш), «Guten Appetit!»
+4. **Теперь Эмили на месте Изабель:** Абиха просится «Darf ich auch mitspielen?» — Эмили сама говорит «Ja, klar! Du kannst die Oma sein!». Ещё тарелка — сколько теперь (5). Изабель: «Entschuldigung, Emily. Mit dir ist es viel lustiger.» — «Schon gut. Wieder Freunde?»
+
+**Лестница:** шаги 1, 2 и 4 (взрослый). **Счёт:** 4, потом 5 тарелок.
+**Кусочки:** «Heike, … | Isabel sagt, … | ich darf nicht mitspielen.» («nicht» вместе с «mitspielen»), «Das ist nicht nett. | Ich will auch mitspielen!», «Darf ich mitspielen?» и «Guten Appetit!» — целиком.
+
