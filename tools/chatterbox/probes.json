@@ -717,6 +717,256 @@
    ],
    "voice": "narr",
    "text": "Schön! Wie Sankt Martin hat Emily geteilt und geholfen."
+  },
+  {
+   "id": "n25_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Im Garten der Kita spielen die Kinder Ochs am Berg."
+  },
+  {
+   "id": "b25_wer",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Wer fängt an?"
+  },
+  {
+   "id": "n25_zaehlt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily zählt aus. Sag den Abzählreim!"
+  },
+  {
+   "id": "e25_ene",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ene, mene, muh, und raus bist du!"
+  },
+  {
+   "id": "n25_paul",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Paul fängt an! Er ist der Ochs am Berg."
+  },
+  {
+   "id": "p25_ochs",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Eins, zwei, drei – Ochs am Berg!"
+  },
+  {
+   "id": "n25_tipp_schritt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wenn Paul zählt, tipp auf Emily! Dann macht sie einen Schritt."
+  },
+  {
+   "id": "r25_tipp_schritt",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Пока Пауль считает — нажимай на Эмили, она шагает. Когда он обернулся — не нажимай!"
+  },
+  {
+   "id": "p25_gesehen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Emily, ich habe dich gesehen! Zurück zum Start!"
+  },
+  {
+   "id": "n25_wackel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh! Emily hat gewackelt."
+  },
+  {
+   "id": "p25_bewegt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Emily, du hast dich bewegt! Zurück zum Start!"
+  },
+  {
+   "id": "e25_stimmt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Stimmt. Entschuldigung."
+  },
+  {
+   "id": "e25_angeschlagen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Angeschlagen! Jetzt bin ich dran!"
+  },
+  {
+   "id": "n25_jetzt_du",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt ist Emily der Ochs am Berg. Sag laut den Spruch!"
+  },
+  {
+   "id": "e25_ochs",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Eins, zwei, drei – Ochs am Berg!"
+  },
+  {
+   "id": "n25_keiner",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Keiner hat sich bewegt. Noch mal!"
+  },
+  {
+   "id": "n25_wer",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wer hat sich bewegt? Tipp auf das Kind!"
+  },
+  {
+   "id": "r25_wer",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Кто пошевелился? Нажми на него!"
+  },
+  {
+   "id": "n25_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Nein, schau genau!"
+  },
+  {
+   "id": "e25_isabel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Isabel, du hast dich bewegt! Zurück zum Start!"
+  },
+  {
+   "id": "i25_gar_nicht",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Gar nicht! Ich habe mich nicht bewegt!"
+  },
+  {
+   "id": "e25_doch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Doch! Ich habe es gesehen."
+  },
+  {
+   "id": "i25_na_gut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Na gut. Ich gehe zurück."
+  },
+  {
+   "id": "b25_hab",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Angeschlagen! Hihi!"
+  },
+  {
+   "id": "n25_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super gespielt! Emily hat fest gesagt, was sie gesehen hat."
   }
  ]
 }
