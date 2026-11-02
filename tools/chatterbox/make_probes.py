@@ -31,7 +31,7 @@ def seed_all(seed: int):
 
 def max_len(text: str) -> float:
     """Сколько секунд максимум может длиться фраза (с запасом): ~0.11 с на букву + 0.9 с."""
-    return 0.9 + 0.11*len(re.sub(r"[^\w]", "", text))*1.15
+    return 0.9 + 0.11*len(re.sub(r"[^\w]", "", text))*1.5
 
 
 def load_model(kind: str, device: str):
