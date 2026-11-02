@@ -242,7 +242,14 @@ const CHUNKS = (() => {
     e40_zehn: ['Ich fahre bis zehn.', 'Dann bist du dran.'],
     e40_dran: ['Zehn!', 'Jetzt bist du dran, …', 'Isabel.'],
     e40_abgemacht: ['Isabel, …', 'wir haben gesagt: …', 'bis zehn.', 'Jetzt bin ich wieder dran.'],
-    e40_nach: ['Klar!', 'Du fährst nach mir.', 'Auch bis zehn!']
+    e40_nach: ['Klar!', 'Du fährst nach mir.', 'Auch bis zehn!'],
+    /* 41 «Musikkreis» */
+    e41_trommel: ['Ich möchte …', 'die Trommel, bitte.'],
+    e41_rassel: ['Ich möchte …', 'die Rassel, bitte.'],
+    e41_glocke: ['Ich möchte …', 'die Glocke, bitte.'],
+    e41_laut: ['Paul, …', 'das ist zu laut.', 'Bitte leiser.'],
+    e41_ohren: ['Hör auf!', 'Das tut mir …', 'in den Ohren weh.'],
+    e41_leise: ['Jetzt alle …', 'ganz leise!']
   });
   return C;
 })();

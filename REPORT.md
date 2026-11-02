@@ -259,3 +259,15 @@
 **Кусочки:** «Lass los, Isabel! | Ich fahre noch.» («los» не отрываем), «Ich fahre bis zehn. | Dann bist du dran.», «Isabel, … | wir haben gesagt: … | bis zehn. | Jetzt bin ich wieder dran.»
 **Заглушка:** Изабель на беговеле — её обычная картинка и беговел, нарисованный кодом (в задании ChatGPT можно добавить «Изабель на беговеле»).
 
+## Уровень 41 «Musikkreis» — готов
+
+**Где:** музыкальный круг в группе; барабан, погремушка, колокольчик (звуки сделаны кодом).
+**Что происходит:**
+1. Хайке показывает инструменты, Эмили выбирает и просит: «Ich möchte die Trommel, bitte.» (или Rassel, Glocke).
+2. **Ритм:** Хайке стучит 3 раза — Эмили повторяет (нажимаем на инструмент 3 раза, считаем), потом 4 раза.
+3. **Своя граница:** Пауль барабанит прямо у уха Эмили. Шаг 1: «Paul, das ist zu laut. Bitte leiser.» — «Aber laut macht Spaß! Bumm, bumm!» — **шаг 2**: «Hör auf! Das tut mir in den Ohren weh.» — «Oh! Entschuldigung. Ich spiele leiser.»
+4. Эмили — дирижёр: сама выбирает картинку «громко» или «тихо» и говорит «Jetzt alle laut!» / «Jetzt alle ganz leise!» — дети играют громко или тихо.
+
+**Лестница:** шаг 2. **Счёт:** ритм 3 и 4. **Новое:** просить потише (неприятно — можно сказать).
+**Кусочки:** «Paul, … | das ist zu laut. | Bitte leiser.», «Hör auf! | Das tut mir … | in den Ohren weh.», «Jetzt alle … | ganz leise!»
+

@@ -1,0 +1,145 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Musikkreis. Уровень 41</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 41 «Musikkreis» — музыкальный круг: инструменты (Trommel, Rassel, Glocke), повторяем ритм (3 и 4 удара), Пауль барабанит прямо у уха — «Paul, das ist zu laut. Bitte leiser.» → шаг 2 «Hör auf! Das tut mir in den Ohren weh.»; Эмили дирижирует «laut — leise». План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle": ["assets/img/c64929b2d467.webp", 208, 407], "emily_blink": ["assets/img/bb16d273f7a0.webp", 208, 407], "emily_mouth1": ["assets/img/b6fea28bbe9b.webp", 208, 407], "emily_mouth2": ["assets/img/159e6b3f3df4.webp", 208, 407], "emily_talk": ["assets/img/d36ef0e49481.webp", 270, 413], "emily_wave": ["assets/img/1fdaea62d38d.webp", 252, 394], "emily_jump": ["assets/img/7b1a90a6eb6d.webp", 279, 346], "emily_surprised": ["assets/img/080d300a6733.webp", 208, 407], "abiha_idle": ["assets/img/fa848f76752c.webp", 252, 361], "abiha_blink": ["assets/img/80c0b58f8e9f.webp", 252, 361], "abiha_mouth1": ["assets/img/d3289978defd.webp", 252, 361], "abiha_mouth2": ["assets/img/3569203761d0.webp", 252, 361], "abiha_wave": ["assets/img/3d7524d2c8fa.webp", 252, 361], "abiha_peace": ["assets/img/540be744bd81.webp", 252, 361], "abiha_jump": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_laugh": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_sit": ["assets/img/cb1193d78e14.webp", 252, 361], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised} abiha_{idle,blink,mouth1,mouth2,wave,peace,jump,laugh,sit} isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "n24_fester": "assets/snd/62af96e91cb6.mp3", "n_lauter": "assets/snd/514e958e006e.mp3", "r_lauter": "assets/snd/2e0c8abce899.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..4} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n41_intro: 'Musikkreis in der Kita! Heike hat Instrumente mitgebracht.',
+  s41_was: 'Das ist eine Trommel, das ist eine Rassel und das ist eine Glocke. Emily, was möchtest du?',
+  n41_tipp: 'Tipp auf ein Instrument!',
+  r41_tipp: 'Нажми на инструмент!',
+  e41_trommel: 'Ich möchte die Trommel, bitte.',
+  e41_rassel: 'Ich möchte die Rassel, bitte.',
+  e41_glocke: 'Ich möchte die Glocke, bitte.',
+  s41_hoer: 'Hör gut zu! Ich spiele vor, du spielst nach.',
+  n41_nach: 'Jetzt du! Tipp genauso oft!',
+  r41_nach: 'Теперь ты! Нажми столько же раз!',
+  n41_drei: 'Drei Mal! Super!',
+  n41_vier: 'Vier Mal! Toll!',
+  n41_falsch: 'Hör noch mal gut zu!',
+  n41_paul: 'Oh! Paul trommelt ganz laut, direkt neben Emilys Ohr!',
+  e41_laut: 'Paul, das ist zu laut. Bitte leiser.',
+  p41_spass: 'Aber laut macht Spaß! Bumm, bumm, bumm!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e41_ohren: 'Hör auf! Das tut mir in den Ohren weh.',
+  p41_oh: 'Oh! Entschuldigung. Ich spiele leiser.',
+  s41_dirigent: 'Emily, jetzt bist du die Dirigentin! Sag: laut oder leise.',
+  n41_wahl: 'Was sagt Emily? Laut oder leise? Tipp auf ein Bild!',
+  r41_wahl: 'Громко или тихо? Нажми на картинку!',
+  n41_opt_laut: 'Laut!',
+  n41_opt_leise: 'Leise!',
+  e41_laut2: 'Jetzt alle laut!',
+  e41_leise: 'Jetzt alle ganz leise!',
+  n41_ende: 'Super! Emily hat gesagt: Das ist zu laut! Und sie war eine tolle Dirigentin.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 41: музыкальный круг. Инструменты: барабан, погремушка, колокольчик — Эмили выбирает и просит «Ich möchte die Trommel, bitte.».
+   Ритм: Хайке стучит 3 раза — нажимаем на свой инструмент 3 раза (счёт), потом 4. Пауль барабанит прямо у уха: шаг 1 «Paul, das ist zu laut. Bitte leiser.»,
+   шаг 2 «Hör auf! Das tut mir in den Ohren weh.» — извиняется. Эмили — дирижёр: выбирает «laut / leise» и говорит «Jetzt alle laut!» / «Jetzt alle ganz leise!». */
+const LEVEL = 41, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><ellipse cx="50" cy="38" rx="34" ry="12" fill="#ffd34d" stroke="#d6a21e" stroke-width="4"/><path d="M16 38 V70 Q50 86 84 70 V38" fill="#ff5a4a" stroke="#c43a2e" stroke-width="4"/><path d="M24 44 L40 72 M76 44 L60 72" stroke="#ffd34d" stroke-width="4"/><path d="M60 8 L44 30 M74 12 L58 30" stroke="#8a5a1e" stroke-width="5" stroke-linecap="round"/></svg>';
+const RUG = 0.5;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG); }
+const INST = {
+  trommel: {svg: '<svg viewBox="0 0 100 90"><ellipse cx="50" cy="24" rx="40" ry="14" fill="#fff3d6" stroke="#d6a21e" stroke-width="4"/><path d="M10 24 V66 Q50 86 90 66 V24" fill="#ff5a4a" stroke="#c43a2e" stroke-width="4"/><path d="M18 30 L38 74 M82 30 L62 74 M50 38 V80" stroke="#ffd34d" stroke-width="4"/></svg>', snd: () => { sfx.tone(110, 60, 220, 'sine', .4); sfx.noise(120, 200, .3); }},
+  rassel: {svg: '<svg viewBox="0 0 100 90"><ellipse cx="44" cy="34" rx="26" ry="24" fill="#9b6bff" stroke="#6b3fc4" stroke-width="4"/><path d="M60 52 L86 84" stroke="#8a5a1e" stroke-width="9" stroke-linecap="round"/><circle cx="36" cy="28" r="4" fill="#fff"/><circle cx="50" cy="38" r="4" fill="#fff"/><circle cx="40" cy="44" r="4" fill="#fff"/></svg>', snd: () => sfx.noise(160, 5000, .35)},
+  glocke: {svg: '<svg viewBox="0 0 100 90"><path d="M50 8 Q24 12 22 52 L14 66 H86 L78 52 Q76 12 50 8 Z" fill="#ffd34d" stroke="#d6a21e" stroke-width="4" stroke-linejoin="round"/><circle cx="50" cy="74" r="8" fill="#d6a21e"/><path d="M50 8 V0" stroke="#d6a21e" stroke-width="5"/></svg>', snd: () => sfx.tone(1320, 1300, 500, 'sine', .2)}
+};
+const LOUD = '<svg viewBox="0 0 100 100"><path d="M14 38 H34 L58 18 V82 L34 62 H14 Z" fill="#ff7a59" stroke="#d65a3b" stroke-width="4" stroke-linejoin="round"/><path d="M68 34 Q80 50 68 66 M76 24 Q96 50 76 76" fill="none" stroke="#ff7a59" stroke-width="6" stroke-linecap="round"/></svg>';
+const SOFT = '<svg viewBox="0 0 100 100"><path d="M14 38 H34 L58 18 V82 L34 62 H14 Z" fill="#8fd3ff" stroke="#2f80ed" stroke-width="4" stroke-linejoin="round"/><path d="M68 42 Q74 50 68 58" fill="none" stroke="#2f80ed" stroke-width="5" stroke-linecap="round"/></svg>';
+let emily, abiha, isabel, paul, heike, inst = {}, mine, pdrum;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'jump', 'laugh', 'sit'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; inst = {};
+  heike = T.hero('sommer', {x: 0.08, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  emily = T.hero('emily', {x: 0.26, poses: EP});
+  abiha = T.hero('abiha', {x: 0.62, poses: AP}); abiha.face(true);
+  isabel = T.hero('isabel', {x: 0.76, h: 0.95, poses: KP}); isabel.face(true);
+  paul = T.hero('paul', {x: 0.9, h: 0.97, poses: KP}); paul.face(true);
+  Object.keys(INST).forEach((k, i) => { inst[k] = T.prop(INST[k].svg, {x: 0.38 + i*0.1, py: () => L.floorY + L.hE*0.02, w: 0.24, ratio: 0.9, z: 50}); });
+  pdrum = T.prop(INST.trommel.svg, {px: () => L.W*paul.x - L.hE*0.1, py: () => L.floorY - L.hE*0.25, w: 0.2, ratio: 0.9, z: 55}); pdrum.el.hidden = true;
+}
+const beat = async (k, el) => { INST[k].snd(); (el || inst[k].el).animate([{transform: 'none'}, {transform: 'scale(1.15) rotate(-6deg)'}, {transform: 'none'}], {duration: 220}); await sleep(450); };
+/* Хайке играет n ударов, потом Эмили нажимает столько же раз (лишнее — «hör noch mal») */
+async function rhythm(n){
+  await sleep(300); for (let i = 0; i < n; i++){ heike.set('wave'); await beat('trommel', heike.el); heike.set('idle'); }
+  await play('n41_nach');
+  for (let i = 1; i <= n; i++){ await T.tap([inst[mine]], 'n41_nach', 'r41_nach'); await beat(mine); showNum(i); play('e_' + i); }
+  await sleep(600); hideNum();
+}
+
+async function story(){
+  await play('n41_intro');
+  heike.set('talk'); await heike.say('s41_was'); heike.set('idle');
+  await play('n41_tipp');
+  const el = await T.tap(Object.values(inst), 'n41_tipp', 'r41_tipp'); mine = Object.keys(inst).find(k => inst[k].el === el);
+  await beat(mine); await T.repeat('e41_' + mine);
+  inst[mine].o.x = 0.36; inst[mine].place();
+  Object.keys(inst).filter(k => k !== mine).forEach(k => inst[k].el.hidden = true);
+  await T.bone(emily);
+  heike.set('talk'); await heike.say('s41_hoer'); heike.set('idle');
+  await rhythm(3); await play('n41_drei');
+  await rhythm(4); await play('n41_vier');
+  await T.bone(inst[mine]);
+
+  /* Пауль барабанит у уха */
+  pdrum.el.hidden = false; await paul.walkTo(0.42, 900); pdrum.place(); paul.face(true);
+  await play('n41_paul');
+  for (let i = 0; i < 4; i++){ await beat('trommel', pdrum.el); }
+  emily.set('surprised');
+  await T.repeat('e41_laut');
+  paul.set('jump'); await paul.say('p41_spass'); for (let i = 0; i < 3; i++) await beat('trommel', pdrum.el); paul.set('idle');
+  await play('n24_fester');
+  await T.firm('e41_ohren', {who: paul, step: 2}); pdrum.place();
+  paul.set('talk'); await paul.say('p41_oh'); paul.set('idle');
+  await paul.walkTo(0.9, 800); pdrum.place(); paul.face(true);
+  await T.bone(emily);
+
+  /* Эмили — дирижёр */
+  heike.set('talk'); await heike.say('s41_dirigent'); heike.set('idle');
+  const done = new Set();
+  while (done.size < 2){
+    const i = await T.choose([{parts: [{svg: LOUD, x: 50, y: 12, w: 60, hh: 72}], clip: 'n41_opt_laut', bg: '#fff1c9', ground: '#fff1c9'}, {parts: [{svg: SOFT, x: 50, y: 12, w: 60, hh: 72}], clip: 'n41_opt_leise', bg: '#fff1c9', ground: '#fff1c9'}], 'n41_wahl', 'r41_wahl');
+    done.add(i); emily.set('wave');
+    await T.repeat(i === 0 ? 'e41_laut2' : 'e41_leise'); emily.set('idle');
+    for (let k = 0; k < 4; k++){ [abiha, isabel, paul].forEach(h => h.hop()); if (i === 0){ sfx.tone(110, 60, 220, 'sine', .45); sfx.noise(160, 5000, .4); } else { sfx.tone(1320, 1300, 300, 'sine', .05); } await sleep(380); }
+  }
+  T.hearts(emily); await T.bone(heike);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n41_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.abiha_peace[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
