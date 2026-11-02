@@ -5417,6 +5417,216 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat gesagt: Das ist zu laut! Und sie war eine tolle Dirigentin."
+  },
+  {
+   "id": "n42_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "In der Kita machen Emily und Paul ein Puzzle mit neun Teilen."
+  },
+  {
+   "id": "p42_allein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ich mache alles alleine! Das ist mein Puzzle!"
+  },
+  {
+   "id": "e42_zusammen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, wir machen es zusammen. Abwechselnd!"
+  },
+  {
+   "id": "p42_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Nein! Ich will alleine!"
+  },
+  {
+   "id": "e42_auch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein, Paul! Das Puzzle ist für uns beide. Ein Teil du, ein Teil ich."
+  },
+  {
+   "id": "p42_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Okay. Abwechselnd. Du fängst an!"
+  },
+  {
+   "id": "n42_tipp",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Du bist dran! Tipp auf ein Puzzleteil!"
+  },
+  {
+   "id": "r42_tipp",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Твоя очередь! Нажми на кусочек пазла!"
+  },
+  {
+   "id": "e42_du",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Jetzt du, Paul!"
+  },
+  {
+   "id": "n42_fehlt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh! Ein Teil fehlt! Wo ist es?"
+  },
+  {
+   "id": "i42_tisch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Vielleicht ist es unter dem Tisch?"
+  },
+  {
+   "id": "n42_such",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Tipp auf die Stelle, wo das Teil ist!"
+  },
+  {
+   "id": "r42_such",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Где кусочек? Нажми туда!"
+  },
+  {
+   "id": "n42_nicht",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Da ist es nicht. Such weiter!"
+  },
+  {
+   "id": "e42_gefunden",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich habe es gefunden! Es war unter dem Tisch."
+  },
+  {
+   "id": "p42_letzte",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ich will das letzte Teil legen!"
+  },
+  {
+   "id": "e42_beide",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Wir legen das letzte Teil zusammen!"
+  },
+  {
+   "id": "p42_toll",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Zusammen! Juhu! Das ist ein Hund!"
+  },
+  {
+   "id": "n42_zaehl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Teile hat das Puzzle? Zähl mit!"
+  },
+  {
+   "id": "n42_neun",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Neun Teile! Fertig!"
+  },
+  {
+   "id": "n42_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat gesagt: Wir machen es zusammen. Und zusammen hat es geklappt!"
   }
  ]
 }
