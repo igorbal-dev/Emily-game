@@ -2907,6 +2907,266 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat gemerkt, dass Paul geschummelt hat. Und sie hat es laut gesagt."
+  },
+  {
+   "id": "n33_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Auf dem Hof ist Himmel und Hölle gemalt. Emily und Isabel wollen hüpfen."
+  },
+  {
+   "id": "b33_wer",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Wer fängt an? Macht Schnick Schnack Schnuck!"
+  },
+  {
+   "id": "e33_schnick",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Schnick, Schnack, Schnuck!"
+  },
+  {
+   "id": "n33_hand",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Was nimmt Emily? Tipp auf eine Hand!"
+  },
+  {
+   "id": "r33_hand",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Что покажет Эмили? Нажми на руку!"
+  },
+  {
+   "id": "n33_schere",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Schere."
+  },
+  {
+   "id": "n33_stein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Stein."
+  },
+  {
+   "id": "n33_papier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Papier."
+  },
+  {
+   "id": "n33_gewinnt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Emily gewinnt! Emily fängt an."
+  },
+  {
+   "id": "i33_zuerst",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Ich fange an! Ich bin schneller!"
+  },
+  {
+   "id": "e33_ich_dran",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Isabel, ich bin dran. Ich habe gewonnen."
+  },
+  {
+   "id": "i33_egal",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Egal! Ich fange an!"
+  },
+  {
+   "id": "e33_hinten",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein! Du hast verloren. Stell dich hinten an."
+  },
+  {
+   "id": "i33_will",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Aber ich will zuerst!"
+  },
+  {
+   "id": "e33_stopp",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Stopp, Isabel! Das ist nicht fair!"
+  },
+  {
+   "id": "i33_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Okay … Entschuldigung. Du bist dran."
+  },
+  {
+   "id": "n33_hupf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt hüpft Emily! Tipp auf die Kästchen, eins nach dem anderen!"
+  },
+  {
+   "id": "r33_hupf",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажимай на клеточки по порядку — Эмили прыгает!"
+  },
+  {
+   "id": "n33_linie",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh! Emily ist auf die Linie getreten."
+  },
+  {
+   "id": "i33_linie",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Du bist auf die Linie getreten!"
+  },
+  {
+   "id": "e33_stimmt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Stimmt. Jetzt bist du dran."
+  },
+  {
+   "id": "n33_zaehl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt hüpft Isabel. Zähl mit!"
+  },
+  {
+   "id": "i33_danke",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Danke, Emily! Du spielst fair."
+  },
+  {
+   "id": "b33_mit",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Darf ich auch mitspielen?"
+  },
+  {
+   "id": "e33_klar",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Klar! Du bist nach Isabel dran."
+  },
+  {
+   "id": "n33_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat gesagt: Das ist nicht fair! Und sie hat selbst fair gespielt."
   }
  ]
 }
