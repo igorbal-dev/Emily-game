@@ -1347,6 +1347,256 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat erst freundlich gefragt, dann fest Stopp gesagt und dann Hilfe geholt."
+  },
+  {
+   "id": "n27_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Im Bewegungsraum der Kita. Heute spielen alle Stopptanz!"
+  },
+  {
+   "id": "s27_regel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Wenn die Musik spielt, tanzt ihr. Wenn die Musik aufhört, bleibt ihr ganz still stehen!"
+  },
+  {
+   "id": "s27_dj",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Emily, du machst die Musik! Tipp auf den Knopf."
+  },
+  {
+   "id": "r27_knopf",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Нажми на кнопку с музыкой!"
+  },
+  {
+   "id": "n27_stopp_knopf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt tipp noch mal auf den Knopf! Dann hört die Musik auf."
+  },
+  {
+   "id": "e27_raus",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, du hast dich bewegt! Du bist raus."
+  },
+  {
+   "id": "p27_gilt_nicht",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Das gilt nicht! Die Musik war noch an!"
+  },
+  {
+   "id": "e27_regel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Doch! Die Musik war aus. Das ist die Regel."
+  },
+  {
+   "id": "p27_na_gut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Na gut. Ich setze mich auf die Bank."
+  },
+  {
+   "id": "n27_wie_viele",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Kinder tanzen noch?"
+  },
+  {
+   "id": "r27_wie_viele",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Сколько детей ещё танцуют?"
+  },
+  {
+   "id": "n27_drei",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Drei Kinder tanzen noch!"
+  },
+  {
+   "id": "n27_zwei",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Zwei Kinder tanzen noch!"
+  },
+  {
+   "id": "s27_tauschen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Paul, jetzt machst du die Musik. Und Emily tanzt mit!"
+  },
+  {
+   "id": "i27_entschuldigung",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Oh! Entschuldigung, Emily!"
+  },
+  {
+   "id": "n27_annehmen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Isabel hat sich entschuldigt. Was sagt Emily?"
+  },
+  {
+   "id": "e27_schon_gut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Schon gut!"
+  },
+  {
+   "id": "b27_aua",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Aua! Mein Fuß!"
+  },
+  {
+   "id": "n27_fuss",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Oh! Emily ist Abiha auf den Fuß getreten."
+  },
+  {
+   "id": "e27_tut_weh",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Entschuldigung, Abiha! Tut es weh?"
+  },
+  {
+   "id": "b27_schon_gut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Nein, schon gut. Weiter tanzen!"
+  },
+  {
+   "id": "p27_abiha",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Abiha, du hast gewackelt! Du bist raus!"
+  },
+  {
+   "id": "b27_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Okay! Hihi!"
+  },
+  {
+   "id": "s27_gewonnen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Super! Emily und Isabel haben gewonnen!"
+  },
+  {
+   "id": "n27_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Toll! Emily hat die Regel erklärt und Entschuldigung gesagt."
   }
  ]
 }
