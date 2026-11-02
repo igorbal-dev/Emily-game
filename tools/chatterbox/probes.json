@@ -1837,6 +1837,236 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat erst freundlich, dann fest und dann ganz laut Stopp gesagt. Und dann haben alle zusammen gespielt."
+  },
+  {
+   "id": "n29_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Auf dem Hof der Kita. Emily und Abiha drehen das Springseil. Isabel springt!"
+  },
+  {
+   "id": "e29_teddy",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Teddybär, Teddybär, dreh dich um!"
+  },
+  {
+   "id": "n29_zaehl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Zähl mit, wie oft Isabel springt!"
+  },
+  {
+   "id": "i29_zwanzig",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Ich habe zwanzig geschafft!"
+  },
+  {
+   "id": "n29_wie_viele",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Sprünge waren es wirklich?"
+  },
+  {
+   "id": "r29_wie_viele",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Сколько раз Изабель прыгнула на самом деле?"
+  },
+  {
+   "id": "e29_stimmt_nicht",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein, das stimmt nicht. Es waren sieben."
+  },
+  {
+   "id": "i29_doch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Doch! Zwanzig!"
+  },
+  {
+   "id": "e29_gezaehlt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein! Ich habe mitgezählt. Es waren sieben."
+  },
+  {
+   "id": "i29_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Okay … sieben. Das ist auch gut."
+  },
+  {
+   "id": "e29_ich_auch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Jetzt möchte ich springen!"
+  },
+  {
+   "id": "i29_klein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Du bist zu klein! Du kannst das nicht!"
+  },
+  {
+   "id": "e29_kann",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Doch! Ich kann das!"
+  },
+  {
+   "id": "i29_hihi",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Hihi! Nein, kannst du nicht!"
+  },
+  {
+   "id": "e29_nicht_nett",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Hör auf! Das ist nicht nett. Ich will es probieren!"
+  },
+  {
+   "id": "i29_probier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Okay. Probier es!"
+  },
+  {
+   "id": "b29_schaffst",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Du schaffst das, Emily!"
+  },
+  {
+   "id": "n29_tipp_spring",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wenn das Seil unten ist, tipp auf Emily! Dann springt sie."
+  },
+  {
+   "id": "r29_tipp_spring",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Когда верёвка внизу — нажми на Эмили, и она прыгнет!"
+  },
+  {
+   "id": "n29_fuenf",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Fünf Sprünge! Super!"
+  },
+  {
+   "id": "i29_wow",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Wow! Du kannst das ja wirklich! Entschuldigung, Emily."
+  },
+  {
+   "id": "i29_freunde",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Ja! Wieder Freunde!"
+  },
+  {
+   "id": "n29_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat gesagt: Doch, ich kann das! Und sie hat es geschafft."
   }
  ]
 }
