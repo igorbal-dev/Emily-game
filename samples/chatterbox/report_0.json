@@ -1,6 +1,21 @@
 [
   {
-    "file": "n24_intro__A__narr.wav",
+    "file": "b21_ali__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ja! Ich habe mit Ali gespielt. Das hat viel Spaß gemacht!",
+    "audio_sec": 5.32,
+    "gen_sec": 142.1
+  },
+  {
+    "file": "n24_tipp_farbe__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -10,12 +25,12 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Heute ist Sankt Martin! Die Kinder basteln Laternen.",
-    "audio_sec": 4.24,
-    "gen_sec": 63.1
+    "text": "Tipp auf eine Laterne!",
+    "audio_sec": 3.08,
+    "gen_sec": 103.0
   },
   {
-    "file": "e24_rot__A__emily2.wav",
+    "file": "e24_gruen__A__emily2.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -25,24 +40,9 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Ich möchte die rote Laterne!",
+    "text": "Ich möchte die grüne Laterne!",
     "audio_sec": 2.04,
-    "gen_sec": 32.4
-  },
-  {
-    "file": "s24_bitte__A__heike.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "heike",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Bitte schön!",
-    "audio_sec": 1.72,
-    "gen_sec": 28.8
+    "gen_sec": 31.1
   },
   {
     "file": "p24_nein__A__paul.wav",
@@ -57,10 +57,10 @@
     },
     "text": "Nein! Die ist jetzt meine!",
     "audio_sec": 2.56,
-    "gen_sec": 36.5
+    "gen_sec": 35.0
   },
   {
-    "file": "n24_geklappt__A__narr.wav",
+    "file": "n_lauter__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -70,12 +70,12 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Super! Mit fester Stimme hat es geklappt!",
-    "audio_sec": 3.32,
-    "gen_sec": 43.2
+    "text": "Lauter! Sag es mit fester Stimme!",
+    "audio_sec": 2.84,
+    "gen_sec": 37.5
   },
   {
-    "file": "n24_opt_lachen__A__narr.wav",
+    "file": "n24_opt_zusammen__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -85,27 +85,27 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Emily lacht Paul aus.",
-    "audio_sec": 2.44,
-    "gen_sec": 35.6
+    "text": "Emily nimmt Paul mit.",
+    "audio_sec": 2.52,
+    "gen_sec": 34.4
   },
   {
-    "file": "s24_neue__A__heike.wav",
+    "file": "e24_freunde__A__emily2.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
-    "voice": "heike",
+    "voice": "emily2",
     "params": {
       "exaggeration": 0.6,
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Und hier ist eine neue Laterne für dich, Paul.",
-    "audio_sec": 3.0,
-    "gen_sec": 39.5
+    "text": "Schon gut. Wieder Freunde?",
+    "audio_sec": 5.2,
+    "gen_sec": 192.3
   },
   {
-    "file": "n24_draussen__A__narr.wav",
+    "file": "n24_fuenf__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -115,24 +115,9 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Es ist dunkel. Alle gehen mit ihren Laternen nach draußen.",
-    "audio_sec": 4.08,
-    "gen_sec": 49.3
-  },
-  {
-    "file": "s24_lied__A__heike.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "heike",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Wir gehen los und singen: Laterne, Laterne, Sonne, Mond und Sterne!",
-    "audio_sec": 4.96,
-    "gen_sec": 57.4
+    "text": "Fünf Laternen leuchten! Wie schön!",
+    "audio_sec": 2.48,
+    "gen_sec": 34.1
   },
   {
     "file": "r24_mond__A__narr_ru.wav",
@@ -146,11 +131,41 @@
       "temperature": 0.8
     },
     "text": "Где луна? Нажми на луну!",
-    "audio_sec": 3.8,
-    "gen_sec": 47.2
+    "audio_sec": 2.8,
+    "gen_sec": 123.1
   },
   {
-    "file": "n24_wie__A__narr.wav",
+    "file": "e24_teilen__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wir teilen! Jeder bekommt eine Hälfte.",
+    "audio_sec": 4.52,
+    "gen_sec": 49.6
+  },
+  {
+    "file": "i24_danke__A__isabel.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "isabel",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Danke, Emily!",
+    "audio_sec": 1.08,
+    "gen_sec": 23.2
+  },
+  {
+    "file": "n25_zaehlt__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -160,12 +175,12 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Was machen wir? Sankt Martin hat seinen Mantel geteilt.",
-    "audio_sec": 4.2,
-    "gen_sec": 50.0
+    "text": "Emily zählt aus. Sag den Abzählreim!",
+    "audio_sec": 3.52,
+    "gen_sec": 41.5
   },
   {
-    "file": "n24_haelften__A__narr.wav",
+    "file": "n25_tipp_schritt__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -175,12 +190,42 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Wie viele Hälften sind das? Zähl mit!",
-    "audio_sec": 4.08,
-    "gen_sec": 49.8
+    "text": "Wenn Paul zählt, tipp auf Emily! Dann macht sie einen Schritt.",
+    "audio_sec": 4.4,
+    "gen_sec": 48.9
   },
   {
-    "file": "n24_ende__A__narr.wav",
+    "file": "p25_bewegt__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Emily, du hast dich bewegt! Zurück zum Start!",
+    "audio_sec": 3.6,
+    "gen_sec": 42.9
+  },
+  {
+    "file": "e25_ochs__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Eins, zwei, drei – Ochs am Berg!",
+    "audio_sec": 3.64,
+    "gen_sec": 97.6
+  },
+  {
+    "file": "n25_nein__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -190,8 +235,263 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Schön! Wie Sankt Martin hat Emily geteilt und geholfen.",
-    "audio_sec": 4.72,
-    "gen_sec": 56.0
+    "text": "Nein, schau genau!",
+    "audio_sec": 2.44,
+    "gen_sec": 33.9
+  },
+  {
+    "file": "i25_na_gut__A__isabel.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "isabel",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Na gut. Ich gehe zurück.",
+    "audio_sec": 3.44,
+    "gen_sec": 130.1
+  },
+  {
+    "file": "n26_sonne__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Emily malt eine Sonne. Welche Farbe hat die Sonne? Tipp auf die Kreide!",
+    "audio_sec": 5.04,
+    "gen_sec": 54.3
+  },
+  {
+    "file": "n26_strahlen__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Tipp auf die Sonne! Sie bekommt fünf Strahlen.",
+    "audio_sec": 3.52,
+    "gen_sec": 42.7
+  },
+  {
+    "file": "e26_zurueck__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Paul, das ist meine Kreide. Gib sie mir bitte zurück.",
+    "audio_sec": 5.04,
+    "gen_sec": 54.4
+  },
+  {
+    "file": "n26_drauf__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Oh nein! Paul hüpft auf Emilys Bild!",
+    "audio_sec": 3.32,
+    "gen_sec": 41.3
+  },
+  {
+    "file": "n26_opt_schubsen__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Emily schubst Paul.",
+    "audio_sec": 1.6,
+    "gen_sec": 28.2
+  },
+  {
+    "file": "p26_entschuldigung__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Entschuldigung, Emily. Darf ich mitmalen?",
+    "audio_sec": 3.16,
+    "gen_sec": 39.9
+  },
+  {
+    "file": "n26_nimmt__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Emily nimmt einfach Isabels grüne Kreide.",
+    "audio_sec": 3.28,
+    "gen_sec": 40.6
+  },
+  {
+    "file": "n26_weg_nein__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Das ist nicht fair. Isabel ist traurig. Noch mal!",
+    "audio_sec": 3.48,
+    "gen_sec": 42.5
+  },
+  {
+    "file": "n26_sechs__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Sechs Blütenblätter!",
+    "audio_sec": 2.24,
+    "gen_sec": 32.3
+  },
+  {
+    "file": "n26_ende__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Super! Emily hat erst freundlich gefragt, dann fest Stopp gesagt und dann Hilfe geholt.",
+    "audio_sec": 5.52,
+    "gen_sec": 59.5
+  },
+  {
+    "file": "r27_knopf__A__narr_ru.wav",
+    "model": "mtl",
+    "lang": "ru",
+    "preset": "A",
+    "voice": "narr_ru",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Нажми на кнопку с музыкой!",
+    "audio_sec": 4.4,
+    "gen_sec": 155.4
+  },
+  {
+    "file": "e27_regel__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Doch! Die Musik war aus. Das ist die Regel.",
+    "audio_sec": 3.6,
+    "gen_sec": 43.6
+  },
+  {
+    "file": "n27_drei__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Drei Kinder tanzen noch!",
+    "audio_sec": 2.72,
+    "gen_sec": 37.2
+  },
+  {
+    "file": "n27_annehmen__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Isabel hat sich entschuldigt. Was sagt Emily?",
+    "audio_sec": 3.4,
+    "gen_sec": 42.7
+  },
+  {
+    "file": "e27_tut_weh__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Entschuldigung, Abiha! Tut es weh?",
+    "audio_sec": 3.24,
+    "gen_sec": 41.0
+  },
+  {
+    "file": "s27_gewonnen__A__heike.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "heike",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Super! Emily und Isabel haben gewonnen!",
+    "audio_sec": 3.36,
+    "gen_sec": 42.0
   }
 ]
