@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "file": "n24_tipp_farbe__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Tipp auf eine Laterne!",
+    "audio_sec": 6.44,
+    "gen_sec": 51.4
+  },
+  {
+    "file": "e24_blau__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich möchte die blaue Laterne!",
+    "audio_sec": 2.28,
+    "gen_sec": 21.3
+  },
+  {
+    "file": "n24_paul__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Oh nein! Paul hat Emilys Laterne genommen.",
+    "audio_sec": 4.0,
+    "gen_sec": 29.5
+  },
+  {
+    "file": "e24_meins__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Nein! Das ist meine Laterne!",
+    "audio_sec": 2.48,
+    "gen_sec": 21.7
+  },
+  {
+    "file": "r_lauter__A__narr_ru.wav",
+    "model": "mtl",
+    "lang": "ru",
+    "preset": "A",
+    "voice": "narr_ru",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Громче! Скажи твёрдо и громко!",
+    "audio_sec": 4.8,
+    "gen_sec": 33.0
+  },
+  {
+    "file": "n24_lachen_nein__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Auslachen ist nicht nett. Paul ist traurig. Noch mal!",
+    "audio_sec": 4.2,
+    "gen_sec": 30.2
+  },
+  {
+    "file": "e24_freunde__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Schon gut. Wieder Freunde?",
+    "audio_sec": 5.36,
+    "gen_sec": 34.1
+  },
+  {
+    "file": "n24_zaehl__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Tipp auf die Laternen und zähl mit!",
+    "audio_sec": 3.04,
+    "gen_sec": 24.8
+  },
+  {
+    "file": "b24_mond__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Schau mal, Emily! Der Mond!",
+    "audio_sec": 2.44,
+    "gen_sec": 22.4
+  },
+  {
+    "file": "n24_drei__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Drei Sterne!",
+    "audio_sec": 1.88,
+    "gen_sec": 19.3
+  },
+  {
+    "file": "n24_tipp_teilen__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Tipp auf die Weckmänner!",
+    "audio_sec": 1.84,
+    "gen_sec": 19.0
+  },
+  {
+    "file": "b24_lecker__A__abiha2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "abiha2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Mmh, lecker! Danke, Emily!",
+    "audio_sec": 2.96,
+    "gen_sec": 24.4
+  }
+]
