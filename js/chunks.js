@@ -182,7 +182,12 @@ const CHUNKS = (() => {
     e29_stimmt_nicht: ['Nein, …', 'das stimmt nicht.', 'Es waren sieben.'],
     e29_gezaehlt: ['Nein!', 'Ich habe mitgezählt.', 'Es waren sieben.'],
     e29_ich_auch: ['Jetzt möchte ich …', 'springen!'],
-    e29_nicht_nett: ['Hör auf!', 'Das ist nicht nett.', 'Ich will es probieren!']
+    e29_nicht_nett: ['Hör auf!', 'Das ist nicht nett.', 'Ich will es probieren!'],
+    /* 30 «Arzt spielen» */
+    e30_du_zuerst: ['Entschuldigung.', 'Du kannst zuerst.'],
+    e30_tauschen: ['Jetzt tauschen wir!', 'Jetzt bin ich …', 'die Ärztin.'],
+    e30_erst: ['Wir können tauschen.', 'Erst ich, …', 'dann du.'],
+    e30_bitte: ['Jetzt bist du dran.', 'Hier, bitte!']
   });
   return C;
 })();

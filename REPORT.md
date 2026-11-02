@@ -110,3 +110,16 @@
 **Лестница:** шаг 2 (два раза). **Счёт:** 1–7, выбор числа, 1–5.
 **Кусочки:** «Teddybär, Teddybär, … | dreh dich um!» (приставка «um» с глаголом), «Hör auf! | Das ist nicht nett. | Ich will es probieren!», «Nein! | Ich habe mitgezählt. | Es waren sieben.», «Doch! Ich kann das!» — целиком.
 
+## Уровень 30 «Arzt spielen» — готов
+
+**Где:** уголок ролевых игр в группе (табличка с красным крестом, кушетка).
+**Что происходит:**
+1. Стетоскоп один. **Неправа Эмили:** она быстро хватает его, а Абиха хотела первой — «Hey! Ich wollte das Stethoskop zuerst haben!». Картинки: оставить себе / отдать. «Entschuldigung. Du kannst zuerst.»
+2. Абиха — врач: «Wo tut es weh?» — «Mein Bauch tut weh.» Абиха слушает сердце: нажимаем на сердечко 5 раз и считаем удары. «Alles gut! Du bist gesund.»
+3. Меняемся ролями: «Jetzt tauschen wir! Jetzt bin ich die Ärztin.»
+4. Пауль: «Aua! Frau Doktor!» — Эмили сама спрашивает «Wo tut es weh?» — «Mein Knie tut weh.» — нажимаем Паулю на коленку, пластырь.
+5. **Договориться:** Изабель тоже хочет быть врачом: «Gib mir den Koffer!» — Эмили: «Wir können tauschen. Erst ich, dann du.» — лечим Изабель голову (нажать на голову, холодный компресс), потом Эмили сама отдаёт чемоданчик: «Jetzt bist du dran. Hier, bitte!»
+
+**Лестница:** шаг 1 хватило (договорились словами). **Счёт:** 5 ударов сердца. **Новые слова:** Bauch, Knie, Kopf, Ärztin, tauschen.
+**Кусочки:** «Entschuldigung. | Du kannst zuerst.», «Wir können tauschen. | Erst ich, … | dann du.», «Jetzt tauschen wir! | Jetzt bin ich … | die Ärztin.» (артикль со словом), «Mein Bauch tut weh.» и «Wo tut es weh?» — целиком.
+

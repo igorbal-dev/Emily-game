@@ -1,0 +1,165 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Arzt spielen. Уровень 30</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 30 «Arzt spielen» — уголок ролевых игр: Эмили выхватила стетоскоп у Абихи (неправа она: «Entschuldigung. Du kannst zuerst.»), «Wo tut es weh?», лечим коленку и голову нажатием, считаем удары сердца, договариваемся «Erst ich, dann du». План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_shoes": ["assets/img/f3c638bc729d.webp", 208, 407], "emily_blink_shoes": ["assets/img/0f33b1ccf809.webp", 208, 407], "emily_mouth1_shoes": ["assets/img/3b7a1bb44669.webp", 208, 407], "emily_mouth2_shoes": ["assets/img/349db2cdaea9.webp", 208, 407], "emily_talk_shoes": ["assets/img/d3e54ca225ed.webp", 270, 413], "emily_wave_shoes": ["assets/img/2ab85334263f.webp", 252, 394], "emily_jump_shoes": ["assets/img/31f33a5548ba.webp", 279, 346], "emily_surprised_shoes": ["assets/img/b65576956668.webp", 208, 407], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "abiha_idle": ["assets/img/fa848f76752c.webp", 252, 361], "abiha_blink": ["assets/img/80c0b58f8e9f.webp", 252, 361], "abiha_mouth1": ["assets/img/d3289978defd.webp", 252, 361], "abiha_mouth2": ["assets/img/3569203761d0.webp", 252, 361], "abiha_wave": ["assets/img/3d7524d2c8fa.webp", 252, 361], "abiha_peace": ["assets/img/540be744bd81.webp", 252, 361], "abiha_jump": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_laugh": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_think": ["assets/img/fe368e6c3218.webp", 252, 361], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised}_shoes emily_laugh abiha_{idle,blink,mouth1,mouth2,wave,peace,jump,laugh,think} isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "n19_was": "assets/snd/a410e8e1a1bc.mp3", "r19_was": "assets/snd/b08bdfeafaf6.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль) */
+const SAY = {
+  n30_intro: 'In der Spielecke der Kita spielen die Kinder Arzt. Es gibt nur ein Stethoskop.',
+  n30_nimmt: 'Emily nimmt schnell das Stethoskop. Aber Abiha wollte es zuerst!',
+  b30_ich_wollte: 'Hey! Ich wollte das Stethoskop zuerst haben!',
+  n30_opt_behalten: 'Emily behält das Stethoskop.',
+  n30_opt_geben: 'Emily gibt Abiha das Stethoskop.',
+  n30_behalten_nein: 'Abiha war zuerst da. Das ist nicht fair. Noch mal!',
+  e30_du_zuerst: 'Entschuldigung. Du kannst zuerst.',
+  b30_danke: 'Danke! Du bist danach dran. Wo tut es weh?',
+  e30_bauch: 'Mein Bauch tut weh.',
+  b30_hoeren: 'Ich höre dein Herz. Bum, bum!',
+  n30_herz: 'Tipp auf das Herz und zähl die Schläge!',
+  r30_herz: 'Нажимай на сердечко и считай удары!',
+  b30_gesund: 'Alles gut! Du bist gesund.',
+  e30_tauschen: 'Jetzt tauschen wir! Jetzt bin ich die Ärztin.',
+  b30_klar: 'Klar! Hier, bitte.',
+  p30_aua: 'Aua, aua! Frau Doktor!',
+  e30_wo: 'Wo tut es weh?',
+  p30_knie: 'Mein Knie tut weh.',
+  n30_tipp_knie: 'Tipp auf Pauls Knie! Dann bekommt er ein Pflaster.',
+  r30_knie: 'Нажми на коленку Пауля — наклеим пластырь!',
+  p30_danke: 'Danke, Frau Doktor!',
+  i30_ich_will: 'Ich will auch Ärztin sein! Gib mir den Koffer!',
+  e30_erst: 'Wir können tauschen. Erst ich, dann du.',
+  i30_okay: 'Okay! Erst du, dann ich. Mein Kopf tut weh!',
+  n30_tipp_kopf: 'Tipp auf Isabels Kopf!',
+  r30_kopf: 'Нажми Изабель на голову!',
+  n30_kuehl: 'Ein Kühlpack für den Kopf. Gleich geht es besser!',
+  e30_bitte: 'Jetzt bist du dran. Hier, bitte!',
+  i30_danke: 'Danke, Emily! Du bist eine gute Ärztin.',
+  n30_ende: 'Super! Emily hat gewartet, getauscht und allen geholfen.'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 30: играем в доктора. Эмили хватает единственный стетоскоп раньше Абихи — карточки (оставить / отдать), «Entschuldigung. Du kannst zuerst.».
+   Абиха — врач: «Wo tut es weh?» — «Mein Bauch tut weh.», считаем 5 ударов сердца. Меняемся: «Jetzt tauschen wir! Jetzt bin ich die Ärztin.»
+   Эмили — врач: Пауль «Mein Knie tut weh» — нажимаем на коленку, пластырь. Изабель хочет быть врачом и тянет чемоданчик:
+   «Wir können tauschen. Erst ich, dann du.» — лечим ей голову (нажать на голову), потом отдаём чемоданчик «Jetzt bist du dran. Hier, bitte!». */
+const LEVEL = 30, FRIENDS = ['abiha', 'paul', 'isabel'];
+const STICKER = '<svg viewBox="0 0 100 100"><rect x="14" y="30" width="72" height="54" rx="10" fill="#fff" stroke="#ff5a4a" stroke-width="5"/><path d="M40 30 V20 h20 V30" fill="none" stroke="#ff5a4a" stroke-width="5"/><path d="M50 42 V72 M35 57 H65" stroke="#ff5a4a" stroke-width="10" stroke-linecap="round"/></svg>';
+const RUG = 0.52;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG);
+  /* табличка «доктор» и кушетка */
+  const hE = L.hE, fy = L.floorY; g.fillStyle = '#fff'; g.fillRect(W*0.72, fy - hE*1.75, hE*0.36, hE*0.36); g.strokeStyle = '#ff5a4a'; g.lineWidth = hE*0.07; g.lineCap = 'butt';
+  g.beginPath(); g.moveTo(W*0.72 + hE*0.18, fy - hE*1.68); g.lineTo(W*0.72 + hE*0.18, fy - hE*1.46); g.moveTo(W*0.72 + hE*0.07, fy - hE*1.57); g.lineTo(W*0.72 + hE*0.29, fy - hE*1.57); g.stroke();
+  g.fillStyle = '#cfe9ff'; g.fillRect(W*0.68, fy - hE*0.42, hE*0.9, hE*0.12); g.fillStyle = '#8fb8dd'; g.fillRect(W*0.68 + hE*0.05, fy - hE*0.3, hE*0.06, hE*0.3); g.fillRect(W*0.68 + hE*0.8, fy - hE*0.3, hE*0.06, hE*0.3);
+}
+const STETHO = '<svg viewBox="0 0 100 100"><path d="M30 10 V40 Q30 62 50 62 Q70 62 70 40 V10" fill="none" stroke="#555" stroke-width="7" stroke-linecap="round"/><path d="M50 62 V78" stroke="#555" stroke-width="7"/><circle cx="50" cy="84" r="12" fill="#9aa4b2" stroke="#555" stroke-width="5"/><circle cx="30" cy="10" r="5" fill="#333"/><circle cx="70" cy="10" r="5" fill="#333"/></svg>';
+const BAG = '<svg viewBox="0 0 100 80"><path d="M36 14 V6 h28 V14" fill="none" stroke="#c43a2e" stroke-width="6"/><rect x="6" y="14" width="88" height="62" rx="12" fill="#ff5a4a" stroke="#c43a2e" stroke-width="5"/><path d="M50 28 V62 M33 45 H67" stroke="#fff" stroke-width="11" stroke-linecap="round"/></svg>';
+const PLASTER = '<svg viewBox="0 0 100 50"><rect x="4" y="8" width="92" height="34" rx="17" fill="#f6c99a" stroke="#d29a62" stroke-width="3"/><rect x="34" y="12" width="32" height="26" rx="4" fill="#fbe2c6"/><circle cx="44" cy="20" r="2" fill="#d29a62"/><circle cx="56" cy="30" r="2" fill="#d29a62"/></svg>';
+const COOL = '<svg viewBox="0 0 100 60"><rect x="4" y="6" width="92" height="48" rx="14" fill="#8fd3ff" stroke="#2f80ed" stroke-width="4"/><path d="M30 30 h40 M50 16 v28 M36 18 l28 24 M64 18 l-28 24" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>';
+const HEART = '<svg viewBox="0 0 100 100"><path d="M50 88 C10 60 8 30 30 22 C42 18 50 28 50 34 C50 28 58 18 70 22 C92 30 90 60 50 88 Z" fill="#ff6b8a" stroke="#d6476a" stroke-width="5"/></svg>';
+
+let emily, abiha, isabel, paul, stetho, bag, heart, plaster, cool;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'jump', 'laugh', 'think'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+/* точка на герое: fx, fy — доли картинки (0,0 — левый верх) */
+const on = (h, fx, fy) => ({px: () => { const s = h.size(); return L.W*h.x + (fx - 0.5)*s.w; }, py: () => { const s = h.size(); return L.floorY - (1 - fy)*s.h; }});
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  isabel = T.hero('isabel', {x: 1.2, h: 0.95, poses: KP});
+  paul = T.hero('paul', {x: 1.2, h: 0.97, poses: KP});
+  abiha = T.hero('abiha', {x: 0.62, poses: AP}); abiha.face(true);
+  emily = T.hero('emily', {x: 0.3, outfit: 'shoes', poses: EP});
+  stetho = T.prop(STETHO, {x: 0.46, py: () => L.floorY - L.hE*0.02, w: 0.22, z: 45});
+  bag = T.prop(BAG, {x: 0.12, py: () => L.floorY - L.hE*0.02, w: 0.32, ratio: 0.8, z: 45});
+  heart = T.prop(HEART, {...on(emily, 0.5, 0.42), w: 0.14, z: 60}); heart.el.hidden = true;
+  plaster = T.prop(PLASTER, {...on(paul, 0.4, 0.86), w: 0.12, ratio: 0.5, z: 60}); plaster.el.hidden = true;
+  cool = T.prop(COOL, {...on(isabel, 0.5, 0.12), w: 0.2, ratio: 0.6, z: 60}); cool.el.hidden = true;
+}
+/* предмет в руке героя: переносим ближе к руке */
+async function give(p, h, ms = 500){ p.o.px = null; p.o.py = null; await T.move(p, h.x + 0.05, (L.floorY - L.hE*0.45)/L.H, ms); }
+/* «нажми на место на герое»: светящийся кружок-цель */
+const SPOT = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,.35)" stroke="#ffd84d" stroke-width="8" stroke-dasharray="14 10"/></svg>';
+async function tapSpot(h, fx, fy, de, ru){ const s = T.prop(SPOT, {...on(h, fx, fy), w: 0.24, z: 65}); await T.tap([s], de, ru); s.el.remove(); T.props = T.props.filter(x => x !== s); }
+
+async function story(){
+  await play('n30_intro');
+  /* Эмили выхватывает стетоскоп */
+  emily.set('jump'); await emily.walkTo(0.42, 500); await give(stetho, emily, 300); emily.set('idle');
+  await play('n30_nimmt');
+  abiha.set('think'); await abiha.say('b30_ich_wollte'); abiha.set('idle');
+  const cards = () => [
+    {parts: [{img: 'emily_laugh', x: 30, h: 70}, {svg: STETHO, x: 44, y: 40, w: 16, hh: 22}, {img: 'abiha_think', x: 70, h: 70}], clip: 'n30_opt_behalten', ok: false, bg: '#fff1c9', ground: '#c98f55'},
+    {parts: [{img: 'emily_wave_shoes', x: 30, h: 70}, {svg: STETHO, x: 54, y: 40, w: 16, hh: 22}, {img: 'abiha_laugh', x: 70, h: 70}, {fx: 'hearts', x: 50, y: 12}], clip: 'n30_opt_geben', bg: '#fff1c9', ground: '#c98f55'}];
+  while ((await T.choose(cards(), 'n19_was', 'r19_was')) === 0) await play('n30_behalten_nein');
+  await T.repeat('e30_du_zuerst');
+  await give(stetho, abiha); abiha.set('laugh'); T.hearts(abiha); await sleep(500); abiha.set('idle');
+  await T.bone(abiha);
+
+  /* Абиха — врач, Эмили — пациент */
+  await abiha.say('b30_danke');
+  await T.repeat('e30_bauch');
+  await abiha.walkTo(0.56, 500); abiha.face(true); await give(stetho, abiha, 300);
+  await abiha.say('b30_hoeren');
+  heart.place(); heart.el.hidden = false; await play('n30_herz');
+  for (let i = 1; i <= 5; i++){ await T.tap([heart], 'n30_herz', 'r30_herz'); heart.el.animate([{transform: 'scale(1)'}, {transform: 'scale(1.35)'}, {transform: 'scale(1)'}], {duration: 300}); sfx.tone(120, 90, 160, 'sine', .3); showNum(i); await emily.say('e_' + i); }
+  hideNum(); heart.el.hidden = true;
+  abiha.set('peace'); await abiha.say('b30_gesund'); abiha.set('idle');
+  await T.bone(emily);
+  await T.repeat('e30_tauschen');
+  abiha.set('laugh'); await abiha.say('b30_klar'); abiha.set('idle');
+  await abiha.walkTo(0.6, 500); abiha.face(true); await give(stetho, emily, 300); await give(bag, emily, 500);
+
+  /* Эмили — врач: Пауль и коленка */
+  paul.set('talk'); await paul.walkTo(0.74, 1200); paul.face(true); await paul.say('p30_aua'); paul.set('idle');
+  await T.repeat('e30_wo');
+  paul.set('talk'); await paul.say('p30_knie'); paul.set('idle');
+  await play('n30_tipp_knie');
+  await tapSpot(paul, 0.4, 0.86, 'n30_tipp_knie', 'r30_knie');
+  plaster.place(); plaster.el.hidden = false; sfx.ding(); paul.set('jump'); paul.hop();
+  await paul.say('p30_danke'); paul.set('idle'); T.hearts(paul);
+  await T.bone(paul);
+  plaster.el.hidden = true; await paul.walkTo(0.9, 800); plaster.place(); plaster.el.hidden = false;
+
+  /* Изабель тоже хочет быть врачом — договариваемся */
+  isabel.set('talk'); await isabel.walkTo(0.66, 1100); isabel.face(true); await isabel.say('i30_ich_will'); isabel.set('idle');
+  await T.repeat('e30_erst');
+  isabel.set('talk'); await isabel.say('i30_okay'); isabel.set('idle');
+  await play('n30_tipp_kopf');
+  await tapSpot(isabel, 0.5, 0.12, 'n30_tipp_kopf', 'r30_kopf');
+  cool.place(); cool.el.hidden = false; sfx.ding(); await play('n30_kuehl');
+  cool.el.hidden = true;
+  await T.repeat('e30_bitte');
+  await give(bag, isabel, 600); await give(stetho, isabel, 400);
+  isabel.set('jump'); isabel.hop(); await isabel.say('i30_danke'); isabel.set('idle'); T.hearts(isabel); T.hearts(emily);
+  await T.bone(isabel);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n30_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.abiha_peace[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
