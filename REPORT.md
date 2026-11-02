@@ -179,3 +179,15 @@
 **Лестница:** шаги 1, 2 и 4 (взрослый). **Счёт:** 4, потом 5 тарелок.
 **Кусочки:** «Heike, … | Isabel sagt, … | ich darf nicht mitspielen.» («nicht» вместе с «mitspielen»), «Das ist nicht nett. | Ich will auch mitspielen!», «Darf ich mitspielen?» и «Guten Appetit!» — целиком.
 
+## Уровень 35 «Kastanien und Blätter» — готов
+
+**Где:** осенний парк, прогулка садика (Хайке, Абиха, Изабель, Пауль). Ноябрь — Эмили в куртке.
+**Что происходит:**
+1. Собираем каштаны в ведёрко: нажимаем на каждый, считаем до 8.
+2. Эмили находит огромный каштан — **Пауль его отбирает**: «Die gehört jetzt mir!» Шаг 1: «Paul, die habe ich gefunden. Gib sie mir bitte zurück.» — «Ich habe sie aber jetzt!» — **шаг 2**: «Nein! Das ist meine Kastanie. Gib sie zurück!» — отдаёт. Потом Эмили по-доброму: «Komm, wir suchen zusammen eine für dich!» — находим Паулю большой каштан.
+3. Листья: красные, жёлтые, коричневые — нажимаем лист нужного цвета, «Das Blatt ist rot / gelb / braun.»
+4. **Неправа Эмили:** она с разбега прыгает в кучу листьев, которую сложил Пауль, — куча рассыпалась, Пауль плачет. Картинки: засмеяться и убежать / помочь. «Entschuldigung! Ich helfe dir. Wir bauen ihn zusammen wieder auf.» — собираем кучу (5 нажатий, счёт), потом прыгают в неё вместе.
+
+**Лестница:** шаг 2. **Счёт:** 8 каштанов, 5. **Цвета:** rot, gelb, braun.
+**Кусочки:** «Nein! | Das ist meine Kastanie. | Gib sie zurück!» («zurück» с глаголом), «Entschuldigung! | Ich helfe dir. | Wir bauen ihn zusammen wieder auf.» («auf» не отрываем — длинный кусок целиком).
+

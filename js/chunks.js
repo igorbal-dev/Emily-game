@@ -209,7 +209,12 @@ const CHUNKS = (() => {
     e34_nicht_nett: ['Das ist nicht nett.', 'Ich will auch mitspielen!'],
     e34_heike: ['Heike, …', 'Isabel sagt, …', 'ich darf nicht mitspielen.'],
     e34_danke: ['Danke!', 'Was kochen wir?'],
-    e34_oma: ['Ja, klar!', 'Du kannst …', 'die Oma sein!']
+    e34_oma: ['Ja, klar!', 'Du kannst …', 'die Oma sein!'],
+    /* 35 «Kastanien und Blätter» */
+    e35_zurueck: ['Paul, …', 'die habe ich gefunden.', 'Gib sie mir bitte zurück.'],
+    e35_meine: ['Nein!', 'Das ist meine Kastanie.', 'Gib sie zurück!'],
+    e35_suchen: ['Komm, …', 'wir suchen zusammen …', 'eine für dich!'],
+    e35_helfen: ['Entschuldigung!', 'Ich helfe dir.', 'Wir bauen ihn zusammen wieder auf.']
   });
   return C;
 })();
