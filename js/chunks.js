@@ -190,7 +190,14 @@ const CHUNKS = (() => {
     e30_bitte: ['Jetzt bist du dran.', 'Hier, bitte!'],
     /* 31 «Stille Post» */
     e31_psst: ['Psst, Paul!', 'Du musst flüstern.'],
-    e31_regel: ['Nein, Paul.', 'Bei Stiller Post …', 'flüstert man.', 'Das ist die Regel.']
+    e31_regel: ['Nein, Paul.', 'Bei Stiller Post …', 'flüstert man.', 'Das ist die Regel.'],
+    /* 32 «Ich sehe was» */
+    e32_nicht_rot: ['Paul, …', 'der Stuhl ist nicht rot.', 'Das gilt nicht!'],
+    e32_geschummelt: ['Nein!', 'Du hast geschummelt.', 'Der Stuhl ist blau.'],
+    e32_gelb: ['Ich sehe was, …', 'was du nicht siehst, …', 'und das ist gelb!'],
+    e32_gruen: ['Ich sehe was, …', 'was du nicht siehst, …', 'und das ist grün!'],
+    e32_nein: ['Nein, …', 'das ist es nicht.'],
+    e32_ja: ['Ja, richtig!', 'Jetzt bist du dran.']
   });
   return C;
 })();

@@ -136,3 +136,15 @@
 **Лестница:** шаг 2. **Счёт:** дети в кругу (4).
 **Кусочки:** «Psst, Paul! | Du musst flüstern.», «Nein, Paul. | Bei Stiller Post … | flüstert man. | Das ist die Regel.», короткие фразы-слова («Theo mag Kekse.») — целиком.
 
+## Уровень 32 «Ich sehe was, was du nicht siehst» — готов
+
+**Где:** группа садика: на ковре и полке 8 вещей — красные (мяч, яблоко), синие (стул, машинка), жёлтые (утка, банан), зелёные (лягушка, лист). Цвет на экране = цвет в словах.
+**Что происходит:**
+1. Пауль: «Ich sehe was, was du nicht siehst, und das ist rot!» — нажимаем на красную вещь (не красная — «Das ist nicht rot. Schau genau!»), Эмили спрашивает «Ist es der Ball?» — «Nein!», «Ist es der Apfel?»
+2. **Пауль жульничает:** «Nein! Es ist der Stuhl!» — а стул синий. Шаг 1: «Paul, der Stuhl ist nicht rot. Das gilt nicht!» — «Doch! Der Stuhl!» — **шаг 2**, громче: «Nein! Du hast geschummelt. Der Stuhl ist blau.» — Пауль признаётся: «Okay … es war der Apfel. Entschuldigung.»
+3. Считаем красные вещи (2).
+4. Загадывает Эмили: сама выбирает жёлтую или зелёную вещь и говорит «Ich sehe was, was du nicht siehst, und das ist gelb/grün!». Пауль сначала ошибается — «Nein, das ist es nicht.», потом угадывает — «Ja, richtig! Jetzt bist du dran.»
+
+**Лестница:** шаг 2. **Счёт:** 2 красные вещи.
+**Кусочки:** «Paul, … | der Stuhl ist nicht rot. | Das gilt nicht!», «Nein! | Du hast geschummelt. | Der Stuhl ist blau.», «Nein, … | das ist es nicht.» («nicht» с глаголом), «Ich sehe was, … | was du nicht siehst, … | und das ist gelb!»
+
