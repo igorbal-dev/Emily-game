@@ -2367,6 +2367,266 @@
    ],
    "voice": "narr",
    "text": "Super! Emily hat gewartet, getauscht und allen geholfen."
+  },
+  {
+   "id": "n31_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Im Morgenkreis spielen die Kinder Stille Post."
+  },
+  {
+   "id": "n31_zaehl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele Kinder sind im Kreis? Tipp und zähl!"
+  },
+  {
+   "id": "n31_vier",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Vier Kinder!"
+  },
+  {
+   "id": "s31_regel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Ich flüstere ein Wort. Ihr flüstert es weiter, ganz leise. Das letzte Kind sagt es laut."
+  },
+  {
+   "id": "b31_theo",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Theo mag Kekse."
+  },
+  {
+   "id": "n31_jetzt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt flüstert Emily es Paul ins Ohr. Ganz leise!"
+  },
+  {
+   "id": "r31_jetzt",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Теперь Эмили шепчет Паулю на ушко. Тихо-тихо!"
+  },
+  {
+   "id": "e31_theo",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Theo mag Kekse."
+  },
+  {
+   "id": "n_leiser",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Psst! Leiser! Du musst flüstern!"
+  },
+  {
+   "id": "r_leiser",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Тсс! Тише, шёпотом!"
+  },
+  {
+   "id": "i31_hexe",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Theo mag Hexe!"
+  },
+  {
+   "id": "s31_richtig",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Hihi! Das Wort war: Theo mag Kekse!"
+  },
+  {
+   "id": "b31_katze",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Die Katze schläft."
+  },
+  {
+   "id": "e31_katze",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Die Katze schläft."
+  },
+  {
+   "id": "p31_laut",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "DIE KATZE SCHLÄFT!"
+  },
+  {
+   "id": "b31_oh",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Oh nein! Jetzt wissen es alle!"
+  },
+  {
+   "id": "e31_psst",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Psst, Paul! Du musst flüstern."
+  },
+  {
+   "id": "p31_lustig",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Aber laut ist lustiger!"
+  },
+  {
+   "id": "e31_regel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein, Paul. Bei Stiller Post flüstert man. Das ist die Regel."
+  },
+  {
+   "id": "p31_okay",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Okay, okay. Ich flüstere."
+  },
+  {
+   "id": "s31_neu",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Gut. Wir fangen noch mal an. Ein neues Wort!"
+  },
+  {
+   "id": "b31_mond",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "abiha2",
+   "text": "Der Mond ist gelb."
+  },
+  {
+   "id": "e31_mond",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Der Mond ist gelb."
+  },
+  {
+   "id": "i31_mond",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "isabel",
+   "text": "Der Mond ist gelb!"
+  },
+  {
+   "id": "s31_super",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "heike",
+   "text": "Richtig! Diesmal hat es geklappt!"
+  },
+  {
+   "id": "n31_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily kann laut und leise sprechen. Und sie hat Paul die Regel erklärt."
   }
  ]
 }
