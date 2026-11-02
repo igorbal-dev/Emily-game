@@ -158,7 +158,15 @@ const CHUNKS = (() => {
     e25_angeschlagen: ['Angeschlagen!', 'Jetzt bin ich dran!'],
     e25_ochs: ['Eins, zwei, drei …', 'Ochs am Berg!'],
     e25_isabel: ['Isabel, …', 'du hast dich bewegt!', 'Zurück zum Start!'],
-    e25_doch: ['Doch!', 'Ich habe es gesehen.']
+    e25_doch: ['Doch!', 'Ich habe es gesehen.'],
+    /* 26 «Kreide» */
+    e26_zurueck: ['Paul, …', 'das ist meine Kreide.', 'Gib sie mir bitte zurück.'],
+    e26_frag: ['Nein!', 'Frag bitte zuerst!'],
+    e26_stopp: ['Stopp!', 'Hör auf!', 'Ich will das nicht!'],
+    e26_heike: ['Heike, …', 'Paul macht mein Bild kaputt!'],
+    e26_ja: ['Ja!', 'Du kannst …', 'die blaue Kreide haben.'],
+    e26_darf: ['Entschuldigung.', 'Darf ich …', 'die grüne Kreide haben?'],
+    e26_klar: ['Klar!', 'Wir malen alle zusammen.']
   });
   return C;
 })();

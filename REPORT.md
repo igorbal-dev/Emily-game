@@ -50,3 +50,20 @@
 **Кусочки:** «Ene, mene, muh, … | und raus bist du!», «Eins, zwei, drei … | Ochs am Berg!», «Isabel, … | du hast dich bewegt! | Zurück zum Start!», «Doch! | Ich habe es gesehen.», «Stimmt. Entschuldigung.» — целиком.
 **Заглушки:** водящий стоит «к дереву» без отдельной картинки «спиной» (в задании ChatGPT — поза stand_back).
 
+## Уровень 26 «Kreide» — готов (вся лестница до шага 4)
+
+**Где:** двор садика, асфальт, коробка мелков.
+**Что происходит:**
+1. Эмили рисует солнце: выбираем жёлтый мелок (другой цвет — «Nicht diese Farbe. Die Sonne ist gelb!»), «Die Sonne ist gelb.», 5 лучей — считаем.
+2. **Конфликт до конца лестницы.** Пауль забирает розовый мелок.
+   - Шаг 1: «Paul, das ist meine Kreide. Gib sie mir bitte zurück.» — «Ich brauche sie aber!»
+   - Шаг 2 (громче): «Nein! Frag bitte zuerst!» — «Pff!» — и он прыгает прямо по рисунку, солнце размазывается.
+   - Шаг 3 (ладонь вперёд, ещё громче): «Stopp! Hör auf! Ich will das nicht!» — Пауль хихикает и прыгает дальше.
+   - Что делать? Три картинки: толкнуть («Nein! Emily schubst nicht. Die Hände bleiben bei dir.»), плакать («Weinen hilft nicht. Tu etwas!»), позвать Хайке — верно.
+   - Шаг 4: «Heike, Paul macht mein Bild kaputt!» — Хайке: «Frag Emily, ob du mitmalen darfst.» — Пауль: «Entschuldigung. Darf ich mitmalen?» — Эмили: «Ja! Du kannst die blaue Kreide haben.» Мелок возвращается, солнце снова яркое.
+3. **Неправа Эмили:** её зелёный мелок сломан, она просто берёт мелок Изабель — «Hey! Das ist meine Kreide!». Картинки: убежать с мелком (нечестно) / спросить. «Entschuldigung. Darf ich die grüne Kreide haben?» — «Ja, klar! Hier.»
+4. Рисуем цветок: стебель и 6 лепестков (считаем). Абиха: «Darf ich auch mitmalen?» — «Klar! Wir malen alle zusammen.»
+
+**Счёт:** 5 лучей, 6 лепестков.
+**Кусочки:** «Stopp! | Hör auf! | Ich will das nicht!» («nicht» вместе с «will»), «Heike, … | Paul macht mein Bild kaputt!» («kaputt» не отрываем), «Nein! | Frag bitte zuerst!», «Entschuldigung. | Darf ich … | die grüne Kreide haben?»
+

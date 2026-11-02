@@ -1,0 +1,214 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Kreide. Уровень 26</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 26 «Kreide» — двор садика, рисуем мелками. Пауль берёт мелок и топчет рисунок: вся лестница — вежливо, твёрдо, «Stopp!» с ладонью, зовём Хайке. Эмили сама берёт мелок Изабель — учимся спрашивать. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_out": ["assets/img/75212f3d100c.webp", 220, 407], "emily_blink_out": ["assets/img/8f259a32dae9.webp", 220, 407], "emily_mouth1_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_mouth2_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_wave_out": ["assets/img/acf19e1e2d3e.webp", 218, 410], "emily_jump_out": ["assets/img/afd822bd4c46.webp", 276, 377], "emily_surprised_out": ["assets/img/723e0f67193a.webp", 227, 407], "emily_crouch_out": ["assets/img/56b917379eef.webp", 227, 309], "emily_laugh_out": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk_out": ["assets/img/8e591eafe46b.webp", 225, 385], "emily_crouch": ["assets/img/56b917379eef.webp", 227, 309], "abiha_idle_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_blink_out": ["assets/img/cd9612e1c921.webp", 141, 375], "abiha_mouth1_out": ["assets/img/67d4d4438d8b.webp", 141, 375], "abiha_mouth2_out": ["assets/img/f1119565498c.webp", 141, 375], "abiha_wave_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_peace_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_walk_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_jump_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_laugh_out": ["assets/img/6d71ed799083.webp", 141, 375], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600]};  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,crouch,laugh,walk}_out emily_crouch abiha_{idle,blink,mouth1,mouth2,wave,peace,walk,jump,laugh}_out isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "i_hihi": "assets/snd/9c8910580b2c.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "n19_opt_heike": "assets/snd/2a47e7c8f775.mp3", "n19_opt_weinen": "assets/snd/594433baf087.mp3", "n19_stopp_tipp": "assets/snd/75611822af7f.mp3", "n19_was": "assets/snd/a410e8e1a1bc.mp3", "n19_weinen": "assets/snd/f0c226e8a9f1.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3", "r19_stopp": "assets/snd/3738e72e9003.mp3", "r19_was": "assets/snd/b08bdfeafaf6.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..6} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht n19_was r19_was n19_stopp_tipp r19_stopp n19_opt_heike n19_opt_weinen n19_weinen k_laugh i_hihi p_hihi*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n26_intro: 'Auf dem Hof der Kita. Emily malt mit Kreide.',
+  n26_sonne: 'Emily malt eine Sonne. Welche Farbe hat die Sonne? Tipp auf die Kreide!',
+  r26_sonne: 'Какого цвета солнце? Нажми на нужный мелок!',
+  n26_nicht: 'Nicht diese Farbe. Die Sonne ist gelb!',
+  e26_sonne: 'Die Sonne ist gelb.',
+  n26_strahlen: 'Tipp auf die Sonne! Sie bekommt fünf Strahlen.',
+  n26_fuenf: 'Fünf Strahlen! Was für eine schöne Sonne!',
+  n26_blume: 'Jetzt malt Emily eine Blume. Mit der rosa Kreide.',
+  p26_nehme: 'Oh, rosa! Die nehme ich!',
+  e26_zurueck: 'Paul, das ist meine Kreide. Gib sie mir bitte zurück.',
+  p26_aber: 'Ich brauche sie aber!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e26_frag: 'Nein! Frag bitte zuerst!',
+  p26_pff: 'Pff! Hüpf, hüpf!',
+  n26_drauf: 'Oh nein! Paul hüpft auf Emilys Bild!',
+  e26_stopp: 'Stopp! Hör auf! Ich will das nicht!',
+  p26_hihi: 'Hihi! Das ist lustig!',
+  n26_hilfe: 'Paul hört nicht auf. Was macht Emily jetzt?',
+  n26_opt_schubsen: 'Emily schubst Paul.',
+  n26_schubsen_nein: 'Nein! Emily schubst nicht. Die Hände bleiben bei dir.',
+  e26_heike: 'Heike, Paul macht mein Bild kaputt!',
+  s26_paul: 'Paul, stopp! Das ist Emilys Bild. Frag Emily, ob du mitmalen darfst.',
+  p26_entschuldigung: 'Entschuldigung, Emily. Darf ich mitmalen?',
+  e26_ja: 'Ja! Du kannst die blaue Kreide haben.',
+  p26_danke: 'Danke! Und hier ist deine rosa Kreide.',
+  n26_gruen: 'Die Blume braucht einen grünen Stiel. Aber Emilys grüne Kreide ist kaputt.',
+  n26_nimmt: 'Emily nimmt einfach Isabels grüne Kreide.',
+  i26_hey: 'Hey! Das ist meine Kreide!',
+  n26_opt_weg: 'Emily rennt mit der Kreide weg.',
+  n26_opt_fragen: 'Emily fragt Isabel.',
+  n26_weg_nein: 'Das ist nicht fair. Isabel ist traurig. Noch mal!',
+  e26_darf: 'Entschuldigung. Darf ich die grüne Kreide haben?',
+  i26_klar: 'Ja, klar! Hier.',
+  n26_blaetter: 'Tipp auf die Blume! Sie bekommt sechs Blütenblätter.',
+  n26_sechs: 'Sechs Blütenblätter!',
+  b26_mit: 'Darf ich auch mitmalen?',
+  e26_klar: 'Klar! Wir malen alle zusammen.',
+  s26_toll: 'Was für ein schönes Bild! Ihr malt alle zusammen.',
+  n26_ende: 'Super! Emily hat erst freundlich gefragt, dann fest Stopp gesagt und dann Hilfe geholt.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script>
+/* Уровень 26: двор садика, мелки. Солнце (жёлтый мелок, 5 лучей). Пауль берёт розовый мелок: шаг 1 «Paul, das ist meine Kreide. Gib sie mir bitte zurück.»,
+   шаг 2 «Nein! Frag bitte zuerst!», он прыгает по рисунку — шаг 3 ладонь «Stopp! Hör auf! Ich will das nicht!», он хихикает — карточки (толкнуть / позвать Хайке / плакать),
+   шаг 4 «Heike, Paul macht mein Bild kaputt!» → Пауль извиняется, «Darf ich mitmalen?» — «Ja! Du kannst die blaue Kreide haben.»
+   Неправа Эмили: берёт зелёный мелок Изабель без спроса → «Entschuldigung. Darf ich die grüne Kreide haben?». Цветок: 6 лепестков. */
+const LEVEL = 26, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><circle cx="40" cy="40" r="16" fill="#ffd34d"/><g stroke="#ffd34d" stroke-width="6" stroke-linecap="round"><path d="M40 10 v8 M40 62 v8 M10 40 h8 M62 40 h8 M19 19 l6 6 M55 55 l6 6 M19 61 l6 -6 M55 25 l6 -6"/></g><rect x="56" y="64" width="38" height="12" rx="6" transform="rotate(-35 75 70)" fill="#ff8fc8" stroke="#d6476a" stroke-width="2"/><rect x="50" y="78" width="38" height="12" rx="6" transform="rotate(-20 69 84)" fill="#4a8ff0" stroke="#2a5fb0" stroke-width="2"/></svg>';
+function drawScene(g, W, H, L){
+  const fy = L.floorY, hE = L.hE, hz = H*0.5;
+  let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#a8d8f5'); gr.addColorStop(1, '#e6f4fb'); g.fillStyle = gr; g.fillRect(0, 0, W, hz);
+  /* здание садика: стена, окна, дверь */
+  g.fillStyle = '#f6d8a8'; g.fillRect(0, hz - hE*1.0, W*0.62, hE*1.0); g.fillStyle = '#c9584a'; g.fillRect(-5, hz - hE*1.08, W*0.62 + 10, hE*0.1);
+  g.fillStyle = '#8fd3ff'; for (const x of [0.06, 0.2, 0.42]){ g.fillRect(W*x, hz - hE*0.8, hE*0.42, hE*0.34); g.strokeStyle = '#fff'; g.lineWidth = hE*0.03; g.strokeRect(W*x, hz - hE*0.8, hE*0.42, hE*0.34); }
+  g.fillStyle = '#5aa8f0'; g.fillRect(W*0.32, hz - hE*0.62, hE*0.3, hE*0.62);
+  for (let i = 0; i < 5; i++){ const tx = W*(0.68 + i*0.08), r = hE*(0.18 + (i % 2)*0.05); g.fillStyle = ['#e0763a', '#e3a33a', '#5fae4a'][i % 3]; g.beginPath(); g.arc(tx, hz - r*0.6, r, 0, 7); g.fill(); }
+  /* асфальт двора */
+  gr = g.createLinearGradient(0, hz, 0, H); gr.addColorStop(0, '#b9b9c2'); gr.addColorStop(1, '#9d9da8'); g.fillStyle = gr; g.fillRect(0, hz, W, H - hz);
+  g.fillStyle = 'rgba(255,255,255,.08)'; for (let i = 0; i < 40; i++){ g.fillRect((i*37.1 % 100)/100*W, hz + (i*17.3 % 50)/100*(H - hz), hE*0.03, hE*0.015); }
+  for (let i = 0; i < 9; i++){ const x = (i*53.7 % 100)/100*W, y = fy + hE*(0.04 + (i % 3)*0.04); g.fillStyle = ['#e0763a', '#e3a33a', '#b5452f'][i % 3]; g.beginPath(); g.ellipse(x, y, hE*0.03, hE*0.014, i, 0, 7); g.fill(); }
+}
+/* мелки и рисунки (рисунки «лежат» на асфальте — сплющены) */
+const CH = {gelb: ['#ffd34d', '#d6a21e'], blau: ['#4a8ff0', '#2a5fb0'], gruen: ['#3cc36a', '#24924a'], rosa: ['#ff8fc8', '#d6476a'], rot: ['#ff5a4a', '#c43a2e']};
+const CHALK = c => `<svg viewBox="0 0 30 80"><rect x="4" y="4" width="22" height="72" rx="10" fill="${c[0]}" stroke="${c[1]}" stroke-width="3"/><path d="M6 20 h18" stroke="#fff" stroke-width="3" opacity=".5"/></svg>`;
+const SUN = n => `<svg viewBox="0 0 200 100"><g transform="translate(100 50) scale(1 .45)">${Array.from({length: n}, (_, i) => { const a = -Math.PI/2 + i*2*Math.PI/5; return `<path d="M${Math.cos(a)*62} ${Math.sin(a)*62} L${Math.cos(a)*96} ${Math.sin(a)*96}" stroke="#ffd34d" stroke-width="12" stroke-linecap="round"/>`; }).join('')}<circle r="50" fill="#ffd34d" stroke="#f0b820" stroke-width="5"/><circle cx="-16" cy="-10" r="6" fill="#8a5a1e"/><circle cx="16" cy="-10" r="6" fill="#8a5a1e"/><path d="M-20 14 Q0 32 20 14" fill="none" stroke="#8a5a1e" stroke-width="6" stroke-linecap="round"/></g></svg>`;
+const FLOWER = (stem, n) => `<svg viewBox="0 0 160 100"><g transform="translate(80 54) scale(1 .5)">${stem ? '<path d="M0 10 V90" stroke="#3cc36a" stroke-width="10" stroke-linecap="round"/><path d="M0 60 Q-30 40 -40 60 Q-20 70 0 60 M0 72 Q30 52 40 70 Q20 80 0 72" fill="#3cc36a"/>' : ''}` +
+  Array.from({length: n}, (_, i) => { const a = -Math.PI/2 + i*Math.PI/3; return `<ellipse cx="${Math.cos(a)*30}" cy="${-40 + Math.sin(a)*30}" rx="18" ry="24" transform="rotate(${a*57.3 + 90} ${Math.cos(a)*30} ${-40 + Math.sin(a)*30})" fill="#ff8fc8" stroke="#d6476a" stroke-width="3"/>`; }).join('') +
+  `<circle cy="-40" r="16" fill="#ffd34d"/></g></svg>`;
+
+let emily, abiha, isabel, paul, heike, sun, flower, chalks = {}, igreen;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'jump', 'surprised', 'crouch', 'laugh', 'walk'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'walk', 'jump', 'laugh'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+const gy = () => L.floorY + L.hE*0.06;             /* «асфальт» перед героями */
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; chalks = {};
+  sun = T.prop(SUN(0), {x: 0.42, py: gy, w: 0.9, ratio: 0.5, z: 30}); sun.el.hidden = true;
+  flower = T.prop(FLOWER(false, 0), {x: 0.7, py: gy, w: 0.7, ratio: 100/160, z: 30}); flower.el.hidden = true;
+  ['gelb', 'blau', 'gruen', 'rosa', 'rot'].forEach((c, i) => { chalks[c] = T.prop(CHALK(CH[c]), {x: 0.08 + i*0.045, py: () => L.floorY + L.hE*0.08, w: 0.08, ratio: 80/30, z: 60}); chalks[c].el.style.transform = 'rotate(70deg)'; });
+  igreen = T.prop(CHALK(CH.gruen), {x: 0.9, py: () => L.floorY + L.hE*0.08, w: 0.08, ratio: 80/30, z: 60}); igreen.el.style.transform = 'rotate(70deg)';
+  heike = T.hero('sommer', {x: -0.25, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  isabel = T.hero('isabel', {x: 0.88, h: 0.95, poses: KP});
+  paul = T.hero('paul', {x: 1.2, h: 0.97, poses: KP});
+  abiha = T.hero('abiha', {x: -0.2, outfit: 'out', poses: AP});
+  emily = T.hero('emily', {x: 0.28, outfit: 'out', poses: EP}); emily.set('crouch');
+}
+const count = async i => { showNum(i); await emily.say('e_' + i); };
+const laughAll = async () => { emily.set('laugh'); isabel.set('jump'); paul.set('jump'); await Promise.all([play('k_laugh'), play('i_hihi'), play('p_hihi')]); [emily, isabel, paul].forEach(h => h.set('idle')); };
+
+async function story(){
+  /* 1. солнце: жёлтый мелок, 5 лучей */
+  await play('n26_intro');
+  await play('n26_sonne');
+  while (true){
+    const el = await T.tap(Object.values(chalks), 'n26_sonne', 'r26_sonne');
+    if (el === chalks.gelb.el) break;
+    el.classList.add('shake'); sfx.bonk(); await play('n26_nicht');
+  }
+  sfx.ding(); sun.el.hidden = false; sun.el.animate([{opacity: 0, transform: 'scale(.4)'}, {opacity: 1, transform: 'none'}], {duration: 500});
+  await T.repeat('e26_sonne');
+  await play('n26_strahlen');
+  for (let i = 1; i <= 5; i++){ await T.tap([sun], 'n26_strahlen', 'r_tipp_licht'); sun.el.innerHTML = SUN(i); sfx.pop(); await count(i); }
+  hideNum(); await play('n26_fuenf'); await T.bone(sun);
+
+  /* 2. Пауль берёт розовый мелок — вся лестница */
+  await play('n26_blume');
+  paul.set('talk'); await paul.walkTo(0.24, 1300); chalks.rosa.el.hidden = true; sfx.whoosh();
+  await paul.say('p26_nehme'); paul.set('idle'); await paul.walkTo(0.6, 700); paul.face(true);
+  emily.set('surprised'); await sleep(300); emily.set('idle');
+  /* шаг 1 — вежливо */
+  await T.repeat('e26_zurueck');
+  paul.set('talk'); await paul.say('p26_aber'); paul.set('idle');
+  /* шаг 2 — твёрже */
+  await play('n24_fester');
+  await T.firm('e26_frag', {who: paul, step: 2});
+  paul.set('talk'); await paul.say('p26_pff'); paul.set('jump');
+  /* прыгает по солнцу */
+  await paul.walkTo(0.44, 600);
+  for (let k = 0; k < 3; k++){ paul.hop(); sfx.bonk(); T.burst([L.W*0.44, L.floorY], null, '#ffd34d', 8); await sleep(450); }
+  sun.el.style.filter = 'blur(2px)'; sun.el.style.opacity = .55;
+  emily.set('surprised'); await play('n26_drauf');
+  /* шаг 3 — ладонь, «Stopp!» */
+  await play('n19_stopp_tipp'); await play('r19_stopp');
+  await T.firm('e26_stopp', {who: paul, step: 3});
+  paul.set('jump'); paul.hop(); await paul.say('p26_hihi'); paul.hop(); sfx.bonk();
+  /* шаг 4 — что делать? позвать Хайке */
+  await play('n26_hilfe');
+  const cards = () => [
+    {parts: [{img: 'emily_wave_out', x: 36, h: 70}, {img: 'paul_jump', x: 66, h: 66, rot: 14}, {fx: 'zap', x: 44, y: 34}], clip: 'n26_opt_schubsen', ok: false, bg: '#eef2f6', ground: '#b9b9c2'},
+    {parts: [{img: 'emily_wave_out', x: 30, h: 66}, {img: 'sommer_wave', x: 70, h: 86}], clip: 'n19_opt_heike', bg: '#eef2f6', ground: '#b9b9c2'},
+    {parts: [{img: 'emily_crouch_out', x: 40, h: 52}, {fx: 'tears', x: 40, y: 44}, {img: 'paul_jump', x: 72, h: 66}], clip: 'n19_opt_weinen', ok: false, bg: '#eef2f6', ground: '#b9b9c2'}];
+  while (true){
+    const i = await T.choose(cards(), 'n19_was', 'r19_was');
+    if (i === 1) break;
+    if (i === 0){ await play('n26_schubsen_nein'); continue; }
+    emily.set('crouch'); T.tears(emily, true); paul.hop(); sfx.bonk(); await play('n19_weinen'); T.tears(emily, false); emily.set('idle');
+  }
+  emily.set('wave'); await T.repeat('e26_heike'); emily.set('idle');
+  heike.set('talk'); await heike.walkTo(0.14, 1300);
+  paul.set('idle'); await heike.say('s26_paul'); heike.set('idle');
+  paul.set('talk'); await paul.walkTo(0.4, 500); paul.face(true); await paul.say('p26_entschuldigung'); paul.set('idle');
+  await T.repeat('e26_ja');
+  chalks.blau.el.hidden = true; paul.set('talk'); await paul.say('p26_danke'); paul.set('idle');
+  chalks.rosa.el.hidden = false; sfx.pop(); T.hearts(paul);
+  sun.el.style.filter = ''; sun.el.style.opacity = ''; sfx.ding();
+  await T.bone(emily);
+  await heike.walkTo(-0.25, 1000);
+
+  /* 3. неправа Эмили: зелёный мелок Изабель */
+  await play('n26_gruen');
+  emily.set('walk'); await emily.walkTo(0.8, 900); igreen.el.hidden = true; sfx.whoosh(); await emily.walkTo(0.6, 600); emily.set('idle');
+  await play('n26_nimmt');
+  isabel.set('talk'); await isabel.say('i26_hey'); isabel.set('idle');
+  const cards2 = () => [
+    {parts: [{img: 'emily_walk_out', x: 30, h: 68}, {img: 'isabel_idle', x: 72, h: 66}, {fx: 'tears', x: 71, y: 34}], clip: 'n26_opt_weg', ok: false, bg: '#eef2f6', ground: '#b9b9c2'},
+    {parts: [{img: 'emily_wave_out', x: 34, h: 70}, {img: 'isabel_wave', x: 68, h: 66}, {fx: 'hearts', x: 50, y: 18}], clip: 'n26_opt_fragen', bg: '#eef2f6', ground: '#b9b9c2'}];
+  while ((await T.choose(cards2(), 'n19_was', 'r19_was')) === 0) await play('n26_weg_nein');
+  await emily.walkTo(0.74, 500);
+  await T.repeat('e26_darf');
+  isabel.set('jump'); isabel.hop(); await isabel.say('i26_klar'); isabel.set('idle'); T.hearts(isabel);
+  await T.bone(isabel);
+
+  /* цветок: стебель и 6 лепестков */
+  await emily.walkTo(0.62, 500); emily.set('crouch');
+  flower.el.hidden = false; flower.el.innerHTML = FLOWER(true, 0); sfx.pop();
+  await play('n26_blaetter');
+  for (let i = 1; i <= 6; i++){ await T.tap([flower], 'n26_blaetter', 'r_tipp_licht'); flower.el.innerHTML = FLOWER(true, i); sfx.pop(); await count(i); }
+  hideNum(); await play('n26_sechs'); emily.set('idle');
+
+  /* все вместе */
+  abiha.set('walk'); await abiha.walkTo(0.12, 1200); abiha.set('wave'); await abiha.say('b26_mit'); abiha.set('idle');
+  await T.repeat('e26_klar');
+  heike.set('talk'); await heike.walkTo(0.06, 900); await heike.say('s26_toll'); heike.set('idle');
+  await T.bone(emily);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n26_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.emily_crouch_out[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
