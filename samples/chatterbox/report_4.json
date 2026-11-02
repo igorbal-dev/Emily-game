@@ -1,6 +1,6 @@
 [
   {
-    "file": "n25_tipp_schritt__A__narr.wav",
+    "file": "n28_paar__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -10,12 +10,12 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Wenn Paul zählt, tipp auf Emily! Dann macht sie einen Schritt.",
-    "audio_sec": 4.4,
-    "gen_sec": 64.6
+    "text": "Ein Paar!",
+    "audio_sec": 0.8,
+    "gen_sec": 26.6
   },
   {
-    "file": "n26_drauf__A__narr.wav",
+    "file": "n28_opt_weg__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -25,12 +25,42 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Oh nein! Paul hüpft auf Emilys Bild!",
-    "audio_sec": 3.32,
-    "gen_sec": 43.3
+    "text": "Emily schickt Mark weg.",
+    "audio_sec": 2.48,
+    "gen_sec": 27.6
   },
   {
-    "file": "e27_regel__A__emily2.wav",
+    "file": "n28_zaehl_mark__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Und wie viele Paare hat Mark?",
+    "audio_sec": 2.68,
+    "gen_sec": 29.6
+  },
+  {
+    "file": "n29_wie_viele__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wie viele Sprünge waren es wirklich?",
+    "audio_sec": 2.88,
+    "gen_sec": 30.6
+  },
+  {
+    "file": "e29_kann__A__emily2.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -40,27 +70,72 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Doch! Die Musik war aus. Das ist die Regel.",
+    "text": "Doch! Ich kann das!",
+    "audio_sec": 1.72,
+    "gen_sec": 22.9
+  },
+  {
+    "file": "i29_wow__A__isabel.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "isabel",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wow! Du kannst das ja wirklich! Entschuldigung, Emily.",
+    "audio_sec": 5.8,
+    "gen_sec": 50.2
+  },
+  {
+    "file": "n30_behalten_nein__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Abiha war zuerst da. Das ist nicht fair. Noch mal!",
+    "audio_sec": 4.32,
+    "gen_sec": 39.9
+  },
+  {
+    "file": "e30_tauschen__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Jetzt tauschen wir! Jetzt bin ich die Ärztin.",
+    "audio_sec": 3.76,
+    "gen_sec": 36.4
+  },
+  {
+    "file": "i30_ich_will__A__isabel.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "isabel",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ich will auch Ärztin sein! Gib mir den Koffer!",
     "audio_sec": 3.6,
-    "gen_sec": 45.1
+    "gen_sec": 36.4
   },
   {
-    "file": "r28_tipp__A__narr_ru.wav",
-    "model": "mtl",
-    "lang": "ru",
-    "preset": "A",
-    "voice": "narr_ru",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Переверни две карточки — найди две одинаковые!",
-    "audio_sec": 4.64,
-    "gen_sec": 54.4
-  },
-  {
-    "file": "n28_traurig__A__narr.wav",
+    "file": "n30_ende__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -70,87 +145,27 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Mark ist traurig. Er möchte mitspielen. Was macht Emily?",
-    "audio_sec": 4.36,
-    "gen_sec": 50.9
+    "text": "Super! Emily hat gewartet, getauscht und allen geholfen.",
+    "audio_sec": 4.52,
+    "gen_sec": 43.6
   },
   {
-    "file": "r28_zaehl__A__narr_ru.wav",
-    "model": "mtl",
-    "lang": "ru",
-    "preset": "A",
-    "voice": "narr_ru",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Нажимай на пары и считай!",
-    "audio_sec": 2.68,
-    "gen_sec": 36.7
-  },
-  {
-    "file": "i29_zwanzig__A__isabel.wav",
+    "file": "e31_theo__A__emily2.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
-    "voice": "isabel",
+    "voice": "emily2",
     "params": {
       "exaggeration": 0.6,
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Ich habe zwanzig geschafft!",
-    "audio_sec": 3.16,
-    "gen_sec": 41.0
+    "text": "Theo mag Kekse.",
+    "audio_sec": 1.44,
+    "gen_sec": 20.8
   },
   {
-    "file": "i29_klein__A__isabel.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "isabel",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Du bist zu klein! Du kannst das nicht!",
-    "audio_sec": 3.4,
-    "gen_sec": 44.6
-  },
-  {
-    "file": "n29_fuenf__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Fünf Sprünge! Super!",
-    "audio_sec": 1.84,
-    "gen_sec": 30.2
-  },
-  {
-    "file": "n30_opt_geben__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Emily gibt Abiha das Stethoskop.",
-    "audio_sec": 2.04,
-    "gen_sec": 32.7
-  },
-  {
-    "file": "b30_gesund__A__abiha2.wav",
+    "file": "b31_oh__A__abiha2.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -160,27 +175,12 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Alles gut! Du bist gesund.",
-    "audio_sec": 3.04,
-    "gen_sec": 41.2
+    "text": "Oh nein! Jetzt wissen es alle!",
+    "audio_sec": 3.56,
+    "gen_sec": 34.7
   },
   {
-    "file": "p30_danke__A__paul.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "paul",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Danke, Frau Doktor!",
-    "audio_sec": 1.84,
-    "gen_sec": 30.1
-  },
-  {
-    "file": "i30_danke__A__isabel.wav",
+    "file": "i31_mond__A__isabel.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -190,42 +190,12 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Danke, Emily! Du bist eine gute Ärztin.",
-    "audio_sec": 3.68,
-    "gen_sec": 45.7
+    "text": "Der Mond ist gelb!",
+    "audio_sec": 1.68,
+    "gen_sec": 21.8
   },
   {
-    "file": "r31_jetzt__A__narr_ru.wav",
-    "model": "mtl",
-    "lang": "ru",
-    "preset": "A",
-    "voice": "narr_ru",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Теперь Эмили шепчет Паулю на ушко. Тихо-тихо!",
-    "audio_sec": 5.16,
-    "gen_sec": 59.4
-  },
-  {
-    "file": "p31_laut__A__paul.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "paul",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "DIE KATZE SCHLÄFT!",
-    "audio_sec": 1.56,
-    "gen_sec": 27.2
-  },
-  {
-    "file": "e31_mond__A__emily2.wav",
+    "file": "e32_ball__A__emily2.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -235,12 +205,12 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Der Mond ist gelb.",
-    "audio_sec": 1.76,
-    "gen_sec": 29.1
+    "text": "Ist es der Ball?",
+    "audio_sec": 1.08,
+    "gen_sec": 18.1
   },
   {
-    "file": "n32_nicht_rot__A__narr.wav",
+    "file": "n32_zaehl_rot__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -250,162 +220,12 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Das ist nicht rot. Schau genau!",
-    "audio_sec": 2.8,
-    "gen_sec": 37.7
-  },
-  {
-    "file": "p32_apfel__A__paul.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "paul",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Okay … es war der Apfel. Entschuldigung.",
-    "audio_sec": 3.24,
-    "gen_sec": 42.0
-  },
-  {
-    "file": "p32_ente__A__paul.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "paul",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Ist es die Ente?",
-    "audio_sec": 1.96,
-    "gen_sec": 30.8
-  },
-  {
-    "file": "n33_intro__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Auf dem Hof ist Himmel und Hölle gemalt. Emily und Isabel wollen hüpfen.",
-    "audio_sec": 4.8,
-    "gen_sec": 55.8
-  },
-  {
-    "file": "n33_gewinnt__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Emily gewinnt! Emily fängt an.",
-    "audio_sec": 3.16,
-    "gen_sec": 40.7
-  },
-  {
-    "file": "n33_hupf__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Jetzt hüpft Emily! Tipp auf die Kästchen, eins nach dem anderen!",
-    "audio_sec": 5.08,
-    "gen_sec": 58.4
-  },
-  {
-    "file": "e33_klar__A__emily2.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "emily2",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Klar! Du bist nach Isabel dran.",
-    "audio_sec": 4.16,
-    "gen_sec": 50.2
-  },
-  {
-    "file": "e34_nicht_nett__A__emily2.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "emily2",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Das ist nicht nett. Ich will auch mitspielen!",
+    "text": "Wie viele rote Sachen gibt es? Tipp und zähl!",
     "audio_sec": 3.8,
-    "gen_sec": 46.6
-  },
-  {
-    "file": "e34_danke__A__emily2.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "emily2",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Danke! Was kochen wir?",
-    "audio_sec": 2.56,
     "gen_sec": 35.8
   },
   {
-    "file": "n34_abiha__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Jetzt weiß Emily, wie das ist. Was sagt sie?",
-    "audio_sec": 4.24,
-    "gen_sec": 51.1
-  },
-  {
-    "file": "n34_ende__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Super! Emily hat gefragt, war fest und hat Hilfe geholt. Und dann hat sie Abiha mitspielen lassen.",
-    "audio_sec": 5.96,
-    "gen_sec": 66.7
-  },
-  {
-    "file": "p35_nein__A__paul.wav",
+    "file": "p32_banane__A__paul.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -415,117 +235,27 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Ich habe sie aber jetzt!",
-    "audio_sec": 1.76,
-    "gen_sec": 29.8
+    "text": "Ist es die Banane?",
+    "audio_sec": 1.32,
+    "gen_sec": 20.0
   },
   {
-    "file": "n35_rot__A__narr.wav",
+    "file": "b33_wer__A__abiha2.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
-    "voice": "narr",
+    "voice": "abiha2",
     "params": {
       "exaggeration": 0.6,
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Tipp auf ein rotes Blatt!",
-    "audio_sec": 3.0,
-    "gen_sec": 41.0
+    "text": "Wer fängt an? Macht Schnick Schnack Schnuck!",
+    "audio_sec": 3.8,
+    "gen_sec": 35.4
   },
   {
-    "file": "n35_haufen__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Paul hat einen großen Laubhaufen gemacht.",
-    "audio_sec": 3.12,
-    "gen_sec": 42.1
-  },
-  {
-    "file": "r35_bauen__A__narr_ru.wav",
-    "model": "mtl",
-    "lang": "ru",
-    "preset": "A",
-    "voice": "narr_ru",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Нажимай на листики — куча снова растёт!",
-    "audio_sec": 4.44,
-    "gen_sec": 54.1
-  },
-  {
-    "file": "n36_punkte__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Wie viele Punkte hat der Würfel?",
-    "audio_sec": 2.68,
-    "gen_sec": 36.9
-  },
-  {
-    "file": "p36_fuenf__A__paul.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "paul",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Eine Fünf!",
-    "audio_sec": 1.08,
-    "gen_sec": 23.5
-  },
-  {
-    "file": "n36_werfen_nein__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Nein! Das macht es nicht besser. Noch mal!",
-    "audio_sec": 2.84,
-    "gen_sec": 39.2
-  },
-  {
-    "file": "p36_danke__A__paul.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "paul",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Danke! Das war ein tolles Spiel.",
-    "audio_sec": 3.44,
-    "gen_sec": 44.6
-  },
-  {
-    "file": "i37_mag__A__isabel.wav",
+    "file": "i33_zuerst__A__isabel.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -535,12 +265,27 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Was mag Lulu?",
-    "audio_sec": 1.36,
-    "gen_sec": 26.2
+    "text": "Ich fange an! Ich bin schneller!",
+    "audio_sec": 3.48,
+    "gen_sec": 33.8
   },
   {
-    "file": "n37_du__A__narr.wav",
+    "file": "r33_hupf__A__narr_ru.wav",
+    "model": "mtl",
+    "lang": "ru",
+    "preset": "A",
+    "voice": "narr_ru",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Нажимай на клеточки по порядку — Эмили прыгает!",
+    "audio_sec": 4.64,
+    "gen_sec": 44.1
+  },
+  {
+    "file": "n33_ende__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -550,12 +295,57 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Möchtest du das? Emily darf Ja oder Nein sagen. Tipp auf ein Bild!",
-    "audio_sec": 4.88,
-    "gen_sec": 57.6
+    "text": "Super! Emily hat gesagt: Das ist nicht fair! Und sie hat selbst fair gespielt.",
+    "audio_sec": 5.24,
+    "gen_sec": 48.8
   },
   {
-    "file": "n37_beides__A__narr.wav",
+    "file": "i34_trotzdem__A__isabel.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "isabel",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Trotzdem nein!",
+    "audio_sec": 1.56,
+    "gen_sec": 22.3
+  },
+  {
+    "file": "i34_suppe__A__isabel.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "isabel",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wir kochen Suppe! Deck bitte den Tisch!",
+    "audio_sec": 3.32,
+    "gen_sec": 33.8
+  },
+  {
+    "file": "e34_oma__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Ja, klar! Du kannst die Oma sein!",
+    "audio_sec": 3.12,
+    "gen_sec": 32.6
+  },
+  {
+    "file": "n35_intro__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -565,12 +355,177 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Beides ist okay. Emily darf Ja oder Nein sagen.",
-    "audio_sec": 4.36,
-    "gen_sec": 51.8
+    "text": "Die Kita macht einen Spaziergang im Park. Überall liegen bunte Blätter und Kastanien!",
+    "audio_sec": 5.44,
+    "gen_sec": 48.5
   },
   {
-    "file": "s38_regel__A__heike.wav",
+    "file": "e35_meine__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Nein! Das ist meine Kastanie. Gib sie zurück!",
+    "audio_sec": 6.28,
+    "gen_sec": 54.1
+  },
+  {
+    "file": "n35_gelb__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Tipp auf ein gelbes Blatt!",
+    "audio_sec": 2.2,
+    "gen_sec": 25.3
+  },
+  {
+    "file": "n35_spring__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Hui! Emily springt mitten hinein!",
+    "audio_sec": 2.4,
+    "gen_sec": 26.3
+  },
+  {
+    "file": "p35_zusammen__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Super! Jetzt springen wir zusammen!",
+    "audio_sec": 3.76,
+    "gen_sec": 35.1
+  },
+  {
+    "file": "r36_punkte__A__narr_ru.wav",
+    "model": "mtl",
+    "lang": "ru",
+    "preset": "A",
+    "voice": "narr_ru",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Сколько точек на кубике?",
+    "audio_sec": 2.88,
+    "gen_sec": 31.3
+  },
+  {
+    "file": "p36_drei__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Eine Drei!",
+    "audio_sec": 1.52,
+    "gen_sec": 22.2
+  },
+  {
+    "file": "e36_gut__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Schade! Aber gut gespielt, Paul.",
+    "audio_sec": 2.8,
+    "gen_sec": 31.4
+  },
+  {
+    "file": "n36_ende__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Super! Emily kann verlieren und gewinnen. Und sie sagt: Gut gespielt!",
+    "audio_sec": 5.28,
+    "gen_sec": 46.7
+  },
+  {
+    "file": "e37_moehren__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Lulu mag Möhren!",
+    "audio_sec": 2.8,
+    "gen_sec": 28.7
+  },
+  {
+    "file": "r37_du__A__narr_ru.wav",
+    "model": "mtl",
+    "lang": "ru",
+    "preset": "A",
+    "voice": "narr_ru",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Эмили можно сказать и «да», и «нет». Нажми на картинку!",
+    "audio_sec": 5.2,
+    "gen_sec": 45.0
+  },
+  {
+    "file": "n37_zaehl__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Wie viele Kuscheltiere sind im Kreis? Tipp und zähl!",
+    "audio_sec": 3.8,
+    "gen_sec": 36.5
+  },
+  {
+    "file": "s38_feuer__A__heike.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -580,12 +535,27 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Bei Feuer legt ihr euch auf die Decke. Bei Wasser klettert ihr auf die Bank. Bei Sturm haltet ihr euch am Baum fest!",
-    "audio_sec": 6.56,
-    "gen_sec": 72.2
+    "text": "Feuer!",
+    "audio_sec": 1.96,
+    "gen_sec": 112.5
   },
   {
-    "file": "n38_falsch__A__narr.wav",
+    "file": "p38_kein__A__paul.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "paul",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Hier ist kein Platz! Geh weg!",
+    "audio_sec": 2.76,
+    "gen_sec": 28.8
+  },
+  {
+    "file": "n38_vier__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -595,27 +565,12 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Nein, nicht dahin! Hör genau hin!",
-    "audio_sec": 2.84,
-    "gen_sec": 38.7
+    "text": "Vier Kinder! Jetzt haben alle Platz.",
+    "audio_sec": 2.92,
+    "gen_sec": 29.8
   },
   {
-    "file": "n38_wie_viele__A__narr.wav",
-    "model": "mtl",
-    "lang": "de",
-    "preset": "A",
-    "voice": "narr",
-    "params": {
-      "exaggeration": 0.6,
-      "cfg_weight": 0.5,
-      "temperature": 0.8
-    },
-    "text": "Wie viele Kinder sind auf der Bank? Tipp und zähl!",
-    "audio_sec": 3.4,
-    "gen_sec": 44.1
-  },
-  {
-    "file": "e38_wasser__A__emily2.wav",
+    "file": "e38_sturm__A__emily2.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -625,12 +580,42 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Wasser!",
-    "audio_sec": 0.96,
-    "gen_sec": 22.8
+    "text": "Sturm!",
+    "audio_sec": 1.32,
+    "gen_sec": 19.7
   },
   {
-    "file": "n39_kroko__A__narr.wav",
+    "file": "i39_pass__A__isabel.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "isabel",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Kasper, pass auf! Hinter dir!",
+    "audio_sec": 2.84,
+    "gen_sec": 29.9
+  },
+  {
+    "file": "e39_gleich__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Paul, ich spiele gerade. Du kannst gleich.",
+    "audio_sec": 2.96,
+    "gen_sec": 30.5
+  },
+  {
+    "file": "n39_klatschen__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
@@ -640,38 +625,128 @@
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Oh! Da kommt das Krokodil! Es schleicht hinter den Kasper.",
+    "text": "Alle klatschen! Tipp auf die Hände und zähl mit!",
+    "audio_sec": 4.0,
+    "gen_sec": 37.0
+  },
+  {
+    "file": "n40_zieht__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Isabel zieht am Lenker!",
+    "audio_sec": 2.28,
+    "gen_sec": 25.3
+  },
+  {
+    "file": "i40_juhu__A__isabel.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "isabel",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Juhu! Danke!",
+    "audio_sec": 2.28,
+    "gen_sec": 26.1
+  },
+  {
+    "file": "n41_intro__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Musikkreis in der Kita! Heike hat Instrumente mitgebracht.",
+    "audio_sec": 4.68,
+    "gen_sec": 42.3
+  },
+  {
+    "file": "n41_nach__A__narr.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "narr",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Jetzt du! Tipp genauso oft!",
+    "audio_sec": 2.6,
+    "gen_sec": 28.0
+  },
+  {
+    "file": "e41_ohren__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Hör auf! Das tut mir in den Ohren weh.",
+    "audio_sec": 4.16,
+    "gen_sec": 39.8
+  },
+  {
+    "file": "e41_leise__A__emily2.wav",
+    "model": "mtl",
+    "lang": "de",
+    "preset": "A",
+    "voice": "emily2",
+    "params": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "text": "Jetzt alle ganz leise!",
     "audio_sec": 3.68,
-    "gen_sec": 47.2
+    "gen_sec": 37.1
   },
   {
-    "file": "p39_ich__A__paul.wav",
+    "file": "n42_tipp__A__narr.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
-    "voice": "paul",
+    "voice": "narr",
     "params": {
       "exaggeration": 0.6,
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Ich will den Kasper spielen! Gib her!",
-    "audio_sec": 2.4,
-    "gen_sec": 35.7
+    "text": "Du bist dran! Tipp auf ein Puzzleteil!",
+    "audio_sec": 2.84,
+    "gen_sec": 31.6
   },
   {
-    "file": "p39_lieb__A__paul.wav",
+    "file": "e42_gefunden__A__emily2.wav",
     "model": "mtl",
     "lang": "de",
     "preset": "A",
-    "voice": "paul",
+    "voice": "emily2",
     "params": {
       "exaggeration": 0.6,
       "cfg_weight": 0.5,
       "temperature": 0.8
     },
-    "text": "Ja! Ich bin ein liebes Krokodil!",
-    "audio_sec": 2.88,
-    "gen_sec": 39.7
+    "text": "Ich habe es gefunden! Es war unter dem Tisch.",
+    "audio_sec": 3.52,
+    "gen_sec": 36.9
   }
 ]
