@@ -53,6 +53,16 @@
 - Если в настройках сети окружения разрешить `huggingface.co` и `*.hf.co` — можно локально: `uv venv -p 3.11 /opt/cb && VIRTUAL_ENV=/opt/cb uv pip install chatterbox-tts` (~5 мин, 6 ГБ), потом `/opt/cb/bin/python tools/cb_say.py фразы.txt` (строка `ключ | текст`; b — Абиха, e/k — Эмили, k — +5 полутонов; `--test` — пробы в `assets/voice-tests/`). cb_say уже настроен на emily2/abiha2.
 - 1.11 сделано: все 22 недостающие фразы уровней 21–23 (Абиха 8, Эмили 14) озвучены и опубликованы (версия от 1.11, прошлая — v11). Сайт из облачной сессии не открывается (прокси) — проверять через `git show origin/gh-pages:…`.
 
+## Уровни 24+ (с 2.11): конфликты и настоящие детские игры
+- План и список всех уровней — `LEVELS_PLAN.md`, отчёт для Игоря — `REPORT.md` (дописывать после каждого уровня). Идеи не повторять (места, игры, конфликты — см. таблицу в плане).
+- Сделаны 24 Sankt Martin, 25 Ochs am Berg, 26 Kreide, 27 Stopptanz, 28 Memory mit Mark, 29 Seilspringen, 30 Arzt spielen, 31 Stille Post, 32 Ich sehe was, 33 Himmel und Hölle, 34 Mama-Papa-Kind, 35 Kastanien und Blätter, 36 Würfelspiel, 37 Kuscheltiertag, 38 Feuer-Wasser-Sturm.
+- Лестница настойчивости — общий `js/firm.js` (подключать после talk/repeat): шаг 1 — `T.repeat`; шаги 2–3 — `T.firm(model, {who, step, dir})` (нужна громкость, обидчик отступает; «n_lauter» 2× по-немецки, потом «r_lauter»; мягко — после 4 попыток дальше); шаг 4 — фраза «Heike, …». Шёпот — `T.soft(model, {to})` (громко не засчитывается, «n_leiser»/«r_leiser»). Без микрофона — засчитывается сразу. Эмили никогда не дерётся: карточки «толкнуть / плакать» мягко неверные.
+- Новый уровень: шапка как у l24.src.html, `const SAY` с текстами (ключи по первой букве: n/a ведущая, r русская, e Эмили, k Марк, b Абиха, i Изабель, p Пауль, s Хайке), кусочки — в `js/chunks.js` (правила нарезки там же в начале), карточка на карте — `python3 tools/add_level.py N "de" "ru" "фразы" "счёт" "смысл" -`, `LEVEL_BONES` в `js/common.js` (есть до 40).
+- Озвучка: `python3 tools/cb_queue.py <ветка chatterbox>/tools/chatterbox/probes.json lN.src.html` → commit+push ветки `claude/chatterbox-proby-dmel1d` → GitHub (8 параллельных заданий, готовые фразы не переделываются, слишком длинные «с бормотанием» — до 3 попыток) → `git pull` → `python3 tools/cb_import.py <…>/samples/chatterbox` (только новые ключи; `--force` — заменить) → `python3 tools/build_minigames.py`. Пока записи нет — фразу говорит голос браузера, уровень всё равно проходится.
+- Образцы голосов Chatterbox (`tools/chatterbox/voices/` в ветке chatterbox): narr, narr_ru (ru), emily2, abiha2, isabel, paul, heike (склейка 2–4 самых длинных записей ElevenLabs). Марк — emily2, потом +5 полутонов при импорте (ключи k…_).
+- Проверка уровня: `python3 -m http.server 8765 &` и `DEV=1 SPEED=3 W=844 H=390 node tools/autoplay.js 24` (finished: true, errors: []); `SNAPS=папка` — скриншоты.
+- Картинок эмоций у Пауля/Изабель нет — заглушки (стоит + слёзы кодом). Задание ChatGPT — `for_chatgpt/CONFLICT_POSES.md`. Воспитательница во всех новых уровнях — Хайке (Duygu, Ivonne, Dominique, Anika в игре нет).
+
 ## Экономия
 - Делать один раз в общем коде (`js/`), не копировать по уровням.
 - Не гонять долгие проверки и автопрогоны: максимум одна короткая проверка. На телефоне (844×390, гонки m1 — 390×844) и iPad (1180×820) Игорь проверяет сам.
