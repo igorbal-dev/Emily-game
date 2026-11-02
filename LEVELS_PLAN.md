@@ -39,7 +39,19 @@
 
 **Лестница настойчивости** — общий код `js/firm.js`: шаг 1 обычный повтор; шаги 2–3 — `T.firm()`: нужно сказать громче (порог громкости), чем громче — тем дальше отступает обидчик; после 3 попыток игра всё равно идёт дальше; шаг 4 — позвать Хайке.
 
-## Новые уровни
+## Новые уровни — что сделано (2.11)
+
+Сделаны 19 уровней: 24 Sankt Martin, 25 Ochs am Berg, 26 Kreide, 27 Stopptanz, 28 Memory mit Mark, 29 Seilspringen, 30 Arzt spielen,
+31 Stille Post, 32 Ich sehe was, 33 Himmel und Hölle (Schnick Schnack Schnuck), 34 Mama-Papa-Kind («Du darfst nicht mitspielen!»),
+35 Kastanien und Blätter, 36 Würfelspiel (проигрывать и выигрывать), 37 Kuscheltiertag (говорить перед группой, своё «нет»),
+38 Feuer-Wasser-Sturm («не пускают»), 39 Kasperletheater, 40 Laufrad (до десяти — и меняемся), 41 Musikkreis («Das ist zu laut»), 42 Puzzle.
+Идея 33 «Bauklötze» не делалась — похожа на 28 (Марк мешает). Подробности по каждому — `REPORT.md`.
+
+Запас идей на следующие уровни (не повторяют сделанное): Garderobe — перепутали шапку («Das ist meine Mütze. Deine ist blau.»);
+Fangen с правилом «кто водит» и «Ich brauche eine Pause»; Laubhaufen в дождь (Matschhose, лужи без Леона); Adventskalender (декабрь, счёт до 24);
+Weihnachtsbasteln; Turnhalle-Hindernislauf (очередь и подбадривание «Du schaffst das!»).
+
+## Исходный план идей
 
 ### 24 «Sankt Martin» — Laternenlauf (садик, вечер) — первым, к 11.11
 - **Место:** группа садика (мастерим фонарики) → двор садика вечером, темно, шествие.
