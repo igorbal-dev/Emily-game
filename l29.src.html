@@ -1,0 +1,157 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Seilspringen. Уровень 29</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 29 «Seilspringen» — двор садика: крутим скакалку, считаем прыжки Изабель и спорим о счёте («Ich habe mitgezählt. Es waren sieben.»), Изабель дразнит «Du bist zu klein!» → «Doch! Ich kann das!» и Эмили прыгает сама. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = __IMG__;  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,laugh,walk}_out abiha_{idle,blink,mouth1,mouth2,wave,peace,jump,laugh}_out isabel_{idle,blink,talk,wave,jump}*/
+const SND = __SND__;  /*SND: e_{1..7} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht i_hihi*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель) */
+const SAY = {
+  n29_intro: 'Auf dem Hof der Kita. Emily und Abiha drehen das Springseil. Isabel springt!',
+  e29_teddy: 'Teddybär, Teddybär, dreh dich um!',
+  n29_zaehl: 'Zähl mit, wie oft Isabel springt!',
+  i29_zwanzig: 'Ich habe zwanzig geschafft!',
+  n29_wie_viele: 'Wie viele Sprünge waren es wirklich?',
+  r29_wie_viele: 'Сколько раз Изабель прыгнула на самом деле?',
+  e29_stimmt_nicht: 'Nein, das stimmt nicht. Es waren sieben.',
+  i29_doch: 'Doch! Zwanzig!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e29_gezaehlt: 'Nein! Ich habe mitgezählt. Es waren sieben.',
+  i29_okay: 'Okay … sieben. Das ist auch gut.',
+  e29_ich_auch: 'Jetzt möchte ich springen!',
+  i29_klein: 'Du bist zu klein! Du kannst das nicht!',
+  e29_kann: 'Doch! Ich kann das!',
+  i29_hihi: 'Hihi! Nein, kannst du nicht!',
+  e29_nicht_nett: 'Hör auf! Das ist nicht nett. Ich will es probieren!',
+  i29_probier: 'Okay. Probier es!',
+  b29_schaffst: 'Du schaffst das, Emily!',
+  n29_tipp_spring: 'Wenn das Seil unten ist, tipp auf Emily! Dann springt sie.',
+  r29_tipp_spring: 'Когда верёвка внизу — нажми на Эмили, и она прыгнет!',
+  n29_fuenf: 'Fünf Sprünge! Super!',
+  i29_wow: 'Wow! Du kannst das ja wirklich! Entschuldigung, Emily.',
+  e24_freunde: 'Schon gut. Wieder Freunde?',
+  i29_freunde: 'Ja! Wieder Freunde!',
+  n29_ende: 'Super! Emily hat gesagt: Doch, ich kann das! Und sie hat es geschafft.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 29: скакалка. Эмили и Абиха крутят, Изабель прыгает, Эмили говорит народную считалку «Teddybär, Teddybär, dreh dich um!».
+   Считаем прыжки Изабель (7), она хвастается «zwanzig» — выбор числа (7), «Nein, das stimmt nicht. Es waren sieben.», «Doch! Zwanzig!» → шаг 2 громче
+   «Nein! Ich habe mitgezählt. Es waren sieben.» Изабель дразнит «Du bist zu klein!» → «Doch! Ich kann das!», «Hihi» → шаг 2 «Hör auf! Das ist nicht nett. Ich will es probieren!».
+   Эмили прыгает: нажимать на неё, когда верёвка внизу (она светится), 5 прыжков. Изабель извиняется, мирятся. */
+const LEVEL = 29, FRIENDS = ['isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M14 30 Q50 110 86 30" fill="none" stroke="#ff7a59" stroke-width="6" stroke-linecap="round"/><rect x="6" y="18" width="12" height="22" rx="5" fill="#2f80ed"/><rect x="82" y="18" width="12" height="22" rx="5" fill="#2f80ed"/><circle cx="50" cy="40" r="10" fill="#ffd7b5"/><path d="M42 52 h16 l4 20 h-24 z" fill="#ff8fc8"/></svg>';
+function drawScene(g, W, H, L){ drawYard(g, W, H, L); }
+
+let emily, abiha, isabel, rope, phase = 0, ropeOn = false, ropeSpeed = 1;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'jump', 'surprised', 'laugh', 'walk'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'jump', 'laugh'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+const LX = 0.24, RX = 0.76, MX = 0.5;
+function setup(){
+  stage.querySelectorAll('.char,.prop,#rope').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  rope = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); rope.id = 'rope';
+  Object.assign(rope.style, {position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 39, overflow: 'visible'});
+  rope.innerHTML = '<path fill="none" stroke="#ff7a59" stroke-width="5" stroke-linecap="round"/>'; stage.appendChild(rope);
+  abiha = T.hero('abiha', {x: RX, outfit: 'out', poses: AP}); abiha.face(true);
+  isabel = T.hero('isabel', {x: MX, h: 0.95, poses: KP});
+  emily = T.hero('emily', {x: LX, outfit: 'out', poses: EP});
+}
+/* скакалка: дуга между руками крутящих, фаза 0 — вверху над головой, 0.5 — внизу у ног */
+function drawRope(){
+  const a = T.heroes[rope.dataset.l || 'emily'], b = abiha; if (!a || !L.W) return;
+  const hy = L.floorY - L.hE*0.5, x1 = L.W*a.x + L.hE*0.12, x2 = L.W*b.x - L.hE*0.12;
+  const c = Math.cos(phase*2*Math.PI), cy = hy - c*L.hE*1.05 + L.hE*0.15;
+  rope.firstChild.setAttribute('d', `M${x1} ${hy} Q${(x1 + x2)/2} ${cy} ${x2} ${hy}`);
+  rope.style.zIndex = c < 0 ? 52 : 39;                       /* внизу — перед прыгуном, вверху — за ним */
+}
+let last = 0;
+function loop(t){ requestAnimationFrame(loop); const dt = Math.min(50, t - (last || t)); last = t; if (ropeOn) phase = (phase + dt/1000*0.55*ropeSpeed) % 1; drawRope(); }
+requestAnimationFrame(loop);
+const nearBottom = () => Math.abs(phase - 0.5) < 0.13;
+/* ждём, пока верёвка дойдёт до низа */
+async function waitBottom(){ while (!nearBottom()) await sleep(30); }
+async function waitTop(){ while (nearBottom()) await sleep(30); }
+
+async function story(){
+  await play('n29_intro');
+  ropeOn = true;
+  await T.repeat('e29_teddy');
+  isabel.el.classList.add('spin'); await sleep(1300); isabel.el.classList.remove('spin');
+  /* считаем прыжки Изабель: 7, на восьмом запуталась */
+  await play('n29_zaehl');
+  for (let i = 1; i <= 7; i++){ await waitBottom(); isabel.set('jump'); isabel.hop(); showNum(i); emily.say('e_' + i); await waitTop(); isabel.set('idle'); }
+  await waitBottom(); ropeOn = false; sfx.bonk(); isabel.set('idle'); hideNum();
+  isabel.set('talk'); await isabel.say('i29_zwanzig'); isabel.set('jump'); isabel.hop(); await sleep(300); isabel.set('idle');
+  await play('n29_wie_viele');
+  await numChoice([5, 7, 20], 7, 'n29_wie_viele', 'r29_wie_viele');
+  await T.repeat('e29_stimmt_nicht');
+  isabel.set('talk'); await isabel.say('i29_doch'); isabel.set('idle');
+  await play('n24_fester');
+  await T.firm('e29_gezaehlt', {who: isabel, step: 2});
+  isabel.set('talk'); await isabel.say('i29_okay'); isabel.set('idle');
+  await T.bone(emily);
+
+  /* Эмили хочет прыгать — Изабель дразнится */
+  await T.repeat('e29_ich_auch');
+  isabel.set('talk'); await isabel.say('i29_klein'); isabel.set('idle');
+  await T.repeat('e29_kann');
+  isabel.set('jump'); await isabel.say('i29_hihi'); isabel.set('idle');
+  await play('n24_fester');
+  await T.firm('e29_nicht_nett', {who: isabel, step: 2});
+  isabel.set('talk'); await isabel.say('i29_probier'); isabel.set('idle');
+  /* меняются местами: Изабель крутит, Эмили в середине */
+  await Promise.all([isabel.walkTo(LX, 900), emily.walkTo(MX, 900)]); rope.dataset.l = 'isabel'; isabel.face(false);
+  abiha.set('wave'); await abiha.say('b29_schaffst'); abiha.set('idle');
+  await play('n29_tipp_spring');
+  ropeSpeed = 0.7; ropeOn = true;
+  let n = 0, k = 0; const t0 = performance.now();
+  emily.el.classList.add('tap');
+  const tapOrig = T.onTap; let tapped = false;
+  T.onTap = el => { if (el === emily.el){ tapped = true; return true; } return tapOrig(el); };
+  while (n < 5){
+    await waitBottom(); tapped = false; emily.el.classList.add('tapme');
+    const w0 = performance.now(); while (performance.now() - w0 < 1100 && !tapped) await sleep(30);
+    emily.el.classList.remove('tapme');
+    if (tapped || performance.now() - t0 > 60000){ n++; emily.set('jump'); emily.hop(); sfx.pop(); showNum(n); emily.say('e_' + n); await waitTop(); emily.set('idle'); }
+    else { sfx.bonk(); if (++k % 3 === 0) await play(k % 9 === 0 ? 'r29_tipp_spring' : 'n29_tipp_spring'); }
+  }
+  T.onTap = tapOrig; emily.el.classList.remove('tap'); ropeOn = false; hideNum();
+  await play('n29_fuenf'); emily.set('laugh'); abiha.set('jump'); sfx.fanfare(); await sleep(600); emily.set('idle'); abiha.set('idle');
+  await T.bone(emily);
+  isabel.set('talk'); await isabel.say('i29_wow'); isabel.set('idle');
+  await T.repeat('e24_freunde');
+  isabel.set('jump'); isabel.hop(); await isabel.say('i29_freunde'); isabel.set('idle'); T.hearts(isabel); T.hearts(emily);
+  await T.bone(isabel);
+  [emily, abiha, isabel].forEach(h => h.set('jump')); await play('n29_ende');
+  [emily, abiha, isabel].forEach(h => h.set('idle'));
+}
+T.start(IMG.isabel_jump[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

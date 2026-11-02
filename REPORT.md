@@ -97,3 +97,16 @@
 **Лестница:** до шага 3 (взрослый не нужен — малыш останавливается). **Счёт:** пары, сравнение.
 **Кусочки:** «Mark, … | bitte nicht die Karten nehmen.» («nicht» вместе с «nehmen»), «Nein, Mark! | Das ist mein Spiel.», «Stopp, Mark! | Hör auf!», «Komm, Mark. | Wir spielen zusammen.», «Ich bin dran!» — целиком.
 
+## Уровень 29 «Seilspringen» — готов
+
+**Где:** двор садика (тот же асфальт, что в «Kreide» — фон теперь общий, `drawYard` в `js/scenes.js`).
+**Что происходит:**
+1. Эмили и Абиха крутят скакалку, Изабель прыгает. Эмили говорит народную считалку «Teddybär, Teddybär, dreh dich um!» — Изабель кружится.
+2. Считаем прыжки Изабель (Эмили считает вслух до 7), на восьмом она запуталась. Изабель хвастается: «Ich habe zwanzig geschafft!» — выбираем число, сколько было на самом деле (7). «Nein, das stimmt nicht. Es waren sieben.» — «Doch! Zwanzig!» — **шаг 2**, громче: «Nein! Ich habe mitgezählt. Es waren sieben.» — «Okay … sieben.»
+3. **Дразнилка:** «Jetzt möchte ich springen!» — «Du bist zu klein! Du kannst das nicht!» — «Doch! Ich kann das!» — «Hihi! Nein, kannst du nicht!» — **шаг 2**: «Hör auf! Das ist nicht nett. Ich will es probieren!»
+4. Эмили прыгает сама: верёвка крутится, когда она внизу — Эмили светится, нажимаем — прыжок (5 прыжков, считаем). Не успела — ничего страшного, верёвка просто идёт дальше.
+5. Изабель: «Wow! Du kannst das ja wirklich! Entschuldigung, Emily.» — «Schon gut. Wieder Freunde?» — «Ja!»
+
+**Лестница:** шаг 2 (два раза). **Счёт:** 1–7, выбор числа, 1–5.
+**Кусочки:** «Teddybär, Teddybär, … | dreh dich um!» (приставка «um» с глаголом), «Hör auf! | Das ist nicht nett. | Ich will es probieren!», «Nein! | Ich habe mitgezählt. | Es waren sieben.», «Doch! Ich kann das!» — целиком.
+

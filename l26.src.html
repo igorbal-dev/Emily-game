@@ -70,6 +70,7 @@ const SAY = {
 <script src="js/chunks.js"></script>
 <script src="js/repeat.js"></script>
 <script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
 <script>
 /* Уровень 26: двор садика, мелки. Солнце (жёлтый мелок, 5 лучей). Пауль берёт розовый мелок: шаг 1 «Paul, das ist meine Kreide. Gib sie mir bitte zurück.»,
    шаг 2 «Nein! Frag bitte zuerst!», он прыгает по рисунку — шаг 3 ладонь «Stopp! Hör auf! Ich will das nicht!», он хихикает — карточки (толкнуть / позвать Хайке / плакать),
@@ -77,19 +78,7 @@ const SAY = {
    Неправа Эмили: берёт зелёный мелок Изабель без спроса → «Entschuldigung. Darf ich die grüne Kreide haben?». Цветок: 6 лепестков. */
 const LEVEL = 26, FRIENDS = ['paul', 'isabel', 'abiha'];
 const STICKER = '<svg viewBox="0 0 100 100"><circle cx="40" cy="40" r="16" fill="#ffd34d"/><g stroke="#ffd34d" stroke-width="6" stroke-linecap="round"><path d="M40 10 v8 M40 62 v8 M10 40 h8 M62 40 h8 M19 19 l6 6 M55 55 l6 6 M19 61 l6 -6 M55 25 l6 -6"/></g><rect x="56" y="64" width="38" height="12" rx="6" transform="rotate(-35 75 70)" fill="#ff8fc8" stroke="#d6476a" stroke-width="2"/><rect x="50" y="78" width="38" height="12" rx="6" transform="rotate(-20 69 84)" fill="#4a8ff0" stroke="#2a5fb0" stroke-width="2"/></svg>';
-function drawScene(g, W, H, L){
-  const fy = L.floorY, hE = L.hE, hz = H*0.5;
-  let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#a8d8f5'); gr.addColorStop(1, '#e6f4fb'); g.fillStyle = gr; g.fillRect(0, 0, W, hz);
-  /* здание садика: стена, окна, дверь */
-  g.fillStyle = '#f6d8a8'; g.fillRect(0, hz - hE*1.0, W*0.62, hE*1.0); g.fillStyle = '#c9584a'; g.fillRect(-5, hz - hE*1.08, W*0.62 + 10, hE*0.1);
-  g.fillStyle = '#8fd3ff'; for (const x of [0.06, 0.2, 0.42]){ g.fillRect(W*x, hz - hE*0.8, hE*0.42, hE*0.34); g.strokeStyle = '#fff'; g.lineWidth = hE*0.03; g.strokeRect(W*x, hz - hE*0.8, hE*0.42, hE*0.34); }
-  g.fillStyle = '#5aa8f0'; g.fillRect(W*0.32, hz - hE*0.62, hE*0.3, hE*0.62);
-  for (let i = 0; i < 5; i++){ const tx = W*(0.68 + i*0.08), r = hE*(0.18 + (i % 2)*0.05); g.fillStyle = ['#e0763a', '#e3a33a', '#5fae4a'][i % 3]; g.beginPath(); g.arc(tx, hz - r*0.6, r, 0, 7); g.fill(); }
-  /* асфальт двора */
-  gr = g.createLinearGradient(0, hz, 0, H); gr.addColorStop(0, '#b9b9c2'); gr.addColorStop(1, '#9d9da8'); g.fillStyle = gr; g.fillRect(0, hz, W, H - hz);
-  g.fillStyle = 'rgba(255,255,255,.08)'; for (let i = 0; i < 40; i++){ g.fillRect((i*37.1 % 100)/100*W, hz + (i*17.3 % 50)/100*(H - hz), hE*0.03, hE*0.015); }
-  for (let i = 0; i < 9; i++){ const x = (i*53.7 % 100)/100*W, y = fy + hE*(0.04 + (i % 3)*0.04); g.fillStyle = ['#e0763a', '#e3a33a', '#b5452f'][i % 3]; g.beginPath(); g.ellipse(x, y, hE*0.03, hE*0.014, i, 0, 7); g.fill(); }
-}
+function drawScene(g, W, H, L){ drawYard(g, W, H, L); }
 /* мелки и рисунки (рисунки «лежат» на асфальте — сплющены) */
 const CH = {gelb: ['#ffd34d', '#d6a21e'], blau: ['#4a8ff0', '#2a5fb0'], gruen: ['#3cc36a', '#24924a'], rosa: ['#ff8fc8', '#d6476a'], rot: ['#ff5a4a', '#c43a2e']};
 const CHALK = c => `<svg viewBox="0 0 30 80"><rect x="4" y="4" width="22" height="72" rx="10" fill="${c[0]}" stroke="${c[1]}" stroke-width="3"/><path d="M6 20 h18" stroke="#fff" stroke-width="3" opacity=".5"/></svg>`;

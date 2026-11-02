@@ -176,7 +176,13 @@ const CHUNKS = (() => {
     e28_mein_spiel: ['Nein, Mark!', 'Das ist mein Spiel.'],
     e28_stopp: ['Stopp, Mark!', 'Hör auf!'],
     e28_zusammen: ['Komm, Mark.', 'Wir spielen zusammen.'],
-    e28_du_dran: ['Jetzt bist du dran, …', 'Mark!']
+    e28_du_dran: ['Jetzt bist du dran, …', 'Mark!'],
+    /* 29 «Seilspringen» */
+    e29_teddy: ['Teddybär, Teddybär, …', 'dreh dich um!'],
+    e29_stimmt_nicht: ['Nein, …', 'das stimmt nicht.', 'Es waren sieben.'],
+    e29_gezaehlt: ['Nein!', 'Ich habe mitgezählt.', 'Es waren sieben.'],
+    e29_ich_auch: ['Jetzt möchte ich …', 'springen!'],
+    e29_nicht_nett: ['Hör auf!', 'Das ist nicht nett.', 'Ich will es probieren!']
   });
   return C;
 })();
