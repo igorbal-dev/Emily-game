@@ -249,7 +249,12 @@ const CHUNKS = (() => {
     e41_glocke: ['Ich möchte …', 'die Glocke, bitte.'],
     e41_laut: ['Paul, …', 'das ist zu laut.', 'Bitte leiser.'],
     e41_ohren: ['Hör auf!', 'Das tut mir …', 'in den Ohren weh.'],
-    e41_leise: ['Jetzt alle …', 'ganz leise!']
+    e41_leise: ['Jetzt alle …', 'ganz leise!'],
+    /* 42 «Puzzle» */
+    e42_zusammen: ['Paul, …', 'wir machen es zusammen.', 'Abwechselnd!'],
+    e42_auch: ['Nein, Paul!', 'Das Puzzle ist für uns beide.', 'Ein Teil du, …', 'ein Teil ich.'],
+    e42_gefunden: ['Ich habe es gefunden!', 'Es war unter dem Tisch.'],
+    e42_beide: ['Wir legen …', 'das letzte Teil …', 'zusammen!']
   });
   return C;
 })();

@@ -271,3 +271,15 @@
 **Лестница:** шаг 2. **Счёт:** ритм 3 и 4. **Новое:** просить потише (неприятно — можно сказать).
 **Кусочки:** «Paul, … | das ist zu laut. | Bitte leiser.», «Hör auf! | Das tut mir … | in den Ohren weh.», «Jetzt alle … | ganz leise!»
 
+## Уровень 42 «Puzzle» — готов
+
+**Где:** стол в группе, пазл из 9 частей (собака на лугу).
+**Что происходит:**
+1. Пауль: «Ich mache alles alleine! Das ist mein Puzzle!» — шаг 1: «Paul, wir machen es zusammen. Abwechselnd!» — «Nein! Ich will alleine!» — **шаг 2**: «Nein, Paul! Das Puzzle ist für uns beide. Ein Teil du, ein Teil ich.» — «Okay. Abwechselnd. Du fängst an!»
+2. Кладём **по очереди**: Эмили — нажимаем на часть, она встаёт на место; «Jetzt du, Paul!» — Пауль кладёт сам. Части считаем.
+3. Последней части нет! Изабель: «Vielleicht ist es unter dem Tisch?» — ищем: стул, коробка, стол. «Ich habe es gefunden! Es war unter dem Tisch.»
+4. Пауль: «Ich will das letzte Teil legen!» — Эмили: «Wir legen das letzte Teil zusammen!» Пазл готов, считаем все 9 частей.
+
+**Лестница:** шаг 2. **Счёт:** до 9. **Повторяем предлоги:** unter dem Tisch.
+**Кусочки:** «Nein, Paul! | Das Puzzle ist für uns beide. | Ein Teil du, … | ein Teil ich.», «Ich habe es gefunden! | Es war unter dem Tisch.»
+
