@@ -219,7 +219,14 @@ const CHUNKS = (() => {
     e36_gut: ['Schade!', 'Aber gut gespielt, …', 'Paul.'],
     e36_aetsch: ['Paul, …', 'Ätsch sagt man nicht.', 'Das ist nicht nett.'],
     e36_nochmal: ['Noch mal?', 'Nächstes Mal …', 'gewinne ich!'],
-    e36_juhu: ['Juhu!', 'Und du hast auch …', 'gut gespielt, Paul.']
+    e36_juhu: ['Juhu!', 'Und du hast auch …', 'gut gespielt, Paul.'],
+    /* 37 «Kuscheltiertag» */
+    e37_hase: ['Das ist mein Hase.', 'Er heißt Lulu.'],
+    e37_alt: ['Lulu ist …', 'drei Jahre alt.'],
+    e37_nicht_doof: ['Lulu ist nicht doof.', 'Ich mag ihn.'],
+    e37_gemein: ['Hör auf!', 'Das ist gemein.'],
+    e37_ja: ['Ja, …', 'aber vorsichtig!'],
+    e37_nein: ['Nein, heute nicht.', 'Lulu ist müde.']
   });
   return C;
 })();

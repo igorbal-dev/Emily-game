@@ -204,3 +204,16 @@
 **Лестница:** шаг 1 (вежливо остановить «Ätsch»). **Счёт:** точки на кубике 2–6, шаги фишки.
 **Кусочки:** «Paul, … | Ätsch sagt man nicht. | Das ist nicht nett.» (оба «nicht» со своими глаголами), «Schade! | Aber gut gespielt, … | Paul.», «Ich habe eine Vier!» — целиком.
 
+## Уровень 37 «Kuscheltiertag» — готов
+
+**Где:** утренний круг в группе, у каждого мягкая игрушка (заяц Эмили Лулу, мишка Абихи, кошка Изабель, динозавр Пауля).
+**Новое:** Эмили **говорит перед всей группой** — громко и чётко (та же проверка громкости, что на шаге 2, только без обидчика). И учимся: **«нет» — тоже можно**.
+**Что происходит:**
+1. Хайке: «Wer möchte sein Kuscheltier zeigen? Emily, du?» — «Sag es laut und deutlich!» — Эмили: «Das ist mein Hase. Er heißt Lulu.» Отвечает на вопросы детей: «Lulu ist drei Jahre alt.», «Lulu mag Möhren!»
+2. **Дразнилка:** Пауль: «Dein Hase ist doof! Er hat nur ein Ohr!» Шаг 1: «Lulu ist nicht doof. Ich mag ihn.» — «Doch! Doof, doof!» — **шаг 2**: «Hör auf! Das ist gemein.» — «Okay … Entschuldigung. Er ist eigentlich süß.»
+3. **Своё «да» и «нет»:** Изабель: «Darf ich Lulu mal halten?» — две картинки, **обе правильные**: «Ja, aber vorsichtig!» (Изабель держит и возвращает) или «Nein, heute nicht. Lulu ist müde.» (Изабель: «Okay. Vielleicht morgen.»). Ведущая: «Beides ist okay.»
+4. Считаем игрушки в кругу (4). Эмили сама спрашивает Пауля: «Wie heißt dein Dino?» — «Er heißt Rex! Rrrrr!»
+
+**Лестница:** шаг 2. **Счёт:** 4.
+**Кусочки:** «Lulu ist nicht doof. | Ich mag ihn.», «Hör auf! | Das ist gemein.», «Nein, heute nicht. | Lulu ist müde.» («nicht» с отрицанием целиком), «Das ist mein Hase. | Er heißt Lulu.»
+
