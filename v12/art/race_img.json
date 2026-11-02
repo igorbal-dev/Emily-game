@@ -1,0 +1,112 @@
+{
+ "emily_ride1": [
+  "assets/img/e3cc9c3ba853.webp",
+  269,
+  440
+ ],
+ "emily_ride2": [
+  "assets/img/82330c8ac62c.webp",
+  266,
+  440
+ ],
+ "emily_leanL": [
+  "assets/img/47827cfc5cf4.webp",
+  265,
+  431
+ ],
+ "emily_leanR": [
+  "assets/img/4fe375541cbb.webp",
+  275,
+  436
+ ],
+ "emily_splash": [
+  "assets/img/f39683ff51ef.webp",
+  318,
+  438
+ ],
+ "emily_fast": [
+  "assets/img/371fdcb93c1b.webp",
+  332,
+  418
+ ],
+ "emily_cheer": [
+  "assets/img/f39a129ccabf.webp",
+  280,
+  429
+ ],
+ "emily_stand": [
+  "assets/img/8442443e9cbf.webp",
+  315,
+  416
+ ],
+ "mark_push1": [
+  "assets/img/c99e240e19c0.webp",
+  219,
+  440
+ ],
+ "mark_push2": [
+  "assets/img/f8e66d90548b.webp",
+  210,
+  436
+ ],
+ "mark_glide": [
+  "assets/img/6e7e73103416.webp",
+  321,
+  433
+ ],
+ "mark_wobble": [
+  "assets/img/8f75ea4015ea.webp",
+  318,
+  422
+ ],
+ "mark_laugh": [
+  "assets/img/51fbcbb1152b.webp",
+  204,
+  425
+ ],
+ "mark_wave": [
+  "assets/img/6af173299333.webp",
+  244,
+  423
+ ],
+ "theo_run1": [
+  "assets/img/3b191919007b.webp",
+  343,
+  407
+ ],
+ "theo_run2": [
+  "assets/img/fef68db15d46.webp",
+  296,
+  390
+ ],
+ "theo_run3": [
+  "assets/img/41f6c10d7050.webp",
+  337,
+  381
+ ],
+ "theo_side": [
+  "assets/img/b29899406034.webp",
+  375,
+  326
+ ],
+ "theo_sniff": [
+  "assets/img/d5c733713dff.webp",
+  378,
+  387
+ ],
+ "theo_bow": [
+  "assets/img/6683be23caaa.webp",
+  311,
+  347
+ ],
+ "theo_look": [
+  "assets/img/1f328979cdfc.webp",
+  275,
+  389
+ ],
+ "theo_jump": [
+  "assets/img/282bb288f557.webp",
+  365,
+  366
+ ]
+}

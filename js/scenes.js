@@ -1,6 +1,7 @@
 /* Общие фоны разговорных уровней (js/talk.js): рисуются кодом на холсте.
    drawPlayground — площадка (уровни 13, 22): качели SWX, горка SLX, песочница SBX — доли ширины.
-   drawKita — группа в садике (уровни 20, 21, 23): окна, полка с игрушками, ковёр RUG. */
+   drawKita — группа в садике (уровни 20, 21, 23): окна, полка с игрушками, ковёр RUG.
+   drawYard — двор садика с асфальтом (26, 29). */
 function drawPlayground(g, W, H, L, SWX = 0.3, SLX = 0.74, SBX = 0.52){
   const fy = L.floorY, hE = L.hE, hz = H*0.55;
   let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#8fd3ff'); gr.addColorStop(1, '#e4f6ff'); g.fillStyle = gr; g.fillRect(0, 0, W, hz);
@@ -51,6 +52,21 @@ function drawKita(g, W, H, L, RUG = 0.64){
   /* ковёр для игры */
   g.fillStyle = '#7ab8f5'; g.beginPath(); g.ellipse(W*RUG, fy + hE*0.02, hE*0.95, hE*0.13, 0, 0, 7); g.fill();
   g.strokeStyle = '#fff'; g.lineWidth = hE*0.02; g.setLineDash([hE*0.05, hE*0.04]); g.beginPath(); g.ellipse(W*RUG, fy + hE*0.02, hE*0.85, hE*0.1, 0, 0, 7); g.stroke(); g.setLineDash([]);
+}
+
+/* двор садика: стена здания с окнами и дверью, осенние деревья, асфальт с листьями (уровни 26, 29) */
+function drawYard(g, W, H, L){
+  const fy = L.floorY, hE = L.hE, hz = H*0.5;
+  let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#a8d8f5'); gr.addColorStop(1, '#e6f4fb'); g.fillStyle = gr; g.fillRect(0, 0, W, hz);
+  /* здание садика: стена, окна, дверь */
+  g.fillStyle = '#f6d8a8'; g.fillRect(0, hz - hE*1.0, W*0.62, hE*1.0); g.fillStyle = '#c9584a'; g.fillRect(-5, hz - hE*1.08, W*0.62 + 10, hE*0.1);
+  g.fillStyle = '#8fd3ff'; for (const x of [0.06, 0.2, 0.42]){ g.fillRect(W*x, hz - hE*0.8, hE*0.42, hE*0.34); g.strokeStyle = '#fff'; g.lineWidth = hE*0.03; g.strokeRect(W*x, hz - hE*0.8, hE*0.42, hE*0.34); }
+  g.fillStyle = '#5aa8f0'; g.fillRect(W*0.32, hz - hE*0.62, hE*0.3, hE*0.62);
+  for (let i = 0; i < 5; i++){ const tx = W*(0.68 + i*0.08), r = hE*(0.18 + (i % 2)*0.05); g.fillStyle = ['#e0763a', '#e3a33a', '#5fae4a'][i % 3]; g.beginPath(); g.arc(tx, hz - r*0.6, r, 0, 7); g.fill(); }
+  /* асфальт двора */
+  gr = g.createLinearGradient(0, hz, 0, H); gr.addColorStop(0, '#b9b9c2'); gr.addColorStop(1, '#9d9da8'); g.fillStyle = gr; g.fillRect(0, hz, W, H - hz);
+  g.fillStyle = 'rgba(255,255,255,.08)'; for (let i = 0; i < 40; i++){ g.fillRect((i*37.1 % 100)/100*W, hz + (i*17.3 % 50)/100*(H - hz), hE*0.03, hE*0.015); }
+  for (let i = 0; i < 9; i++){ const x = (i*53.7 % 100)/100*W, y = fy + hE*(0.04 + (i % 3)*0.04); g.fillStyle = ['#e0763a', '#e3a33a', '#b5452f'][i % 3]; g.beginPath(); g.ellipse(x, y, hE*0.03, hE*0.014, i, 0, 7); g.fill(); }
 }
 
 /* Человечек для фото и картинок (семья Абихи, семья Эмили): простой плоский рисунок.

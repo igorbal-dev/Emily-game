@@ -7,7 +7,10 @@
 
    Как делим: по смысловым группам, где в живой речи пауза; в кусочке 2–4 слога и не больше 3 слов, кусочков не больше 4; одно слово никогда не делим (Entschuldigung — целиком, фраза не дробится);
    не рвём артикль + слово, предлог + его группу, обращение + имя; длинное или трудное слово — отдельным кусочком;
-   ничего не выкидываем. Кусочек в середине фразы пишется с «…» (интонация продолжения), последний — с концом фразы (! или ?).
+   ничего не выкидываем.
+   Смысл кусочка = смысл фразы (правила 2.11): отрицание (nicht, kein…, nie, nichts, niemand, nicht mehr, noch nicht, gar nicht) — в одном кусочке
+   со своим глаголом; отделяемую приставку не отрываем от глагола (gib … zurück, hör … auf, mach … kaputt, spiele … mit, komme … wieder);
+   артикль — со словом, zu — с инфинитивом; фразы до ~4 слов не делим; нельзя разделить правильно — не делим совсем. Кусочек в середине фразы пишется с «…» (интонация продолжения), последний — с концом фразы (! или ?).
    Записи кусочков (CHUNK_SND, Barbara Brave – TV Narrator) есть только у уровня 2. На остальных уровнях кусочки говорит
    немецкий голос браузера (js/repeat.js), новые записи кусочков в ElevenLabs не делаем.
 
@@ -49,14 +52,13 @@ const CHUNKS = (() => {
     /* 6 «Kita-Morgen» */
     e_morgen: ['Guten Morgen …', 'Heike!'],
     /* 7 «Eisdiele» */
-    e_zuerst: ['Ich war …', 'zuerst da.', 'Bitte stell dich …', 'hinten an.'],
+    e_zuerst: ['Ich war zuerst da.', 'Bitte stell dich hinten an.'],
     /* 8 «Kita-Weg» */
     e_rot_stehen: ['Rot heißt …', 'stehen!'],
     /* 9 «Aufräumen» */
     e_fertig: ['Fertig!', 'Alles …', 'aufgeräumt!'],
     e_gib_bitte: ['Mark, gib mir …', 'bitte …', 'das Auto!'],
     /* 11 «Ballspiel» */
-    e_ich_auch: ['Ich spiele …', 'auch mit!'],
     e_komm_mark: ['Komm, Mark!', 'Spiel mit!'],
     /* 12 «Turnen» */
     e_cmd_springen: ['Alle …', 'springen!'],
@@ -73,7 +75,7 @@ const CHUNKS = (() => {
     e14_toilette: ['Wo ist …', 'die Toilette …', 'bitte?'],
     e14_einladung: ['Danke für …', 'die Einladung!', 'Tschüss!'],
     /* 15 «Im Supermarkt» */
-    e15_bleib: ['Theo, bleib hier!', 'Wir kommen …', 'gleich wieder.'],
+    e15_bleib: ['Theo, bleib hier!', 'Wir kommen gleich wieder.'],
     e15_wo_milch: ['Entschuldigung …', 'wo ist …', 'die Milch?'],
     e15_bezahlen: ['Wir müssen …', 'zuerst …', 'bezahlen!'],
     e15_ihnen_auch: ['Danke …', 'Ihnen auch!', 'Tschüss!'],
@@ -97,21 +99,19 @@ const CHUNKS = (() => {
     e18_ballett: ['Ich tanze gern!', 'Ich gehe …', 'zum Ballett.'],
     e18_kommen: ['Willst du mal …', 'zu mir kommen?'],
     /* 19 «Stopp!» */
-    e19_stopp: ['Stopp!', 'Das mag ich …', 'nicht!'],
-    e19_nicht_schubsen: ['Nicht …', 'schubsen!'],
-    e19_bruder: ['Lass meinen Bruder …', 'in Ruhe!', 'Gib den Ball …', 'zurück!'],
-    e19_siehst: ['Siehst du?', 'Das ist …', 'nicht schön!'],
-    e19_heike: ['Heike!', 'Leon macht …', 'meine Burg kaputt!'],
-    e19_nicht_mehr: ['Okay.', 'Aber mach das …', 'nicht mehr!'],
+    e19_stopp: ['Stopp!', 'Das mag ich nicht!'],
+    e19_bruder: ['Lass meinen Bruder in Ruhe!', 'Gib den Ball zurück!'],
+    e19_siehst: ['Siehst du?', 'Das ist nicht schön!'],
+    e19_heike: ['Heike!', 'Leon macht meine Burg kaputt!'],
+    e19_nicht_mehr: ['Okay.', 'Aber mach das nicht mehr!'],
     /* 20 «Wir spielen alle zusammen» */
-    e20_nicht_bloed: ['Nein! Ich bin …', 'nicht blöd.', 'Das ist …', 'nicht nett!'],
+    e20_nicht_bloed: ['Nein!', 'Ich bin nicht blöd.', 'Das ist nicht nett!'],
     e20_aua: ['Aua!', 'Nicht hauen!'],
     e20_heike: ['Heike …', 'Leon hat mich …', 'gehauen.'],
     e20_traurig: ['Ich bin …', 'traurig.'],
     e20_wuetend: ['Ich bin …', 'wütend.'],
     e20_spielt_ihr: ['Isabel, Paul …', 'spielt ihr …', 'mit mir?'],
     e20_alle: ['Leon, du kannst …', 'auch mitspielen.', 'Wir spielen …', 'alle zusammen!'],
-    e20_nein: ['Nein …', 'jetzt nicht.'],
     /* 21 «Abiha ist wieder da!» */
     e21_endlich: ['Abiha! Hallo!', 'Endlich bist du …', 'wieder da!'],
     e21_vermisst: ['Ich habe dich …', 'so vermisst!'],
@@ -125,7 +125,7 @@ const CHUNKS = (() => {
     e22_draussen: ['Möchtest du …', 'draußen spielen …', 'oder drinnen?'],
     e22_ich_auch: ['Ich auch!', 'Lass uns …', 'nach draußen gehen!'],
     e22_rutschen: ['Wollen wir …', 'zusammen rutschen?'],
-    e22_jetzt_ich: ['Haha!', 'Jetzt bin ich …', 'dran!'],
+    e22_jetzt_ich: ['Haha!', 'Jetzt bin ich dran!'],
     e22_anschubsen: ['Ja!', 'Kannst du mich …', 'ein bisschen …', 'anschubsen?'],
     e22_danke: ['Das macht Spaß!', 'Danke, Abiha!'],
     e22_wette: ['Wollen wir …', 'um die Wette …', 'laufen?'],
@@ -141,7 +141,120 @@ const CHUNKS = (() => {
     e23_spielzeug: ['Ich wünsche mir …', 'ein Spielzeug!'],
     e23_ski: ['Ja!', 'Ich fahre …', 'sehr gerne Ski!'],
     e23_riesig: ['Ja, …', 'ich freue mich …', 'riesig!'],
-    e23_wunderschoen: ['Der Winter …', 'ist einfach …', 'wunderschön!']
+    e23_wunderschoen: ['Der Winter …', 'ist einfach …', 'wunderschön!'],
+    /* 24 «Sankt Martin» */
+    e24_rot: ['Ich möchte …', 'die rote Laterne!'],
+    e24_gelb: ['Ich möchte …', 'die gelbe Laterne!'],
+    e24_blau: ['Ich möchte …', 'die blaue Laterne!'],
+    e24_gruen: ['Ich möchte …', 'die grüne Laterne!'],
+    e24_zurueck: ['Paul, …', 'gib mir bitte meine Laterne zurück.'],
+    e24_meins: ['Nein!', 'Das ist meine Laterne!'],
+    e24_zusammen: ['Paul, komm!', 'Wir gehen zusammen.'],
+    e24_freunde: ['Schon gut.', 'Wieder Freunde?'],
+    e24_laterne: ['Laterne, Laterne, …', 'Sonne, Mond und Sterne!'],
+    e24_teilen: ['Wir teilen!', 'Jeder bekommt eine Hälfte.'],
+    /* 25 «Ochs am Berg» */
+    e25_ene: ['Ene, mene, muh, …', 'und raus bist du!'],
+    e25_angeschlagen: ['Angeschlagen!', 'Jetzt bin ich dran!'],
+    e25_ochs: ['Eins, zwei, drei …', 'Ochs am Berg!'],
+    e25_isabel: ['Isabel, …', 'du hast dich bewegt!', 'Zurück zum Start!'],
+    e25_doch: ['Doch!', 'Ich habe es gesehen.'],
+    /* 26 «Kreide» */
+    e26_zurueck: ['Paul, …', 'das ist meine Kreide.', 'Gib sie mir bitte zurück.'],
+    e26_frag: ['Nein!', 'Frag bitte zuerst!'],
+    e26_stopp: ['Stopp!', 'Hör auf!', 'Ich will das nicht!'],
+    e26_heike: ['Heike, …', 'Paul macht mein Bild kaputt!'],
+    e26_ja: ['Ja!', 'Du kannst …', 'die blaue Kreide haben.'],
+    e26_darf: ['Entschuldigung.', 'Darf ich …', 'die grüne Kreide haben?'],
+    e26_klar: ['Klar!', 'Wir malen alle zusammen.'],
+    /* 27 «Stopptanz» */
+    e27_raus: ['Paul, …', 'du hast dich bewegt!', 'Du bist raus.'],
+    e27_regel: ['Doch!', 'Die Musik war aus.', 'Das ist die Regel.'],
+    e27_tut_weh: ['Entschuldigung, Abiha!', 'Tut es weh?'],
+    /* 28 «Memory mit Mark» */
+    e28_bitte_nicht: ['Mark, …', 'bitte nicht die Karten nehmen.'],
+    e28_mein_spiel: ['Nein, Mark!', 'Das ist mein Spiel.'],
+    e28_stopp: ['Stopp, Mark!', 'Hör auf!'],
+    e28_zusammen: ['Komm, Mark.', 'Wir spielen zusammen.'],
+    e28_du_dran: ['Jetzt bist du dran, …', 'Mark!'],
+    /* 29 «Seilspringen» */
+    e29_teddy: ['Teddybär, Teddybär, …', 'dreh dich um!'],
+    e29_stimmt_nicht: ['Nein, …', 'das stimmt nicht.', 'Es waren sieben.'],
+    e29_gezaehlt: ['Nein!', 'Ich habe mitgezählt.', 'Es waren sieben.'],
+    e29_ich_auch: ['Jetzt möchte ich …', 'springen!'],
+    e29_nicht_nett: ['Hör auf!', 'Das ist nicht nett.', 'Ich will es probieren!'],
+    /* 30 «Arzt spielen» */
+    e30_du_zuerst: ['Entschuldigung.', 'Du kannst zuerst.'],
+    e30_tauschen: ['Jetzt tauschen wir!', 'Jetzt bin ich …', 'die Ärztin.'],
+    e30_erst: ['Wir können tauschen.', 'Erst ich, …', 'dann du.'],
+    e30_bitte: ['Jetzt bist du dran.', 'Hier, bitte!'],
+    /* 31 «Stille Post» */
+    e31_psst: ['Psst, Paul!', 'Du musst flüstern.'],
+    e31_regel: ['Nein, Paul.', 'Bei Stiller Post …', 'flüstert man.', 'Das ist die Regel.'],
+    /* 32 «Ich sehe was» */
+    e32_nicht_rot: ['Paul, …', 'der Stuhl ist nicht rot.', 'Das gilt nicht!'],
+    e32_geschummelt: ['Nein!', 'Du hast geschummelt.', 'Der Stuhl ist blau.'],
+    e32_gelb: ['Ich sehe was, …', 'was du nicht siehst, …', 'und das ist gelb!'],
+    e32_gruen: ['Ich sehe was, …', 'was du nicht siehst, …', 'und das ist grün!'],
+    e32_nein: ['Nein, …', 'das ist es nicht.'],
+    e32_ja: ['Ja, richtig!', 'Jetzt bist du dran.'],
+    /* 33 «Himmel und Hölle» */
+    e33_ich_dran: ['Isabel, …', 'ich bin dran.', 'Ich habe gewonnen.'],
+    e33_hinten: ['Nein!', 'Du hast verloren.', 'Stell dich hinten an.'],
+    e33_stopp: ['Stopp, Isabel!', 'Das ist nicht fair!'],
+    e33_stimmt: ['Stimmt.', 'Jetzt bist du dran.'],
+    e33_klar: ['Klar!', 'Du bist nach Isabel dran.'],
+    /* 34 «Mama, Papa, Kind» */
+    e34_baby: ['Bitte!', 'Ich kann …', 'das Baby sein.'],
+    e34_nicht_nett: ['Das ist nicht nett.', 'Ich will auch mitspielen!'],
+    e34_heike: ['Heike, …', 'Isabel sagt, …', 'ich darf nicht mitspielen.'],
+    e34_danke: ['Danke!', 'Was kochen wir?'],
+    e34_oma: ['Ja, klar!', 'Du kannst …', 'die Oma sein!'],
+    /* 35 «Kastanien und Blätter» */
+    e35_zurueck: ['Paul, …', 'die habe ich gefunden.', 'Gib sie mir bitte zurück.'],
+    e35_meine: ['Nein!', 'Das ist meine Kastanie.', 'Gib sie zurück!'],
+    e35_suchen: ['Komm, …', 'wir suchen zusammen …', 'eine für dich!'],
+    e35_helfen: ['Entschuldigung!', 'Ich helfe dir.', 'Wir bauen ihn zusammen wieder auf.'],
+    /* 36 «Würfelspiel» */
+    e36_gut: ['Schade!', 'Aber gut gespielt, …', 'Paul.'],
+    e36_aetsch: ['Paul, …', 'Ätsch sagt man nicht.', 'Das ist nicht nett.'],
+    e36_nochmal: ['Noch mal?', 'Nächstes Mal …', 'gewinne ich!'],
+    e36_juhu: ['Juhu!', 'Und du hast auch …', 'gut gespielt, Paul.'],
+    /* 37 «Kuscheltiertag» */
+    e37_hase: ['Das ist mein Hase.', 'Er heißt Lulu.'],
+    e37_alt: ['Lulu ist …', 'drei Jahre alt.'],
+    e37_nicht_doof: ['Lulu ist nicht doof.', 'Ich mag ihn.'],
+    e37_gemein: ['Hör auf!', 'Das ist gemein.'],
+    e37_ja: ['Ja, …', 'aber vorsichtig!'],
+    e37_nein: ['Nein, heute nicht.', 'Lulu ist müde.'],
+    /* 38 «Feuer, Wasser, Sturm» */
+    e38_alle: ['Nein, Paul!', 'Die Bank ist für alle.', 'Rutsch bitte rüber!'],
+    e38_stopp: ['Stopp, Paul!', 'Ich will auch …', 'auf die Bank!'],
+    /* 39 «Kasperletheater» */
+    e39_hallo: ['Hallo, Kinder!', 'Seid ihr alle da?'],
+    e39_wo: ['Wo?', 'Ich sehe kein Krokodil!'],
+    e39_gleich: ['Paul, …', 'ich spiele gerade.', 'Du kannst gleich.'],
+    e39_warte: ['Nein, Paul!', 'Warte bitte.', 'Du kannst das Krokodil spielen!'],
+    e39_freund: ['Hallo, Krokodil!', 'Möchtest du …', 'mein Freund sein?'],
+    /* 40 «Laufrad» */
+    e40_gerade: ['Ich fahre gerade.', 'Du kannst gleich.'],
+    e40_los: ['Lass los, Isabel!', 'Ich fahre noch.'],
+    e40_zehn: ['Ich fahre bis zehn.', 'Dann bist du dran.'],
+    e40_dran: ['Zehn!', 'Jetzt bist du dran, …', 'Isabel.'],
+    e40_abgemacht: ['Isabel, …', 'wir haben gesagt: …', 'bis zehn.', 'Jetzt bin ich wieder dran.'],
+    e40_nach: ['Klar!', 'Du fährst nach mir.', 'Auch bis zehn!'],
+    /* 41 «Musikkreis» */
+    e41_trommel: ['Ich möchte …', 'die Trommel, bitte.'],
+    e41_rassel: ['Ich möchte …', 'die Rassel, bitte.'],
+    e41_glocke: ['Ich möchte …', 'die Glocke, bitte.'],
+    e41_laut: ['Paul, …', 'das ist zu laut.', 'Bitte leiser.'],
+    e41_ohren: ['Hör auf!', 'Das tut mir …', 'in den Ohren weh.'],
+    e41_leise: ['Jetzt alle …', 'ganz leise!'],
+    /* 42 «Puzzle» */
+    e42_zusammen: ['Paul, …', 'wir machen es zusammen.', 'Abwechselnd!'],
+    e42_auch: ['Nein, Paul!', 'Das Puzzle ist für uns beide.', 'Ein Teil du, …', 'ein Teil ich.'],
+    e42_gefunden: ['Ich habe es gefunden!', 'Es war unter dem Tisch.'],
+    e42_beide: ['Wir legen …', 'das letzte Teil …', 'zusammen!']
   });
   return C;
 })();

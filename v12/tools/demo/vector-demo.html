@@ -1,0 +1,44 @@
+<title>Эмили нарисованная</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Одна сцена: Эмили на полу комнаты, снизу кнопки-движения. */
+:root{--wall:#ffe9c7;--floor:#eab47c;--ink:#3b2a1f;--btn:#ff7a59;--btn-on:#32b67a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--wall:#3a2e44;--floor:#5a4232;--ink:#f6eee6;--btn:#ff8a6b;--btn-on:#3fc98a;color-scheme:dark}}
+:root[data-theme="dark"]{--wall:#3a2e44;--floor:#5a4232;--ink:#f6eee6;--btn:#ff8a6b;--btn-on:#3fc98a;color-scheme:dark}
+html,body{height:100%}
+body{margin:0;background:var(--wall);color:var(--ink);font:600 16px/1.4 "Trebuchet MS",system-ui,sans-serif;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}
+.stage{flex:1;min-height:320px;position:relative;border-radius:22px;overflow:hidden;background:linear-gradient(var(--wall) 62%,var(--floor) 62%)}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+.bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+button{font:700 15px/1 "Trebuchet MS",system-ui,sans-serif;border:0;border-radius:999px;padding:14px 18px;background:var(--btn);color:#fff;cursor:pointer;min-width:110px}
+button[aria-pressed="true"]{background:var(--btn-on)}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.note{text-align:center;font-weight:500;opacity:.8;margin:0}
+</style>
+<div class="stage"><canvas id="c" aria-label="Эмили"></canvas></div>
+<div class="bar">
+  <button id="talk" type="button" aria-pressed="false">Говорит</button>
+  <button id="wave" type="button" aria-pressed="false">Машет</button>
+  <button id="walk" type="button" aria-pressed="false">Шагает</button>
+  <button id="jump" type="button" aria-pressed="false">Прыгает</button>
+  <button id="happy" type="button" aria-pressed="false">Радуется</button>
+</div>
+<p class="note">Эмили нарисована кодом: руки и ноги гибкие, хвостики пружинят. Дышит, моргает и смотрит по сторонам сама.</p>
+<script src="emily-vector.js"></script>
+<script>
+const c = document.getElementById('c'), g = c.getContext('2d'), e = new EmilyVector();
+for (const id of ['talk', 'wave', 'walk', 'jump', 'happy']){
+  const b = document.getElementById(id);
+  b.addEventListener('click', () => { const on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', on); e.set({[id]: on}); });
+}
+function frame(t){
+  const dpr = Math.min(2, devicePixelRatio || 1), W = c.clientWidth, H = c.clientHeight;
+  if (c.width !== Math.round(W*dpr) || c.height !== Math.round(H*dpr)){ c.width = Math.round(W*dpr); c.height = Math.round(H*dpr); }
+  g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  const k = Math.min(W/360, H*0.86/600);
+  e.draw(g, t, W/2, H*0.9, k);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>

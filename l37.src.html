@@ -1,0 +1,161 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Kuscheltiertag. Уровень 37</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 37 «Kuscheltiertag» — круг в садике: Эмили громко рассказывает о своём зайце перед всеми, Пауль дразнит «Dein Hase ist doof!» (шаги 1–2), Изабель просит подержать — можно «Ja, aber vorsichtig!» или «Nein, heute nicht.»; считаем игрушки, Эмили сама спрашивает. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = __IMG__;  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised}_shoes abiha_{idle,blink,mouth1,mouth2,wave,peace,jump,laugh,think} isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = __SND__;  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht k_laugh i_hihi p_hihi*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n37_intro: 'Heute ist Kuscheltiertag in der Kita! Alle haben ein Kuscheltier mitgebracht.',
+  s37_wer: 'Wer möchte sein Kuscheltier zeigen? Emily, du?',
+  n37_laut: 'Sag es laut und deutlich, damit alle es hören!',
+  e37_hase: 'Das ist mein Hase. Er heißt Lulu.',
+  b37_alt: 'Wie alt ist Lulu?',
+  e37_alt: 'Lulu ist drei Jahre alt.',
+  i37_mag: 'Was mag Lulu?',
+  e37_moehren: 'Lulu mag Möhren!',
+  p37_doof: 'Dein Hase ist doof! Er hat nur ein Ohr!',
+  e37_nicht_doof: 'Lulu ist nicht doof. Ich mag ihn.',
+  p37_doch: 'Doch! Doof, doof!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e37_gemein: 'Hör auf! Das ist gemein.',
+  p37_okay: 'Okay … Entschuldigung. Er ist eigentlich süß.',
+  i37_halten: 'Darf ich Lulu mal halten?',
+  n37_du: 'Möchtest du das? Emily darf Ja oder Nein sagen. Tipp auf ein Bild!',
+  r37_du: 'Эмили можно сказать и «да», и «нет». Нажми на картинку!',
+  n37_opt_ja: 'Ja, aber vorsichtig!',
+  n37_opt_nein: 'Nein, heute nicht.',
+  e37_ja: 'Ja, aber vorsichtig!',
+  i37_danke: 'Danke! Er ist so weich! Hier ist er wieder.',
+  e37_nein: 'Nein, heute nicht. Lulu ist müde.',
+  i37_okay: 'Okay. Vielleicht morgen.',
+  n37_beides: 'Beides ist okay. Emily darf Ja oder Nein sagen.',
+  n37_zaehl: 'Wie viele Kuscheltiere sind im Kreis? Tipp und zähl!',
+  n37_vier: 'Vier Kuscheltiere!',
+  n37_frag: 'Paul hat einen Dino. Frag ihn, wie er heißt!',
+  e37_wie_heisst: 'Wie heißt dein Dino?',
+  p37_rex: 'Er heißt Rex! Rrrrr!',
+  n37_ende: 'Super! Emily hat laut vor allen gesprochen. Und sie hat gesagt: Hör auf! Das ist gemein.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 37: день мягких игрушек. Эмили рассказывает про зайца Лулу громко (T.firm без обидчика — чтобы все слышали), отвечает на вопросы.
+   Пауль дразнит: «Dein Hase ist doof!» — шаг 1 «Lulu ist nicht doof. Ich mag ihn.», шаг 2 «Hör auf! Das ist gemein.».
+   Изабель: «Darf ich Lulu mal halten?» — две картинки, обе верные: «Ja, aber vorsichtig!» или «Nein, heute nicht. Lulu ist müde.».
+   Считаем игрушки (4), Эмили сама спрашивает Пауля «Wie heißt dein Dino?». */
+const LEVEL = 37, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><ellipse cx="50" cy="66" rx="24" ry="26" fill="#f2e6d8" stroke="#b59a7a" stroke-width="4"/><circle cx="50" cy="38" r="18" fill="#f2e6d8" stroke="#b59a7a" stroke-width="4"/><path d="M40 24 Q34 0 44 4 Q50 8 46 24 Z" fill="#f2e6d8" stroke="#b59a7a" stroke-width="4"/><path d="M56 24 Q70 12 74 22 Q70 30 60 28 Z" fill="#f2e6d8" stroke="#b59a7a" stroke-width="4"/><circle cx="44" cy="36" r="3" fill="#333"/><circle cx="56" cy="36" r="3" fill="#333"/><circle cx="50" cy="44" r="3" fill="#ff8fc8"/></svg>';
+const RUG = 0.5;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG); }
+const TOYS = {
+  hase: '<svg viewBox="0 0 100 120"><ellipse cx="50" cy="86" rx="28" ry="30" fill="#f2e6d8" stroke="#b59a7a" stroke-width="4"/><circle cx="50" cy="52" r="22" fill="#f2e6d8" stroke="#b59a7a" stroke-width="4"/><path d="M38 34 Q30 2 42 6 Q50 10 46 32 Z" fill="#f2e6d8" stroke="#b59a7a" stroke-width="4"/><path d="M58 34 Q76 20 80 32 Q76 42 64 40 Z" fill="#f2e6d8" stroke="#b59a7a" stroke-width="4"/><circle cx="43" cy="50" r="3.5" fill="#333"/><circle cx="57" cy="50" r="3.5" fill="#333"/><circle cx="50" cy="59" r="3.5" fill="#ff8fc8"/></svg>',
+  baer: '<svg viewBox="0 0 100 120"><ellipse cx="50" cy="86" rx="30" ry="30" fill="#b0703a" stroke="#7a4a20" stroke-width="4"/><circle cx="50" cy="48" r="24" fill="#b0703a" stroke="#7a4a20" stroke-width="4"/><circle cx="30" cy="28" r="9" fill="#b0703a" stroke="#7a4a20" stroke-width="4"/><circle cx="70" cy="28" r="9" fill="#b0703a" stroke="#7a4a20" stroke-width="4"/><ellipse cx="50" cy="56" rx="10" ry="7" fill="#e3b48a"/><circle cx="42" cy="44" r="3.5" fill="#333"/><circle cx="58" cy="44" r="3.5" fill="#333"/></svg>',
+  katze: '<svg viewBox="0 0 100 120"><ellipse cx="50" cy="86" rx="28" ry="30" fill="#9aa4b2" stroke="#5e6878" stroke-width="4"/><circle cx="50" cy="50" r="22" fill="#9aa4b2" stroke="#5e6878" stroke-width="4"/><path d="M32 36 L30 14 L46 30 Z M68 36 L70 14 L54 30 Z" fill="#9aa4b2" stroke="#5e6878" stroke-width="4" stroke-linejoin="round"/><circle cx="43" cy="48" r="3.5" fill="#333"/><circle cx="57" cy="48" r="3.5" fill="#333"/><path d="M40 58 h-14 M60 58 h14" stroke="#5e6878" stroke-width="2"/></svg>',
+  dino: '<svg viewBox="0 0 120 100"><path d="M14 80 Q20 44 54 42 L66 20 Q80 6 96 16 Q108 26 98 36 L86 40 Q92 60 86 80 Z" fill="#3cc36a" stroke="#24924a" stroke-width="4" stroke-linejoin="round"/><path d="M30 46 l6 -10 l6 10 M44 42 l6 -10 l6 10" fill="#ffd34d" stroke="#d6a21e" stroke-width="2"/><circle cx="88" cy="24" r="4" fill="#333"/><path d="M30 80 v14 M70 80 v14" stroke="#24924a" stroke-width="8" stroke-linecap="round"/></svg>'
+};
+let emily, abiha, isabel, paul, heike, toys = {};
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'jump', 'laugh', 'think'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+const inHand = (h, dx = 0.07) => ({px: () => L.W*h.x + dx*L.hE, py: () => L.floorY - L.hE*0.3});
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; toys = {};
+  heike = T.hero('sommer', {x: 0.08, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  emily = T.hero('emily', {x: 0.26, outfit: 'shoes', poses: EP});
+  abiha = T.hero('abiha', {x: 0.46, poses: AP}); abiha.face(true);
+  isabel = T.hero('isabel', {x: 0.64, h: 0.95, poses: KP}); isabel.face(true);
+  paul = T.hero('paul', {x: 0.84, h: 0.97, poses: KP}); paul.face(true);
+  toys.hase = T.prop(TOYS.hase, {...inHand(emily), w: 0.24, ratio: 1.2, z: 55});
+  toys.baer = T.prop(TOYS.baer, {...inHand(abiha, -0.07), w: 0.24, ratio: 1.2, z: 55});
+  toys.katze = T.prop(TOYS.katze, {...inHand(isabel, -0.07), w: 0.22, ratio: 1.2, z: 55});
+  toys.dino = T.prop(TOYS.dino, {...inHand(paul, -0.09), w: 0.28, ratio: 100/120, z: 55});
+}
+async function lift(p, on){ await p.el.animate([{transform: on ? 'none' : 'translateY(-30%)'}, {transform: on ? 'translateY(-30%)' : 'none'}], {duration: 300, fill: 'forwards'}).finished.catch(() => {}); }
+
+async function story(){
+  await play('n37_intro');
+  heike.set('talk'); await heike.say('s37_wer'); heike.set('idle');
+  /* рассказываем громко */
+  await play('n37_laut');
+  lift(toys.hase, true);
+  await T.firm('e37_hase', {need: 1.5});
+  await T.bone(emily);
+  abiha.set('think'); await abiha.say('b37_alt'); abiha.set('idle');
+  await T.repeat('e37_alt');
+  isabel.set('talk'); await isabel.say('i37_mag'); isabel.set('idle');
+  await T.repeat('e37_moehren');
+  lift(toys.hase, false);
+
+  /* Пауль дразнит */
+  paul.set('jump'); paul.hop(); await paul.say('p37_doof'); paul.set('idle');
+  emily.set('surprised'); await sleep(400); emily.set('idle');
+  await T.repeat('e37_nicht_doof');
+  paul.set('talk'); await Promise.all([paul.say('p37_doch'), play('p_hihi')]); paul.set('idle');
+  await play('n24_fester');
+  await T.firm('e37_gemein', {who: paul, step: 2}); toys.dino.place();
+  paul.set('talk'); await paul.say('p37_okay'); paul.set('idle');
+  await T.bone(emily);
+
+  /* «можно подержать?» — да или нет, оба ответа верные */
+  isabel.set('talk'); await isabel.say('i37_halten'); isabel.set('idle');
+  await play('n37_du');
+  const i = await T.choose([
+    {parts: [{img: 'emily_wave_shoes', x: 32, h: 70}, {svg: TOYS.hase, x: 52, y: 34, w: 18, hh: 28}, {img: 'isabel_jump', x: 72, h: 66}, {fx: 'hearts', x: 50, y: 10}], clip: 'n37_opt_ja', bg: '#fff1c9', ground: '#c98f55'},
+    {parts: [{img: 'emily_idle_shoes', x: 34, h: 70}, {svg: TOYS.hase, x: 22, y: 40, w: 16, hh: 26}, {img: 'isabel_idle', x: 70, h: 66}], clip: 'n37_opt_nein', bg: '#fff1c9', ground: '#c98f55'}], 'n37_du', 'r37_du');
+  if (i === 0){
+    await T.repeat('e37_ja');
+    Object.assign(toys.hase.o, inHand(isabel, -0.07)); await T.move(toys.hase, isabel.x - 0.04, (L.floorY - L.hE*0.3)/L.H, 600);
+    isabel.set('jump'); T.hearts(isabel); await isabel.say('i37_danke'); isabel.set('idle');
+    toys.hase.o.px = null; await T.move(toys.hase, emily.x + 0.04, (L.floorY - L.hE*0.3)/L.H, 600);
+  } else {
+    await T.repeat('e37_nein');
+    isabel.set('talk'); await isabel.say('i37_okay'); isabel.set('idle');
+  }
+  await play('n37_beides');
+  await T.bone(isabel);
+
+  /* считаем игрушки */
+  await play('n37_zaehl');
+  let left = Object.values(toys);
+  for (let k = 1; k <= 4; k++){ const el = await T.tap(left, 'n37_zaehl', 'r_tipp_licht'); const t = left.find(x => x.el === el); left = left.filter(x => x !== t);
+    t.el.animate([{transform: 'none'}, {transform: 'translateY(-25%) scale(1.1)'}, {transform: 'none'}], {duration: 450}); showNum(k); await emily.say('e_' + k); }
+  hideNum(); await play('n37_vier');
+  /* Эмили сама спрашивает */
+  await play('n37_frag');
+  await T.repeat('e37_wie_heisst');
+  paul.set('jump'); paul.hop(); await paul.say('p37_rex');
+  emily.set('jump'); abiha.set('laugh'); await Promise.all([play('k_laugh'), play('i_hihi')]); [emily, abiha, paul].forEach(h => h.set('idle'));
+  await T.bone(paul);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n37_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.abiha_laugh[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

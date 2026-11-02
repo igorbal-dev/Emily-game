@@ -1,0 +1,161 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Feuer, Wasser, Sturm. Уровень 38</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 38 «Feuer, Wasser, Sturm» — сад садика: по команде Хайке бежим на одеяло, скамейку или к дереву; Пауль не пускает на скамейку — шаги 1–3 («Die Bank ist für alle. Rutsch bitte rüber!», «Stopp, Paul!»); считаем детей на скамейке; Эмили сама выкрикивает команды. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_out": ["assets/img/75212f3d100c.webp", 220, 407], "emily_blink_out": ["assets/img/8f259a32dae9.webp", 220, 407], "emily_mouth1_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_mouth2_out": ["assets/img/9526ce345376.webp", 220, 407], "emily_wave_out": ["assets/img/acf19e1e2d3e.webp", 218, 410], "emily_jump_out": ["assets/img/afd822bd4c46.webp", 276, 377], "emily_surprised_out": ["assets/img/723e0f67193a.webp", 227, 407], "emily_crouch_out": ["assets/img/56b917379eef.webp", 227, 309], "emily_laugh_out": ["assets/img/919bf61cad53.webp", 232, 399], "emily_walk_out": ["assets/img/8e591eafe46b.webp", 225, 385], "abiha_idle_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_blink_out": ["assets/img/cd9612e1c921.webp", 141, 375], "abiha_mouth1_out": ["assets/img/67d4d4438d8b.webp", 141, 375], "abiha_mouth2_out": ["assets/img/f1119565498c.webp", 141, 375], "abiha_wave_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_peace_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_walk_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_jump_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_laugh_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_run_out": ["assets/img/6d71ed799083.webp", 141, 375], "abiha_sit_out": ["assets/img/6d71ed799083.webp", 141, 375], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600]};  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,crouch,laugh,walk}_out abiha_{idle,blink,mouth1,mouth2,wave,peace,walk,jump,laugh,run,sit}_out isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e38_alle": "assets/snd/fdbe68cf5a4e.mp3", "e38_feuer": "assets/snd/fba915c72694.mp3", "e38_platz": "assets/snd/d7640b23974b.mp3", "e38_stopp": "assets/snd/d8e4a16eb8c2.mp3", "e38_sturm": "assets/snd/c7ffb393a599.mp3", "e38_wasser": "assets/snd/303cfbdc3b96.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "n19_stopp_tipp": "assets/snd/75611822af7f.mp3", "n24_fester": "assets/snd/62af96e91cb6.mp3", "n38_du": "assets/snd/1cbc196dce07.mp3", "n38_ende": "assets/snd/c04ddd8e8819.mp3", "n38_falsch": "assets/snd/a0f2a5d6668b.mp3", "n38_feuer": "assets/snd/16db89861daf.mp3", "n38_intro": "assets/snd/c338087d9e9c.mp3", "n38_opt_feuer": "assets/snd/1684837b4bbd.mp3", "n38_opt_sturm": "assets/snd/2f939ba7948f.mp3", "n38_opt_wasser": "assets/snd/7eae340a2e88.mp3", "n38_sturm": "assets/snd/709c12577e44.mp3", "n38_vier": "assets/snd/113cd30a4980.mp3", "n38_wasser": "assets/snd/eee7014c387c.mp3", "n38_wie_viele": "assets/snd/9c831eb67f4e.mp3", "n_lauter": "assets/snd/514e958e006e.mp3", "p38_kein": "assets/snd/62a036784cd7.mp3", "p38_nein": "assets/snd/f83d325194ec.mp3", "p38_noe": "assets/snd/9eb7094a2ad2.mp3", "p38_okay": "assets/snd/96e793a80f42.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3", "r38_du": "assets/snd/3acfb404f6fa.mp3", "r38_tipp": "assets/snd/25d218eb61e3.mp3", "r_lauter": "assets/snd/2e0c8abce899.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3", "s38_feuer": "assets/snd/6e527297413f.mp3", "s38_regel": "assets/snd/7273214ec7c1.mp3", "s38_sturm": "assets/snd/57db01e670cc.mp3", "s38_wasser": "assets/snd/100ab6ea57b6.mp3"};  /*SND: e_{1..4} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht p_hihi*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n38_intro: 'Im Garten der Kita spielen alle Feuer, Wasser, Sturm!',
+  s38_regel: 'Bei Feuer legt ihr euch auf die Decke. Bei Wasser klettert ihr auf die Bank. Bei Sturm haltet ihr euch am Baum fest!',
+  s38_feuer: 'Feuer!',
+  s38_wasser: 'Wasser!',
+  s38_sturm: 'Sturm!',
+  n38_feuer: 'Feuer! Auf die Decke! Tipp auf die Decke!',
+  n38_wasser: 'Wasser! Auf die Bank! Tipp auf die Bank!',
+  n38_sturm: 'Sturm! Zum Baum! Tipp auf den Baum!',
+  r38_tipp: 'Куда бежать? Нажми туда!',
+  n38_falsch: 'Nein, nicht dahin! Hör genau hin!',
+  p38_kein: 'Hier ist kein Platz! Geh weg!',
+  e38_platz: 'Paul, mach bitte Platz.',
+  p38_nein: 'Nein! Die Bank ist meine!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e38_alle: 'Nein, Paul! Die Bank ist für alle. Rutsch bitte rüber!',
+  p38_noe: 'Hihi, nö!',
+  n19_stopp_tipp: 'Streck die Hand aus und sag ganz laut: Stopp!',
+  e38_stopp: 'Stopp, Paul! Ich will auch auf die Bank!',
+  p38_okay: 'Okay, okay. Hier ist Platz.',
+  n38_wie_viele: 'Wie viele Kinder sind auf der Bank? Tipp und zähl!',
+  n38_vier: 'Vier Kinder! Jetzt haben alle Platz.',
+  n38_du: 'Jetzt ruft Emily! Was ruft sie? Tipp auf ein Bild!',
+  r38_du: 'Что крикнет Эмили? Нажми на картинку!',
+  n38_opt_feuer: 'Feuer.',
+  n38_opt_wasser: 'Wasser.',
+  n38_opt_sturm: 'Sturm.',
+  e38_feuer: 'Feuer!',
+  e38_wasser: 'Wasser!',
+  e38_sturm: 'Sturm!',
+  n38_ende: 'Super! Emily hat gesagt: Die Bank ist für alle! Und sie hat selbst das Spiel gerufen.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script>
+/* Уровень 38: Feuer, Wasser, Sturm. Хайке кричит команду, остальные дети бегут сами, Эмили — куда нажмёт игрок: Feuer — одеяло (присесть),
+   Wasser — скамейка, Sturm — дерево. На «Wasser» Пауль разлёгся на скамейке: шаг 1 «Paul, mach bitte Platz.», шаг 2 «Nein, Paul! Die Bank ist für alle. Rutsch bitte rüber!»,
+   шаг 3 ладонь «Stopp, Paul! Ich will auch auf die Bank!» — подвинулся. Считаем детей на скамейке (4). Потом Эмили сама выбирает и кричит команды. */
+const LEVEL = 38, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M30 80 Q16 60 30 40 Q32 56 40 54 Q34 34 48 18 Q50 40 60 44 Q62 34 68 30 Q80 56 66 80 Z" fill="#ff7a59" stroke="#d65a3b" stroke-width="3"/><path d="M72 20 Q86 34 80 46 Q74 54 68 46 Q66 36 72 20 Z" fill="#4a8ff0"/><path d="M10 30 q10 -8 20 0 t20 0" fill="none" stroke="#9aa4b2" stroke-width="4" stroke-linecap="round"/></svg>';
+const DX = 0.24, BX = 0.55, TX = 0.86;              /* одеяло, скамейка, дерево */
+function drawScene(g, W, H, L){
+  const fy = L.floorY, hE = L.hE, hz = H*0.55;
+  let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#9fd4f5'); gr.addColorStop(1, '#e6f4fb'); g.fillStyle = gr; g.fillRect(0, 0, W, hz);
+  g.fillStyle = '#e8c9a0'; for (let x = 0; x < W; x += hE*0.13){ g.fillRect(x, hz - hE*0.32, hE*0.1, hE*0.32); } g.fillRect(0, hz - hE*0.24, W, hE*0.04);
+  gr = g.createLinearGradient(0, hz, 0, H); gr.addColorStop(0, '#a6d878'); gr.addColorStop(1, '#86c25e'); g.fillStyle = gr; g.fillRect(0, hz, W, H - hz);
+  for (let i = 0; i < 16; i++){ const x = (i*61.7 % 100)/100*W, y = fy + hE*(0.03 + (i % 4)*0.04); g.fillStyle = ['#e0763a', '#e3a33a', '#b5452f'][i % 3]; g.beginPath(); g.ellipse(x, y, hE*0.03, hE*0.014, i, 0, 7); g.fill(); }
+}
+const BLANKET = '<svg viewBox="0 0 200 60"><path d="M10 10 H190 L198 52 H2 Z" fill="#ff8fc8" stroke="#d6476a" stroke-width="4" stroke-linejoin="round"/><path d="M40 10 L34 52 M80 10 L78 52 M120 10 L122 52 M160 10 L166 52" stroke="#fff" stroke-width="4" opacity=".6"/></svg>';
+const BENCH = '<svg viewBox="0 0 200 80"><rect x="6" y="20" width="188" height="16" rx="5" fill="#8a5a2e" stroke="#5e3a1a" stroke-width="3"/><rect x="6" y="2" width="188" height="12" rx="5" fill="#8a5a2e" stroke="#5e3a1a" stroke-width="3"/><rect x="20" y="36" width="12" height="42" fill="#5e3a1a"/><rect x="168" y="36" width="12" height="42" fill="#5e3a1a"/></svg>';
+const TREE = '<svg viewBox="0 0 100 180"><rect x="40" y="70" width="20" height="108" fill="#7a4e22"/><circle cx="50" cy="56" r="42" fill="#e0763a"/><circle cx="26" cy="72" r="24" fill="#e3a33a"/><circle cx="76" cy="68" r="26" fill="#c9584a"/></svg>';
+let emily, abiha, isabel, paul, heike, blanket, bench, tree;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'jump', 'surprised', 'crouch', 'laugh', 'walk'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'walk', 'jump', 'laugh', 'run', 'sit'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  blanket = T.prop(BLANKET, {x: DX, py: () => L.floorY + L.hE*0.06, w: 0.95, ratio: 0.3, z: 30});
+  bench = T.prop(BENCH, {x: BX, py: () => L.floorY + L.hE*0.01, w: 1.1, ratio: 0.4, z: 32});
+  tree = T.prop(TREE, {x: TX, py: () => L.floorY + L.hE*0.01, w: 0.75, ratio: 1.8, z: 31});
+  heike = T.hero('sommer', {x: 0.05, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  abiha = T.hero('abiha', {x: 0.34, outfit: 'out', poses: AP});
+  isabel = T.hero('isabel', {x: 0.44, h: 0.95, poses: KP});
+  paul = T.hero('paul', {x: 0.54, h: 0.97, poses: KP});
+  emily = T.hero('emily', {x: 0.24, outfit: 'out', poses: EP});
+}
+const kids = () => [abiha, isabel, paul];
+const SPOT = {feuer: [DX - 0.08, DX - 0.02, DX + 0.05, DX + 0.11], wasser: [BX - 0.1, BX - 0.03, BX + 0.04, BX + 0.11], sturm: [TX - 0.12, TX - 0.06, TX + 0.0, TX + 0.07]};
+const LIFT = {feuer: 0, wasser: 0.16, sturm: 0};
+/* все бегут на место; pose: feuer — присесть, wasser — на скамейке, sturm — держатся за дерево */
+async function goAll(cmd, list){ await Promise.all(list.map(([h, i]) => (async () => { h.set(h === abiha ? 'run' : 'idle'); await T.glide(h, SPOT[cmd][i], LIFT[cmd], 700, 'ease-out'); h.set(cmd === 'feuer' ? (h === emily ? 'crouch' : h === abiha ? 'sit' : 'idle') : 'idle'); })())); }
+const TARGET = {feuer: () => blanket, wasser: () => bench, sturm: () => tree};
+/* Эмили: нажать, куда бежать */
+async function emilyGo(cmd, slot){
+  await play('n38_' + cmd);
+  while (true){ const el = await T.tap([blanket, bench, tree], 'n38_' + cmd, 'r38_tipp'); if (el === TARGET[cmd]().el) break; sfx.bonk(); await play('n38_falsch'); }
+  sfx.ding(); await goAll(cmd, [[emily, slot]]);
+}
+async function call(cmd, blockPaul){
+  heike.set('talk'); await heike.say('s38_' + cmd); heike.set('idle');
+  if (!blockPaul){ goAll(cmd, [[abiha, 0], [isabel, 2], [paul, 3]]); await emilyGo(cmd, 1); return; }
+  /* Пауль первым разлёгся на всей скамейке */
+  await goAll(cmd, [[paul, 1]]); paul.set('jump'); await Promise.all([goAll('wasser', []), sleep(100)]);
+  await Promise.all([T.glide(abiha, BX - 0.22, 0, 500), T.glide(isabel, BX + 0.22, 0, 500)]);
+  paul.set('talk'); await paul.say('p38_kein'); paul.set('idle');
+  await emilyGo('wasser', 0).catch(() => {}); await T.glide(emily, BX - 0.14, 0, 300);
+  await T.repeat('e38_platz');
+  paul.set('talk'); await paul.say('p38_nein'); paul.set('idle');
+  await play('n24_fester');
+  await T.firm('e38_alle', {who: paul, step: 2}); await T.glide(paul, BX - 0.03, LIFT.wasser, 200);
+  paul.set('jump'); await Promise.all([paul.say('p38_noe'), play('p_hihi')]); paul.set('idle');
+  await play('n19_stopp_tipp');
+  await T.firm('e38_stopp', {who: paul, step: 3});
+  paul.set('talk'); await paul.say('p38_okay'); paul.set('idle');
+  await goAll('wasser', [[emily, 0], [abiha, 1], [paul, 2], [isabel, 3]]);
+}
+
+async function story(){
+  await play('n38_intro');
+  heike.set('talk'); await heike.say('s38_regel'); heike.set('idle');
+  await call('feuer');
+  await call('sturm');
+  await call('wasser', true);
+  await T.bone(emily);
+  /* сколько детей на скамейке */
+  await play('n38_wie_viele');
+  let left = [emily, abiha, paul, isabel];
+  for (let i = 1; i <= 4; i++){ const el = await T.tap(left, 'n38_wie_viele', 'r_tipp_licht'); const h = left.find(x => x.el === el); left = left.filter(x => x !== h); h.hop(); showNum(i); await emily.say('e_' + i); }
+  hideNum(); await play('n38_vier'); await T.bone(bench);
+  await call('feuer');
+  /* Эмили кричит сама */
+  await Promise.all([T.glide(emily, 0.16, 0, 600), T.glide(abiha, 0.36, 0, 600), T.glide(isabel, 0.48, 0, 600), T.glide(paul, 0.6, 0, 600)]);
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+  const IMGS = {feuer: BLANKET, wasser: BENCH, sturm: TREE};
+  for (let r = 0; r < 2; r++){
+    const ks = ['feuer', 'wasser', 'sturm'];
+    const i = await T.choose(ks.map(k => ({parts: [{svg: IMGS[k], x: 50, y: k === 'sturm' ? 6 : 34, w: k === 'sturm' ? 40 : 80, hh: k === 'sturm' ? 76 : 34}], clip: 'n38_opt_' + k, bg: '#e6f4fb', ground: '#a6d878'})), 'n38_du', 'r38_du');
+    const cmd = ks[i];
+    await T.repeat('e38_' + cmd);
+    await goAll(cmd, [[abiha, 0], [isabel, 2], [paul, 3]]); await sleep(700);
+    await Promise.all([T.glide(abiha, 0.36, 0, 500), T.glide(isabel, 0.48, 0, 500), T.glide(paul, 0.6, 0, 500)]); [abiha, isabel, paul].forEach(h => h.set('idle'));
+  }
+  await T.bone(emily);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n38_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.abiha_run_out[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
