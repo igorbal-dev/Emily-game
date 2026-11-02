@@ -2627,6 +2627,286 @@
    ],
    "voice": "narr",
    "text": "Super! Emily kann laut und leise sprechen. Und sie hat Paul die Regel erklärt."
+  },
+  {
+   "id": "n32_intro",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "In der Kita. Paul und Emily spielen: Ich sehe was, was du nicht siehst."
+  },
+  {
+   "id": "p32_rot",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ich sehe was, was du nicht siehst, und das ist rot!"
+  },
+  {
+   "id": "n32_rate",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Was ist rot? Tipp auf eine rote Sache!"
+  },
+  {
+   "id": "r32_rate",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Что здесь красное? Нажми на красную вещь!"
+  },
+  {
+   "id": "n32_nicht_rot",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Das ist nicht rot. Schau genau!"
+  },
+  {
+   "id": "e32_ball",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ist es der Ball?"
+  },
+  {
+   "id": "e32_apfel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ist es der Apfel?"
+  },
+  {
+   "id": "p32_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Nein!"
+  },
+  {
+   "id": "p32_stuhl",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Nein! Es ist der Stuhl!"
+  },
+  {
+   "id": "e32_nicht_rot",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Paul, der Stuhl ist nicht rot. Das gilt nicht!"
+  },
+  {
+   "id": "p32_doch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Doch! Der Stuhl!"
+  },
+  {
+   "id": "e32_geschummelt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein! Du hast geschummelt. Der Stuhl ist blau."
+  },
+  {
+   "id": "p32_apfel",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Okay … es war der Apfel. Entschuldigung."
+  },
+  {
+   "id": "n32_zaehl_rot",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Wie viele rote Sachen gibt es? Tipp und zähl!"
+  },
+  {
+   "id": "n32_zwei",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Zwei rote Sachen: der Ball und der Apfel!"
+  },
+  {
+   "id": "n32_dein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Jetzt bist du dran, Emily! Such dir etwas Gelbes oder Grünes aus. Tipp darauf!"
+  },
+  {
+   "id": "r32_dein",
+   "model": "mtl",
+   "lang": "ru",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr_ru",
+   "text": "Выбери жёлтую или зелёную вещь и нажми на неё!"
+  },
+  {
+   "id": "n32_nur",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Nimm etwas Gelbes oder Grünes!"
+  },
+  {
+   "id": "e32_gelb",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich sehe was, was du nicht siehst, und das ist gelb!"
+  },
+  {
+   "id": "e32_gruen",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ich sehe was, was du nicht siehst, und das ist grün!"
+  },
+  {
+   "id": "p32_ente",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ist es die Ente?"
+  },
+  {
+   "id": "p32_banane",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ist es die Banane?"
+  },
+  {
+   "id": "p32_frosch",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ist es der Frosch?"
+  },
+  {
+   "id": "p32_blatt",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Ist es das Blatt?"
+  },
+  {
+   "id": "e32_nein",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Nein, das ist es nicht."
+  },
+  {
+   "id": "e32_ja",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "emily2",
+   "text": "Ja, richtig! Jetzt bist du dran."
+  },
+  {
+   "id": "p32_juhu",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "paul",
+   "text": "Juhu! Das war lustig!"
+  },
+  {
+   "id": "n32_ende",
+   "model": "mtl",
+   "lang": "de",
+   "presets": [
+    "A"
+   ],
+   "voice": "narr",
+   "text": "Super! Emily hat gemerkt, dass Paul geschummelt hat. Und sie hat es laut gesagt."
   }
  ]
 }
