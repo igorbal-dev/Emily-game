@@ -1,0 +1,776 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style></head><body><title>Hallo! Уровень 0</title>
+<style>
+/* Одна сцена во весь экран: стена, окно, пол, коврик; герои стоят на полу. Один светлый мир. */
+:root{
+  --wall:#ffe9c7; --wall2:#ffd9a8; --floor:#d9a066; --floor2:#c98d55;
+  --rug:#9fd3c7; --rug2:#7fbfb0; --sky:#bfe6ff; --frame:#ffffff;
+  --accent:#ff7a59; --ink:#3b2a1f; --mic:#2f80ed; --ok:#32b67a;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--wall);color:var(--ink)}
+body{font-family:"Trebuchet MS",system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#stage{position:relative;width:100%;height:100%;overflow:hidden;
+  background:linear-gradient(var(--wall),var(--wall2))}
+#bg{position:absolute;left:0;top:0;display:block}
+.char{position:absolute;cursor:pointer}
+.char .body{position:absolute;inset:0;transform-origin:50% 100%;animation:breathe 2.6s ease-in-out infinite}
+.char img{position:absolute;max-width:none;pointer-events:none;-webkit-user-drag:none}
+.char .shadow{position:absolute;left:10%;right:10%;bottom:-4%;height:8%;border-radius:50%;background:rgba(80,40,10,.18)}
+@keyframes breathe{0%,100%{transform:scale(1,1)}50%{transform:scale(1.012,.988)}}
+.hop{animation:hop .7s cubic-bezier(.3,.7,.4,1) !important}
+@keyframes hop{0%{transform:translateY(0) scale(1)}15%{transform:translateY(0) scale(1.06,.92)}45%{transform:translateY(-22%) scale(.97,1.04)}75%{transform:translateY(0) scale(1.05,.95)}100%{transform:translateY(0) scale(1)}}
+.squish{animation:squish .35s ease-out !important}
+@keyframes squish{0%{transform:scale(1)}40%{transform:scale(1.07,.93)}100%{transform:scale(1)}}
+.wiggle{animation:wiggle .5s ease-in-out 2 !important}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg)}75%{transform:rotate(4deg)}}
+#bowl{position:absolute}
+.bone{position:absolute;pointer-events:none}
+.bone svg,#bowl svg{width:100%;height:100%;display:block;overflow:visible}
+.bone.glow{animation:glow .7s ease-out forwards}
+@keyframes glow{0%{transform:scale(1)}40%{transform:scale(1.6) translateY(-30%);filter:drop-shadow(0 0 8px #fff36b)}100%{transform:scale(1.25) translateY(-10%);filter:drop-shadow(0 0 6px #fff36b)}}
+/* Кнопка-микрофон */
+#mic{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));top:calc(18px + env(safe-area-inset-top,0px));
+  width:96px;height:96px;border-radius:50%;border:0;background:var(--mic);color:#fff;
+  box-shadow:0 6px 0 #1d5fb8,0 0 0 0 rgba(47,128,237,.5);display:grid;place-items:center;cursor:pointer;z-index:5}
+#mic svg{width:46px;height:46px}
+#mic.on{animation:pulse 1.2s ease-out infinite}
+#mic.heard{background:var(--ok);box-shadow:0 6px 0 #1f8a5a}
+@keyframes pulse{0%{box-shadow:0 6px 0 #1d5fb8,0 0 0 0 rgba(47,128,237,.55)}100%{box-shadow:0 6px 0 #1d5fb8,0 0 0 28px rgba(47,128,237,0)}}
+#level{position:absolute;inset:-10px;border-radius:50%;border:6px solid rgba(255,255,255,.9);transform:scale(.9);opacity:0;pointer-events:none}
+/* Стартовый экран */
+#start{position:absolute;inset:0;display:grid;place-items:center;background:rgba(255,233,199,.75);z-index:10}
+#go{position:relative;width:min(56vw,56vh,260px);height:min(56vw,56vh,260px);border-radius:50%;border:10px solid #fff;
+  background:#fff center 8%/150% auto no-repeat;box-shadow:0 10px 0 #e2b98a,0 0 0 0 rgba(255,122,89,.5);cursor:pointer;animation:bob 1.8s ease-in-out infinite;padding:0}
+#go .play{position:absolute;right:-6%;bottom:-6%;width:34%;height:34%;border-radius:50%;background:var(--accent);display:grid;place-items:center;box-shadow:0 5px 0 #d65a3b}
+#go .play svg{width:46%;height:46%;margin-left:8%}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+#again{position:absolute;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:104px;height:104px;border-radius:50%;
+  border:0;background:var(--accent);box-shadow:0 6px 0 #d65a3b;display:grid;place-items:center;cursor:pointer;z-index:6;animation:bob 1.8s ease-in-out infinite}
+#again svg{width:52px;height:52px}
+button:focus-visible{outline:4px solid #fff;outline-offset:4px}
+.confetti{position:absolute;width:12px;height:18px;border-radius:3px;pointer-events:none;z-index:4}
+@media (prefers-reduced-motion:reduce){.char .body{animation:none}#go,#again{animation:none}}
+.held svg{width:100%;height:100%;display:block;overflow:visible}
+@keyframes walkbob{0%,100%{transform:translateY(0) rotate(-2.5deg)}50%{transform:translateY(-5%) rotate(2.5deg)}}.char .body.walking{animation:walkbob .34s ease-in-out infinite;transform-origin:50% 100%}
+</style>
+
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div id="bowl"><svg viewBox="0 0 120 60" aria-hidden="true">
+    <ellipse cx="60" cy="54" rx="56" ry="6" fill="rgba(80,40,10,.18)"/>
+    <path d="M6 16 Q60 30 114 16 L102 52 Q60 62 18 52 Z" fill="#3d7be0"/>
+    <ellipse cx="60" cy="16" rx="54" ry="10" fill="#5b95f0"/>
+    <ellipse cx="60" cy="17" rx="44" ry="6" fill="#2a5db5"/>
+    <circle cx="44" cy="38" r="5" fill="#fff" opacity=".85"/><circle cx="60" cy="41" r="5" fill="#fff" opacity=".85"/><circle cx="76" cy="38" r="5" fill="#fff" opacity=".85"/>
+  </svg></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+</div>
+
+<script>
+const IMG = {"emily_idle": "assets/img/c64929b2d467.webp", "emily_blink": "assets/img/bb16d273f7a0.webp", "emily_talk": "assets/img/d36ef0e49481.webp", "emily_mouth1": "assets/img/b6fea28bbe9b.webp", "emily_mouth2": "assets/img/159e6b3f3df4.webp", "emily_wave": "assets/img/1fdaea62d38d.webp", "emily_jump": "assets/img/7b1a90a6eb6d.webp", "mark_idle": "assets/img/13c388a98a6d.webp", "mark_blink": "assets/img/33d1a4b2bf81.webp", "mark_talk": "assets/img/1aaa73be62ad.webp", "mark_mouth": "assets/img/bfd0f2508288.webp", "mark_sad": "assets/img/2ecc9da5e9f2.webp", "mark_wave": "assets/img/a3ae5a7e74d6.webp", "mark_laugh": "assets/img/06e66d39bc29.webp", "theo_idle": "assets/img/8ce5fe0202bd.webp", "theo_blink": "assets/img/5bd18fc57314.webp", "theo_bark": "assets/img/9a746a81bb63.webp", "theo_happy": "assets/img/e2a2a3c50086.webp", "theo_curious": "assets/img/8f348661cf1a.webp"};
+const SIZE = {"emily_idle": [208, 407], "emily_blink": [208, 407], "emily_talk": [270, 413], "emily_mouth1": [208, 407], "emily_mouth2": [208, 407], "emily_wave": [252, 394], "emily_jump": [279, 346], "mark_idle": [186, 397], "mark_blink": [186, 397], "mark_talk": [186, 397], "mark_mouth": [186, 397], "mark_sad": [186, 397], "mark_wave": [247, 389], "mark_laugh": [232, 402], "theo_idle": [258, 346], "theo_blink": [259, 347], "theo_bark": [258, 347], "theo_happy": [322, 316], "theo_curious": [245, 329]};
+/* смещения поз относительно idle (подобраны так, чтобы тело не прыгало при подмене) */
+const OFF = {emily_talk:[-29,-2],theo_blink:[-1,0],theo_bark:[0,-1]};
+
+const BONE_SVG = '<svg viewBox="0 0 100 44" aria-hidden="true"><path d="M22 10a10 10 0 1 0-9 15a10 10 0 1 0 9 15h56a10 10 0 1 0 9-15a10 10 0 1 0-9-15z" fill="#fff7e6" stroke="#c9a77a" stroke-width="4" stroke-linejoin="round"/></svg>';
+
+const $ = s => document.querySelector(s);
+const stage = $('#stage');
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+/* ---------- Герои ---------- */
+class Hero {
+  constructor(name, poses, hFactor, xPct){
+    this.name = name; this.hFactor = hFactor; this.xPct = xPct;
+    this.base = 'idle'; this.cur = 'idle'; this.talking = false; this.lock = 0;
+    this.el = document.createElement('div'); this.el.className = 'char'; this.el.dataset.name = name;
+    this.body = document.createElement('div'); this.body.className = 'body';
+    const sh = document.createElement('div'); sh.className = 'shadow'; this.body.appendChild(sh);
+    this.imgs = {};
+    for (const p of poses){
+      const im = new Image(); im.src = IMG[name+'_'+p]; im.alt = ''; im.draggable = false;
+      im.hidden = p !== 'idle'; this.imgs[p] = im; this.body.appendChild(im);
+    }
+    this.el.appendChild(this.body); stage.appendChild(this.el);
+    this.el.addEventListener('pointerdown', e => { e.preventDefault(); onHeroTap(this); });
+    this.blinkLoop();
+  }
+  layout(W, floorY, hE){
+    const idle = SIZE[this.name+'_idle'];
+    this.k = (hE*this.hFactor)/idle[1];
+    const bw = idle[0]*this.k, bh = idle[1]*this.k;
+    this.box = {x: W*this.xPct - bw/2, y: floorY - bh, w: bw, h: bh};
+    Object.assign(this.el.style, {left:this.box.x+'px', top:this.box.y+'px', width:bw+'px', height:bh+'px'});
+    for (const [p, im] of Object.entries(this.imgs)){
+      const key = this.name+'_'+p, [w,h] = SIZE[key];
+      let x, y;
+      if (OFF[key]) { [x,y] = OFF[key]; } else { x = (idle[0]-w)/2; y = idle[1]-h; }
+      Object.assign(im.style, {left:x*this.k+'px', top:y*this.k+'px', width:w*this.k+'px', height:h*this.k+'px'});
+    }
+  }
+  show(p){ if (!this.imgs[p]) p = 'idle'; if (p === this.cur) return; this.imgs[this.cur].hidden = true; this.imgs[p].hidden = false; this.cur = p; }
+  setBase(p){ this.base = p; if (!this.talking && !this.lock) this.show(p); }
+  async flash(p, ms){ this.lock++; this.show(p); await sleep(ms); this.lock--; if (!this.lock && !this.talking) this.show(this.base); }
+  anim(cls){ const b = this.body; b.classList.remove('hop','squish','wiggle'); void b.offsetWidth; b.classList.add(cls);
+    b.addEventListener('animationend', () => b.classList.remove(cls), {once:true}); }
+  async blinkLoop(){
+    while (true){
+      await sleep(2200 + Math.random()*3200);
+      if (this.cur === 'idle' && !this.talking && !this.lock && this.imgs.blink){ this.show('blink'); await sleep(140); if (this.cur === 'blink') this.show('idle'); }
+    }
+  }
+  /* говорит, пока идёт фраза: рот открывается/закрывается */
+  /* идёт к новой точке (x — доля ширины сцены), покачиваясь на ходу */
+  async walkTo(x, ms){
+    const from = this.box ? this.box.x + this.box.w/2 : null;
+    if (typeof placeHero !== 'function') return; this.where = Object.assign({}, this.where, {kind:'front', x}); placeHero(this);
+    if (from === null) return;
+    const to = this.box.x + this.box.w/2, d = to - from; ms = ms ?? Math.min(1600, 500 + Math.abs(d)*2.2);
+    const walkPose = this.imgs.walk ? 'walk' : null;
+    if (walkPose){ this.lock++; this.show(walkPose); }
+    this.body.classList.add('walking');
+    await this.el.animate([{transform:`translateX(${-d}px)`}, {transform:'none'}], {duration:ms, easing:'ease-in-out'}).finished.catch(() => {});
+    this.body.classList.remove('walking');
+    if (walkPose){ this.lock--; if (!this.lock && !this.talking) this.show(this.base); }
+  }
+  /* предмет в руках: рисуется поверх героя, двигается вместе с ним (x, y — центр в долях рамки героя) */
+  hold(html, o = {}){
+    if (!this.held){ this.held = document.createElement('div'); this.held.className = 'held'; this.body.appendChild(this.held); }
+    this.held.innerHTML = html || ''; this.held.hidden = !html;
+    const w = o.w ?? 0.3, h = o.h ?? w;
+    Object.assign(this.held.style, {position:'absolute', left:((o.x ?? 0.5) - w/2)*100 + '%', top:((o.y ?? 0.55) - h/2)*100 + '%', width:w*100 + '%', height:h*100 + '%',
+      zIndex:5, transform:o.rot ? `rotate(${o.rot}deg)` : '', pointerEvents:'none'});
+  }
+  async talkWhile(promise, mouth){
+    this.talking = true; let done = false; promise.finally(() => done = true);
+    if (this.base !== 'idle' && (this.imgs.mouth1 || this.imgs.mouth) && (mouth === 'hold' || mouth === 'talk')){ await promise; }   /* держит мяч, машет и т. п. — рот не дёргаем */
+    else if (this.imgs.mouth && !this.imgs.mouth1 && mouth === 'talk'){ const seq = ['mouth','talk','mouth','idle']; let i = 0;
+      while (!done){ this.show(seq[i++ % 4]); await sleep(110 + Math.random()*70); } }
+    else if (this.imgs.mouth1 && (mouth === 'hold' || mouth === 'talk')){ const seq = ['mouth1','mouth2','mouth1','idle']; let i = 0;
+      while (!done){ this.show(seq[i++ % 4]); await sleep(110 + Math.random()*70); } }
+    else if (mouth === 'hold'){ this.show('talk'); await promise; }
+    else { let open = false; while (!done){ open = !open; this.show(open ? mouth : 'idle'); await sleep(open ? 170 : 130); } }
+    this.talking = false; if (!this.lock) this.show(this.base);
+    return promise;
+  }
+}
+
+const heroes = {
+  mark:  new Hero('mark',  ['idle','blink','talk','mouth','sad','wave','laugh'], 0.78, 0.20),
+  emily: new Hero('emily', ['idle','blink','talk','mouth1','mouth2','wave','jump'],  1.00, 0.46),
+  theo:  new Hero('theo',  ['idle','blink','bark','happy','curious'], 0.56, 0.71)
+};
+const bowl = $('#bowl');
+let L = {};
+
+function layout(){
+  const W = stage.clientWidth, H = stage.clientHeight, portrait = H > W;
+  const floorY = H*(portrait ? 0.7 : 0.82);
+  const hE = Math.min(H*0.6, W*(portrait ? 0.55 : 0.6));
+  L = {W, H, floorY, hE};
+  drawRoom();
+  for (const h of Object.values(heroes)) h.layout(W, floorY, hE);
+  const bw = hE*0.32; L.bowl = {x: W*0.88 - bw/2, y: floorY - bw*0.5, w: bw, h: bw*0.5};
+  Object.assign(bowl.style, {left:L.bowl.x+'px', top:L.bowl.y+'px', width:bw+'px', height:bw*0.5+'px'});
+  bones.forEach((b, i) => placeBone(b, i));
+}
+
+/* ---------- Комната (рисуется кодом, плоский мультяшный стиль) ---------- */
+function rr(g, x, y, w, h, r){ g.beginPath(); g.moveTo(x+r, y); g.arcTo(x+w, y, x+w, y+h, r); g.arcTo(x+w, y+h, x, y+h, r); g.arcTo(x, y+h, x, y, r); g.arcTo(x, y, x+w, y, r); g.closePath(); }
+function blob(g, x, y, r){ g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill(); }
+function drawRoom(){
+  const {W, H, floorY, hE} = L;
+  const c = $('#bg'), dpr = Math.min(2, window.devicePixelRatio || 1);
+  c.width = Math.round(W*dpr); c.height = Math.round(H*dpr); c.style.width = W+'px'; c.style.height = H+'px';
+  const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  g.lineJoin = 'round'; g.lineCap = 'round';
+  const lw = Math.max(2, hE*0.01);
+  const hz = floorY - hE*0.30;          /* линия, где стена встречается с полом */
+  L.hz = hz;
+
+  /* стена и обои */
+  g.fillStyle = '#ffe2b6'; g.fillRect(0, 0, W, hz);
+  const sw = hE*0.13; g.fillStyle = '#ffd59c';
+  for (let x = -sw*0.5; x < W; x += sw*2) g.fillRect(x, 0, sw, hz);
+  g.fillStyle = 'rgba(255,255,255,.35)';
+  for (let x = sw*0.5, i = 0; x < W; x += sw*2, i++) for (let y = sw*0.7 + (i%2)*sw*0.6; y < hz - sw*0.6; y += sw*1.2) blob(g, x + sw*0.5, y, sw*0.09);
+
+  /* пол: доски уходят вдаль */
+  const fg = g.createLinearGradient(0, hz, 0, H); fg.addColorStop(0, '#f0c088'); fg.addColorStop(1, '#d99a5c');
+  g.fillStyle = fg; g.fillRect(0, hz, W, H - hz);
+  const cx = W/2, k = 0.55, pw = hE*0.24;
+  g.strokeStyle = '#c4834a'; g.lineWidth = lw*0.8;
+  const xs = [];
+  for (let xb = cx - Math.ceil((W*1.2)/pw)*pw; xb <= cx + W*1.2; xb += pw) xs.push(xb);
+  for (const xb of xs){ g.beginPath(); g.moveTo(cx + (xb - cx)*k, hz); g.lineTo(xb, H); g.stroke(); }
+  /* короткие стыки досок, ближе к нам реже */
+  g.lineWidth = lw*0.7;
+  for (let r = 1; r < 7; r++){
+    const t = Math.pow(r/7, 1.4), y = hz + (H - hz)*t, kk = k + (1 - k)*t;
+    for (let i = 0; i < xs.length - 1; i++){
+      if ((i + r) % 3) continue;
+      const x1 = cx + (xs[i] - cx)*kk, x2 = cx + (xs[i+1] - cx)*kk;
+      g.beginPath(); g.moveTo(x1, y); g.lineTo(x2, y); g.stroke();
+    }
+  }
+  /* мягкая тень у стены */
+  const sg = g.createLinearGradient(0, hz, 0, hz + hE*0.08); sg.addColorStop(0, 'rgba(120,60,10,.18)'); sg.addColorStop(1, 'rgba(120,60,10,0)');
+  g.fillStyle = sg; g.fillRect(0, hz, W, hE*0.08);
+
+  /* плинтус */
+  const sk = hE*0.05;
+  g.fillStyle = '#fff7ec'; g.fillRect(0, hz - sk, W, sk);
+  g.strokeStyle = '#d7ad7e'; g.lineWidth = lw;
+  g.beginPath(); g.moveTo(0, hz - sk); g.lineTo(W, hz - sk); g.moveTo(0, hz); g.lineTo(W, hz); g.stroke();
+
+  /* коврик */
+  const rx = W*0.47, ry = Math.max(hE*0.12, 24), rcx = W*0.46, rcy = floorY + hE*0.01;
+  g.fillStyle = '#8fd3c0'; g.strokeStyle = '#5fae99'; g.lineWidth = lw;
+  g.beginPath(); g.ellipse(rcx, rcy, Math.min(rx, W*0.43), ry, 0, 0, Math.PI*2); g.fill(); g.stroke();
+  g.fillStyle = '#b8ead9'; g.beginPath(); g.ellipse(rcx, rcy, Math.min(rx, W*0.43)*0.78, ry*0.7, 0, 0, Math.PI*2); g.fill();
+  g.strokeStyle = '#ffffff'; g.setLineDash([lw*1.2, lw*2.2]); g.lineWidth = lw*0.9;
+  g.beginPath(); g.ellipse(rcx, rcy, Math.min(rx, W*0.43)*0.9, ry*0.85, 0, 0, Math.PI*2); g.stroke(); g.setLineDash([]);
+
+  /* окно со шторами */
+  const ww = Math.min(W*0.26, hE*0.78), wh = ww*0.78;
+  let wy = Math.max(10, hz*0.12); if (wy + wh > hz - sk - hE*0.12) wy = Math.max(6, hz - sk - hE*0.12 - wh);
+  const wx = W/2 - ww/2, fr = Math.max(6, ww*0.06);
+  rr(g, wx - fr, wy - fr, ww + fr*2, wh + fr*2, fr*1.4); g.fillStyle = '#fffaf2'; g.fill(); g.strokeStyle = '#d7ad7e'; g.lineWidth = lw; g.stroke();
+  g.save(); rr(g, wx, wy, ww, wh, fr*0.6); g.clip();
+  const sky = g.createLinearGradient(0, wy, 0, wy + wh); sky.addColorStop(0, '#8fd0ff'); sky.addColorStop(1, '#d9f1ff');
+  g.fillStyle = sky; g.fillRect(wx, wy, ww, wh);
+  g.fillStyle = '#ffd84d'; blob(g, wx + ww*0.76, wy + wh*0.26, ww*0.09);
+  g.fillStyle = '#fff'; for (const [a, b, s] of [[0.22, 0.3, 1], [0.55, 0.5, 0.8]]){ const x = wx + ww*a, y = wy + wh*b, r = ww*0.06*s; blob(g, x, y, r); blob(g, x + r*1.1, y - r*0.5, r*1.15); blob(g, x + r*2.2, y, r); }
+  g.fillStyle = '#86cf63'; g.beginPath(); g.ellipse(wx + ww*0.3, wy + wh*1.05, ww*0.55, wh*0.3, 0, 0, Math.PI*2); g.fill();
+  g.fillStyle = '#6fbf4f'; g.beginPath(); g.ellipse(wx + ww*0.85, wy + wh*1.1, ww*0.5, wh*0.3, 0, 0, Math.PI*2); g.fill();
+  g.restore();
+  g.fillStyle = '#fffaf2'; g.fillRect(wx + ww/2 - fr*0.45, wy, fr*0.9, wh); g.fillRect(wx, wy + wh/2 - fr*0.45, ww, fr*0.9);
+  rr(g, wx - fr*2, wy + wh + fr*0.6, ww + fr*4, fr*1.3, fr*0.5); g.fillStyle = '#fff7ec'; g.fill(); g.stroke();
+  /* карниз и шторы */
+  const rodY = wy - fr*2.2, cw = ww*0.32;
+  g.strokeStyle = '#b9824f'; g.lineWidth = lw*1.4; g.beginPath(); g.moveTo(wx - cw - fr*2, rodY); g.lineTo(wx + ww + cw + fr*2, rodY); g.stroke();
+  g.fillStyle = '#b9824f'; blob(g, wx - cw - fr*2, rodY, lw*1.6); blob(g, wx + ww + cw + fr*2, rodY, lw*1.6);
+  const cBottom = wy + wh + fr*2.5;
+  for (const side of [-1, 1]){
+    const ox = side < 0 ? wx - fr*1.5 : wx + ww + fr*1.5, out = side < 0 ? ox - cw : ox + cw, waistY = wy + wh*0.62;
+    g.beginPath(); g.moveTo(out, rodY); g.lineTo(ox + side*cw*0.15, rodY);
+    g.quadraticCurveTo(ox - side*cw*0.05, waistY - wh*0.3, out + side*cw*0.05 - side*cw*0.55, waistY);
+    g.quadraticCurveTo(ox + side*cw*0.05, cBottom - wh*0.1, ox + side*cw*0.1, cBottom);
+    g.lineTo(out, cBottom); g.closePath();
+    g.fillStyle = '#ff9fb4'; g.fill(); g.strokeStyle = '#e07391'; g.lineWidth = lw; g.stroke();
+    g.strokeStyle = '#f7809f'; g.lineWidth = lw*2; g.beginPath(); g.moveTo(out, waistY); g.lineTo(out + side*cw*0.05 - side*cw*0.55, waistY); g.stroke();
+  }
+  const leftFree = wx - cw - fr*2, rightFree = wx + ww + cw + fr*2;
+
+  /* полка с игрушками слева */
+  const shW = Math.min(leftFree - W*0.06, hE*0.62);
+  if (shW > hE*0.3){
+    const shX = W*0.04, shY = Math.max(wy + wh*0.55, hz*0.42);
+    g.fillStyle = '#c98a52'; g.strokeStyle = '#9c6435'; g.lineWidth = lw;
+    rr(g, shX, shY, shW, hE*0.045, lw); g.fill(); g.stroke();
+    for (const bx of [0.18, 0.82]){ g.beginPath(); g.moveTo(shX + shW*bx, shY + hE*0.045); g.lineTo(shX + shW*bx, shY + hE*0.11); g.lineTo(shX + shW*bx + hE*0.05*(bx < .5 ? 1 : -1), shY + hE*0.045); g.stroke(); }
+    const u = hE*0.07;
+    /* мяч */
+    g.fillStyle = '#ff6b5e'; g.strokeStyle = '#d24c42'; g.beginPath(); g.arc(shX + shW*0.2, shY - u*0.75, u*0.75, 0, Math.PI*2); g.fill(); g.stroke();
+    g.strokeStyle = '#fff'; g.lineWidth = lw*1.2; g.beginPath(); g.arc(shX + shW*0.2, shY - u*0.75, u*0.75, -0.5, 1.6); g.stroke();
+    /* кубики */
+    const bxs = shX + shW*0.42; g.lineWidth = lw;
+    for (const [dx, dy, col, sc] of [[0, 0, '#5aa8f0', '#3f86c9'], [u*1.05, 0, '#ffcf4a', '#d9a925'], [u*0.5, -u, '#7ccf6b', '#57a548']]){
+      g.fillStyle = col; g.strokeStyle = sc; rr(g, bxs + dx, shY - u + dy, u, u, lw); g.fill(); g.stroke();
+    }
+    /* книжки */
+    const bk = shX + shW*0.82; 
+    for (const [dx, hh, col] of [[0, 1.5, '#9b7bea'], [u*0.42, 1.25, '#ff8fc8']]){ g.fillStyle = col; g.strokeStyle = 'rgba(0,0,0,.2)'; rr(g, bk + dx, shY - u*hh, u*0.38, u*hh, lw*0.6); g.fill(); g.stroke(); }
+  }
+
+  /* детский рисунок справа */
+  const pW = Math.min(W - rightFree - W*0.1, hE*0.42);
+  if (pW > hE*0.24){
+    const pX = rightFree + (W - rightFree - pW)*0.45, pY = wy + wh*0.15, pH = pW*0.8;
+    g.fillStyle = '#ffffff'; g.strokeStyle = '#d7ad7e'; g.lineWidth = lw; rr(g, pX, pY, pW, pH, lw); g.fill(); g.stroke();
+    g.fillStyle = '#ffd84d'; blob(g, pX + pW*0.78, pY + pH*0.25, pW*0.1);
+    g.fillStyle = '#ff8a6b'; g.beginPath(); g.moveTo(pX + pW*0.2, pY + pH*0.55); g.lineTo(pX + pW*0.38, pY + pH*0.32); g.lineTo(pX + pW*0.56, pY + pH*0.55); g.closePath(); g.fill();
+    g.fillStyle = '#5aa8f0'; g.fillRect(pX + pW*0.24, pY + pH*0.55, pW*0.28, pH*0.27);
+    g.strokeStyle = '#7ccf6b'; g.lineWidth = lw; g.beginPath(); g.moveTo(pX + pW*0.08, pY + pH*0.84); g.lineTo(pX + pW*0.92, pY + pH*0.84); g.stroke();
+    g.fillStyle = '#e0b0ff'; blob(g, pX + pW/2, pY - lw, lw*1.4); /* кнопка-гвоздик */
+  }
+
+  /* цветок в горшке у стены справа */
+  if (W > hE*2.4){
+    const px = W*0.965, py = hz + hE*0.05, pw2 = hE*0.13;
+    g.fillStyle = '#6fbf4f'; g.strokeStyle = '#4f9a36'; g.lineWidth = lw;
+    for (const [a, l] of [[-0.6, 1], [-0.15, 1.25], [0.35, 1.05], [0.8, 0.85]]){
+      g.save(); g.translate(px, py - pw2*0.9); g.rotate(a); g.beginPath(); g.ellipse(0, -pw2*0.75*l, pw2*0.22, pw2*0.75*l, 0, 0, Math.PI*2); g.fill(); g.stroke(); g.restore();
+    }
+    g.fillStyle = '#e8875a'; g.strokeStyle = '#c0663d';
+    g.beginPath(); g.moveTo(px - pw2*0.5, py - pw2); g.lineTo(px + pw2*0.5, py - pw2); g.lineTo(px + pw2*0.38, py); g.lineTo(px - pw2*0.38, py); g.closePath(); g.fill(); g.stroke();
+    rr(g, px - pw2*0.58, py - pw2*1.12, pw2*1.16, pw2*0.22, lw); g.fill(); g.stroke();
+  }
+}
+
+/* ---------- Косточки ---------- */
+let bones = [];
+function boneSize(){ return L.hE*0.13; }
+function boneSlot(i){ const s = boneSize(); return {x: L.bowl.x + L.bowl.w*(0.22 + i*0.28) - s/2, y: L.bowl.y - s*0.15 - (i===1 ? s*0.12 : 0), r: [-18,8,22][i]}; }
+function placeBone(b, i){ const s = boneSize(), p = boneSlot(i);
+  Object.assign(b.style, {left:p.x+'px', top:p.y+'px', width:s+'px', height:s*0.44+'px', transform:`rotate(${p.r}deg)`}); }
+async function flyBone(fromHero){
+  const i = bones.length, b = document.createElement('div'); b.className = 'bone'; b.innerHTML = BONE_SVG;
+  stage.appendChild(b); bones.push(b); placeBone(b, i);
+  const s = boneSize(), p = boneSlot(i), hb = fromHero.box;
+  const sx = hb.x + hb.w/2 - s/2 - p.x, sy = hb.y + hb.h*0.3 - p.y;
+  const mx = sx/2, my = Math.min(sy, 0) - L.hE*0.45;
+  const a = b.animate([
+    {transform:`translate(${sx}px,${sy}px) rotate(0deg) scale(.6)`},
+    {transform:`translate(${mx}px,${my}px) rotate(200deg) scale(1.3)`, offset:.5},
+    {transform:`translate(0,0) rotate(${360+p.r}deg) scale(1)`}
+  ], {duration:900, easing:'ease-in-out'});
+  sfx.whoosh();
+  await a.finished.catch(()=>{});
+  sfx.pop();
+}
+
+/* ---------- Звуки (маленькие, без файлов) ---------- */
+let actx = null;
+const sfx = {
+  tone(f1, f2, ms, type='sine', vol=.18){
+    if (!actx) return; const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f1, t); o.frequency.exponentialRampToValueAtTime(f2, t+ms/1000);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.001, t+ms/1000);
+    o.connect(g).connect(actx.destination); o.start(t); o.stop(t+ms/1000+.02);
+  },
+  pop(){ this.tone(500, 900, 120, 'triangle', .22); },
+  whoosh(){ this.tone(300, 1200, 400, 'sine', .08); },
+  ding(){ this.tone(880, 1320, 250, 'triangle', .2); setTimeout(() => this.tone(1320, 1760, 300, 'triangle', .18), 140); },
+  boing(){ this.tone(220, 520, 220, 'sine', .15); }
+};
+
+/* ---------- Голоса (готовые записи) ---------- */
+const SND = {"a_1": "assets/snd/25f3878771aa.mp3", "a_2": "assets/snd/f64adff707b5.mp3", "a_3": "assets/snd/02a1afecff01.mp3", "a_bones": "assets/snd/c2472dcc8d4b.mp3", "a_count": "assets/snd/017a5739d36d.mp3", "a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_noch": "assets/snd/9ed1ac24d800.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_sag_emily": "assets/snd/4c5298e72835.mp3", "a_sag_hallo": "assets/snd/04f12a67984b.mp3", "a_sag_hallo_theo": "assets/snd/cb4cf2765cb8.mp3", "a_sag_tschuess": "assets/snd/7674713034c3.mp3", "a_start": "assets/snd/3affbfc5e1f5.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_tap_mark": "assets/snd/f83ae29aba64.mp3", "a_tap_theo": "assets/snd/da2feaaa055c.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_where_mark": "assets/snd/75df0bdb81bf.mp3", "a_where_theo": "assets/snd/e8ac104045ba.mp3", "e_hallo_emily": "assets/snd/3f52607f90ff.mp3", "k_hallo": "assets/snd/b7966bf60a63.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "k_tschuess": "assets/snd/6f351e7579d5.mp3", "m_emily": "assets/snd/7d9c3a6ddd25.mp3", "m_hallo": "assets/snd/6c55f0dac540.mp3", "m_hallo_theo": "assets/snd/2369a8fef17a.mp3", "m_tschuess": "assets/snd/a1be07e7601f.mp3", "r_say_de": "assets/snd/6a4dc0ba1fc3.mp3", "r_tap_mark": "assets/snd/651aae268be9.mp3", "r_tap_theo": "assets/snd/43c312948f11.mp3", "t_bark": "assets/snd/d5a7365a3230.mp3", "t_barks": "assets/snd/0b964a7cf853.mp3"};
+const BUF = {};
+let speaking = 0;
+function b64ToBytes(uri){ const s = atob(uri.split(',')[1]); const a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a.buffer; }
+function decode(ab){ return new Promise((res, rej) => { const p = actx.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); }); }
+async function loadSounds(){
+  await Promise.all(Object.entries(SND).map(async ([k, uri]) => { try { BUF[k] = await decode(await (await fetch(uri)).arrayBuffer()); } catch(e){} }));
+}
+/* Проигрывает запись; промис завершается, когда она закончилась */
+function play(name){
+  return new Promise(resolve => {
+    const b = BUF[name];
+    if (!actx || !b){ setTimeout(resolve, 300); return; }
+    if (actx.state !== 'running') actx.resume();
+    const s = actx.createBufferSource(); s.buffer = b; s.connect(actx.destination);
+    let done = false; speaking++;
+    const fin = () => { if (done) return; done = true; speaking--; resolve(); };
+    s.onended = fin; setTimeout(fin, b.duration*1000 + 400);
+    s.start();
+  });
+}
+const PRAISE = ['a_super', 'a_toll', 'a_prima', 'a_juhu'];
+let lastPraise = '';
+function praise(){ let p; do { p = PRAISE[Math.floor(Math.random()*PRAISE.length)]; } while (p === lastPraise); lastPraise = p; return play(p); }
+
+/* ---------- Микрофон ---------- */
+let mic = null; /* {analyser, buf} или null, если микрофона нет */
+const micBtn = $('#mic'), levelRing = $('#level');
+let micTapResolve = null;
+micBtn.addEventListener('pointerdown', e => { e.preventDefault(); if (micTapResolve) micTapResolve(true); });
+
+async function setupMic(){
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+    const stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true, autoGainControl:true}});
+    const src = actx.createMediaStreamSource(stream), an = actx.createAnalyser();
+    an.fftSize = 1024; src.connect(an);
+    mic = {analyser:an, buf:new Float32Array(an.fftSize)};
+  } catch(e){ mic = null; }
+}
+function rms(){ mic.analyser.getFloatTimeDomainData(mic.buf); let s = 0; for (const x of mic.buf) s += x*x; return Math.sqrt(s/mic.buf.length); }
+
+/* Слушаем: true, если ребёнок сказал что-то вслух (или нажал на микрофон) */
+function listen(){
+  return new Promise(resolve => {
+    micBtn.hidden = false; micBtn.classList.remove('heard'); micBtn.classList.add('on');
+    let finished = false;
+    const end = ok => { if (finished) return; finished = true; micTapResolve = null; micBtn.classList.remove('on');
+      levelRing.style.opacity = 0;
+      if (ok){ micBtn.classList.add('heard'); sfx.ding(); setTimeout(() => { micBtn.hidden = true; micBtn.classList.remove('heard'); }, 700); }
+      else micBtn.hidden = true;
+      resolve(ok); };
+    micTapResolve = end;
+    if (!mic){ setTimeout(() => end(false), 9000); return; }
+    if (actx.state !== 'running') actx.resume();
+    const t0 = performance.now(); let floor = 0.01, n = 0, voiced = 0, last = t0;
+    const tick = now => {
+      if (finished) return;
+      const r = rms(), dt = now - last; last = now;
+      if (now - t0 < 350){ floor = (floor*n + r)/(n+1); n++; }
+      const thr = Math.max(0.03, floor*2.5 + 0.012);
+      levelRing.style.opacity = Math.min(1, r/thr); levelRing.style.transform = `scale(${0.95 + Math.min(0.5, r*4)})`;
+      if (now - t0 > 350 && r > thr) voiced += dt; else voiced = Math.max(0, voiced - dt*0.3);
+      if (voiced > 380) return end(true);
+      if (now - t0 > 5500) return end(false);
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
+/* Скажи фразу: 1-й раз «Sag: …», 2-й раз «Noch einmal! Sag: …», 3-й раз русская подсказка.
+   После трёх попыток всё равно хвалим и идём дальше. */
+const PHRASE = {
+  hallo:     {sag:'a_sag_hallo',      bare:'m_hallo'},
+  halloTheo: {sag:'a_sag_hallo_theo', bare:'m_hallo_theo'},
+  emily:     {sag:'a_sag_emily',      bare:'m_emily'},
+  tschuess:  {sag:'a_sag_tschuess',   bare:'m_tschuess'}
+};
+async function practice(key){
+  const p = PHRASE[key];
+  for (let i = 0; i < 3; i++){
+    if (i === 0) await play(p.sag);
+    if (i === 1){ await play('a_noch'); await play(p.sag); }
+    if (i === 2){ await play('r_say_de'); await play(p.bare); }
+    await sleep(200);
+    if (await listen()) return true;
+  }
+  return false;
+}
+
+/* ---------- Касания ---------- */
+let waitingFor = null, waitResolve = null;
+function onHeroTap(h){
+  if (waitingFor === h.name && waitResolve){ const r = waitResolve; waitResolve = null; waitingFor = null; h.anim('squish'); r(); return; }
+  if (h.name === 'theo'){ /* бонус: Тео гавкает в любой момент */
+    h.anim('wiggle'); h.flash('bark', 600);
+    if (!speaking) play('t_bark'); else sfx.boing();
+  } else { h.anim('squish'); sfx.boing(); }
+}
+/* Ждём касания героя. Сначала немецкая подсказка; каждые 5 с герой подпрыгивает;
+   через 10 с вторая немецкая подсказка, через 20 с русская, дальше снова по кругу. */
+async function waitTap(h, first, second, ru){
+  waitingFor = h.name; let tapped = false;
+  const p = new Promise(r => waitResolve = () => { tapped = true; r(); });
+  h.anim('hop'); await play(first);
+  (async () => {
+    let k = 0;
+    while (!tapped){
+      await sleep(5000); if (tapped) break;
+      h.anim('hop'); k++;
+      if (speaking) continue;
+      if (k === 2 || k === 6 || k === 10) play(second);
+      else if (k === 4 || k === 8) play(ru);
+    }
+  })();
+  return p;
+}
+
+/* ---------- Ход уровня ---------- */
+async function level(){
+  const {mark, emily, theo} = heroes;
+
+  /* Марк */
+  await waitTap(mark, 'a_tap_mark', 'a_where_mark', 'r_tap_mark');
+  mark.setBase('wave'); await sleep(600);
+  mark.setBase('idle'); await mark.talkWhile(play('k_hallo'), 'talk');
+  await sleep(300);
+  await practice('hallo');
+  mark.setBase('laugh'); mark.anim('hop');
+  await Promise.all([play('k_laugh'), flyBone(mark)]);
+  await praise();
+  await sleep(300); mark.setBase('idle');
+
+  /* Тео */
+  await waitTap(theo, 'a_tap_theo', 'a_where_theo', 'r_tap_theo');
+  theo.anim('wiggle'); await theo.talkWhile(play('t_barks'), 'bark');
+  theo.setBase('happy'); await sleep(400); theo.setBase('idle');
+  await practice('halloTheo');
+  theo.setBase('happy'); theo.anim('wiggle'); play('t_bark');
+  await flyBone(theo); await praise();
+  await sleep(300); theo.setBase('idle');
+
+  /* Эмили */
+  emily.anim('hop'); emily.setBase('wave'); await sleep(800);
+  emily.setBase('idle'); await emily.talkWhile(play('e_hallo_emily'), 'hold');
+  await sleep(300);
+  await practice('emily');
+  emily.setBase('jump'); emily.anim('hop');
+  await flyBone(emily); await praise();
+  await sleep(300); emily.setBase('idle');
+
+  /* Считаем косточки */
+  theo.setBase('curious');
+  await play('a_count'); await sleep(300);
+  for (const [i, w] of ['a_1', 'a_2', 'a_3'].entries()){
+    bones[i].classList.add('glow'); sfx.pop();
+    await play(w); await sleep(700);
+  }
+  theo.setBase('happy'); theo.anim('wiggle');
+  await play('a_bones');
+  theo.setBase('idle'); bones.forEach(b => b.classList.remove('glow'));
+  await sleep(400);
+
+  /* Прощание */
+  mark.setBase('wave'); emily.setBase('wave'); theo.setBase('happy');
+  await play('k_tschuess');
+  await sleep(300);
+  await practice('tschuess');
+  mark.setBase('laugh'); emily.setBase('jump'); theo.setBase('happy');
+  for (const h of [mark, emily, theo]) h.anim('hop');
+  confetti(); play('t_bark'); await play('a_final');
+  if (window.countBones) await countBones();   /* Эмили считает косточки, они летят в общий сундучок */
+  $('#again').hidden = false;
+}
+
+function confetti(){
+  const colors = ['#ff7a59','#ffd34d','#32b67a','#2f80ed','#ff8fc8','#9b6bff'];
+  for (let i = 0; i < 60; i++){
+    const c = document.createElement('div'); c.className = 'confetti';
+    c.style.background = colors[i % colors.length]; c.style.left = Math.random()*L.W+'px'; c.style.top = '-20px';
+    stage.appendChild(c);
+    const dx = (Math.random()-.5)*160, rot = Math.random()*720;
+    c.animate([{transform:'translate(0,0) rotate(0)'}, {transform:`translate(${dx}px,${L.H+40}px) rotate(${rot}deg)`}],
+      {duration:2200 + Math.random()*1800, delay:Math.random()*600, easing:'cubic-bezier(.25,.6,.5,1)', fill:'forwards'})
+      .finished.then(() => c.remove()).catch(() => c.remove());
+  }
+}
+
+function reset(){
+  bones.forEach(b => b.remove()); bones = [];
+  for (const h of Object.values(heroes)) h.setBase('idle');
+}
+
+/* ---------- Общие улучшения: читаемый счётчик, герои ходят, а не телепортируются ---------- */
+(function(){
+  const css = document.createElement('style');
+  css.textContent = `
+  #count{background:rgba(255,250,242,.94);border-radius:28px;padding:4px 26px 12px;box-shadow:0 6px 0 rgba(217,183,122,.9)}
+  #num{color:#ff7a59 !important;text-shadow:0 5px 0 #ffd9c9 !important}
+  #dots i{background:#ffc93c !important;box-shadow:0 0 0 3px #fff !important}
+  .ghost{position:absolute;pointer-events:none;transform-origin:0 0}
+  .ghost .body{animation:fxwalk .34s ease-in-out infinite !important;transform-origin:50% 100%}
+  @keyframes fxwalk{0%,100%{transform:translateY(0) rotate(-2.5deg)}50%{transform:translateY(-5%) rotate(2.5deg)}}
+  .fx-give{position:absolute;pointer-events:none;z-index:80}
+  .fx-give svg,.fx-give img{width:100%;height:100%;display:block;overflow:visible}
+  .fx-spark{position:absolute;pointer-events:none;z-index:81;width:14px;height:14px;border-radius:50%;background:#ffd84d;box-shadow:0 0 8px #fff36b}
+  `;
+  document.body.appendChild(css);
+})();
+
+const FX = {walk:true};
+/* мягкие шаги во время ходьбы */
+if (typeof sfx !== 'undefined' && !sfx.step) sfx.step = function(ms = 900){
+  const n = Math.max(2, Math.round(ms/300));
+  for (let i = 0; i < n; i++) setTimeout(() => { try { this.tone(i % 2 ? 210 : 180, 120, 70, 'triangle', .07); } catch(e){} }, i*300);
+};
+function fxRect(el){ const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect(); return {x:r.left - s.left, y:r.top - s.top, w:r.width, h:r.height}; }
+function fxVisible(h){
+  if (!h || !h.el || !h.el.isConnected || h.el.hidden || !h.where || h.where.kind === 'none') return false;
+  if (h.el.style.opacity === '0' || h.el.style.display === 'none') return false;
+  const r = h.el.getBoundingClientRect(); return r.width > 2 && r.height > 2;
+}
+function fxSpotZ(id){ try { const s = spots[id]; return s && s.front ? (+s.front.style.zIndex || 20) - 1 : 40; } catch(e){ return 40; } }
+function fxEndGhost(h){ if (h._ghost){ h._ghost.getAnimations().forEach(a => a.cancel()); h._ghost.remove(); h._ghost = null; } h.el.style.visibility = ''; }
+
+/* Герой переходит из одной точки в другую пешком: копия героя идёт, покачиваясь, настоящий появляется на месте */
+function fxWalkGhost(h, from, to, fromZ, toZ){
+  const g = h.el.cloneNode(true); g.classList.add('ghost'); g.classList.remove('inspot');
+  const real = [...h.body.querySelectorAll('img')], gi = [...g.querySelectorAll('img')];
+  const walkImg = h.imgs.walk || h.imgs.idle, k = real.indexOf(walkImg);
+  if (k >= 0) gi.forEach((im, i) => { im.hidden = i !== k; });
+  const held = g.querySelector('.held'); if (held && h.held && !h.held.hidden) held.hidden = false;
+  Object.assign(g.style, {left:from.x + 'px', top:from.y + 'px', width:from.w + 'px', height:from.h + 'px', zIndex:fromZ, visibility:'visible', opacity:1, transform:'none', transition:'none'});
+  stage.appendChild(g); h._ghost = g; h.el.style.visibility = 'hidden';
+  const dx = to.x - from.x, dy = to.y - from.y, sx = to.w/from.w, sy = to.h/from.h;
+  const d = Math.hypot(dx, dy), ms = Math.max(450, Math.min(1500, 380 + d*2.1));
+  const end = `translate(${dx}px,${dy}px) scale(${sx},${sy})`;
+  const a = g.animate([{transform:'none', zIndex:fromZ}, {zIndex:fromZ, offset:.7}, {zIndex:toZ, offset:.72}, {transform:end, zIndex:toZ}], {duration:ms, easing:'ease-in-out', fill:'forwards'});
+  if (typeof sfx !== 'undefined' && sfx.step) sfx.step(ms);
+  return a.finished.catch(() => {}).then(() => { if (h._ghost === g) fxEndGhost(h); });
+}
+if (typeof setWhere === 'function' && typeof placeHero === 'function'){
+  const _setWhere = setWhere;
+  setWhere = function(h, where){
+    let from = null, fromZ = +h.el.style.zIndex || 50;
+    const was = h.where || {};
+    if (h._ghost){ from = fxRect(h._ghost); fromZ = +h._ghost.style.zIndex || fromZ; fxEndGhost(h); }
+    else if (FX.walk && fxVisible(h) && h.box) from = fxRect(h.el);
+    if (was.kind === 'spot' && was.state !== 'out') fromZ = fxSpotZ(was.spot);
+    _setWhere(h, where);
+    if (!from || !FX.walk || !fxVisible(h) || !L.W) return;
+    const to = fxRect(h.el);
+    if (Math.hypot(to.x - from.x, to.y - from.y) < L.W*0.04) return;
+    const toZ = (where.kind === 'spot' && where.state !== 'out') ? fxSpotZ(where.spot) : (+h.el.style.zIndex || 50);
+    h._walkP = fxWalkGhost(h, from, to, fromZ, toZ);
+  };
+}
+/* дождаться, пока герой дойдёт */
+function walked(h){ return (h && h._walkP) || Promise.resolve(); }
+
+/* у всех героев есть руки: предмет в руках */
+if (typeof Hero === 'function' && !Hero.prototype.hold){
+  Hero.prototype.hold = function(html, o = {}){
+    if (!this.held){ this.held = document.createElement('div'); this.held.className = 'held'; this.body.appendChild(this.held); }
+    this.held.innerHTML = html || ''; this.held.hidden = !html;
+    const w = o.w ?? 0.3, hh = o.h ?? w;
+    Object.assign(this.held.style, {position:'absolute', left:((o.x ?? 0.5) - w/2)*100 + '%', top:((o.y ?? 0.55) - hh/2)*100 + '%', width:w*100 + '%', height:hh*100 + '%',
+      zIndex:5, transform:o.rot ? `rotate(${o.rot}deg)` : '', pointerEvents:'none'});
+    this.held.querySelectorAll('svg').forEach(s => { s.style.width = '100%'; s.style.height = '100%'; s.style.display = 'block'; s.style.overflow = 'visible'; });
+  };
+}
+/* передать предмет: летит дугой из рук одного героя (или точки) в руки другого */
+async function giveFX(html, from, toHero, o = {}){
+  const st = stage.getBoundingClientRect();
+  const fr = from && from.el ? fxRect(from.el) : from;   /* герой или прямоугольник {x,y,w,h} */
+  const tb = toHero.box, size = o.size ?? L.hE*0.22;
+  const fx = fr.x + fr.w*(from && from.el ? 0.5 : 0.5), fy = fr.y + fr.h*(from && from.el ? 0.55 : 0.5);
+  const tx = tb.x + tb.w*(o.x ?? 0.5), ty = tb.y + tb.h*(o.y ?? 0.55);
+  const d = document.createElement('div'); d.className = 'fx-give'; d.innerHTML = html;
+  Object.assign(d.style, {left:(fx - size/2) + 'px', top:(fy - size/2) + 'px', width:size + 'px', height:size + 'px'});
+  stage.appendChild(d);
+  if (from && from.hold) from.hold('');
+  const dx = tx - fx, dy = ty - fy, lift = -Math.max(L.hE*0.25, Math.abs(dx)*0.18);
+  if (typeof sfx !== 'undefined' && sfx.whoosh) sfx.whoosh();
+  await d.animate([{transform:'translate(0,0) rotate(0)'}, {transform:`translate(${dx*0.5}px,${dy*0.5 + lift}px) rotate(${dx > 0 ? 12 : -12}deg) scale(1.1)`, offset:.5}, {transform:`translate(${dx}px,${dy}px) rotate(0)`}], {duration:o.ms ?? 750, easing:'ease-in-out', fill:'forwards'}).finished.catch(() => {});
+  d.remove();
+  if (o.hold !== false) toHero.hold(html, Object.assign({x:o.x ?? 0.5, y:o.y ?? 0.55, w:o.w ?? 0.3, h:o.h ?? 0.3}, o.holdOpts || {}));
+  toHero.body.classList.remove('squish'); void toHero.body.offsetWidth; toHero.body.classList.add('squish');
+  toHero.body.addEventListener('animationend', () => toHero.body.classList.remove('squish'), {once:true});
+  sparkFX(tx, ty);
+  if (typeof sfx !== 'undefined' && sfx.pop) sfx.pop();
+}
+/* искорки в точке */
+function sparkFX(x, y, n = 8){
+  for (let i = 0; i < n; i++){
+    const s = document.createElement('i'); s.className = 'fx-spark'; stage.appendChild(s);
+    Object.assign(s.style, {left:(x - 7) + 'px', top:(y - 7) + 'px'});
+    const a = i/n*Math.PI*2, r = L.hE*(0.12 + Math.random()*0.08);
+    s.animate([{transform:'translate(0,0) scale(1)', opacity:1}, {transform:`translate(${Math.cos(a)*r}px,${Math.sin(a)*r}px) scale(.3)`, opacity:0}], {duration:600, easing:'ease-out', fill:'forwards'}).finished.then(() => s.remove()).catch(() => s.remove());
+  }
+}
+/* Живые герои: время от времени кто-то из стоящих без дела чуть покачивается или переминается */
+(async function idleLife(){
+  const moves = [
+    [{transform:'rotate(0)'}, {transform:'rotate(-2.2deg)'}, {transform:'rotate(1.6deg)'}, {transform:'rotate(0)'}],
+    [{transform:'translateY(0)'}, {transform:'translateY(-3%) scale(1.01,.99)'}, {transform:'translateY(0)'}],
+    [{transform:'scale(1,1)'}, {transform:'scale(1.03,.97)'}, {transform:'scale(.99,1.01)'}, {transform:'scale(1,1)'}]];
+  while (true){
+    await sleep(5000 + Math.random()*6000);
+    try {
+      if (typeof heroes === 'undefined') continue;
+      const list = Object.values(heroes).filter(h => fxVisible(h) && !h._ghost && !h.talking && !h.lock && h.where.kind === 'front' && h.cur !== 'counting');
+      if (!list.length) continue;
+      const h = list[Math.floor(Math.random()*list.length)];
+      if (h.body.classList.contains('hop') || h.body.classList.contains('squish') || h.body.classList.contains('wiggle') || h.body.classList.contains('walking')) continue;
+      h.body.animate(moves[Math.floor(Math.random()*moves.length)], {duration:900, easing:'ease-in-out'});
+    } catch(e){}
+  }
+})();
+/* В начале уровня Эмили, Марк и Тео не стоят как вкопанные, а приходят на свои места */
+(function(){
+  const go = document.getElementById('go');
+  if (!go || typeof setWhere !== 'function' || typeof heroes === 'undefined') return;
+  go.addEventListener('click', async () => {
+    try {
+      const hs = ['emily', 'mark', 'theo'].map(n => heroes[n]).filter(h => h && h.where && h.where.kind === 'front' && !h.el.hidden && h.box);
+      const goal = hs.map(h => Object.assign({}, h.where));
+      FX.walk = false; hs.forEach((h, i) => setWhere(h, Object.assign({}, goal[i], {x: goal[i].x > 0.5 ? 1.12 : -0.12}))); FX.walk = true;
+      for (let i = 0; i < hs.length; i++){ setWhere(hs[i], goal[i]); await sleep(200); }
+    } catch(e){}
+  });
+})();
+
+/* Одежда: emily.outfit('out') — в кроссовках (картинки *_out), emily.outfit('') — в носочках */
+if (typeof Hero === 'function' && !Hero.prototype.outfit){
+  Hero.prototype.outfit = function(o){
+    this._outfit = o || '';
+    for (const [p, im] of Object.entries(this.imgs)){ const k = this.name + '_' + p + (o ? '_' + o : ''); if (IMG[k]) im.src = IMG[k]; else if (IMG[this.name + '_' + p]) im.src = IMG[this.name + '_' + p]; }
+    if (this.box && this.where && this.where.kind !== 'none' && typeof placeHero === 'function'){ FX.walk = false; placeHero(this); FX.walk = true; }
+  };
+}
+/* размеры и сдвиги берём от той картинки, что сейчас надета (у уличной одежды свои размеры) */
+if (typeof Hero === 'function' && Hero.prototype.put){
+  Hero.prototype.put = function(x, baseY, kMul){
+    const o = this._outfit ? '_' + this._outfit : '';
+    const keyOf = p => (o && SIZE[this.name + '_' + p + o]) ? this.name + '_' + p + o : this.name + '_' + p;
+    const idle = SIZE[keyOf('idle')];
+    this.k = (L.hE*this.hFactor*kMul)/idle[1];
+    const bw = idle[0]*this.k, bh = idle[1]*this.k;
+    this.box = {x: x - bw/2, y: baseY - bh, w: bw, h: bh};
+    Object.assign(this.el.style, {left:this.box.x + 'px', top:this.box.y + 'px', width:bw + 'px', height:bh + 'px'});
+    for (const [p, im] of Object.entries(this.imgs)){
+      const key = keyOf(p); if (!SIZE[key]) continue;
+      const [w, h] = SIZE[key]; let ox, oy;
+      if (OFF[key]) { [ox, oy] = OFF[key]; } else { ox = (idle[0] - w)/2; oy = idle[1] - h; }
+      Object.assign(im.style, {left:ox*this.k + 'px', top:oy*this.k + 'px', width:w*this.k + 'px', height:h*this.k + 'px'});
+    }
+  };
+}
+
+/* ---------- Старт ---------- */
+$('#go').style.backgroundImage = `url(${IMG.theo_idle})`;
+$('#go').addEventListener('click', async () => {
+  try {
+    actx = new (window.AudioContext || window.webkitAudioContext)(); actx.resume();
+    /* короткая тишина прямо в нажатии: так iPad разрешает звук */
+    const s = actx.createBufferSource(); s.buffer = actx.createBuffer(1, 1, 22050); s.connect(actx.destination); s.start();
+  } catch(e){ actx = null; }
+  $('#start').hidden = true; sfx.pop();
+  try { navigator.wakeLock && navigator.wakeLock.request('screen').catch(() => {}); } catch(e){}
+  if (actx) await Promise.all([loadSounds(), setupMic()]);
+  await play('a_start'); await sleep(300);
+  level();
+});
+$('#again').addEventListener('click', async () => {
+  $('#again').hidden = true; reset(); sfx.pop(); await sleep(300); level();
+});
+
+addEventListener('resize', layout);
+addEventListener('orientationchange', () => setTimeout(layout, 200));
+layout();
+</script>
+<script>
+/* Общий прогресс игры: пройденные уровни, косточки Тео, новые друзья. Хранится на этом устройстве. */
+(function(){
+  const LEVEL = 0, FRIENDS = [], STICKER = "<img src=\"assets/img/e2a2a3c50086.webp\" alt=\"\">";
+  const KEY = 'emily-game';
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e){ return {}; } };
+  const save = d => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){} };
+  const stage = document.getElementById('stage'), again = document.getElementById('again');
+  /* кнопка «на карту» */
+  const css = document.createElement('style');
+  css.textContent = `#tomap{position:absolute;left:calc(6px + env(safe-area-inset-left,0px));top:calc(6px + env(safe-area-inset-top,0px));z-index:96;width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:0 3px 0 #e2b98a;display:grid;place-items:center}
+  #tomap svg{width:26px;height:26px}
+  #sticker{position:absolute;left:50%;top:14%;transform:translateX(-50%);z-index:84;width:min(30vw,34vh);aspect-ratio:1;max-width:100%;border-radius:50%;background:#fff;border:8px solid #ffd84d;box-shadow:0 8px 0 #e2b98a;display:grid;place-items:center;padding:8%;box-sizing:border-box;animation:stickin .7s cubic-bezier(.3,1.6,.5,1)}
+  #sticker svg,#sticker img{width:100%;height:100%;object-fit:contain}
+  @keyframes stickin{0%{transform:translateX(-50%) scale(.2) rotate(-30deg);opacity:0}100%{transform:translateX(-50%) scale(1) rotate(0);opacity:1}}`;
+  document.head ? document.head.appendChild(css) : document.body.appendChild(css);
+  const a = document.createElement('a'); a.id = 'tomap'; a.href = 'index.html'; a.setAttribute('aria-label', 'Карта уровней');
+  a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>';
+  stage.appendChild(a);
+  let marked = false;
+  function done(){
+    if (marked) return; marked = true;
+    const d = load(); d.done = d.done || {}; d.done[LEVEL] = (d.done[LEVEL] || 0) + 1;
+    /* косточки уже посчитаны и положены в сундучок (countBones в js/common.js) */
+    d.friends = d.friends || {}; FRIENDS.forEach(f => d.friends[f] = true);
+    save(d);
+    const s = document.createElement('div'); s.id = 'sticker'; s.innerHTML = STICKER; stage.appendChild(s);
+    again.addEventListener('click', () => s.remove(), {once: true});   /* наклейка остаётся до «ещё раз» */
+  }
+  new MutationObserver(() => { if (!again.hidden) done(); }).observe(again, {attributes:true, attributeFilter:['hidden']});
+  again.addEventListener('click', () => { marked = false; });
+})();
+</script>
+<script>window.WORLD = {outdoor: false};</script>
+<script src="js/world.js"></script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

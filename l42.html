@@ -1,0 +1,144 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Puzzle. Уровень 42</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 42 «Puzzle» — пазл из 9 частей с Паулем: «Ich mache alles alleine!» → «Wir machen es zusammen. Abwechselnd!» → шаг 2; кладём по очереди, считаем части; последней нет — ищем «unter dem Tisch»; кладём вместе. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_shoes": ["assets/img/f3c638bc729d.webp", 208, 407], "emily_blink_shoes": ["assets/img/0f33b1ccf809.webp", 208, 407], "emily_mouth1_shoes": ["assets/img/3b7a1bb44669.webp", 208, 407], "emily_mouth2_shoes": ["assets/img/349db2cdaea9.webp", 208, 407], "emily_talk_shoes": ["assets/img/d3e54ca225ed.webp", 270, 413], "emily_wave_shoes": ["assets/img/2ab85334263f.webp", 252, 394], "emily_jump_shoes": ["assets/img/31f33a5548ba.webp", 279, 346], "emily_surprised_shoes": ["assets/img/b65576956668.webp", 208, 407], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised}_shoes paul_{idle,blink,talk,wave,jump} isabel_{idle,blink,talk,wave,jump}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e42_gefunden": "assets/snd/8f8822497741.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "e_7": "assets/snd/ce569c9a5108.mp3", "e_8": "assets/snd/ee98e8bfbe63.mp3", "e_9": "assets/snd/742279368294.mp3", "n24_fester": "assets/snd/62af96e91cb6.mp3", "n42_fehlt": "assets/snd/bb98357eb152.mp3", "n42_tipp": "assets/snd/157f363a9027.mp3", "n_lauter": "assets/snd/514e958e006e.mp3", "p42_allein": "assets/snd/00c5d6ce9c5e.mp3", "p42_toll": "assets/snd/de87f1443f36.mp3", "r_lauter": "assets/snd/2e0c8abce899.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..9} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, i — Изабель, p — Пауль) */
+const SAY = {
+  n42_intro: 'In der Kita machen Emily und Paul ein Puzzle mit neun Teilen.',
+  p42_allein: 'Ich mache alles alleine! Das ist mein Puzzle!',
+  e42_zusammen: 'Paul, wir machen es zusammen. Abwechselnd!',
+  p42_nein: 'Nein! Ich will alleine!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e42_auch: 'Nein, Paul! Das Puzzle ist für uns beide. Ein Teil du, ein Teil ich.',
+  p42_okay: 'Okay. Abwechselnd. Du fängst an!',
+  n42_tipp: 'Du bist dran! Tipp auf ein Puzzleteil!',
+  r42_tipp: 'Твоя очередь! Нажми на кусочек пазла!',
+  e42_du: 'Jetzt du, Paul!',
+  n42_fehlt: 'Oh! Ein Teil fehlt! Wo ist es?',
+  i42_tisch: 'Vielleicht ist es unter dem Tisch?',
+  n42_such: 'Tipp auf die Stelle, wo das Teil ist!',
+  r42_such: 'Где кусочек? Нажми туда!',
+  n42_nicht: 'Da ist es nicht. Such weiter!',
+  e42_gefunden: 'Ich habe es gefunden! Es war unter dem Tisch.',
+  p42_letzte: 'Ich will das letzte Teil legen!',
+  e42_beide: 'Wir legen das letzte Teil zusammen!',
+  p42_toll: 'Zusammen! Juhu! Das ist ein Hund!',
+  n42_zaehl: 'Wie viele Teile hat das Puzzle? Zähl mit!',
+  n42_neun: 'Neun Teile! Fertig!',
+  n42_ende: 'Super! Emily hat gesagt: Wir machen es zusammen. Und zusammen hat es geklappt!',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 42: пазл 3×3 (картинка — собака на лугу). Пауль: «Ich mache alles alleine!» — шаг 1 «Paul, wir machen es zusammen. Abwechselnd!»,
+   шаг 2 «Nein, Paul! Das Puzzle ist für uns beide. Ein Teil du, ein Teil ich.». По очереди: Эмили нажимает часть (она встаёт на место), «Jetzt du, Paul!» — Пауль кладёт сам.
+   Последней части нет — Изабель: «Vielleicht ist es unter dem Tisch?» — ищем (под столом, на стуле, в коробке), «Ich habe es gefunden! Es war unter dem Tisch.».
+   «Wir legen das letzte Teil zusammen!». Считаем части (9). */
+const LEVEL = 42, FRIENDS = ['paul', 'isabel'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M14 14 H46 V26 a8 8 0 1 0 0 14 V46 H34 a8 8 0 1 1 -14 0 H14 Z" fill="#ff7a59" stroke="#d65a3b" stroke-width="3"/><path d="M54 14 H86 V46 H74 a8 8 0 1 0 -14 0 H54 V40 a8 8 0 1 1 0 -14 Z" fill="#32b67a" stroke="#22905a" stroke-width="3"/><path d="M14 54 H20 a8 8 0 1 0 14 0 H46 V86 H14 Z" fill="#2f80ed" stroke="#1f5fb0" stroke-width="3"/><path d="M54 54 H60 a8 8 0 1 1 14 0 H86 V86 H54 Z" fill="#ffd34d" stroke="#d6a21e" stroke-width="3"/></svg>';
+const RUG = 0.5;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG); }
+/* картинка пазла (собака на лугу) — режем на 9 частей через viewBox */
+const PUZ = '<rect width="300" height="300" fill="#bfe6ff"/><rect y="200" width="300" height="100" fill="#9be08a"/><circle cx="250" cy="50" r="30" fill="#ffd34d"/>' +
+  '<ellipse cx="150" cy="190" rx="80" ry="50" fill="#e3b48a" stroke="#a8754a" stroke-width="5"/><circle cx="90" cy="130" r="42" fill="#e3b48a" stroke="#a8754a" stroke-width="5"/><ellipse cx="62" cy="120" rx="16" ry="30" fill="#a8754a"/><circle cx="80" cy="122" r="6" fill="#333"/><circle cx="56" cy="142" r="7" fill="#333"/>' +
+  '<path d="M100 236 v40 M200 236 v40 M130 236 v40 M170 236 v40" stroke="#a8754a" stroke-width="14" stroke-linecap="round"/><path d="M228 180 Q262 150 252 120" fill="none" stroke="#a8754a" stroke-width="12" stroke-linecap="round"/>';
+const PIECE = i => { const x = (i % 3)*100, y = Math.floor(i/3)*100; return `<svg viewBox="${x} ${y} 100 100" style="overflow:hidden"><g>${PUZ}</g><rect x="${x + 2}" y="${y + 2}" width="96" height="96" fill="none" stroke="#fff" stroke-width="4"/></svg>`; };
+const FRAME = '<svg viewBox="0 0 300 300"><rect x="2" y="2" width="296" height="296" fill="#fff7ec" stroke="#e2b98a" stroke-width="6"/><path d="M100 0 V300 M200 0 V300 M0 100 H300 M0 200 H300" stroke="#e2b98a" stroke-width="3" stroke-dasharray="8 6"/></svg>';
+const TABLE = '<svg viewBox="0 0 200 70"><rect x="4" y="4" width="192" height="16" rx="6" fill="#e8904a" stroke="#b8642a" stroke-width="3"/><rect x="18" y="20" width="12" height="48" fill="#c97a3a"/><rect x="170" y="20" width="12" height="48" fill="#c97a3a"/></svg>';
+const BOX = '<svg viewBox="0 0 100 70"><rect x="4" y="14" width="92" height="54" rx="6" fill="#9b6bff" stroke="#6b3fc4" stroke-width="4"/><rect x="0" y="6" width="100" height="14" rx="5" fill="#b38bff" stroke="#6b3fc4" stroke-width="4"/></svg>';
+const CHAIR = '<svg viewBox="0 0 100 130"><rect x="14" y="4" width="72" height="56" rx="10" fill="#4a8ff0" stroke="#2a5fb0" stroke-width="5"/><rect x="8" y="62" width="84" height="16" rx="6" fill="#4a8ff0" stroke="#2a5fb0" stroke-width="5"/><path d="M16 78 V126 M84 78 V126" stroke="#2a5fb0" stroke-width="8" stroke-linecap="round"/></svg>';
+let emily, paul, isabel, frame, table, box, chair, pieces = [], spots = [];
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+const FW = 1.05;                                   /* ширина рамки в ростах */
+const FX = () => L.W*0.5, FB = () => L.floorY - L.hE*0.4;
+const cellPos = i => ({px: () => FX() - L.hE*FW/2 + ((i % 3) + 0.5)*L.hE*FW/3, py: () => FB() - L.hE*FW + (Math.floor(i/3) + 1)*L.hE*FW/3});
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; pieces = [];
+  table = T.prop(TABLE, {px: FX, py: () => L.floorY - L.hE*0.02, w: 1.4, ratio: 70/200, z: 30});
+  frame = T.prop(FRAME, {px: FX, py: FB, w: FW, z: 31});
+  box = T.prop(BOX, {x: 0.86, py: () => L.floorY + L.hE*0.02, w: 0.3, ratio: 0.7, z: 32});
+  chair = T.prop(CHAIR, {x: 0.12, py: () => L.floorY + L.hE*0.02, w: 0.32, ratio: 1.3, z: 32});
+  /* части лежат вокруг рамки */
+  const around = [[0.2, 0.3], [0.26, 0.5], [0.2, 0.7], [0.8, 0.3], [0.74, 0.5], [0.8, 0.7], [0.32, 0.18], [0.68, 0.18]];
+  for (let i = 0; i < 9; i++){ const p = T.prop(PIECE(i), {x: (around[i] || [0.5, 0.9])[0], y: (around[i] || [0.5, 0.9])[1] + 0.1, w: FW/3*0.9, z: 40 + i}); p.i = i; pieces.push(p); }
+  pieces[8].el.hidden = true;   /* последняя часть потерялась */
+  emily = T.hero('emily', {x: 0.12, outfit: 'shoes', poses: EP}); emily.el.style.zIndex = 50;
+  paul = T.hero('paul', {x: 0.88, h: 0.97, poses: KP}); paul.face(true); paul.el.style.zIndex = 50;
+  isabel = T.hero('isabel', {x: 1.2, h: 0.95, poses: KP});
+}
+async function put(p){ const r0 = p.el.getBoundingClientRect(); Object.assign(p.o, cellPos(p.i)); p.place(); const r1 = p.el.getBoundingClientRect();
+  await p.el.animate([{transform: `translate(${r0.left - r1.left}px,${r0.top - r1.top}px)`}, {transform: 'none'}], {duration: 450, easing: 'cubic-bezier(.3,.7,.4,1)'}).finished.catch(() => {});
+  sfx.clink(); p.done = true; }
+
+async function story(){
+  await play('n42_intro');
+  paul.set('talk'); await paul.say('p42_allein'); paul.set('idle');
+  await T.repeat('e42_zusammen');
+  paul.set('talk'); await paul.say('p42_nein'); paul.set('idle');
+  await play('n24_fester');
+  await T.firm('e42_auch', {who: paul, step: 2, dir: 1});
+  paul.set('talk'); await paul.say('p42_okay'); paul.set('idle');
+  await paul.walkTo(0.88, 300); paul.face(true);
+  await T.bone(emily);
+  /* по очереди: Эмили (нажатие) — Пауль (сам) */
+  let n = 0, first = true;
+  while (pieces.filter(p => !p.done && !p.el.hidden).length){
+    await play('n42_tipp');
+    const el = await T.tap(pieces.filter(p => !p.done && !p.el.hidden), 'n42_tipp', 'r42_tipp'); await put(pieces.find(p => p.el === el)); n++; showNum(n); await emily.say('e_' + n); hideNum();
+    const left = pieces.filter(p => !p.done && !p.el.hidden); if (!left.length) break;
+    if (first){ await T.repeat('e42_du'); first = false; }
+    paul.set('talk'); await sleep(400); await put(left[0]); paul.set('idle'); n++; showNum(n); await sleep(500); hideNum();
+  }
+  await T.bone(frame);
+  /* последней части нет */
+  await play('n42_fehlt');
+  isabel.set('talk'); await isabel.walkTo(0.74, 1000); isabel.face(true); await isabel.say('i42_tisch'); isabel.set('idle');
+  const hidden = T.prop(PIECE(8), {px: () => FX() + L.hE*0.25, py: () => L.floorY - L.hE*0.02, w: FW/3*0.9, z: 29}); hidden.el.style.opacity = .85;
+  await play('n42_such');
+  while (true){ const el = await T.tap([chair, box, table, hidden], 'n42_such', 'r42_such'); if (el === hidden.el || el === table.el) break; sfx.bonk(); await play('n42_nicht'); }
+  hidden.el.remove(); pieces[8].el.hidden = false; Object.assign(pieces[8].o, {x: 0.5, y: 0.86}); pieces[8].o.px = null; pieces[8].o.py = null; pieces[8].place(); sfx.ding();
+  await T.repeat('e42_gefunden');
+  paul.set('talk'); await paul.say('p42_letzte'); paul.set('idle');
+  await T.repeat('e42_beide');
+  await put(pieces[8]); paul.set('jump'); emily.set('jump'); paul.hop(); emily.hop(); sfx.fanfare();
+  await paul.say('p42_toll'); paul.set('idle'); emily.set('idle');
+  await T.bone(paul);
+  /* считаем части */
+  await play('n42_zaehl');
+  for (let i = 0; i < 9; i++){ pieces[i].el.animate([{filter: 'none'}, {filter: 'drop-shadow(0 0 8px #ffd84d)'}, {filter: 'none'}], {duration: 450}); showNum(i + 1); await emily.say('e_' + (i + 1)); }
+  hideNum(); await play('n42_neun'); await T.bone(emily);
+  [emily, paul, isabel].forEach(h => h.set('jump')); await play('n42_ende');
+  [emily, paul, isabel].forEach(h => h.set('idle'));
+}
+T.start(IMG.paul_wave[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

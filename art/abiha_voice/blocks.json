@@ -1,0 +1,169 @@
+[
+ {
+  "voice": "n",
+  "keys": [
+   "n21_intro",
+   "n21_zaehl",
+   "n21_vier",
+   "n21_tipp_dom",
+   "n21_tuerme",
+   "n21_tipp_schoko",
+   "n22_intro",
+   "n22_opt_drinnen",
+   "n22_opt_draussen",
+   "n22_was_du",
+   "n22_sonne",
+   "n22_anziehen",
+   "n22_schuhe",
+   "n22_schubs",
+   "n22_tipp_eimer"
+  ],
+  "text": "[warmly] Montag in der Kita. Abiha war zwei Wochen nicht da. Und jetzt ist sie wieder da!\n\n[warmly] Wie viele sind sie zusammen? Tipp auf jeden und zähl mit!\n\n[warmly] Vier! Mama, Papa, Ali und Abiha.\n\n[warmly] Wo ist der Dom? Tipp auf den Dom!\n\n[warmly] Der Dom hat zwei große Türme. Zählen wir!\n\n[warmly] Welches Eis ist Schokoladeneis? Tipp drauf!\n\n[warmly] Nach dem Frühstück in der Kita. Was spielen Emily und Abiha heute?\n\n[warmly] Drinnen spielen.\n\n[warmly] Draußen spielen.\n\n[warmly] Und du? Wo möchtest du spielen? Tipp auf ein Bild!\n\n[warmly] Heute scheint die Sonne! Abiha möchte so gern raus. Wir gehen zusammen nach draußen!\n\n[warmly] Draußen ist es kalt. Zuerst die Jacke! Tipp auf die Jacke!\n\n[warmly] Und jetzt die Schuhe! Tipp auf die Schuhe!\n\n[warmly] Abiha schubst Emily an. Tipp auf Abiha und zähl mit!\n\n[warmly] Wo ist der Eimer? Tipp auf den Eimer!"
+ },
+ {
+  "voice": "n",
+  "keys": [
+   "n22_tipp_schaufel",
+   "n22_tuerme",
+   "n22_gleich",
+   "n23_intro",
+   "n23_zaehl",
+   "n23_fruehling",
+   "n23_sommer",
+   "n23_herbst",
+   "n23_winter",
+   "n23_vier",
+   "n23_tipp_herbst",
+   "n23_magst_du",
+   "n23_tipp_puppe",
+   "n23_wer",
+   "n23_fuenf"
+  ],
+  "text": "[warmly] Und wo ist die Schaufel? Tipp auf die Schaufel!\n\n[warmly] Die Sandburg bekommt drei Türme. Tipp auf die Burg und zähl mit!\n\n[warmly] Beide sind gleich schnell!\n\n[warmly] In der Kita hängt ein großes Bild mit vier Jahreszeiten.\n\n[warmly] Wie viele Jahreszeiten gibt es? Tipp auf jedes Bild und zähl mit!\n\n[warmly] Der Frühling.\n\n[warmly] Der Sommer.\n\n[warmly] Der Herbst.\n\n[warmly] Der Winter.\n\n[warmly] Vier Jahreszeiten!\n\n[warmly] Wo ist der Herbst? Tipp auf den Herbst!\n\n[warmly] Und du? Welche Jahreszeit magst du am liebsten? Tipp drauf!\n\n[warmly] Wo ist die Puppe? Tipp auf die Puppe!\n\n[warmly] Wer fährt in die Berge? Tipp auf jeden und zähl mit!\n\n[warmly] Fünf! Emily, Mama, Papa, Mark und Theo."
+ },
+ {
+  "voice": "e",
+  "keys": [
+   "e21_endlich",
+   "e21_vermisst",
+   "e21_zwei_wochen",
+   "e21_wo",
+   "e21_wie_war",
+   "e21_gemacht",
+   "e21_gesehen",
+   "e21_spielplatz",
+   "e21_eis",
+   "e21_verwandte",
+   "e21_gefallen",
+   "e21_froh",
+   "e21_spielen",
+   "e22_draussen"
+  ],
+  "text": "[cheerfully] Abiha! Hallo! Endlich bist du wieder da!\n\n[cheerfully] Ich habe dich so vermisst!\n\n[cheerfully] Du warst zwei Wochen nicht in der Kita!\n\n[curious] Wo warst du im Urlaub?\n\n[curious] Wow! Wie schön! Wie war es dort?\n\n[curious] Was hast du dort gemacht?\n\n[curious] Was hast du gesehen?\n\n[curious] Wart ihr auch auf einem Spielplatz?\n\n[curious] Habt ihr auch Eis gegessen?\n\n[curious] Hast du in Köln Verwandte besucht?\n\n[curious] Hat dir der Urlaub gefallen?\n\n[cheerfully] Ich bin froh, dass du wieder da bist!\n\n[cheerfully] Jetzt können wir wieder zusammen spielen!\n\n[curious] Möchtest du draußen spielen oder drinnen?"
+ },
+ {
+  "voice": "e",
+  "keys": [
+   "e22_ich_auch",
+   "e22_rutschen",
+   "e22_jetzt_ich",
+   "e22_anschubsen",
+   "e22_danke",
+   "e22_sandkuchen",
+   "e22_hier_bitte",
+   "e22_sandburg",
+   "e22_wette",
+   "e22_los",
+   "e22_gerne",
+   "e23_kennst",
+   "e23_jetzt",
+   "e23_herbst"
+  ],
+  "text": "[cheerfully] Ich auch! Lass uns nach draußen gehen!\n\n[curious] Wollen wir zusammen rutschen?\n\n[cheerfully] Haha! Jetzt bin ich dran!\n\n[curious] Ja! Kannst du mich ein bisschen anschubsen?\n\n[cheerfully] Das macht Spaß! Danke, Abiha!\n\n[cheerfully] Ja! Lass uns einen großen Sandkuchen backen!\n\n[cheerfully] Hier, bitte!\n\n[cheerfully] Ich baue eine Sandburg!\n\n[curious] Wollen wir um die Wette laufen?\n\n[cheerfully] Auf die Plätze, fertig, los!\n\n[cheerfully] Ich spiele so gerne mit dir!\n\n[curious] Abiha, welche Jahreszeiten kennst du?\n\n[curious] Ich kenne sie auch! Welche Jahreszeit ist jetzt?\n\n[cheerfully] Jetzt ist Herbst!"
+ },
+ {
+  "voice": "e",
+  "keys": [
+   "e23_winter",
+   "e23_freue",
+   "e23_liebsten",
+   "e23_dezember",
+   "e23_weihnachten",
+   "e23_kinderfeste",
+   "e23_nikolaus",
+   "e23_wuenschst",
+   "e23_spielzeug",
+   "e23_ski",
+   "e23_familie",
+   "e23_riesig",
+   "e23_schnee",
+   "e23_wunderschoen"
+  ],
+  "text": "[cheerfully] Bald kommt der Winter!\n\n[cheerfully] Ich freue mich schon sehr!\n\n[curious] Ich mag den Winter am liebsten! Und du?\n\n[cheerfully] Mein Lieblingsmonat ist Dezember!\n\n[cheerfully] Weil Weihnachten ist und der Weihnachtsmann Geschenke bringt!\n\n[cheerfully] Ich gehe mit meiner Mama zu Kinderfesten. Das macht mir viel Spaß!\n\n[cheerfully] Ja! Der Nikolaus bringt auch Geschenke!\n\n[curious] Was wünschst du dir vom Nikolaus?\n\n[cheerfully] Ich wünsche mir ein Spielzeug!\n\n[cheerfully] Ja! Ich fahre sehr gerne Ski!\n\n[cheerfully] Ja! Ich fahre mit Mama, Papa, Mark und unserem Hund Theo in die Berge!\n\n[cheerfully] Ja, ich freue mich riesig!\n\n[cheerfully] Ja! Dort gibt es ganz viel Schnee! Ich möchte Ski fahren und im Schnee spielen!\n\n[cheerfully] Der Winter ist einfach wunderschön!"
+ },
+ {
+  "voice": "b",
+  "keys": [
+   "b21_hallo",
+   "b21_urlaub",
+   "b21_koeln",
+   "b21_schoen",
+   "b21_stadt",
+   "b21_dom",
+   "b21_ali",
+   "b21_schoko",
+   "b21_familie",
+   "b21_sehr",
+   "b21_auch",
+   "b21_ja",
+   "b22_draussen"
+  ],
+  "text": "[happy] Hallo, Emily!\n\n[happy] Ja, ich war im Urlaub!\n\n[happy] Ich war mit meiner Mama, meinem Papa und meinem Bruder Ali in Köln.\n\n[happy] Es war sehr schön!\n\n[happy] Ich war mit meiner Familie in der Stadt.\n\n[happy] Ich habe den Kölner Dom gesehen! Er ist riesengroß!\n\n[happy] Ja! Ich habe mit Ali gespielt. Das hat viel Spaß gemacht!\n\n[happy] Ja! Ich habe Schokoladeneis gegessen. Das war lecker!\n\n[happy] Nein, wir waren nur mit unserer Familie dort. Mama, Papa, Ali und ich.\n\n[happy] Ja, sehr! Es war richtig schön!\n\n[happy] Ich habe dich auch vermisst, Emily!\n\n[happy] Ja! Das habe ich auch vermisst!\n\n[curious] Ich möchte draußen spielen! Und du?"
+ },
+ {
+  "voice": "b",
+  "keys": [
+   "b22_zuerst",
+   "b22_rutsche",
+   "b22_dran",
+   "b22_schaukeln",
+   "b22_natuerlich",
+   "b22_sand",
+   "b22_eimer",
+   "b22_danke",
+   "b22_helfe",
+   "b22_schneller",
+   "b22_spass",
+   "b22_bleiben",
+   "b23_vier"
+  ],
+  "text": "[curious] Ja, gerne! Was wollen wir zuerst machen?\n\n[happy] Ja! Lass uns zur Rutsche gehen!\n\n[happy] Ich bin zuerst dran! Schau mal, wie schnell ich bin!\n\n[curious] Wollen wir danach schaukeln?\n\n[happy] Ja, natürlich! Schau, wie hoch du schaukeln kannst!\n\n[curious] Wollen wir jetzt im Sand spielen?\n\n[happy] Gute Idee! Ich brauche einen Eimer und eine Schaufel.\n\n[happy] Danke, Emily!\n\n[happy] Toll! Ich helfe dir!\n\n[curious] Ja! Wer ist schneller?\n\n[happy] Haha! Das macht so viel Spaß!\n\n[happy] Ich auch! Lass uns noch ein bisschen draußen bleiben!\n\n[curious] Frühling, Sommer, Herbst und Winter! Und du?"
+ },
+ {
+  "voice": "b",
+  "keys": [
+   "b23_herbst",
+   "b23_bald",
+   "b23_liebsten",
+   "b23_sommer",
+   "b23_warum",
+   "b23_geschenke",
+   "b23_nikolaus",
+   "b23_puppe",
+   "b23_berge",
+   "b23_dieses_jahr",
+   "b23_freust",
+   "b23_schnee",
+   "b23_auch_berge"
+  ],
+  "text": "[happy] Jetzt ist Herbst.\n\n[curious] Und welche Jahreszeit kommt bald?\n\n[curious] Welche Jahreszeit magst du am liebsten?\n\n[happy] Ich mag den Sommer am liebsten, weil es warm ist und ich draußen spielen kann!\n\n[curious] Warum magst du den Dezember so gerne?\n\n[curious] Oh ja! Ich liebe Geschenke! Was machst du im Dezember noch gerne?\n\n[curious] Wie schön! Und feierst du auch Nikolaus?\n\n[curious] Ich wünsche mir eine Puppe. Und du?\n\n[curious] Fährst du im Winter auch in die Berge?\n\n[curious] Wow! Fährst du dieses Jahr auch in die Berge?\n\n[curious] Wie toll! Freust du dich schon?\n\n[curious] Gibt es dort viel Schnee?\n\n[happy] Das klingt toll! Ich möchte auch gerne in die Berge fahren!"
+ },
+ {
+  "voice": "r",
+  "keys": [
+   "r22_was_du",
+   "r23_magst_du"
+  ],
+  "text": "[warmly] А ты где хочешь играть? Нажми на картинку!\n\n[warmly] А тебе какое время года нравится больше всех? Нажми!"
+ }
+]

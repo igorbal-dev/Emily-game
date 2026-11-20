@@ -1,0 +1,148 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Würfelspiel. Уровень 36</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 36 «Würfelspiel» — настольная игра с кубиком: бросаем, считаем точки и шаги, по очереди; Эмили проигрывает — «Schade! Aber gut gespielt, Paul.», Пауль дразнит «Ätsch!» → «Ätsch sagt man nicht.»; второй раунд Эмили выигрывает и хвалит Пауля. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_shoes": ["assets/img/f3c638bc729d.webp", 208, 407], "emily_blink_shoes": ["assets/img/0f33b1ccf809.webp", 208, 407], "emily_mouth1_shoes": ["assets/img/3b7a1bb44669.webp", 208, 407], "emily_mouth2_shoes": ["assets/img/349db2cdaea9.webp", 208, 407], "emily_talk_shoes": ["assets/img/d3e54ca225ed.webp", 270, 413], "emily_wave_shoes": ["assets/img/2ab85334263f.webp", 252, 394], "emily_jump_shoes": ["assets/img/31f33a5548ba.webp", 279, 346], "emily_surprised_shoes": ["assets/img/b65576956668.webp", 208, 407], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised}_shoes emily_laugh paul_{idle,blink,talk,wave,jump}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "e36_aetsch": "assets/snd/72f851ab3793.mp3", "e36_drei": "assets/snd/9015aaa5fbc7.mp3", "e36_du_dran": "assets/snd/5a44b981c3b0.mp3", "e36_gut": "assets/snd/13dc542a943c.mp3", "e36_juhu": "assets/snd/e3f0bc05b4b7.mp3", "e36_nochmal": "assets/snd/b8529efbe6fa.mp3", "e36_sechs": "assets/snd/ea20ce8ef0df.mp3", "e36_vier": "assets/snd/95bc63bc24e3.mp3", "e36_zwei": "assets/snd/4fd5bb80decb.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "e_6": "assets/snd/f1d18f32c4f6.mp3", "n19_opt_weinen": "assets/snd/594433baf087.mp3", "n19_was": "assets/snd/a410e8e1a1bc.mp3", "n19_weinen": "assets/snd/f0c226e8a9f1.mp3", "n36_ende": "assets/snd/d60becd46170.mp3", "n36_intro": "assets/snd/e321c4186048.mp3", "n36_opt_gut": "assets/snd/9d98d54cb29b.mp3", "n36_opt_werfen": "assets/snd/ebf151393b66.mp3", "n36_punkte": "assets/snd/56e852a5c78e.mp3", "n36_runde": "assets/snd/8290ad40d166.mp3", "n36_traurig": "assets/snd/6ab17bd22916.mp3", "n36_werfen_nein": "assets/snd/6576c988052e.mp3", "n36_wuerfel": "assets/snd/b352702f75fb.mp3", "n36_zaehl": "assets/snd/254736c1f4de.mp3", "p36_danke": "assets/snd/b63e26941de1.mp3", "p36_drei": "assets/snd/036fd1cf98d8.mp3", "p36_du": "assets/snd/346b85e05964.mp3", "p36_fuenf": "assets/snd/d03354c25b3e.mp3", "p36_gewonnen": "assets/snd/8bb3ff16aabe.mp3", "p36_ja": "assets/snd/b6c38b499350.mp3", "p36_stimmt": "assets/snd/6d7837e7aa5f.mp3", "p36_vier": "assets/snd/2cac6961fcbf.mp3", "p36_zwei": "assets/snd/8ba51a5450df.mp3", "r19_was": "assets/snd/b08bdfeafaf6.mp3", "r36_punkte": "assets/snd/78f34b7d8de4.mp3", "r36_wuerfel": "assets/snd/cc3b479901ff.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3"};  /*SND: e_{1..6} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht n19_was r19_was n19_weinen*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, p — Пауль) */
+const SAY = {
+  n36_intro: 'In der Kita spielen Emily und Paul ein Würfelspiel. Wer zuerst im Haus ist, gewinnt!',
+  p36_du: 'Du darfst anfangen, Emily!',
+  n36_wuerfel: 'Tipp auf den Würfel!',
+  r36_wuerfel: 'Нажми на кубик — брось его!',
+  n36_punkte: 'Wie viele Punkte hat der Würfel?',
+  r36_punkte: 'Сколько точек на кубике?',
+  e36_zwei: 'Ich habe eine Zwei!',
+  e36_drei: 'Ich habe eine Drei!',
+  e36_vier: 'Ich habe eine Vier!',
+  e36_sechs: 'Ich habe eine Sechs!',
+  n36_zaehl: 'Zähl die Schritte mit!',
+  e36_du_dran: 'Jetzt bist du dran, Paul!',
+  p36_fuenf: 'Eine Fünf!',
+  p36_drei: 'Eine Drei!',
+  p36_vier: 'Eine Vier!',
+  p36_zwei: 'Eine Zwei!',
+  p36_gewonnen: 'Ich bin im Haus! Ich habe gewonnen! Ätsch, du hast verloren!',
+  n36_traurig: 'Oh. Emily hat verloren. Was macht sie jetzt?',
+  n36_opt_werfen: 'Emily wirft das Spiel vom Tisch.',
+  n36_opt_gut: 'Emily sagt: Gut gespielt!',
+  n36_werfen_nein: 'Nein! Das macht es nicht besser. Noch mal!',
+  e36_gut: 'Schade! Aber gut gespielt, Paul.',
+  e36_aetsch: 'Paul, Ätsch sagt man nicht. Das ist nicht nett.',
+  p36_stimmt: 'Stimmt. Entschuldigung. Du hast auch gut gespielt!',
+  e36_nochmal: 'Noch mal? Nächstes Mal gewinne ich!',
+  p36_ja: 'Ja! Noch eine Runde!',
+  n36_runde: 'Zweite Runde! Emily ist schon fast im Haus.',
+  e36_juhu: 'Juhu! Und du hast auch gut gespielt, Paul.',
+  p36_danke: 'Danke! Das war ein tolles Spiel.',
+  n36_ende: 'Super! Emily kann verlieren und gewinnen. Und sie sagt: Gut gespielt!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 36: Würfelspiel. Дорожка из 12 клеток к домику. Эмили бросает кубик (нажать), выбирает число точек (выбор из трёх), говорит «Ich habe eine Vier!»,
+   фишка шагает — считаем шаги. Пауль бросает сам. Кубики подобраны так, что первый раунд выигрывает Пауль: «Ätsch, du hast verloren!» —
+   карточки (сбросить игру / сказать «Gut gespielt!»), «Schade! Aber gut gespielt, Paul.», «Paul, Ätsch sagt man nicht. Das ist nicht nett.»,
+   «Noch mal? Nächstes Mal gewinne ich!». Во втором раунде Эмили выбрасывает шестёрку и выигрывает — «Juhu! Und du hast auch gut gespielt, Paul.» */
+const LEVEL = 36, FRIENDS = ['paul'];
+const STICKER = '<svg viewBox="0 0 100 100"><rect x="18" y="18" width="64" height="64" rx="14" fill="#fff" stroke="#2f80ed" stroke-width="6"/><circle cx="36" cy="36" r="7" fill="#ff5a4a"/><circle cx="64" cy="36" r="7" fill="#ff5a4a"/><circle cx="50" cy="50" r="7" fill="#ff5a4a"/><circle cx="36" cy="64" r="7" fill="#ff5a4a"/><circle cx="64" cy="64" r="7" fill="#ff5a4a"/></svg>';
+const RUG = 0.5;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG); }
+const N = 12;
+const BOARD = () => { let s = '<svg viewBox="0 0 640 220"><rect x="4" y="4" width="632" height="212" rx="24" fill="#fff7ec" stroke="#e2b98a" stroke-width="8"/>';
+  const cols = ['#ff8fc8', '#ffd34d', '#8fd3ff', '#9be08a'];
+  for (let i = 0; i < N; i++){ const [x, y] = cell(i); s += `<circle cx="${x}" cy="${y}" r="24" fill="${cols[i % 4]}" stroke="#fff" stroke-width="5"/>`; }
+  const [hx, hy] = cell(N); s += `<path d="M${hx - 34} ${hy + 30} V${hy - 6} L${hx} ${hy - 40} L${hx + 34} ${hy - 6} V${hy + 30} Z" fill="#ff7a59" stroke="#d65a3b" stroke-width="5" stroke-linejoin="round"/><rect x="${hx - 10}" y="${hy + 6}" width="20" height="24" fill="#8a5a1e"/>`;
+  return s + '</svg>'; };
+/* клетки змейкой: 0–5 слева направо внизу, 6–11 справа налево наверху, 12 — домик слева наверху */
+function cell(i){ if (i < 6) return [70 + i*90, 160]; if (i < 12) return [570 - (i - 6)*90, 64]; return [44, 70]; }
+const DICE = n => { const P = {1: [[50, 50]], 2: [[30, 30], [70, 70]], 3: [[28, 28], [50, 50], [72, 72]], 4: [[30, 30], [70, 30], [30, 70], [70, 70]], 5: [[28, 28], [72, 28], [50, 50], [28, 72], [72, 72]], 6: [[30, 26], [70, 26], [30, 50], [70, 50], [30, 74], [70, 74]]}[n] || [];
+  return `<svg viewBox="0 0 100 100"><rect x="6" y="6" width="88" height="88" rx="18" fill="#fff" stroke="#2f80ed" stroke-width="6"/>${P.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9" fill="#ff5a4a"/>`).join('')}</svg>`; };
+const PIECE = c => `<svg viewBox="0 0 60 80"><circle cx="30" cy="20" r="16" fill="${c[0]}" stroke="${c[1]}" stroke-width="4"/><path d="M14 76 Q18 40 30 36 Q42 40 46 76 Z" fill="${c[0]}" stroke="${c[1]}" stroke-width="4"/></svg>`;
+let emily, paul, board, dice, pe, pp, posE = 0, posP = 0;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+const BW = 2.0;                                   /* ширина доски в ростах героя */
+const BX = () => L.W*0.5, BB = () => L.floorY - L.hE*0.62, BH = () => L.hE*BW*220/640;
+const at = (i, dx) => ({px: () => BX() - L.hE*BW/2 + cell(i)[0]/640*L.hE*BW + dx*L.hE, py: () => BB() - BH() + cell(i)[1]/220*BH() + L.hE*0.04});
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; posE = posP = 0;
+  board = T.prop(BOARD(), {px: BX, py: BB, w: BW, ratio: 220/640, z: 30});
+  dice = T.prop(DICE(5), {px: () => BX() + L.hE*(BW/2 + 0.22), py: () => BB(), w: 0.3, z: 40});
+  pe = T.prop(PIECE(['#ff8fc8', '#d6476a']), {...at(0, -0.05), w: 0.12, ratio: 80/60, z: 41});
+  pp = T.prop(PIECE(['#4a8ff0', '#2a5fb0']), {...at(0, 0.05), w: 0.12, ratio: 80/60, z: 41});
+  emily = T.hero('emily', {x: 0.12, outfit: 'shoes', poses: EP});
+  paul = T.hero('paul', {x: 0.88, h: 0.97, poses: KP}); paul.face(true);
+}
+async function roll(n){ for (let k = 0; k < 6; k++){ dice.el.innerHTML = DICE(1 + Math.floor(Math.random()*6)); dice.el.style.transform = `rotate(${(Math.random() - .5)*40}deg)`; sfx.tone(300 + k*60, 300 + k*60, 60, 'square', .05); await sleep(110); } dice.el.innerHTML = DICE(n); dice.el.style.transform = ''; sfx.pop(); }
+async function step(p, from, n, dx, countIt){ for (let i = 1; i <= n; i++){ const k = Math.min(N, from + i); Object.assign(p.o, at(k, dx)); p.place(); p.el.animate([{transform: 'translateY(-30%)'}, {transform: 'none'}], {duration: 260}); sfx.pop(); if (countIt){ showNum(i); await emily.say('e_' + i); } else await sleep(380); } hideNum(); return Math.min(N, from + n); }
+const WORD = {2: 'zwei', 3: 'drei', 4: 'vier', 5: 'fuenf', 6: 'sechs'};
+async function turnE(n){
+  await play('n36_wuerfel'); await T.tap([dice], 'n36_wuerfel', 'r36_wuerfel'); await roll(n);
+  await play('n36_punkte'); const opts = [n - 1, n, n + 1].filter(x => x >= 1 && x <= 6); while (opts.length < 3) opts.push(opts[opts.length - 1] + 1);
+  await numChoice(opts.sort(() => Math.random() - .5), n, 'n36_punkte', 'r36_punkte');
+  await T.repeat('e36_' + WORD[n]);
+  posE = await step(pe, posE, n, -0.05, true);
+}
+async function turnP(n){ paul.set('talk'); await sleep(400); await roll(n); await paul.say('p36_' + WORD[n]); paul.set('idle'); posP = await step(pp, posP, n, 0.05, false); }
+
+async function story(){
+  await play('n36_intro');
+  paul.set('talk'); await paul.say('p36_du'); paul.set('idle');
+  /* раунд 1: Пауль выигрывает (Эмили 2+4+3 = 9, Пауль 5+3+4 = 12) */
+  await turnE(2);
+  await T.repeat('e36_du_dran'); await turnP(5);
+  await turnE(4); await turnP(3);
+  await turnE(3); await turnP(4);
+  paul.set('jump'); paul.hop(); sfx.fanfare(); await paul.say('p36_gewonnen'); paul.set('idle');
+  emily.set('surprised'); T.tears(emily, true);
+  await play('n36_traurig');
+  const cards = () => [
+    {parts: [{img: 'emily_wave_shoes', x: 32, h: 70}, {svg: DICE(6), x: 62, y: 20, w: 18, hh: 24}, {fx: 'zap', x: 46, y: 30}], clip: 'n36_opt_werfen', ok: false, bg: '#fff1c9', ground: '#c98f55'},
+    {parts: [{img: 'emily_surprised_shoes', x: 40, h: 62}, {fx: 'tears', x: 40, y: 34}, {img: 'paul_jump', x: 74, h: 66}], clip: 'n19_opt_weinen', ok: false, bg: '#fff1c9', ground: '#c98f55'},
+    {parts: [{img: 'emily_idle_shoes', x: 32, h: 70}, {img: 'paul_wave', x: 68, h: 66}, {fx: 'hearts', x: 50, y: 14}], clip: 'n36_opt_gut', bg: '#fff1c9', ground: '#c98f55'}];
+  while (true){ const i = await T.choose(cards(), 'n19_was', 'r19_was'); if (i === 2) break; await play(i === 0 ? 'n36_werfen_nein' : 'n19_weinen'); }
+  T.tears(emily, false); emily.set('idle');
+  await T.repeat('e36_gut');
+  await T.repeat('e36_aetsch');
+  paul.set('talk'); await paul.say('p36_stimmt'); paul.set('idle'); T.hearts(paul);
+  await T.bone(emily);
+  await T.repeat('e36_nochmal');
+  paul.set('jump'); paul.hop(); await paul.say('p36_ja'); paul.set('idle');
+
+  /* раунд 2: Эмили выигрывает */
+  posE = 6; posP = 5; Object.assign(pe.o, at(posE, -0.05)); Object.assign(pp.o, at(posP, 0.05)); pe.place(); pp.place();
+  await play('n36_runde');
+  await turnE(6);
+  emily.set('jump'); emily.hop(); sfx.fanfare(); await sleep(500); emily.set('idle');
+  await T.repeat('e36_juhu');
+  paul.set('talk'); await paul.say('p36_danke'); paul.set('idle'); T.hearts(paul); T.hearts(emily);
+  await T.bone(paul);
+  emily.set('jump'); paul.set('jump'); await play('n36_ende'); emily.set('idle'); paul.set('idle');
+}
+T.start(IMG.paul_jump[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

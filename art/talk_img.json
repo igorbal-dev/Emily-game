@@ -1,0 +1,287 @@
+{
+ "becker_idle": [
+  "assets/img/2a1924faa1a3.svg",
+  300,
+  600
+ ],
+ "becker_blink": [
+  "assets/img/1e21fe805660.svg",
+  300,
+  600
+ ],
+ "becker_talk": [
+  "assets/img/d1c1a3a699c8.svg",
+  300,
+  600
+ ],
+ "becker_wave": [
+  "assets/img/1dccc7924a99.svg",
+  300,
+  600
+ ],
+ "seller_idle": [
+  "assets/img/38810fb4b912.svg",
+  300,
+  520
+ ],
+ "seller_blink": [
+  "assets/img/e5876e869076.svg",
+  300,
+  520
+ ],
+ "seller_talk": [
+  "assets/img/af01c48ff228.svg",
+  300,
+  520
+ ],
+ "seller_wave": [
+  "assets/img/6f586ca4f738.svg",
+  300,
+  520
+ ],
+ "sofia_idle": [
+  "assets/img/12bd730bdbbf.svg",
+  240,
+  420
+ ],
+ "sofia_blink": [
+  "assets/img/35b340b9865f.svg",
+  240,
+  420
+ ],
+ "sofia_talk": [
+  "assets/img/59c6ad9d3a72.svg",
+  240,
+  420
+ ],
+ "sofia_wave": [
+  "assets/img/51ecfa8a9c15.svg",
+  240,
+  420
+ ],
+ "sofia_jump": [
+  "assets/img/4ce9149adfd7.svg",
+  240,
+  420
+ ],
+ "sofia_laugh": [
+  "assets/img/1d119741c322.svg",
+  240,
+  420
+ ],
+ "sofia_sad": [
+  "assets/img/573304ff8304.svg",
+  240,
+  420
+ ],
+ "sofia_dance": [
+  "assets/img/914d9271b4f9.svg",
+  240,
+  420
+ ],
+ "leon_idle": [
+  "assets/img/75329a72130b.svg",
+  240,
+  420
+ ],
+ "leon_blink": [
+  "assets/img/386a5ba75ea2.svg",
+  240,
+  420
+ ],
+ "leon_talk": [
+  "assets/img/d51b0cec0ae9.svg",
+  240,
+  420
+ ],
+ "leon_wave": [
+  "assets/img/980311427a0d.svg",
+  240,
+  420
+ ],
+ "leon_jump": [
+  "assets/img/602968ec6bcc.svg",
+  240,
+  420
+ ],
+ "leon_laugh": [
+  "assets/img/1f1ae3e9f023.svg",
+  240,
+  420
+ ],
+ "leon_sad": [
+  "assets/img/dd2a1be522f6.svg",
+  240,
+  420
+ ],
+ "leon_throw": [
+  "assets/img/ee723d20fbe8.svg",
+  240,
+  420
+ ],
+ "leon_mud": [
+  "assets/img/7f97235c10a8.svg",
+  240,
+  420
+ ],
+ "leon_sly": [
+  "assets/img/965125ec4a3d.svg",
+  240,
+  420
+ ],
+ "leon_shy": [
+  "assets/img/a198b3b57489.svg",
+  240,
+  420
+ ],
+ "leon_oh": [
+  "assets/img/e68921ca1ecf.svg",
+  240,
+  420
+ ],
+ "leon_mudsad": [
+  "assets/img/70fd438f000a.svg",
+  240,
+  420
+ ],
+ "abiha_idle": [
+  "assets/img/fa848f76752c.webp",
+  252,
+  361
+ ],
+ "abiha_wave": [
+  "assets/img/3d7524d2c8fa.webp",
+  252,
+  361
+ ],
+ "abiha_cross": [
+  "assets/img/d80c857c06db.webp",
+  252,
+  361
+ ],
+ "abiha_peace": [
+  "assets/img/540be744bd81.webp",
+  252,
+  361
+ ],
+ "abiha_walk": [
+  "assets/img/fffa865249e2.webp",
+  252,
+  361
+ ],
+ "abiha_walkf": [
+  "assets/img/e4388dec932b.webp",
+  252,
+  361
+ ],
+ "abiha_run": [
+  "assets/img/3d830c89807d.webp",
+  252,
+  361
+ ],
+ "abiha_jump": [
+  "assets/img/4cfb6296447d.webp",
+  252,
+  361
+ ],
+ "abiha_think": [
+  "assets/img/fe368e6c3218.webp",
+  252,
+  361
+ ],
+ "abiha_sit": [
+  "assets/img/cb1193d78e14.webp",
+  252,
+  361
+ ],
+ "abiha_laugh": [
+  "assets/img/4cfb6296447d.webp",
+  252,
+  361
+ ],
+ "abiha_blink": [
+  "assets/img/80c0b58f8e9f.webp",
+  252,
+  361
+ ],
+ "abiha_mouth1": [
+  "assets/img/d3289978defd.webp",
+  252,
+  361
+ ],
+ "abiha_mouth2": [
+  "assets/img/3569203761d0.webp",
+  252,
+  361
+ ],
+ "abiha_idle_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_blink_out": [
+  "assets/img/cd9612e1c921.webp",
+  141,
+  375
+ ],
+ "abiha_mouth1_out": [
+  "assets/img/67d4d4438d8b.webp",
+  141,
+  375
+ ],
+ "abiha_mouth2_out": [
+  "assets/img/f1119565498c.webp",
+  141,
+  375
+ ],
+ "abiha_wave_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_cross_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_peace_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_walk_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_walkf_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_run_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_jump_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_think_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_sit_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ],
+ "abiha_laugh_out": [
+  "assets/img/6d71ed799083.webp",
+  141,
+  375
+ ]
+}

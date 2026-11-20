@@ -1,0 +1,170 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Mama, Papa, Kind. Уровень 34</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 34 «Mama, Papa, Kind» — кукольный уголок: Изабель «Du darfst nicht mitspielen!» → просим, твёрдо, зовём Хайке («Bei uns dürfen alle mitspielen»); готовим суп, считаем тарелки; Эмили сама принимает Абиху («Du kannst die Oma sein!»). План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle_shoes": ["assets/img/f3c638bc729d.webp", 208, 407], "emily_blink_shoes": ["assets/img/0f33b1ccf809.webp", 208, 407], "emily_mouth1_shoes": ["assets/img/3b7a1bb44669.webp", 208, 407], "emily_mouth2_shoes": ["assets/img/349db2cdaea9.webp", 208, 407], "emily_talk_shoes": ["assets/img/d3e54ca225ed.webp", 270, 413], "emily_wave_shoes": ["assets/img/2ab85334263f.webp", 252, 394], "emily_jump_shoes": ["assets/img/31f33a5548ba.webp", 279, 346], "emily_surprised_shoes": ["assets/img/b65576956668.webp", 208, 407], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "abiha_idle": ["assets/img/fa848f76752c.webp", 252, 361], "abiha_blink": ["assets/img/80c0b58f8e9f.webp", 252, 361], "abiha_mouth1": ["assets/img/d3289978defd.webp", 252, 361], "abiha_mouth2": ["assets/img/3569203761d0.webp", 252, 361], "abiha_wave": ["assets/img/3d7524d2c8fa.webp", 252, 361], "abiha_peace": ["assets/img/540be744bd81.webp", 252, 361], "abiha_jump": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_laugh": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_think": ["assets/img/fe368e6c3218.webp", 252, 361], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised}_shoes emily_laugh abiha_{idle,blink,mouth1,mouth2,wave,peace,jump,laugh,think} isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "b34_mit": "assets/snd/5c723dd874c8.mp3", "b34_oma": "assets/snd/75acf193b2c8.mp3", "e24_freunde": "assets/snd/7c212e7fb651.mp3", "e34_appetit": "assets/snd/8177b0713b9b.mp3", "e34_baby": "assets/snd/067342f2ebfb.mp3", "e34_danke": "assets/snd/a8fcb5479d07.mp3", "e34_darf": "assets/snd/d77094b8439d.mp3", "e34_heike": "assets/snd/de18f667098c.mp3", "e34_nicht_nett": "assets/snd/621e431b9e6a.mp3", "e34_oma": "assets/snd/b6a3d2a05b7a.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "i34_entschuldigung": "assets/snd/287c4c3ac387.mp3", "i34_ja": "assets/snd/7d8bc9e7bd82.mp3", "i34_nein": "assets/snd/90c4b70695c2.mp3", "i34_okay": "assets/snd/2b71cb3966a8.mp3", "i34_suppe": "assets/snd/fca29c0db366.mp3", "i34_trotzdem": "assets/snd/715ff97109cc.mp3", "i34_wir": "assets/snd/59b287407834.mp3", "n19_opt_heike": "assets/snd/2a47e7c8f775.mp3", "n19_opt_weinen": "assets/snd/594433baf087.mp3", "n19_was": "assets/snd/a410e8e1a1bc.mp3", "n19_weinen": "assets/snd/f0c226e8a9f1.mp3", "n24_fester": "assets/snd/62af96e91cb6.mp3", "n34_abiha": "assets/snd/1aea314af18a.mp3", "n34_ende": "assets/snd/5111da833e56.mp3", "n34_frag": "assets/snd/fb820f7312d9.mp3", "n34_fuenf": "assets/snd/38b0007b8552.mp3", "n34_intro": "assets/snd/d3529192f340.mp3", "n34_noch": "assets/snd/b56e5aa0a329.mp3", "n34_opt_puppe": "assets/snd/bb12feed073b.mp3", "n34_puppe_nein": "assets/snd/60670d4a1b91.mp3", "n34_teller": "assets/snd/85fe4f253f62.mp3", "n34_vier": "assets/snd/3f826c7ced73.mp3", "n34_was": "assets/snd/38012f2c1cc5.mp3", "n_lauter": "assets/snd/514e958e006e.mp3", "p34_lecker": "assets/snd/dc12343ce483.mp3", "r19_was": "assets/snd/b08bdfeafaf6.mp3", "r34_noch": "assets/snd/5a8d2ed6f5e4.mp3", "r34_teller": "assets/snd/78a179b4933f.mp3", "r_lauter": "assets/snd/2e0c8abce899.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3", "s34_alle": "assets/snd/818c56b89279.mp3"};  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht n19_was r19_was n19_opt_heike n19_opt_weinen n19_weinen*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n34_intro: 'In der Puppenecke spielen Isabel und Paul Mama, Papa, Kind.',
+  e34_darf: 'Darf ich mitspielen?',
+  i34_nein: 'Nein! Du darfst nicht mitspielen!',
+  n34_frag: 'Oh. Das ist nicht schön. Frag noch einmal!',
+  e34_baby: 'Bitte! Ich kann das Baby sein.',
+  i34_wir: 'Nein! Wir haben schon ein Baby. Die Puppe!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e34_nicht_nett: 'Das ist nicht nett. Ich will auch mitspielen!',
+  i34_trotzdem: 'Trotzdem nein!',
+  n34_was: 'Isabel sagt immer noch nein. Was macht Emily jetzt?',
+  n34_opt_puppe: 'Emily wirft die Puppe um.',
+  n34_puppe_nein: 'Nein, das macht es nicht besser. Noch mal!',
+  e34_heike: 'Heike, Isabel sagt, ich darf nicht mitspielen.',
+  s34_alle: 'Bei uns dürfen alle mitspielen. Isabel, Emily kann die große Schwester sein.',
+  i34_okay: 'Okay. Du bist die große Schwester.',
+  e34_danke: 'Danke! Was kochen wir?',
+  i34_suppe: 'Wir kochen Suppe! Deck bitte den Tisch!',
+  n34_teller: 'Wie viele Teller brauchen wir? Mama, Papa, Schwester und Baby. Tipp auf die Teller!',
+  r34_teller: 'Сколько тарелок нужно? Нажимай на тарелки и считай!',
+  n34_vier: 'Vier Teller!',
+  e34_appetit: 'Guten Appetit!',
+  p34_lecker: 'Mmh, lecker Suppe!',
+  b34_mit: 'Hallo! Darf ich auch mitspielen?',
+  n34_abiha: 'Jetzt weiß Emily, wie das ist. Was sagt sie?',
+  e34_oma: 'Ja, klar! Du kannst die Oma sein!',
+  b34_oma: 'Hihi! Ich bin die Oma!',
+  n34_noch: 'Noch ein Teller für die Oma! Wie viele Teller sind es jetzt?',
+  r34_noch: 'Сколько теперь тарелок?',
+  n34_fuenf: 'Fünf Teller!',
+  i34_entschuldigung: 'Entschuldigung, Emily. Mit dir ist es viel lustiger.',
+  e24_freunde: 'Schon gut. Wieder Freunde?',
+  i34_ja: 'Ja! Wieder Freunde!',
+  n34_ende: 'Super! Emily hat gefragt, war fest und hat Hilfe geholt. Und dann hat sie Abiha mitspielen lassen.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+/* Уровень 34: кукольный уголок. «Darf ich mitspielen?» — «Nein! Du darfst nicht mitspielen!». Шаг 1 «Bitte! Ich kann das Baby sein.», шаг 2 твёрдо
+   «Das ist nicht nett. Ich will auch mitspielen!», «Trotzdem nein!» → карточки (уронить куклу / позвать Хайке / плакать) → шаг 4
+   «Heike, Isabel sagt, ich darf nicht mitspielen.» — Хайке: «Bei uns dürfen alle mitspielen.» Суп: считаем 4 тарелки, «Guten Appetit!».
+   Абиха просится — Эмили сама принимает: «Ja, klar! Du kannst die Oma sein!», тарелок теперь 5. Изабель извиняется, мирятся. */
+const LEVEL = 34, FRIENDS = ['isabel', 'paul', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><circle cx="50" cy="30" r="14" fill="#ffd7b5" stroke="#c9895a" stroke-width="3"/><path d="M36 26 Q50 6 64 26" fill="#8a5a33"/><path d="M30 92 Q30 50 50 46 Q70 50 70 92 Z" fill="#ff8fc8" stroke="#d6476a" stroke-width="3"/><path d="M14 70 h20 v14 a10 10 0 0 1 -20 0 Z" fill="#fff" stroke="#2f80ed" stroke-width="3"/><path d="M66 70 h20 v14 a10 10 0 0 1 -20 0 Z" fill="#fff" stroke="#2f80ed" stroke-width="3"/></svg>';
+const RUG = 0.55;
+function drawScene(g, W, H, L){ drawKita(g, W, H, L, RUG);
+  /* игрушечная плита слева */
+  const fy = L.floorY, hE = L.hE, x = W*0.08; g.fillStyle = '#fff'; g.fillRect(x, fy - hE*0.62, hE*0.5, hE*0.6); g.strokeStyle = '#8fb8dd'; g.lineWidth = hE*0.02; g.strokeRect(x, fy - hE*0.62, hE*0.5, hE*0.6);
+  g.fillStyle = '#555'; for (const dx of [0.13, 0.37]){ g.beginPath(); g.arc(x + hE*dx, fy - hE*0.62, hE*0.07, Math.PI, 0); g.fill(); }
+  g.fillStyle = '#cfe9ff'; g.fillRect(x + hE*0.08, fy - hE*0.45, hE*0.34, hE*0.26);
+}
+const TABLE = '<svg viewBox="0 0 200 70"><rect x="4" y="4" width="192" height="16" rx="6" fill="#e8904a" stroke="#b8642a" stroke-width="3"/><rect x="18" y="20" width="12" height="48" fill="#c97a3a"/><rect x="170" y="20" width="12" height="48" fill="#c97a3a"/></svg>';
+const PLATE = '<svg viewBox="0 0 100 40"><ellipse cx="50" cy="22" rx="46" ry="16" fill="#fff" stroke="#2f80ed" stroke-width="4"/><ellipse cx="50" cy="20" rx="28" ry="8" fill="#eaf4ff"/></svg>';
+const SOUP = '<svg viewBox="0 0 100 40"><ellipse cx="50" cy="22" rx="46" ry="16" fill="#fff" stroke="#2f80ed" stroke-width="4"/><ellipse cx="50" cy="20" rx="30" ry="9" fill="#ffb347"/></svg>';
+const DOLL = '<svg viewBox="0 0 60 80"><circle cx="30" cy="20" r="14" fill="#ffd7b5" stroke="#c9895a" stroke-width="3"/><path d="M16 16 Q30 0 44 16" fill="#e3a33a"/><circle cx="25" cy="20" r="2" fill="#333"/><circle cx="35" cy="20" r="2" fill="#333"/><path d="M12 78 Q12 40 30 36 Q48 40 48 78 Z" fill="#9fd0ff" stroke="#2f80ed" stroke-width="3"/></svg>';
+const POT = '<svg viewBox="0 0 100 70"><path d="M10 20 H90 V54 Q90 66 76 66 H24 Q10 66 10 54 Z" fill="#ff5a4a" stroke="#c43a2e" stroke-width="4"/><rect x="4" y="14" width="92" height="10" rx="5" fill="#c43a2e"/><path d="M40 10 Q50 -2 60 10" fill="none" stroke="#c43a2e" stroke-width="5"/></svg>';
+let emily, abiha, isabel, paul, heike, table, doll, pot, plates = [];
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'jump', 'laugh', 'think'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+const TY = () => L.floorY - L.hE*0.36;
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; plates = [];
+  table = T.prop(TABLE, {x: 0.55, py: () => L.floorY - L.hE*0.02, w: 1.25, ratio: 70/200, z: 35});
+  for (let i = 0; i < 5; i++){ const p = T.prop(PLATE, {px: () => L.W*0.08 + L.hE*0.38, py: () => L.floorY - L.hE*0.6 - i*0.035*L.hE, w: 0.2, ratio: 0.4, z: 36 + i}); plates.push(p); }
+  doll = T.prop(DOLL, {x: 0.66, py: TY, w: 0.16, ratio: 80/60, z: 37});
+  pot = T.prop(POT, {px: () => L.W*0.08 + L.hE*0.13, py: () => L.floorY - L.hE*0.6, w: 0.22, ratio: 0.7, z: 37});
+  heike = T.hero('sommer', {x: -0.25, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  abiha = T.hero('abiha', {x: 1.2, poses: AP});
+  isabel = T.hero('isabel', {x: 0.48, h: 0.95, poses: KP});
+  paul = T.hero('paul', {x: 0.78, h: 0.97, poses: KP}); paul.face(true);
+  emily = T.hero('emily', {x: 0.28, outfit: 'shoes', poses: EP});
+}
+const PX = [0.4, 0.5, 0.6, 0.7, 0.8];
+async function setPlate(i){ const p = plates[i]; p.o.py = null; await T.move(p, PX[i], TY()/L.H, 450); }
+
+async function story(){
+  await play('n34_intro');
+  await emily.walkTo(0.34, 500);
+  await T.repeat('e34_darf');
+  isabel.set('talk'); isabel.face(true); await isabel.say('i34_nein'); isabel.set('idle');
+  emily.set('surprised'); await play('n34_frag'); emily.set('idle');
+  /* шаг 1 */
+  await T.repeat('e34_baby');
+  isabel.set('talk'); await isabel.say('i34_wir'); isabel.set('idle');
+  /* шаг 2 */
+  await play('n24_fester');
+  await T.firm('e34_nicht_nett', {who: isabel, step: 2});
+  isabel.set('talk'); await isabel.say('i34_trotzdem'); isabel.set('idle');
+  /* шаг 4: взрослый */
+  await play('n34_was');
+  const cards = () => [
+    {parts: [{img: 'emily_laugh', x: 34, h: 70}, {svg: DOLL, x: 66, y: 60, w: 18, hh: 24}, {fx: 'zap', x: 50, y: 40}], clip: 'n34_opt_puppe', ok: false, bg: '#fff1c9', ground: '#c98f55'},
+    {parts: [{img: 'emily_wave_shoes', x: 30, h: 66}, {img: 'sommer_wave', x: 70, h: 86}], clip: 'n19_opt_heike', bg: '#fff1c9', ground: '#c98f55'},
+    {parts: [{img: 'emily_surprised_shoes', x: 40, h: 62}, {fx: 'tears', x: 40, y: 34}, {img: 'isabel_idle', x: 74, h: 66}], clip: 'n19_opt_weinen', ok: false, bg: '#fff1c9', ground: '#c98f55'}];
+  while (true){
+    const i = await T.choose(cards(), 'n19_was', 'r19_was');
+    if (i === 1) break;
+    if (i === 0) await play('n34_puppe_nein'); else await play('n19_weinen');
+  }
+  emily.set('wave'); await T.repeat('e34_heike'); emily.set('idle');
+  heike.set('talk'); await heike.walkTo(0.14, 1300); await heike.say('s34_alle'); heike.set('idle');
+  isabel.set('talk'); await isabel.say('i34_okay'); isabel.set('idle');
+  await T.bone(emily);
+  await heike.walkTo(-0.25, 1000);
+
+  /* играем: суп и тарелки */
+  await T.repeat('e34_danke');
+  isabel.set('talk'); await isabel.say('i34_suppe'); isabel.set('idle');
+  await play('n34_teller');
+  for (let i = 0; i < 4; i++){ await T.tap(plates.slice(i, 4).filter(p => !p.set), 'n34_teller', 'r34_teller'); await setPlate(i); plates[i].set = true; showNum(i + 1); await emily.say('e_' + (i + 1)); }
+  hideNum(); await play('n34_vier');
+  pot.o.py = null; await T.move(pot, 0.55, (TY() - L.hE*0.04)/L.H, 700); sfx.pop();
+  for (let i = 0; i < 4; i++){ plates[i].el.innerHTML = SOUP; await sleep(200); }
+  await T.repeat('e34_appetit');
+  paul.set('talk'); await paul.say('p34_lecker'); paul.set('idle');
+  await T.bone(pot);
+
+  /* Абиха просится — Эмили принимает */
+  abiha.set('wave'); await abiha.walkTo(0.9, 1100); abiha.face(true); await abiha.say('b34_mit'); abiha.set('idle');
+  await play('n34_abiha');
+  await T.repeat('e34_oma');
+  abiha.set('laugh'); await abiha.say('b34_oma'); abiha.set('idle');
+  await play('n34_noch');
+  await T.tap([plates[4]], 'n34_noch', 'r_tipp_licht'); await setPlate(4); plates[4].el.innerHTML = SOUP;
+  await numChoice([4, 5, 6], 5, 'n34_noch', 'r34_noch');
+  await play('n34_fuenf'); await T.bone(abiha);
+  isabel.set('talk'); await isabel.say('i34_entschuldigung'); isabel.set('idle');
+  await T.repeat('e24_freunde');
+  isabel.set('jump'); isabel.hop(); await isabel.say('i34_ja'); isabel.set('idle'); T.hearts(isabel); T.hearts(emily);
+  await T.bone(isabel);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n34_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.isabel_wave[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

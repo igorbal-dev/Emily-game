@@ -1,0 +1,194 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Kastanien und Blätter. Уровень 35</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 35 «Kastanien und Blätter» — прогулка садика в осеннем парке: собираем и считаем каштаны, Пауль отбирает большой каштан (шаги 1–2), сортируем листья по цвету, Эмили нечаянно ломает кучу листьев — извиняется и помогает. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = __IMG__;  /*IMG: emily_{idle,blink,mouth1,mouth2,wave,jump,surprised,crouch,laugh,walk}_out emily_walk_out abiha_{idle,blink,mouth1,mouth2,wave,peace,walk,jump,laugh}_out isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = __SND__;  /*SND: e_{1..8} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht n19_was r19_was k_laugh p_hihi i_hihi*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n35_intro: 'Die Kita macht einen Spaziergang im Park. Überall liegen bunte Blätter und Kastanien!',
+  s35_sammeln: 'Wer sammelt Kastanien in den Eimer?',
+  n35_tipp: 'Tipp auf die Kastanien und zähl mit!',
+  n35_acht: 'Acht Kastanien!',
+  n35_gross: 'Oh! Emily findet eine ganz große Kastanie!',
+  p35_meine: 'Die ist toll! Die gehört jetzt mir!',
+  e35_zurueck: 'Paul, die habe ich gefunden. Gib sie mir bitte zurück.',
+  p35_nein: 'Ich habe sie aber jetzt!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e35_meine: 'Nein! Das ist meine Kastanie. Gib sie zurück!',
+  p35_okay: 'Okay. Hier ist sie.',
+  e35_suchen: 'Komm, wir suchen zusammen eine für dich!',
+  n35_such: 'Wo ist noch eine große Kastanie? Tipp darauf!',
+  r35_such: 'Где ещё большой каштан? Нажми на него!',
+  p35_danke: 'Juhu! Danke, Emily!',
+  n35_blaetter: 'Jetzt sammeln die Kinder Blätter. Es gibt rote, gelbe und braune.',
+  n35_rot: 'Tipp auf ein rotes Blatt!',
+  n35_gelb: 'Tipp auf ein gelbes Blatt!',
+  n35_braun: 'Tipp auf ein braunes Blatt!',
+  r35_blatt: 'Нажми на листик нужного цвета!',
+  n35_falsch: 'Das ist eine andere Farbe. Schau genau!',
+  e35_rot: 'Das Blatt ist rot.',
+  e35_gelb: 'Das Blatt ist gelb.',
+  e35_braun: 'Das Blatt ist braun.',
+  n35_haufen: 'Paul hat einen großen Laubhaufen gemacht.',
+  n35_spring: 'Hui! Emily springt mitten hinein!',
+  p35_kaputt: 'Hey! Mein Laubhaufen ist kaputt!',
+  n35_opt_weg: 'Emily lacht und läuft weg.',
+  n35_opt_helfen: 'Emily hilft Paul.',
+  n35_weg_nein: 'Paul ist traurig. Das war sein Haufen. Noch mal!',
+  e35_helfen: 'Entschuldigung! Ich helfe dir. Wir bauen ihn zusammen wieder auf.',
+  n35_bauen: 'Tipp auf die Blätter! Der Haufen wird wieder groß.',
+  r35_bauen: 'Нажимай на листики — куча снова растёт!',
+  p35_zusammen: 'Super! Jetzt springen wir zusammen!',
+  s35_zurueck: 'Kommt, Kinder! Wir gehen zurück in die Kita.',
+  n35_ende: 'Super! Emily hat ihre Kastanie zurückgeholt, Paul geholfen und Entschuldigung gesagt.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script>
+/* Уровень 35: осенний парк. Собираем 8 каштанов (счёт). Большой каштан Эмили отбирает Пауль: шаг 1 «Paul, die habe ich gefunden. Gib sie mir bitte zurück.»,
+   шаг 2 «Nein! Das ist meine Kastanie. Gib sie zurück!» — отдаёт; «Komm, wir suchen zusammen eine für dich!» — находим ему большой каштан.
+   Листья: красный, жёлтый, коричневый — нажимаем нужный цвет, «Das Blatt ist rot.». Эмили прыгает в кучу листьев Пауля — карточки (убежать / помочь),
+   «Entschuldigung! Ich helfe dir. Wir bauen ihn zusammen wieder auf.» — собираем кучу (5 нажатий), прыгают вместе. */
+const LEVEL = 35, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M50 14 Q86 30 70 74 Q50 92 30 74 Q14 30 50 14 Z" fill="#8a4a1e" stroke="#5e2f10" stroke-width="4"/><ellipse cx="50" cy="72" rx="20" ry="10" fill="#d9b58a"/><ellipse cx="42" cy="34" rx="8" ry="5" fill="#b0703a" opacity=".7"/></svg>';
+function drawScene(g, W, H, L){
+  const fy = L.floorY, hE = L.hE, hz = H*0.55;
+  let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#c9e2f2'); gr.addColorStop(1, '#eef6fa'); g.fillStyle = gr; g.fillRect(0, 0, W, hz);
+  for (const [x, r, c] of [[0.08, 0.55, '#e0763a'], [0.3, 0.45, '#e3a33a'], [0.55, 0.5, '#c9584a'], [0.82, 0.55, '#e3a33a'], [0.97, 0.4, '#b5452f']]){
+    g.fillStyle = '#6e4a2a'; g.fillRect(W*x - hE*0.06, hz - hE*1.0, hE*0.12, hE*1.0); g.fillStyle = c; g.beginPath(); g.arc(W*x, hz - hE*1.05, hE*r, 0, 7); g.fill();
+    g.fillStyle = 'rgba(255,255,255,.12)'; g.beginPath(); g.arc(W*x - hE*r*0.3, hz - hE*1.2, hE*r*0.4, 0, 7); g.fill(); }
+  gr = g.createLinearGradient(0, hz, 0, H); gr.addColorStop(0, '#9cc56a'); gr.addColorStop(1, '#7fae52'); g.fillStyle = gr; g.fillRect(0, hz, W, H - hz);
+  g.fillStyle = '#d9c29a'; g.beginPath(); g.ellipse(W*0.5, fy + hE*0.05, W*0.6, hE*0.12, 0, 0, 7); g.fill();
+  for (let i = 0; i < 40; i++){ const x = (i*37.7 % 100)/100*W, y = hz + (i*23.1 % 100)/100*(H - hz); g.fillStyle = ['#e0763a', '#e3a33a', '#b5452f', '#8a5a2e'][i % 4]; g.beginPath(); g.ellipse(x, y, hE*0.035, hE*0.016, i, 0, 7); g.fill(); }
+  /* скамейка */
+  g.fillStyle = '#8a5a2e'; g.fillRect(W*0.86, fy - hE*0.42, hE*0.8, hE*0.07); g.fillRect(W*0.86, fy - hE*0.28, hE*0.8, hE*0.06); g.fillRect(W*0.86 + hE*0.05, fy - hE*0.24, hE*0.05, hE*0.24); g.fillRect(W*0.86 + hE*0.7, fy - hE*0.24, hE*0.05, hE*0.24);
+}
+const NUT = '<svg viewBox="0 0 100 100"><path d="M50 10 Q90 30 76 72 Q50 94 24 72 Q10 30 50 10 Z" fill="#8a4a1e" stroke="#5e2f10" stroke-width="5"/><ellipse cx="50" cy="72" rx="22" ry="11" fill="#d9b58a"/><ellipse cx="40" cy="32" rx="9" ry="5" fill="#b0703a" opacity=".8"/></svg>';
+const BUCKET = '<svg viewBox="0 0 100 90"><path d="M14 24 H86 L76 86 H24 Z" fill="#4a8ff0" stroke="#2a5fb0" stroke-width="5" stroke-linejoin="round"/><path d="M18 24 Q50 -10 82 24" fill="none" stroke="#2a5fb0" stroke-width="4"/></svg>';
+const LEAF = c => `<svg viewBox="0 0 100 100"><path d="M50 6 L60 30 L84 22 L74 46 L96 56 L70 64 L76 90 L50 76 L24 90 L30 64 L4 56 L26 46 L16 22 L40 30 Z" fill="${c[0]}" stroke="${c[1]}" stroke-width="4" stroke-linejoin="round"/><path d="M50 30 V96" stroke="${c[1]}" stroke-width="4"/></svg>`;
+const LC = {rot: ['#e2483a', '#a82a20'], gelb: ['#ffd34d', '#d6a21e'], braun: ['#9a6232', '#6a3e18']};
+const PILE = n => `<svg viewBox="0 0 200 100"><g>${Array.from({length: 6 + n*4}, (_, i) => { const x = 100 + Math.cos(i*2.4)*(20 + (i % 7)*10)*(0.4 + n*0.12), y = 92 - (i % 5)*8*(0.4 + n*0.12) - Math.abs(Math.sin(i))*10*(n/5); const c = [LC.rot, LC.gelb, LC.braun][i % 3]; return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="16" ry="8" transform="rotate(${(i*47) % 180} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${c[0]}" stroke="${c[1]}" stroke-width="2"/>`; }).join('')}</g></svg>`;
+let emily, abiha, isabel, paul, heike, bucket, nuts = [], big, big2, leaves = [], pile;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'jump', 'surprised', 'crouch', 'laugh', 'walk'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'walk', 'jump', 'laugh'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+const gy = (d = 0) => () => L.floorY + L.hE*(0.04 + d);
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = []; nuts = []; leaves = [];
+  bucket = T.prop(BUCKET, {x: 0.12, py: gy(0.04), w: 0.26, ratio: 0.9, z: 55});
+  [0.2, 0.28, 0.36, 0.45, 0.53, 0.62, 0.7, 0.78].forEach((x, i) => nuts.push(T.prop(NUT, {x, py: gy((i % 3)*0.03), w: 0.15, z: 56})));
+  big = T.prop(NUT, {x: 0.55, py: gy(0.05), w: 0.18, z: 56}); big.el.hidden = true;
+  big2 = T.prop(NUT, {x: 0.86, py: gy(0.05), w: 0.17, z: 56}); big2.el.hidden = true;
+  pile = T.prop(PILE(5), {x: 0.7, py: gy(0.06), w: 0.9, ratio: 0.5, z: 38}); pile.el.hidden = true;
+  heike = T.hero('sommer', {x: 0.06, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  abiha = T.hero('abiha', {x: 0.92, outfit: 'out', poses: AP}); abiha.face(true);
+  isabel = T.hero('isabel', {x: 0.8, h: 0.95, poses: KP}); isabel.face(true);
+  paul = T.hero('paul', {x: 1.2, h: 0.97, poses: KP});
+  emily = T.hero('emily', {x: 0.22, outfit: 'out', poses: EP});
+}
+const count = async i => { showNum(i); await emily.say('e_' + i); };
+
+async function story(){
+  await play('n35_intro');
+  heike.set('talk'); await heike.say('s35_sammeln'); heike.set('idle');
+  /* каштаны в ведёрко */
+  await play('n35_tipp');
+  let left = [...nuts];
+  for (let i = 1; i <= 8; i++){
+    const el = await T.tap(left, 'n35_tipp', 'r_tipp_licht'); const n = left.find(x => x.el === el); left = left.filter(x => x !== n);
+    n.o.py = null; await T.move(n, 0.12, (L.floorY - L.hE*0.12)/L.H, 450); n.el.hidden = true; sfx.clink(); await count(i);
+  }
+  hideNum(); await play('n35_acht'); await T.bone(bucket);
+
+  /* большой каштан — Пауль отбирает */
+  big.el.hidden = false; big.el.animate([{transform: 'scale(.3)'}, {transform: 'none'}], {duration: 400, easing: 'cubic-bezier(.3,1.6,.5,1)'});
+  await play('n35_gross');
+  emily.set('walk'); await emily.walkTo(0.48, 700); emily.set('crouch'); await sleep(400);
+  big.o.py = null; await T.move(big, 0.52, (L.floorY - L.hE*0.45)/L.H, 400); emily.set('idle');
+  paul.set('talk'); await paul.walkTo(0.62, 1200); paul.face(true);
+  await T.move(big, 0.6, (L.floorY - L.hE*0.45)/L.H, 300); sfx.whoosh(); await paul.say('p35_meine'); paul.set('idle');
+  await T.repeat('e35_zurueck');
+  paul.set('talk'); await paul.say('p35_nein'); paul.set('idle'); paul.hop();
+  await play('n24_fester');
+  await T.firm('e35_meine', {who: paul, step: 2});
+  paul.set('talk'); await paul.say('p35_okay'); paul.set('idle');
+  await T.move(big, 0.52, (L.floorY - L.hE*0.45)/L.H, 400); sfx.pop();
+  await T.bone(emily);
+  await T.repeat('e35_suchen');
+  big2.el.hidden = false; await play('n35_such');
+  await T.tap([big2], 'n35_such', 'r35_such'); sfx.ding();
+  big2.o.py = null; await T.move(big2, paul.x - 0.02, (L.floorY - L.hE*0.45)/L.H, 600);
+  paul.set('jump'); paul.hop(); await paul.say('p35_danke'); paul.set('idle'); T.hearts(paul);
+  big.el.hidden = big2.el.hidden = true;
+  await T.bone(paul);
+
+  /* листья по цветам */
+  await play('n35_blaetter');
+  const spots = [[0.2, 'rot'], [0.32, 'gelb'], [0.44, 'braun'], [0.56, 'gelb'], [0.68, 'rot'], [0.8, 'braun']];
+  leaves = spots.map(([x, c], i) => { const p = T.prop(LEAF(LC[c]), {x, py: gy((i % 2)*0.04), w: 0.22, z: 56}); p.c = c; return p; });
+  for (const c of ['rot', 'gelb', 'braun']){
+    await play('n35_' + c);
+    while (true){
+      const el = await T.tap(leaves.filter(l => !l.el.hidden), 'n35_' + c, 'r35_blatt'); const l = leaves.find(x => x.el === el);
+      if (l.c === c){ l.el.animate([{transform: 'none'}, {transform: 'translateY(-40%) rotate(40deg) scale(1.3)'}, {transform: 'none'}], {duration: 600}); sfx.ding(); break; }
+      el.classList.add('shake'); sfx.bonk(); await play('n35_falsch');
+    }
+    await T.repeat('e35_' + c);
+  }
+  leaves.forEach(l => l.el.hidden = true);
+  await T.bone(emily);
+
+  /* Эмили прыгает в кучу Пауля */
+  pile.el.hidden = false; paul.x = 0.88; isabel.x = 0.34; abiha.x = 0.44; [paul, isabel, abiha].forEach(h => h.place()); paul.face(true); isabel.face(false); abiha.face(false);
+  await play('n35_haufen');
+  emily.set('jump'); await emily.walkTo(0.6, 500); sfx.whoosh(); await play('n35_spring');
+  await T.glide(emily, 0.7, 0, 400); pile.el.innerHTML = PILE(1); T.burst(pile, null, '#e3a33a', 22); emily.set('laugh');
+  emily.set('idle');
+  paul.set('talk'); await paul.say('p35_kaputt'); paul.set('idle'); T.tears(paul, true);
+  const cards = () => [
+    {parts: [{img: 'emily_laugh_out', x: 30, h: 68}, {img: 'paul_idle', x: 72, h: 66}, {fx: 'tears', x: 71, y: 34}], clip: 'n35_opt_weg', ok: false, bg: '#eef6fa', ground: '#9cc56a'},
+    {parts: [{img: 'emily_crouch_out', x: 36, h: 52}, {img: 'paul_jump', x: 70, h: 66}, {fx: 'hearts', x: 52, y: 16}], clip: 'n35_opt_helfen', bg: '#eef6fa', ground: '#9cc56a'}];
+  while ((await T.choose(cards(), 'n19_was', 'r19_was')) === 0) await play('n35_weg_nein');
+  await T.repeat('e35_helfen');
+  T.tears(paul, false); paul.set('idle');
+  await play('n35_bauen');
+  emily.set('crouch');
+  for (let i = 1; i <= 5; i++){ await T.tap([pile], 'n35_bauen', 'r35_bauen'); pile.el.innerHTML = PILE(i); sfx.pop(); await count(i); }
+  hideNum(); emily.set('idle');
+  paul.set('jump'); await paul.say('p35_zusammen');
+  emily.set('jump'); paul.hop(); emily.hop(); T.burst(pile, null, '#e0763a', 26); await Promise.all([play('k_laugh'), play('p_hihi')]);
+  emily.set('laugh'); paul.set('idle'); await sleep(500); emily.set('idle');
+  await T.bone(pile);
+  heike.set('talk'); await heike.say('s35_zurueck'); heike.set('idle');
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n35_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.paul_wave[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>

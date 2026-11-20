@@ -1,0 +1,185 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Emily"><title>Stopptanz. Уровень 27</title>
+<link rel="stylesheet" href="js/mini.css">
+<!-- Уровень 27 «Stopptanz» — зал садика: своя музыка, Эмили — ди-джей, Пауль спорит «Das gilt nicht!» → «Doch! Die Musik war aus. Das ist die Regel.»; принимаем и просим прощения; считаем, сколько детей ещё танцуют. План: LEVELS_PLAN.md -->
+</head><body>
+<div id="stage">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <a id="home" href="index.html" aria-label="Карта уровней"><svg viewBox="0 0 24 24" fill="none" stroke="#ff7a59" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+  <div id="purse" hidden><span id="pursePic"></span><b id="purseNum">0</b></div>
+  <div id="count" hidden><div id="num"></div></div>
+  <div id="numchoice" hidden></div>
+  <button id="mic" hidden aria-label="Микрофон"><span id="level"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="#fff"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+  </button>
+  <button id="again" hidden aria-label="Ещё раз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  <div id="start"><button id="go" aria-label="Играть"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg></span></button></div>
+  <div id="rotate" hidden><svg viewBox="0 0 100 100"><rect x="30" y="12" width="40" height="76" rx="8" fill="#fff" stroke="#2f80ed" stroke-width="5"/><circle cx="50" cy="78" r="4" fill="#2f80ed"/></svg></div>
+</div>
+<script>
+const IMG = {"emily_idle": ["assets/img/c64929b2d467.webp", 208, 407], "emily_blink": ["assets/img/bb16d273f7a0.webp", 208, 407], "emily_mouth1": ["assets/img/b6fea28bbe9b.webp", 208, 407], "emily_mouth2": ["assets/img/159e6b3f3df4.webp", 208, 407], "emily_talk": ["assets/img/d36ef0e49481.webp", 270, 413], "emily_wave": ["assets/img/1fdaea62d38d.webp", 252, 394], "emily_jump": ["assets/img/7b1a90a6eb6d.webp", 279, 346], "emily_surprised": ["assets/img/080d300a6733.webp", 208, 407], "emily_laugh": ["assets/img/919bf61cad53.webp", 232, 399], "abiha_idle": ["assets/img/fa848f76752c.webp", 252, 361], "abiha_blink": ["assets/img/80c0b58f8e9f.webp", 252, 361], "abiha_mouth1": ["assets/img/d3289978defd.webp", 252, 361], "abiha_mouth2": ["assets/img/3569203761d0.webp", 252, 361], "abiha_wave": ["assets/img/3d7524d2c8fa.webp", 252, 361], "abiha_peace": ["assets/img/540be744bd81.webp", 252, 361], "abiha_jump": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_laugh": ["assets/img/4cfb6296447d.webp", 252, 361], "abiha_sit": ["assets/img/cb1193d78e14.webp", 252, 361], "abiha_think": ["assets/img/fe368e6c3218.webp", 252, 361], "isabel_idle": ["assets/img/7961dcd89080.svg", 240, 420], "isabel_blink": ["assets/img/c5a76f73e7d4.svg", 240, 420], "isabel_talk": ["assets/img/baef4844e6b3.svg", 240, 420], "isabel_wave": ["assets/img/288d5ba24e38.svg", 240, 420], "isabel_jump": ["assets/img/0127eade7189.svg", 240, 420], "paul_idle": ["assets/img/2e2f9602a3ab.svg", 240, 420], "paul_blink": ["assets/img/54cc2bc8b6a4.svg", 240, 420], "paul_talk": ["assets/img/6c92ec4edba9.svg", 240, 420], "paul_wave": ["assets/img/92efa9ef049b.svg", 240, 420], "paul_jump": ["assets/img/5d83645ea6ea.svg", 240, 420], "sommer_idle": ["assets/img/fad565d14ea5.svg", 300, 600], "sommer_blink": ["assets/img/fd95ef21bb90.svg", 300, 600], "sommer_talk": ["assets/img/870be1664e82.svg", 300, 600], "sommer_wave": ["assets/img/403be1ea2a35.svg", 300, 600]};  /*IMG: emily_{idle,blink,mouth1,mouth2,talk,wave,jump,surprised,laugh} abiha_{idle,blink,mouth1,mouth2,wave,peace,jump,laugh,sit,think} isabel_{idle,blink,talk,wave,jump} paul_{idle,blink,talk,wave,jump} sommer_{idle,blink,talk,wave}*/
+const SND = {"a_final": "assets/snd/1f58eb1ff7c9.mp3", "a_juhu": "assets/snd/ab65e31fd892.mp3", "a_nach": "assets/snd/ca5aa096bdb0.mp3", "a_prima": "assets/snd/4beb6b79b97f.mp3", "a_super": "assets/snd/fe00647daef4.mp3", "a_toll": "assets/snd/288f2e5a7bca.mp3", "a_wunderbar": "assets/snd/2a1e6fe05fd4.mp3", "b27_aua": "assets/snd/6c2ad84a128a.mp3", "b27_okay": "assets/snd/3f3289934ea1.mp3", "b27_schon_gut": "assets/snd/554245c00c4e.mp3", "e27_raus": "assets/snd/b07c9239b1bf.mp3", "e27_regel": "assets/snd/2f2c4b478b34.mp3", "e27_schon_gut": "assets/snd/a280ceabf523.mp3", "e27_tut_weh": "assets/snd/fcd973d6073e.mp3", "e_1": "assets/snd/47c925770470.mp3", "e_2": "assets/snd/918ef9b62ef0.mp3", "e_3": "assets/snd/510e7125b84e.mp3", "e_4": "assets/snd/eedc12bfb218.mp3", "e_5": "assets/snd/61057bf82030.mp3", "i27_entschuldigung": "assets/snd/ac34c12ea8b3.mp3", "i_hihi": "assets/snd/9c8910580b2c.mp3", "k_laugh": "assets/snd/403616bb79cf.mp3", "n24_fester": "assets/snd/62af96e91cb6.mp3", "n25_nein": "assets/snd/c09a399924ba.mp3", "n25_wer": "assets/snd/98dd819e8acf.mp3", "n27_annehmen": "assets/snd/c24bd0bc3aba.mp3", "n27_drei": "assets/snd/bb56a8f8125f.mp3", "n27_ende": "assets/snd/1b25aa9ea073.mp3", "n27_fuss": "assets/snd/67d73f5128a0.mp3", "n27_intro": "assets/snd/0b5568c3b2d5.mp3", "n27_stopp_knopf": "assets/snd/8b08748b010a.mp3", "n27_wie_viele": "assets/snd/363c2570656a.mp3", "n27_zwei": "assets/snd/bd6b7aa44e32.mp3", "n_lauter": "assets/snd/514e958e006e.mp3", "p27_abiha": "assets/snd/8796a4f184d4.mp3", "p27_gilt_nicht": "assets/snd/15ca2099cdff.mp3", "p27_na_gut": "assets/snd/43d9552e9f88.mp3", "p_hihi": "assets/snd/cb778e712f38.mp3", "r25_wer": "assets/snd/bdad74d08593.mp3", "r27_knopf": "assets/snd/409d7eedf470.mp3", "r27_wie_viele": "assets/snd/bad1bb541ce3.mp3", "r_lauter": "assets/snd/2e0c8abce899.mp3", "r_like_emily": "assets/snd/9f24a0a81f00.mp3", "r_tipp_licht": "assets/snd/df132d7b84f0.mp3", "s27_dj": "assets/snd/275f5792b3dc.mp3", "s27_gewonnen": "assets/snd/ceee4c7df2e7.mp3", "s27_regel": "assets/snd/a60a2c36304f.mp3", "s27_tauschen": "assets/snd/8ebf6005184a.mp3"};  /*SND: e_{1..5} a_super a_toll a_prima a_juhu a_wunderbar a_nach r_like_emily a_final r_tipp_licht i_hihi p_hihi k_laugh*/
+/* тексты фраз; записи — art/voice_new.json (голоса: n — ведущая, r — русская подсказка, e — Эмили, b — Абиха, i — Изабель, p — Пауль, s — Хайке) */
+const SAY = {
+  n27_intro: 'Im Bewegungsraum der Kita. Heute spielen alle Stopptanz!',
+  s27_regel: 'Wenn die Musik spielt, tanzt ihr. Wenn die Musik aufhört, bleibt ihr ganz still stehen!',
+  s27_dj: 'Emily, du machst die Musik! Tipp auf den Knopf.',
+  r27_knopf: 'Нажми на кнопку с музыкой!',
+  n27_stopp_knopf: 'Jetzt tipp noch mal auf den Knopf! Dann hört die Musik auf.',
+  n25_wer: 'Wer hat sich bewegt? Tipp auf das Kind!',
+  r25_wer: 'Кто пошевелился? Нажми на него!',
+  n25_nein: 'Nein, schau genau!',
+  e27_raus: 'Paul, du hast dich bewegt! Du bist raus.',
+  p27_gilt_nicht: 'Das gilt nicht! Die Musik war noch an!',
+  n24_fester: 'Das hat nicht geklappt. Sag es noch einmal, mit fester Stimme!',
+  e27_regel: 'Doch! Die Musik war aus. Das ist die Regel.',
+  p27_na_gut: 'Na gut. Ich setze mich auf die Bank.',
+  n27_wie_viele: 'Wie viele Kinder tanzen noch?',
+  r27_wie_viele: 'Сколько детей ещё танцуют?',
+  n27_drei: 'Drei Kinder tanzen noch!',
+  n27_zwei: 'Zwei Kinder tanzen noch!',
+  s27_tauschen: 'Paul, jetzt machst du die Musik. Und Emily tanzt mit!',
+  i27_entschuldigung: 'Oh! Entschuldigung, Emily!',
+  n27_annehmen: 'Isabel hat sich entschuldigt. Was sagt Emily?',
+  e27_schon_gut: 'Schon gut!',
+  b27_aua: 'Aua! Mein Fuß!',
+  n27_fuss: 'Oh! Emily ist Abiha auf den Fuß getreten.',
+  e27_tut_weh: 'Entschuldigung, Abiha! Tut es weh?',
+  b27_schon_gut: 'Nein, schon gut. Weiter tanzen!',
+  p27_abiha: 'Abiha, du hast gewackelt! Du bist raus!',
+  b27_okay: 'Okay! Hihi!',
+  s27_gewonnen: 'Super! Emily und Isabel haben gewonnen!',
+  n27_ende: 'Toll! Emily hat die Regel erklärt und Entschuldigung gesagt.',
+  n_lauter: 'Lauter! Sag es mit fester Stimme!',
+  r_lauter: 'Громче! Скажи твёрдо и громко!'
+};
+</script>
+<script src="js/mini.js"></script>
+<script src="js/talk.js"></script>
+<script src="js/chunks.js"></script>
+<script src="js/repeat.js"></script>
+<script src="js/firm.js"></script>
+<script>
+/* Уровень 27: Stopptanz. Хайке объясняет правило. Эмили — ди-джей: нажимает кнопку — своя весёлая музыка, дети танцуют; ещё раз — тишина, все замирают.
+   Пауль шевельнулся: находим его, «Paul, du hast dich bewegt! Du bist raus.» — «Das gilt nicht!» — шаг 2 громче «Doch! Die Musik war aus. Das ist die Regel.»
+   Сколько детей танцуют (3). Потом Пауль — ди-джей, Эмили танцует: Изабель толкнула случайно — «Schon gut!»; Эмили наступила Абихе на ногу —
+   «Entschuldigung, Abiha! Tut es weh?». Абиха выбывает — сколько осталось (2). Эмили и Изабель выиграли. */
+const LEVEL = 27, FRIENDS = ['paul', 'isabel', 'abiha'];
+const STICKER = '<svg viewBox="0 0 100 100"><path d="M34 74 V22 L80 12 V64" fill="none" stroke="#9b6bff" stroke-width="7" stroke-linejoin="round"/><ellipse cx="26" cy="76" rx="12" ry="9" fill="#9b6bff"/><ellipse cx="72" cy="66" rx="12" ry="9" fill="#9b6bff"/><rect x="58" y="78" width="30" height="16" rx="5" fill="#ff5a4a"/><rect x="64" y="82" width="6" height="8" fill="#fff"/><rect x="74" y="82" width="6" height="8" fill="#fff"/></svg>';
+function drawScene(g, W, H, L){
+  const fy = L.floorY, hE = L.hE;
+  g.fillStyle = '#e9f3ff'; g.fillRect(0, 0, W, fy); g.fillStyle = '#cfe3fb'; g.fillRect(0, fy - hE*0.5, W, hE*0.45);
+  /* шведская стенка и окна */
+  g.strokeStyle = '#c9934e'; g.lineWidth = hE*0.035; const wx = W*0.04;
+  for (const dx of [0, hE*0.5]){ g.beginPath(); g.moveTo(wx + dx, fy - hE*1.7); g.lineTo(wx + dx, fy); g.stroke(); }
+  g.lineWidth = hE*0.02; for (let y = fy - hE*1.6; y < fy; y += hE*0.15){ g.beginPath(); g.moveTo(wx, y); g.lineTo(wx + hE*0.5, y); g.stroke(); }
+  for (const x of [0.3, 0.55, 0.8]){ g.fillStyle = '#8fd3ff'; g.fillRect(W*x, fy - hE*1.7, hE*0.55, hE*0.45); g.strokeStyle = '#fff'; g.lineWidth = hE*0.03; g.strokeRect(W*x, fy - hE*1.7, hE*0.55, hE*0.45); }
+  /* гирлянда флажков */
+  const cols = ['#ff7a59', '#ffd34d', '#32b67a', '#2f80ed', '#ff8fc8', '#9b6bff'];
+  for (let i = 0; i < 16; i++){ const x = W*i/15, y = fy - hE*1.95 + Math.sin(i/15*Math.PI)*hE*0.15; g.fillStyle = cols[i % cols.length]; g.beginPath(); g.moveTo(x - hE*0.05, y); g.lineTo(x + hE*0.05, y); g.lineTo(x, y + hE*0.12); g.fill(); }
+  /* деревянный пол и скамейка справа */
+  const gr = g.createLinearGradient(0, fy - hE*0.05, 0, H); gr.addColorStop(0, '#e6b77a'); gr.addColorStop(1, '#d19a5a'); g.fillStyle = gr; g.fillRect(0, fy - hE*0.05, W, H);
+  g.strokeStyle = 'rgba(150,95,40,.35)'; g.lineWidth = 1; for (let x = 0; x < W; x += hE*0.3){ g.beginPath(); g.moveTo(x, fy - hE*0.05); g.lineTo(x - hE*0.2, H); g.stroke(); }
+  g.fillStyle = '#5aa8f0'; g.fillRect(W*0.86, fy - hE*0.32, hE*0.7, hE*0.07); g.fillRect(W*0.86 + hE*0.05, fy - hE*0.3, hE*0.05, hE*0.3); g.fillRect(W*0.86 + hE*0.6, fy - hE*0.3, hE*0.05, hE*0.3);
+}
+const BOX = on => `<svg viewBox="0 0 100 100"><rect x="8" y="14" width="84" height="80" rx="16" fill="#ff5a4a" stroke="#c43a2e" stroke-width="5"/><circle cx="50" cy="44" r="20" fill="#ffd9d0" stroke="#c43a2e" stroke-width="4"/><circle cx="50" cy="44" r="8" fill="#c43a2e"/>` +
+  (on ? '<rect x="38" y="70" width="8" height="16" rx="2" fill="#fff"/><rect x="54" y="70" width="8" height="16" rx="2" fill="#fff"/>' : '<path d="M42 68 L62 78 L42 88 Z" fill="#fff"/>') + '</svg>';
+
+let emily, abiha, isabel, paul, heike, box;
+const EP = ['idle', 'blink', 'mouth1', 'mouth2', 'talk', 'wave', 'jump', 'surprised', 'laugh'];
+const AP = ['idle', 'blink', 'mouth1', 'mouth2', 'wave', 'peace', 'jump', 'laugh', 'sit', 'think'];
+const KP = ['idle', 'blink', 'talk', 'wave', 'jump'];
+function setup(){
+  stage.querySelectorAll('.char,.prop').forEach(e => e.remove()); T.heroes = {}; T.props = [];
+  box = T.prop(BOX(false), {x: 0.16, py: () => L.floorY - L.hE*0.02, w: 0.3, z: 45});
+  heike = T.hero('sommer', {x: 0.06, h: 1.45, poses: ['idle', 'blink', 'talk', 'wave']});
+  abiha = T.hero('abiha', {x: 0.44, poses: AP});
+  isabel = T.hero('isabel', {x: 0.58, h: 0.95, poses: KP});
+  paul = T.hero('paul', {x: 0.72, h: 0.97, poses: KP});
+  emily = T.hero('emily', {x: 0.28, poses: EP});
+}
+/* своя музыка: бас и мелодия (не настоящая песня) */
+let music = false;
+async function tune(){ music = true; box.el.innerHTML = BOX(true);
+  const mel = [659, 784, 880, 784, 659, 587, 523, 587, 659, 659, 784, 659, 587, 523, 587, 659], bass = [131, 131, 165, 165, 175, 175, 196, 196]; let i = 0;
+  while (music){ sfx.tone(mel[i % 16], mel[i % 16], 180, 'square', .05); if (i % 2 === 0) sfx.tone(bass[(i/2) % 8], bass[(i/2) % 8], 300, 'triangle', .12); i++; await sleep(215); } }
+function stopTune(){ music = false; box.el.innerHTML = BOX(false); }
+const dancers = () => [emily, abiha, isabel, paul].filter(h => h.dancing !== false);
+function danceAll(list, on){ list.forEach((h, i) => { h.el.classList.toggle('dance', on); h.set(on ? (i % 2 ? 'jump' : 'idle') : 'idle'); }); }
+async function round(dj, list){
+  /* ди-джей: Эмили сама жмёт кнопку, или Пауль — автоматически */
+  if (dj === emily){ await T.tap([box], 's27_dj', 'r27_knopf'); } else { dj.set('talk'); await sleep(500); dj.set('idle'); }
+  tune(); danceAll(list, true); await sleep(dj === emily ? 1800 : 2600);
+  if (dj === emily){ await play('n27_stopp_knopf'); await T.tap([box], 'n27_stopp_knopf', 'r27_knopf'); }
+  stopTune(); danceAll(list, false); sfx.bonk();
+}
+
+async function story(){
+  await play('n27_intro');
+  heike.set('talk'); await heike.say('s27_regel'); heike.set('idle');
+  /* 1. Эмили — ди-джей */
+  await emily.walkTo(0.24, 500); emily.face(false);
+  await heike.say('s27_dj');
+  let list = [abiha, isabel, paul];
+  await round(emily, list);
+  await sleep(500); paul.el.classList.add('wobble');
+  await play('n25_wer');
+  while (true){ const el = await T.tap(list, 'n25_wer', 'r25_wer'); if (el === paul.el) break; sfx.bonk(); await play('n25_nein'); }
+  paul.el.classList.remove('wobble'); sfx.ding();
+  await T.repeat('e27_raus');
+  paul.set('talk'); await paul.say('p27_gilt_nicht'); paul.set('idle'); paul.hop();
+  await play('n24_fester');
+  await T.firm('e27_regel', {who: paul, step: 2});
+  paul.set('talk'); await paul.say('p27_na_gut'); paul.set('idle');
+  await paul.walkTo(0.92, 900);
+  await T.bone(emily);
+  await play('n27_wie_viele');
+  await numChoice([2, 3, 4], 3, 'n27_wie_viele', 'r27_wie_viele');
+  await play('n27_drei');
+
+  /* 2. Пауль — ди-джей, Эмили танцует; извинения в обе стороны */
+  heike.set('talk'); await heike.say('s27_tauschen'); heike.set('idle');
+  await Promise.all([paul.walkTo(0.2, 1000), emily.walkTo(0.34, 700)]);
+  list = [emily, abiha, isabel];
+  tune(); danceAll(list, true); await sleep(1500);
+  /* Изабель случайно толкает Эмили */
+  await isabel.walkTo(0.4, 300); sfx.bonk(); emily.set('surprised'); emily.el.classList.remove('dance');
+  await T.glide(emily, 0.3, 0, 300, 'ease-out');
+  stopTune(); danceAll(list, false);
+  isabel.set('talk'); await isabel.say('i27_entschuldigung'); isabel.set('idle');
+  await play('n27_annehmen');
+  await T.repeat('e27_schon_gut');
+  T.hearts(isabel); await isabel.walkTo(0.58, 500); await T.bone(isabel);
+  /* Эмили наступила Абихе на ногу */
+  tune(); danceAll(list, true); await sleep(1200);
+  emily.el.classList.remove('dance'); await emily.walkTo(0.42, 400); sfx.bonk(); stopTune(); danceAll(list, false);
+  abiha.set('think'); await abiha.say('b27_aua');
+  await play('n27_fuss');
+  await T.repeat('e27_tut_weh');
+  abiha.set('laugh'); await abiha.say('b27_schon_gut'); abiha.set('idle'); T.hearts(abiha);
+  await emily.walkTo(0.34, 400); await T.bone(abiha);
+  /* Абиха засмеялась и выбыла */
+  await round(paul, list);
+  abiha.set('laugh'); abiha.el.classList.add('wobble'); await sleep(700); abiha.el.classList.remove('wobble');
+  paul.set('talk'); await paul.say('p27_abiha'); paul.set('idle');
+  abiha.set('laugh'); await abiha.say('b27_okay'); abiha.set('idle'); await abiha.walkTo(0.92, 900);
+  await play('n27_wie_viele');
+  await numChoice([1, 2, 3], 2, 'n27_wie_viele', 'r27_wie_viele');
+  await play('n27_zwei');
+  /* последняя: Эмили и Изабель замерли — победили */
+  list = [emily, isabel];
+  await round(paul, list);
+  emily.set('jump'); isabel.set('jump'); await sleep(600);
+  heike.set('wave'); await heike.say('s27_gewonnen'); heike.set('idle'); sfx.fanfare();
+  emily.el.classList.add('spin'); await sleep(1300); emily.el.classList.remove('spin');
+  await T.bone(emily);
+  [emily, abiha, isabel, paul].forEach(h => h.set('jump')); await play('n27_ende');
+  [emily, abiha, isabel, paul].forEach(h => h.set('idle'));
+}
+T.start(IMG.emily_jump[0], setup);
+setup();
+</script>
+<script src="js/screen.js"></script>
+<script src="js/common.js"></script>
+</body></html>
